@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>锦囊后台管理系统--<%= title %></title>
+
+		<meta name="description" content="overview &amp; stats" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="/snowSys/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/snowSys/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+		<!-- page specific plugin styles -->
+
+		<!-- text fonts -->
+		<link rel="stylesheet" href="/snowSys/css/fonts.googleapis.com.css" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="/snowSys/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="/snowSys/css/ace-part2.min.css" class="ace-main-stylesheet" />
+		<![endif]-->
+		<link rel="stylesheet" href="/snowSys/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="/snowSys/css/ace-rtl.min.css" />
+
+		<!--[if lte IE 9]>
+		  <link rel="stylesheet" href="/snowSys/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		<script src="/snowSys/js/ace-extra.min.js"></script>
+
+		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+		<!--[if lte IE 8]>
+		<script src="/snowSys/js/html5shiv.min.js"></script>
+		<script src="/snowSys/js/respond.min.js"></script>
+		<![endif]-->
+		
+		<!-- 这部份从尾迁来 -->
+		<!--[if !IE]> -->
+		<script src="/snowSys/js/jquery-2.1.4.min.js"></script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+		<script src="/snowSys/js/jquery-1.11.3.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='/snowSys/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="/snowSys/js/bootstrap.min.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<!--[if lte IE 8]>
+		  <script src="/snowSys/js/excanvas.min.js"></script>
+		<![endif]-->
+		<script src="/snowSys/js/jquery-ui.custom.min.js"></script>
+		<script src="/snowSys/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="/snowSys/js/jquery.easypiechart.min.js"></script>
+		<script src="/snowSys/js/jquery.sparkline.index.min.js"></script>
+		<script src="/snowSys/js/jquery.flot.min.js"></script>
+		<script src="/snowSys/js/jquery.flot.pie.min.js"></script>
+		<script src="/snowSys/js/jquery.flot.resize.min.js"></script>
+		<!-- 这部份从尾迁来 end-->
+		
+		<!-- app开发时加入 -->
+		<script src="/bootstrap/js/jquery.md5.js"></script>
+		<script src="/javascripts/app/app.js"></script>
+		<script>
+			//设置全局参数
+			<%
+			if(locals.config) {%>
+				window.Hosts = <%- JSON.stringify(config.params.apiHost) %>;
+			<% } %>
+
+			<% if(locals.userInfo) { %>
+				setItem('UserInfo',<%- JSON.stringify(userInfo) %>);
+			<% } %>
+			<% if(locals.sid) { %>
+				setItem('suppid',<%- sid %>);
+			<% } %>
+			
+			//设置全局参数
+			var userInfo = getItem('UserInfo');
+			if(userInfo){
+				//设置用户id
+				setItem('usid',userInfo.id);
+			}
+		</script>
+		<script src="/javascripts/app/autoload.js"></script>
+		<!-- app开发时加入 end-->
+		<style> <%= viewModels.style; %> </style>
+	</head>
+
+	<body class="login-layout">
+		<!-- layouter main5 -->
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+							<div class="center">
+								<h1>
+									<i class="ace-icon fa fa-leaf green"></i>
+									<span class="red">Ace</span>
+									<span class="white" id="id-text2">Application</span>
+								</h1>
+								<h4 class="blue" id="id-company-text">&copy; Company Name</h4>
+							</div>
+
+							<div class="space-6"></div>
+
+							<div class="position-relative">
+
+								<!-- *************这里引入模块************* -->
+								<%- 
+								//include('./main_main_1.html'); 
+								%>
+								<% if(typeof locals.viewModels === 'string') { %>
+									<%- '<script> location.href="'+locals.viewModels+'" </script>' %>
+								<% } %>
+									
+								<%
+								if(typeof locals.viewModels.models === 'object'){
+									var modelPath;
+									if(!locals.params) var params = {};
+									params.theme = viewModels.theme;
+									for(var i = 0; i < viewModels.models.length; i ++){
+										modelPath = path('widgets') + viewModels.models[i] + '.html';
+								%>
+								<%- include(modelPath,params) %>
+								<% }} %>
+								<!-- *************这里引入模块 end*************-->
+								
+							</div><!-- /.position-relative -->
+
+							<div class="navbar-fixed-top align-right">
+								<br />
+								&nbsp;
+								<a id="btn-login-dark" href="#">Dark</a>
+								&nbsp;
+								<span class="blue">/</span>
+								&nbsp;
+								<a id="btn-login-blur" href="#">Blur</a>
+								&nbsp;
+								<span class="blue">/</span>
+								&nbsp;
+								<a id="btn-login-light" href="#">Light</a>
+								&nbsp; &nbsp; &nbsp;
+							</div>
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+		</div><!-- /.main-container -->
+		<script>app.load()</script>
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='/snowSys/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			//you don't need this, just used for changing background
+			jQuery(function($) {
+				$('#btn-login-dark').on('click', function(e) {
+					$('body').attr('class', 'login-layout');
+					$('#id-text2').attr('class', 'white');
+					$('#id-company-text').attr('class', 'blue');
+					
+					e.preventDefault();
+				});
+				$('#btn-login-light').on('click', function(e) {
+					$('body').attr('class', 'login-layout light-login');
+					$('#id-text2').attr('class', 'grey');
+					$('#id-company-text').attr('class', 'blue');
+					
+					e.preventDefault();
+				});
+				$('#btn-login-blur').on('click', function(e) {
+					$('body').attr('class', 'login-layout blur-login');
+					$('#id-text2').attr('class', 'white');
+					$('#id-company-text').attr('class', 'light-blue');
+					
+					e.preventDefault();
+				});
+			});
+		</script>
+	</body>
+</html>

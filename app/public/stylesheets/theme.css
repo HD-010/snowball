@@ -1,0 +1,15 @@
+.global_header{
+    height:50px;
+	line-height: 50px;
+	font-size: 19px;
+}
+.theme{
+	background-color: #e9cbaf;
+	color: #ffffff;
+}
+.theme b{
+	color:#ffffff;
+}
+::-webkit-input-placeholder {
+	color:gray;
+}

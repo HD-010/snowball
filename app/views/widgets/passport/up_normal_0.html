@@ -1,0 +1,115 @@
+<!-- passport up_normal_0.html -->
+<!-- 登录面face -->
+<style>
+    .them{
+        background-color:cornflowerblue;
+    }
+    .them-1{
+        color:#00ffff;
+    }
+   
+    .sing-face{
+        padding-top:3em;
+        padding-bottom:3em;
+    }
+    .sing-face img {
+        width: 25%;
+        max-width:7em;
+        margin: auto;
+        display: block;
+    }
+    .col-md-12.column.sing-nick {
+        justify-content: center;
+        text-align: center;
+        margin-top: -2.2em;
+        font-size: medium;
+        color: cyan;
+    }
+</style>
+<div class="clearfix">
+    <div class="col-md-12 column sing-face them">
+        <img alt="140x140" src="/img/test/default_si.jpg" class="img-circle" />
+    </div>
+    <div class="col-md-12 column sing-nick">注册 faverator</div>
+</div>
+
+
+<!-- 登录面form -->
+<style>
+    .sign-form{
+        margin-top:2em;
+    }
+    .sing-form-button button{
+        width: 49%;
+        display: inline-block;
+    }
+        
+   
+</style>
+<div class="clearfix">
+    <div class="col-md-12 column sign-form">
+        <form class="form-horizontal" role="form" method="post"  data-form-async='json' action="/passport/sign/_up">
+            <div class="form-group">
+                <label for="uname" class="col-sm-2 control-label">用户名：</label>
+               <div class="col-sm-10">
+                   <input type="text" class="form-control" id="uname" placeholder="请输入你的昵称" name="uname" value=" "/>
+               </div>
+           </div>
+            
+            <div class="form-group">
+                 <label for="email" class="col-sm-2 control-label">注册邮箱：</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="请输入email" name="email" value=" "/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="tel" class="col-sm-2 control-label">绑定手机：</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="tel" placeholder="请输入需要绑定的手机号" name="mobil" value=" "/>
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="password" class="col-sm-2 control-label">登录密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="输入登录密码" name="password" value=""/>
+                </div>
+            </div><div class="form-group">
+                <label for="inputPassword1" class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword1"  placeholder="再次输入登录密码" name="password1" value="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox pull-right">
+                         <label><input type="checkbox"/>Remember me  &nbsp;&nbsp;</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-10 text-center sing-form-button">
+                    <button type="button" class="btn btn-default them them-1" data-sync="get" data-uri="/snow/sign/_in">登 录</button>
+                    <button type="submit" class="btn btn-default them them-1" disabled>注 册</button>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+var valid = {
+    status: 0,
+    resetSubmit: function(){
+        $('button[type="submit"]').removeAttr('disabled');
+        if(valid.status > -1) $('button[type="submit"]').attr('disabled',true);
+    },
+}
+$('input[type="password"]').change(function(){
+    var passwordItems = $('input[type="password"]');
+    if(passwordItems.eq(0).val() === passwordItems.eq(1).val()) {
+        valid.status = -1;
+        valid.resetSubmit()
+    }
+});
+</script>

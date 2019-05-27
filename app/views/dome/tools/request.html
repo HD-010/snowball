@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+
+    <title></title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link href="/bootstrap/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/bootstrap/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/common.css"/>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1046753_ens6fid7yic.css"/>
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/jquery.md5.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="/javascripts/app/autoload.js"></script>
+    
+</head>
+<body>
+    <style>
+    .details{
+        border: 1px solid #B0DAEC;
+        min-height: 50px;
+        overflow: auto;
+    }
+    </style>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                            <a href="#">模拟请求</a>
+                    </li>
+                    <li>
+                            <a href="#">简介</a>
+                    </li>
+                    <li class="disabled">
+                            <a href="#">信息</a>
+                    </li>
+                    <li class="dropdown pull-right">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">下拉<strong class="caret"></strong></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                    <a href="#">操作</a>
+                            </li>
+                            <li>
+                                    <a href="#">设置栏目</a>
+                            </li>
+                            <li>
+                                    <a href="#">更多设置</a>
+                            </li>
+                            <li class="divider">
+                            </li>
+                            <li>
+                                    <a href="#">分割线</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-6 column">
+                <h2 style="margin-top:24px;">
+                    请求返回的数据:
+                </h2>
+                <p class="details"></p>
+                        
+                
+            </div>
+            <div class="col-md-6 column">
+                <div class="tabbable" id="tabs-753927">
+                    <ul class="nav nav-tabs">
+                        <li  class="active">
+                                <a href="#panel-295211" data-toggle="tab">GET|POST请求</a>
+                        </li>
+                        <li>
+                                <a href="#panel-929026" data-toggle="tab">WebSocket请求</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-295211">
+                            <p type="margin-top:24px;">
+                                POST 或 GET 模拟请求
+                            </p>
+                            <form role="form" class="request" method="" data-form-async='json' action="">
+                                <div class="addon-data"></div>
+                                <div class="form-group">
+                                    <label for="requestName">URI:</label>
+                                    <input type="text" id="requestName" class="form-control" name="uri" value=" " placeholder="请填写请求的地址,如：'http://example.com'" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="requestData">DATA:</label>
+                                    <textarea type="text" id="requestData" class="form-control" name="data" value=" " rows=9 placeholder="请填请求发送的参数,如：'aa=12&bb=2' 或 {param1:'1',param2:'2'}"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12 row" for="requestGet">DATATYPE:</label>
+                                    <label for="requestGet">GET请求:</label>
+                                    <input type="radio" id="requestGet" name="method" value="get" placeholder="请填请需要返回的数据格式,如：'json 或 text 或 xml'" />
+                                    <label for="requestPost" style="margin-left: 10%;">POST请求:</label>
+                                    <input type="radio" id="requestPost" name="method" value="post" placeholder="请填请需要返回的数据格式,如：'json 或 text 或 xml'" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12 row" for="requestGet">返回的数据类型:</label>
+                                    <label for="requestJson">JSON对象:</label>
+                                    <input type="radio" id="requestJson" name="type" value="JSON" placeholder="请填请需要返回的数据格式,如：'json 或 text 或 xml'" />
+                                    <label for="requestHtml" style="margin-left: 10%;">text对象:</label>
+                                    <input type="radio" id="requestHtml" name="type" value="HTML" placeholder="请填请需要返回的数据格式,如：'json 或 text 或 xml'" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="pull-right">
+                                        <button type="submit" class="btn btn-default request-submit">发送请求</button>
+                                    </label> 
+                                    
+                                </div> 
+                            </form>
+                        </div>
+
+                        <div class="tab-pane" id="panel-929026">
+                            <p>WebSocket 模拟请求 </p>
+                            <form role="form" class="websocket">
+                                <div class="addon-data"></div>
+                                <div class="form-group">
+                                    <label for="wsName">ws:</label>
+                                    <input type="text" id="wsName" class="form-control" name="ws" value=" " placeholder="请填写请求的地址,如：'ws://example.com'" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="wsName">echo-protocol:</label>
+                                    <input type="text" id="wsProtocol" class="form-control" name="protocol" value=" " placeholder="请填写echo-protocol的值" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="wsData">DATA:</label>
+                                    <textarea type="text" id="wsData" class="form-control" name="data" value=" " rows=9 placeholder="请填请求发送的数据,如：{param1:'1',param2:'2'}"></textarea>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label class="pull-right">
+                                        <button type="button" class="btn btn-default ws-submit">发送请求</button>
+                                    </label> 
+                                    <label class="pull-right">
+                                        <button type="button" class="btn btn-default ws-connect">连接服务</button>
+                                    </label> 
+                                </div> 
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                    <hr/>
+                    <address> <strong>Twitter, Inc.</strong><br /> 795 Folsom Ave, Suite 600<br /> San Francisco, CA 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890</address>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                     <a id="modal-163812" href="#modal-container-163812" role="button" class="btn" data-toggle="modal">触发遮罩窗体</a>
+                    
+                    <div class="modal fade" id="modal-container-163812" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        标题
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                        <form class="form-horizontal" role="form">
+                                                <div class="form-group">
+                                                     <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="email" class="form-control" id="inputEmail3" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                     <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="password" class="form-control" id="inputPassword3" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <div class="checkbox">
+                                                             <label><input type="checkbox" />Remember me</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                         <button type="submit" class="btn btn-default">Sign in</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                </div>
+                                <div class="modal-footer">
+                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <script>
+            window.Hosts=[''];
+            var req = {};
+            $(".request-submit").mouseover(function(){
+                var request = $(".request");
+                var uri = request.find("input[name='uri']").val();
+                var data = request.find("textarea[name='data']").val() + '&';
+                var method = request.find("input[name='method']:checked").val();
+                var type = request.find("input[name='type']:checked").val();
+                var uriObj = uri.split('/');
+                req.action = uriObj[uriObj.length-1];
+                request.attr('action',uri).attr('method',method).attr('data-form-async',type);
+                try{
+                    eval(('data='+ data + ';'))
+                }catch(e){
+                    data = app.parseQuery(data);
+                }    
+                setData(data)   
+                console.log("@@@:",data);
+                eval((req['action'] + " = function(res){process(res)};"));
+            });
+
+            function setData (data){
+                var keys = Object.keys(data);
+                var html = '';
+                if(keys.length){
+                    keys.forEach(function(k,v){
+                        if(!k) return;
+                        html += '<input type="hidden" name="'+ k +'" value="'+data[k]+'" />';
+                    });
+                    $('.request').find('.addon-data').html(html);
+                }
+            }
+
+            function process(res){
+                var str = JSON.stringify(res, null, 4);
+                str = str.replace(/\n/g,'<br>').replace(/\s/g, '&nbsp;');
+                $(".details").html(str);
+            }
+        </script>
+        <script>
+            var wsConnect = {
+                state:false,
+                ws:'',
+                protocol:'',
+                data:null,
+                connection:null,
+                resetState:function(){
+                    if(this.state) $(".ws-connect").prop('disabled',true);
+                },
+            };
+
+            $(".ws-connect").mouseover(function(){
+                wsConnect.ws = $("#wsName").val();
+                wsConnect.protocol = $("#wsProtocol").val();
+                if($("#wsData").val().length < 4) return;
+                wsConnect.data = eval('('+ $("#wsData").val() + ')');
+            });
+
+            $(".ws-connect").click(function(){
+                if(wsConnect.state) return;
+                wsConnect.connection = new WebSocket(wsConnect.ws,wsConnect.protocol);
+                if(wsConnect.connection) wsConnect.state = true;
+                wsConnect.connection.onopen = process;
+                wsConnect.connection.onmessage = wsConnect.connection.onclose = wsConnect.connection.onerror = function(msg){
+                    process(JSON.parse(msg.data));
+                }
+               
+                wsConnect.resetState();
+            });
+
+            $(".ws-submit").click(function(){
+                $(".ws-connect").mouseover();
+                wsConnect.connection.send(JSON.stringify(wsConnect.data));
+            });
+    </script>
+
+
+
+
+
+
+
+
+    
+    <!-- 全局js -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/javascripts/app/app.js"></script>
+    <script src="/javascripts/app/dataAsync.js"></script>
+
+    
+</body>
+
+</html>

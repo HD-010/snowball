@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <title>单页面测试</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link href="/bootstrap/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/jquery.md5.js"></script>
+    <script src="/javascripts/app/autoload.js"></script>
+    <style>
+        .container{padding-left:0;padding-right:0;}
+    </style>
+</head>
+<body>
+    <div class="container">
+    <!-- 内容区 -->
+
+        <!-- 登录面face -->
+        <style>
+             .them{
+                background-color:cornflowerblue;
+            }
+            .them-1{
+                color:#00ffff;
+            }
+           
+           
+            .sing-face{
+                padding-top:3em;
+                padding-bottom:3em;
+            }
+            .sing-face img {
+                width: 25%;
+                max-width: 7em;
+                margin: auto;
+                display: block;
+            }
+            .col-md-12.column.sing-nick {
+                justify-content: center;
+                text-align: center;
+                margin-top: -2.2em;
+                font-size: medium;
+                color: cyan;
+            }
+        </style>
+        <div class="clearfix">
+            <div class="col-md-12 column sing-face them">
+                <img alt="140x140" src="/img/test/default_si.jpg" class="img-circle" />
+            </div>
+            <div class="col-md-12 column sing-nick">星星儿</div>
+        </div>
+
+
+        <!-- 登录面form -->
+        <style>
+            .sign-form{
+                margin-top:2em;
+            }
+            .sing-form-button button{
+                width: 49%;
+                display: inline-block;
+            }
+                
+           
+        </style>
+        <div class="clearfix">
+            <div class="col-md-12 column sign-form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                         <label for="inputEmail3" class="col-sm-2 control-label">登录帐号：</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="inputEmail3" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                         <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword3" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="checkbox pull-right">
+                                <span>忘记密码 &nbsp;&nbsp;</span>
+                                <label><input type="checkbox"/>Remember me  &nbsp;&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10 text-center sing-form-button">
+                            <button type="submit" class="btn btn-default them them-1">注 册</button>
+                            <button type="submit" class="btn btn-default them them-1">登 录</button>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 其它登录方式 -->
+        <style>
+            .sing-more{
+                border: 0;
+                margin-top:2em;
+            }
+            .sing-more img {
+                width: 20%;
+                max-width:5em;
+                margin: auto;
+                display: block;
+            }
+            .sing-wechat {
+                justify-content: center;
+                text-align: center;
+                font-size: medium;
+                color: cyan;
+            }
+        </style>
+        <div class="clearfix sing-more">
+            <div class="col-sm-12 column">
+                <img alt="140x140" src="/img/test/wechat.jpg" class="img-circle" />
+            </div>
+            <div class="col-sm-12 column sing-wechat">微信</div>
+        </div>
+
+
+    <!-- 内容区 -->
+    </div>
+    <code id="tempCode"></code>
+    <!-- 全局js -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/javascripts/app/app.js"></script>
+    <script src="/javascripts/app/dataAsync.js"></script>
+</body>
+
+</html>

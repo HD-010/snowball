@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title%>
+    </title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/bootstrap/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/bootstrap/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/bootstrap/css/animate.css" rel="stylesheet">
+    <link href="/bootstrap/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>当前位置-
+                            <span class="text-primary">权限分配</span>
+                        </h5>
+                        <div class="ibox-tools">
+                            <a href="" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i>保存</a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" id="permiting" method="post" action="/admin/authority/save">
+                            <input type="hidden" name="tp" value="<%= (typeof userId === 'undefined') ? 'G': 'U'; %>" />
+                            <input type='hidden' name="userId" value="<%= (typeof userId === 'undefined') ? '': userId; %>" />
+                            <input type='hidden' name="groupId" value="<%= (typeof groupId === 'undefined') ? '': groupId; %>" />
+                            <% 
+                            for(var i = 0; i < maxPermit.menus.length; i ++){ 
+                                var lev1 = maxPermit.menus[i];
+                                var lev1menuId = lev1.menuId;
+                                
+                                var lev1show = (array2value(lists.refMenus,'menuId',lev1menuId,'show')) === '1' ? 'checked': '';
+                                var lev1add = (array2value(lists.refMenus,'menuId',lev1menuId,'add'))=== '1' ? 'checked': '';
+                                var lev1edit = (array2value(lists.refMenus,'menuId',lev1menuId,'edit'))=== '1' ? 'checked': '';
+                                var lev1delete = (array2value(lists.refMenus,'menuId',lev1menuId,'delete'))=== '1' ? 'checked': '';
+                            %>
+
+                            <div class="panel-group" id="panel-<%= i%>">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a class="panel-title" data-toggle="collapse" data-parent="#panel-<%= i%>" href="#panel-element-<%= i%>">
+                                            <%= lev1.name%>
+                                        </a>
+                                    </div>
+                                    <div id="panel-element-<%= i%>" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <label style="padding-right:10px;">
+                                                <%= lev1.name%>
+                                            </label>
+                                            <% if(lev1.show > -1){%>
+                                            <div class="checkbox checkbox-inline">
+                                                <input type="checkbox" id="" name="item_<%= lev1.menuId %>" <%= lev1show %> value="show">查看
+                                                
+                                            </div>
+                                            <% } %>
+                                            <% if(lev1.add > -1){%>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input type="checkbox" id="" name="item_<%= lev1.menuId %>" <%= lev1add %> value="add">添加
+                                                
+                                            </div>
+                                            <% } %>
+                                            <% if(lev1.edit > -1){%>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input type="checkbox" id="" name="item_<%= lev1.menuId %>" <%= lev1edit %> value="edit">编辑
+                                                
+                                            </div>
+                                            <% } %>
+                                            <% if(lev1.delete > -1 ){%>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input type="checkbox" id="" name="item_<%= lev1.menuId %>" <%= lev1delete %> value="delete">删除
+                                            </div>
+                                            <% } %>
+                                            <div class="sidebar-collapse">
+                                                <% 
+                                                    var lev1childrens = (lev1.childrens.length > 0) ? lev1.childrens : [];
+                                                    for(var j = 0; j < lev1childrens.length; j ++){
+                                                        var lev2 = lev1childrens[j]
+                                                        var lev2menuId = lev2.menuId;
+                                                        var lev2show = (array2value(lists.refMenus,'menuId',lev2menuId,'show')) === '1' ?'checked': '';
+                                                        var lev2add = (array2value(lists.refMenus,'menuId',lev2menuId,'add')) === '1' ?'checked': '';
+                                                        var lev2edit = (array2value(lists.refMenus,'menuId',lev2menuId,'edit')) === '1' ?'checked': '';
+                                                        var lev2delete = (array2value(lists.refMenus,'menuId',lev2menuId,'delete')) === '1' ?'checked': '';
+                                                %>
+                                                <div class="form-group" id="side-menu" style="margin-left:20px;">
+                                                    <label style="padding-right:10px;">
+                                                        <%= lev2.name%></label>
+                                                    <% if(lev2.show > -1){%>
+                                                    <div class="checkbox checkbox-inline">
+                                                        <input type="checkbox" id="" name="item_<%= lev2.menuId %>" <%= lev2show %> value="show">查看
+                                                    </div>
+                                                    <% } %>
+                                                    <% if(lev2.add > -1){%>
+                                                    <div class="checkbox checkbox-success checkbox-inline">
+                                                        <input type="checkbox" id="" name="item_<%= lev2.menuId %>" <%= lev2add %> value="add">添加
+                                                    </div>
+                                                    <% } %>
+                                                    <% if(lev2.edit > -1){%>
+                                                    <div class="checkbox checkbox-success checkbox-inline">
+                                                        <input type="checkbox" id="" name="item_<%= lev2.menuId %>" <%= lev2edit %> value="edit">编辑
+                                                    </div>
+                                                    <% } %>
+                                                    <% if(lev2.delete > -1 ){%>
+                                                    <div class="checkbox checkbox-success checkbox-inline">
+                                                        <input type="checkbox" id="" name="item_<%= lev2.menuId %>" <%= lev2delete %> value="delete">删除
+                                                    </div>
+                                                    <% } %>
+                                                    <div class="row" style="margin-left:40px;">
+                                                        <% 
+                                                        var lev2childrens = (lev2.childrens.length > 0) ? lev2.childrens : [];
+                                                        for(var k = 0; k < lev2childrens.length; k ++){
+                                                            var lev3 = lev2childrens[k];
+                                                            var lev3menuId = lev3.menuId;
+                                                            var lev3show = (array2value(lists.refMenus,'menuId',lev3menuId,'show')) === '1' ?'checked': '';
+                                                            var lev3add = (array2value(lists.refMenus,'menuId',lev3menuId,'add')) === '1' ?'checked': '';
+                                                            var lev3edit = (array2value(lists.refMenus,'menuId',lev3menuId,'edit')) === '1' ?'checked': '';
+                                                            var lev3delete = (array2value(lists.refMenus,'menuId',lev3menuId,'delete')) === '1' ?'checked': '';
+                                                        %>
+                                                    <div class="form-group">
+                                                        <label style="padding-right:10px;">
+                                                            <%= lev3.name %></label>
+                                                        <% if(lev3.show > -1){%>
+                                                        <div class="checkbox checkbox-inline">
+                                                            <input type="checkbox" id="" name="item_<%= lev3.menuId %>"
+                                                                <%= lev3show %>
+                                                            value="show">查看
+                                                        </div>
+                                                        <% } %>
+                                                        <% if(lev3.add > -1){%>
+                                                        <div class="checkbox checkbox-success checkbox-inline">
+                                                            <input type="checkbox" id="" name="item_<%= lev3.menuId %>"
+                                                                <%= lev3add %> value="add">添加
+                                                        </div>
+                                                        <% } %>
+                                                        <% if(lev3.edit > -1){%>
+                                                        <div class="checkbox checkbox-success checkbox-inline">
+                                                            <input type="checkbox" id="" name="item_<%= lev3.menuId %>"
+                                                                <%= lev3edit %>
+                                                            value="edit">编辑
+                                                        </div>
+                                                        <% } %>
+                                                        <% if(lev3.delete > -1){%>
+                                                        <div class="checkbox checkbox-success checkbox-inline">
+                                                            <input type="checkbox" id="" name="item_<%= lev3.menuId %>"
+                                                                <%= lev3delete %>
+                                                            value="delete">删除
+                                                        </div>
+                                                        <% } %>
+                                                    </div>
+                                                    <% } %>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% } %>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="/bootstrap/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/bootstrap/js/bootstrap.min.js?v=3.3.6"></script>
+
+
+    <!-- 自定义js -->
+    <script src="/bootstrap/js/content.js?v=1.0.0"></script>
+
+    <!-- layerDate plugin javascript -->
+    <script src="/bootstrap/js/plugins/layer/laydate/laydate.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+                // Ajax example
+                //                $.ajax().always(function () {
+                //                    simpleLoad($(this), false)
+                //                });
+                simpleLoad(btn, false)
+            });
+        });
+
+        function simpleLoad(btn, state) {
+            if (state) {
+                btn.children().addClass('fa-spin');
+                btn.contents().last().replaceWith(" Loading");
+            } else {
+                setTimeout(function () {
+                    btn.children().removeClass('fa-spin');
+                    btn.contents().last().replaceWith(" Refresh");
+                }, 2000);
+            }
+        }
+    </script>
+    <script src="/javascripts/app/app.js"></script>
+    <script>
+        $(document).ready(() => {
+            var form = {
+                obj: $('#permiting'),
+                primary: $('.btn-primary'),
+                items: [] //所有项的名称
+            }
+
+            form.primary.click(function (e) {
+                e.preventDefault();
+
+                var dataArr = form.obj.find('input');
+                dataArr.each((i, v) => {
+                    var itemName = $(v).attr('name');
+                    if (form.items.indexOf(itemName) === -1) {
+                        form.items.push(itemName);
+                    }
+                });
+
+                var data = $('#permiting').serialize();
+                data += '&items=' + encodeURI(JSON.stringify(form.items));
+
+                $.ajax({
+                    url: '/admin/authority/save',
+                    data: data,
+                    type: 'POST',
+                    dataType: 'text',
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        app.notice(result);
+                    },
+
+                });
+            });
+        });
+    </script>
+    <!-- 权限选中状态逻辑控制 start -->
+    <script>
+        function authorityControl(elem){//传入的元素
+            if($(elem).is(':checked')){//从未选中变到选中状态
+                $(elem).parent().siblings('.checkbox-inline').children("input[type='checkbox'][value='show']").prop('checked',true);
+                $(elem).parents('.row').siblings('.checkbox-inline').find("input[type='checkbox'][value='show']").prop('checked',true);
+                $(elem).parents('.sidebar-collapse').siblings('.checkbox-inline').find("input[type='checkbox'][value='show']").prop('checked',true);
+            }
+        }
+        $("input[value='add']").click(function(){
+            authorityControl(this);
+        });
+        $("input[value='edit']").click(function(){
+            authorityControl(this);
+        });
+        $("input[value='delete']").click(function(){
+            authorityControl(this);
+        });
+        $("input[value='show']").click(function(){
+            if($(this).is(':checked')){//如果从选中变到未选中状态
+                $(this).parents('.row').siblings('.checkbox-inline').find("input[type='checkbox'][value='show']").prop('checked',true);
+                $(this).parents('.sidebar-collapse').siblings('.checkbox-inline').find("input[type='checkbox'][value='show']").prop('checked',true);
+            }else{
+                $(this).parent().siblings('.checkbox-inline').children("input[type='checkbox']").prop("checked",false);
+                $(this).parent().siblings().find("input[type='checkbox']").prop("checked",false);
+            }
+        });
+    </script>
+    <!-- 权限选中状态逻辑控制 end -->
+</body>
+
+</html>

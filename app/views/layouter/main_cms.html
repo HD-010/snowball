@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="utf-8">
+	<title>锦囊-<%= title %></title>
+
+	<meta name="description" content="top menu &amp; navigation">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+	<!-- bootstrap & fontawesome -->
+	<link rel="stylesheet" href="/snowSys/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/snowSys/font-awesome/4.5.0/css/font-awesome.min.css">
+
+	<!-- page specific plugin styles -->
+
+	<!-- text fonts -->
+	<link rel="stylesheet" href="/snowSys/css/fonts.googleapis.com.css">
+
+	<!-- ace styles -->
+	<link rel="stylesheet" href="/snowSys/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+
+	<!--[if lte IE 9]>
+		<link rel="stylesheet" href="/snowSys/css/ace-part2.min.css" class="ace-main-stylesheet" />
+	<![endif]-->
+	<link rel="stylesheet" href="/snowSys/css/ace-skins.min.css">
+	<link rel="stylesheet" href="/snowSys/css/ace-rtl.min.css">
+
+	<!--[if lte IE 9]>
+		<link rel="stylesheet" href="/snowSys/css/ace-ie.min.css" />
+	<![endif]-->
+
+	<!-- inline styles related to this page -->
+
+	<!-- ace settings handler -->
+	<script src="/snowSys/js/ace-extra.min.js"></script>
+	<style>
+		@keyframes nodeInserted {
+			from {
+				outline-color: #fff
+			}
+
+			to {
+				outline-color: #000
+			}
+		}
+
+		@-moz-keyframes nodeInserted {
+			from {
+				outline-color: #fff
+			}
+
+			to {
+				outline-color: #000
+			}
+		}
+
+		@-webkit-keyframes nodeInserted {
+			from {
+				outline-color: #fff
+			}
+
+			to {
+				outline-color: #000
+			}
+		}
+
+		@-ms-keyframes nodeInserted {
+			from {
+				outline-color: #fff
+			}
+
+			to {
+				outline-color: #000
+			}
+		}
+
+		@-o-keyframes nodeInserted {
+			from {
+				outline-color: #fff
+			}
+
+			to {
+				outline-color: #000
+			}
+		}
+
+		.ace-save-state {
+			animation-duration: 10ms;
+			-o-animation-duration: 10ms;
+			-ms-animation-duration: 10ms;
+			-moz-animation-duration: 10ms;
+			-webkit-animation-duration: 10ms;
+			animation-delay: 0s;
+			-o-animation-delay: 0s;
+			-ms-animation-delay: 0s;
+			-moz-animation-delay: 0s;
+			-webkit-animation-delay: 0s;
+			animation-name: nodeInserted;
+			-o-animation-name: nodeInserted;
+			-ms-animation-name: nodeInserted;
+			-moz-animation-name: nodeInserted;
+			-webkit-animation-name: nodeInserted
+		}
+	</style>
+	<style><%= viewModels.style; %></style>
+	<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+	<!--[if lte IE 8]>
+	<script src="/snowSys/js/html5shiv.min.js"></script>
+	<script src="/snowSys/js/respond.min.js"></script>
+	<![endif]-->
+	<script src="/bootstrap/js/jquery.min.js"></script>
+	<!--[if !IE]> -->
+	<script src="/snowSys/js/jquery-2.1.4.min.js"></script>
+	<!-- <![endif]-->
+	<!--[if IE]>
+	<script src="/snowSys/js/jquery-1.11.3.min.js"></script>
+	<![endif]-->
+	<script>
+			//设置全局参数
+			<%
+			if(locals.config) {%>
+				window.Hosts = <%- JSON.stringify(config.params.apiHost) %>;
+			<% } %>
+	</script>
+	<script src="/javascripts/app/app.js"></script>
+	<script src="/javascripts/app/autoload.js"></script>
+	<script>
+		<% if(locals.userInfo) { %>
+				setItem('UserInfo',<%- JSON.stringify(userInfo) %>);
+		<% } %>
+		<% if(locals.sid) { %>
+				setItem('suppid',<%- sid %>);
+		<% } %>
+		
+		//设置全局参数
+		var userInfo = getItem('UserInfo');
+		if(userInfo){
+				//设置用户id
+				setItem('usid',userInfo.id);
+		}
+			
+	</script>
+</head>
+
+<body class="no-skin">
+<!-- main_artical.html -->
+	<!-- 头部导航栏 -->
+	<%- include(path('widgets') + '/cms/header/header_navbar_1.html') %>
+
+	<!-- 页面主体部分 -->
+	<div class="main-container ace-save-state" id="main-container">
+		<script type="text/javascript">
+			try { ace.settings.loadState('main-container') } catch (e) { }
+		</script>
+
+		<%- include(path('widgets') + '/cms/header/sidebar_1.html'); %>
+
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+						<% if(typeof locals.viewModels === 'string') { %>
+							<%- '<script> location.href="'+locals.viewModels+'" </script>' %>
+					<% } %>
+					
+					<%
+					if(typeof locals.viewModels.models === 'object'){
+							if(!locals.params) var params = {};
+							params.theme = viewModels.theme;
+							console.log(viewModels.models)
+							for(var i = 0; i < viewModels.models.length; i ++){
+					%>
+					<%- include(path('widgets') + '/' + viewModels.models[i] + '.html',params) %>
+					<% }} %>
+					<!-- /.ace-settings-container -->
+
+					<!-- /.page-header -->
+
+					<!-- /.row -->
+				</div><!-- /.page-content -->
+			</div>
+		</div><!-- /.main-content -->
+
+		<%- include(path('widgets') + '/cms/footer/bottom_1.html'); %>
+		<%- include(path('widgets') + '/cms/footer/navbar_1.html'); %>
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+			<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div><!-- /.main-container -->
+	<script type="text/javascript">
+		if ('ontouchstart' in document.documentElement) document.write("<script src='/snowSys/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+	</script>
+	<script src="/snowSys/js/bootstrap.min.js"></script>
+
+	<!-- page specific plugin scripts -->
+
+	<!-- ace scripts -->
+	<script src="/snowSys/js/ace-elements.min.js"></script>
+	<script src="/snowSys/js/ace.min.js"></script>
+</body>
+
+</html>

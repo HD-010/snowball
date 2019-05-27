@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="/javascripts/lib/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <input type="radio" name="type" value="0">宽图
+    <input type="radio" name="type" value="1">高图<br/>
+
+    <input id="replaceImg" type="button" name="file" value="选择图片">
+    <!-- 视图组件 -->
+    <%- cropperView %>
+    <%- cropperAsync %>
+    <script>
+    $('input[name=type]').change(function(){
+        switch($(this).val()){
+            case '0':
+                option.aspectRatio = 2 / 1;
+                break;
+            case '1':
+                option.aspectRatio = 1 / 2;
+        }
+    });
+    </script>
+  </body>
+</html>
