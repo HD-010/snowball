@@ -8,8 +8,7 @@ function BehaviorModel() {
         }
      */
     this.ruler = {
-        //'*'              : ['func1','func2'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
-        //'/dome/site/home': ['showApp','func9'],   //指定符合该路由的请求时，在执行请求的操作前执行数组中的方法组
+        //'*'              : ['checkSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
     }
 
 
@@ -35,6 +34,21 @@ function BehaviorModel() {
             error  : 0,
             message: '数据校验错误',
         });
+    }
+
+    /**
+     * 验证签名
+     */
+    this.validSignature = function(){
+        var data = {error:1};
+        var openID = this.POST('openID');
+        var openIDObj = parseOpenID(openID);
+        var uid = parseInt(openIDOb.uid);
+        var userInfor = this.model("passport:DataProcess").getUserInfo(uid);
+        var signature = createSignature(this.req,userInfor);
+        data.error = (signature === openIDObj.sg) ? 0 : 1;
+        
+        return callback(data);
     }
 
    

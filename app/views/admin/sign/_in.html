@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/javascripts/app/app.js"></script>
+    <script src="/javascripts/app/autoload.js"></script>
+</head>
+<body>
+
+    <form action="/passport/sign/_in" method="post" data-form-async='json'>
+        用户名：<input type="email" name="email" value=" " />
+        密  码:<input type="password" name="password" value="" />
+        <button type="submit">登 录</button>
+        <button type="reset">重 置</button>
+    </form>
+    <script>
+    /**
+     * 登录处理方法
+     */
+    function _in(results){
+        console.log(results.infors);
+        if(!results.error){
+            results.uri = '/admin/index/index';
+            setItem("UIF",results.infors);
+            app.notice(results);
+        }
+    }
+
+    jQuery(function($){
+        app.load();
+    })
+    
+    </script>
+</body>
+</html>

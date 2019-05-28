@@ -1,0 +1,2 @@
+客户端sessionStorage、cookieStorage对象键名
+'UIF' : 登录成功时暂存的用户信息

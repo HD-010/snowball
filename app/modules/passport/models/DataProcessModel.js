@@ -41,6 +41,7 @@ function DataProcessModel() {
                 time    : d.toLocaleDateString() + ' ' + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
             }
         }
+
         return passwd;
     }
 
@@ -50,14 +51,16 @@ function DataProcessModel() {
      * data 要求是对象
      * tag 是存为session的key前缀，用大写标识
      * 如果不写tag,默认是'U'(该前缀值对应的是用户登录成功时写入的用户基本信息),
+     * uid 如果uid不为假，则用户信息的存储参考为uid,否则为sessionID
      */
-    this.setUserInfo = function(data, tag) {
-        tag = tag || 'U';
+    this.setUserInfo = function(data, tag, uid) {
+        tag = (typeof tag === 'string') ? tag : 'U';
+        uid = (typeof uid === 'number') ? uid : this.sessionID();
         let jsonStr = data;
         try{
             jsonStr = JSON.stringify(data);
         }catch(err){};
-        this.session()[tag + '_' + this.sessionID()] = jsonStr;
+        this.session()[tag + '_' + uid] = jsonStr;
     }
 
     /**
@@ -65,11 +68,13 @@ function DataProcessModel() {
      * 如果没有找到当前访问都信息，则返回false
      * tag 是存为session的key前缀，用大写标识
      * 如果不写tag,默认是'U'(该前缀值对应的是用户登录成功时写入的用户基本信息),
+     * uid 如果uid不为假，则用户信息的存储参考为uid,否则为sessionID
      */
-    this.getUseInfo = function(tag) {
+    this.getUserInfo = function(tag,uid) {
+        uid = (typeof uid === 'number') ? uid : this.sessionID();
+        tag = (typeof tag === 'string') ? tag : 'U';
         let sessinon = this.session()
-        tag = tag || 'U';
-        let str = sessinon[tag + '_' + this.sessionID()] || false;
+        let str = sessinon[tag + '_' + uid] || false;
         try{
             str = JSON.parse(str);
         }catch(err){};

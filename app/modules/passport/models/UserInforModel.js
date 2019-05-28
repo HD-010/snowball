@@ -41,9 +41,12 @@ function UserInforModel() {
                 callback(data);
                 return;
             }
-            data = (!error && (Object.keys(results).length === 0)) ?
-            {error  : 1, message: "帐号或者用户名错误"}: 
-            {error: 0,data : results};
+            if(!error && (Object.keys(results).length === 0)){
+                data = {error  : 1, message: "帐号或者用户名错误"};
+            }else{
+                results[0].loginTime = (new Date()).valueOf();
+                data = {error: 0,data : results};
+            }
             
             callback(data);
             return;
