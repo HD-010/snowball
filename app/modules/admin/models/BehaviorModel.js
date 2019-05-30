@@ -8,7 +8,14 @@ function BehaviorModel() {
         }
      */
     this.ruler = {
-        //'*'              : ['checkSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        //'*'              : ['validSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+    }
+
+    /**
+     * 定义操作下不需要预执行的路由
+     */
+    this.notMatch = {
+        validSignature: ['/admin/sign/_in','/admin/sign/_up','/err404'],
     }
 
 
@@ -36,24 +43,26 @@ function BehaviorModel() {
         });
     }
 
+
+
     /**
      * 验证签名
+     * 用户登录后请求的数据需要验证签名,签名存储在redis，以uid为参考
      */
-    this.validSignature = function(){
-        var data = {error:1};
+    this.validSignature = function(data, callback){
+        var data = {error:0};
+        var router = this.app.router.string;
+        if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('openID');
         var openIDObj = parseOpenID(openID);
         var uid = parseInt(openIDOb.uid);
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid);
         var signature = createSignature(this.req,userInfor);
+        if(!signature) return callback({error:1,uri:"/err404"});
         data.error = (signature === openIDObj.sg) ? 0 : 1;
         
         return callback(data);
     }
-
-   
-
-    
 }
 
 module.exports = BehaviorModel;

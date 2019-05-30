@@ -3,14 +3,16 @@
  *  请将数据处理的代码写在该模型
  */
 function DataProcessModel() {
-        /**
+    /**
      * 验证用户登录密码是否合法
      */
     this.loginValid = function(data) {
         var inputPass = this.createPasswd(data);
         if (inputPass === data[0].password) {
             //保存用户登录信息到session
+            data[0].loginTime = (new Date()).valueOf();
             this.setUserInfo(data);
+            this.setUserInfo(data,data[0].id);
             return {
                 error  : 0,
                 message: '登录成功，正在跳转...',
