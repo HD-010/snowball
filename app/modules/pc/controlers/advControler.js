@@ -10,6 +10,7 @@ function advControler(){
             message : '查询错误'
         };
         that.model("Adv").list({},function(error,results,fields){
+
             if(error) return that.renderJson(data);
             data.error = 0;
             data.message = "ok";
@@ -21,5 +22,6 @@ function advControler(){
     
 
 }
+
 
 module.exports = advControler;
