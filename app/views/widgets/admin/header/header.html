@@ -1,0 +1,72 @@
+<style>
+.header{
+    position: fixed;
+    top:0px;
+    height: 60px;
+    width:100%;
+    line-height:60px;
+    background-color: #3ca2d7;
+    overflow: hidden;
+    color:#ffffff;
+    font-weight: 400;
+}
+.header a{
+    color:#FFFFFF;
+}
+.header .icon-sousuo{
+    position: absolute;
+    z-index: 99999; 
+    color: #3ca2d7;
+    margin-left:5px; 
+    
+}
+.header .form-control{
+    display:inline;
+    padding-left:22px;
+    width: 50%;
+    border-radius: 10px;
+}
+.header .nvatab li a{
+    color:#ffffff;
+    font-weight: 400;
+    font-size:16px;
+}
+.header .nvatab li:hover{
+    background-color: #5DB4E0;    
+}
+
+.active{
+    background-color: #5DB4E0;
+}
+    
+</style>
+
+<!-- 视图加载 -->
+<div class="container-fluid header">
+        <div class="row">
+            <div class="col-xs-2">
+                <ul class="list-inline">
+                    <li style="vertical-align:super"><img src="/bootstrap/img/youbanglogo.jpg" alt="logo" width="40px" height="40px" /></li>
+                    <li><h3>友邦拉拉平台</h3></li>
+                </ul>
+            </div>
+            <div class="col-xs-7">
+                <ul class="list-inline text-center nvatab">
+                    <li class="col-xs-2 active"><a data-toggle="tab" href="">首页</a></li>
+                    <li class="col-xs-2"><a data-toggle="tab" href="">工程项目</a></li>
+                    <li class="col-xs-2"><a data-toggle="tab" href="">企业信息</a></li>
+                    <li class="col-xs-2"><a data-toggle="tab" href="">人才劳务</a></li>
+                    <li class="col-xs-2"><a data-toggle="tab" href="">建材商城</a></li>
+                    <li class="col-xs-2"><a data-toggle="tab" href="">装修装饰</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                
+                <div class="form-group" >  
+                    <i class="iconfont icon-sousuo"></i>                                 
+                    <input type="text" class="form-control"  placeholder="内容" />
+                    </div>
+            </div>
+            
+        </div>
+    </div>
