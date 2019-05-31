@@ -10,7 +10,7 @@ function indexControler(){
        
         // log(parseOpenID(openID))
         
-        
+       
         that.renderLayer({});
     }
 }
