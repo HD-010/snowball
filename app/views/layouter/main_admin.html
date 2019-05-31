@@ -12,15 +12,17 @@
     <script src="/javascripts/app/autoload.js"></script>
 </head>
 <body>
-   <!-- 视图加载 -->
-    <div class="container-fluid  row header">
 
-    </div>
-    <script>
-        getItem('UIF');     //读取本地存储的用户信息
-        jQuery(function($){
-            app.load();
-        });    
-    </script>
+        <!-- 左则导航栏 -->
+        <%- include(path('widgets') + '/admin/left/left_sidebar_0.html') %>
+    
+    
+    <script src="/bootstrap/js/hAdmin.js?v=4.1.0"></script>
+  <script>
+    getItem('UIF');     //读取本地存储的用户信息
+    jQuery(function($){
+        app.load();
+    }); 
+</script>
 </body>
 </html>
