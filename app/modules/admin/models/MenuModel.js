@@ -7,8 +7,8 @@ function MenuModel(){
     this.lists = function(params,callback){
         var data = {error: 0};
         var condition = {
-            table:["youbang_sys_menu"],           //查询的表名
-            fields:["id","pid","name","weight","icon","url"],          //被查询的字段名称（别名在此指定）
+            table:["youbang_sys_menu"],                                 //查询的表名
+            fields:["id","pid","name","weight","icon","url"],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['weight asc']
         };
