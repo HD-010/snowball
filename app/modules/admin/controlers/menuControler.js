@@ -1,11 +1,24 @@
 function menuControler(){
     var that = this;
 
-    this.home = function(){
-        that.renderJson([
-            {id:23,title:"系统设置"},
-            {id:24,title:"管理设置"},
-        ]);
+    /**
+     * 获取顶级栏目
+     */
+    this.top = function(){
+        var menu = this.model("Menu");
+        menu.lists({},function(results){
+            that.renderJson(results);
+        });
+    }
+
+    /**
+     * 获取栏目下的子菜单
+     */
+    this.type = function(){
+        var menu = this.model("Menu");
+        menu.lists({},function(results){
+            that.renderJson(results);
+        });
     }
 
 }

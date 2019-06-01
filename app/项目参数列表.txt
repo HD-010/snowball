@@ -7,3 +7,8 @@ sessionStorage{
 cookieStorage{
     '':''
 }
+
+
+
+post、get参数参考：
+tid : 栏目id
