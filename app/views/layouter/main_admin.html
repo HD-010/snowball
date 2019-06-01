@@ -25,8 +25,9 @@
     <%- include(path('widgets') + '/admin/left/sidebar.html'); %>
     
     <!-- load contents page -->
-    <%- include(viewPath) %>
-
+    <div id="left-space" >
+        <%- include(viewPath) %>
+    </div>
     <!-- footer -->
     <%- include(path('widgets') + '/admin/footer/footer.html'); %>
     
@@ -39,4 +40,9 @@
     </script>
     <script src="/bootstrap/js/hAdmin.js?v=4.1.0"></script>
 </body>
+|<script>
+    $(document).ready(function(){        
+        $("#left-space").css({"margin-left":$("#wrapper").width()+6});
+    })
+</script>
 </html>
