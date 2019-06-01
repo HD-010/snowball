@@ -58,7 +58,7 @@
         </div>
         <div class="col-xs-7">
             <ul class="list-inline text-center nvatab">
-                <li class="col-xs-2 active" data-toggle="tab"><a  href="#" data-async="post" data-uri="/admin/menu/home">首页</a></li>
+                <li class="col-xs-2 active" data-toggle="tab" data-async="post" data-uri="/admin/menu/home"><a href="#">首页</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a href="#" data-sync="post" data-uri="/admin/menu/preject">工程项目</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a  href="#">企业信息</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a  href="#">人才劳务</a></li>
@@ -68,10 +68,10 @@
         </div>
         <div class="col-xs-3">
             
-            <div class="form-group" >  
-                <i class="iconfont icon-sousuo"></i>                                 
-                <input type="text" class="form-control"  placeholder="内容" />
-                </div>
+        <div class="form-group" >  
+            <i class="iconfont icon-sousuo"></i>                                 
+            <input type="text" class="form-control"  placeholder="内容" />
+            </div>
         </div>
         
     </div>
@@ -82,8 +82,8 @@ function home(res){
     console.log(res);
     DL({
         //dev : "on",
-        listID : "#side-menu",
-        //use : 1,
+        listId : "#side-menu",
+        use : 1,
         packet : {
             error : 0,
             data : res
