@@ -1,5 +1,237 @@
-<div class="container-fluid">
+<style>
+    .shouye .index{
+        height:4em;
+        line-height:4em;
+        background-color: #ffffff;
+    }
+    .shouye .index .h4{
+        color: black;
+        font-weight:600;
+    }
+    .shouye .navtar .list-inline{
+        list-style: none;
+        margin: 1.5em 0 1em 0;
+    }
+    .shouye .navtar .list-inline .li{
+        margin-left:1em;
+        padding:  1em;
+        border-radius:5px;
+       
+    }
+    .shouye .navtar .list-inline .li i{
+        font-size: 2em;
+        color: #FFFFFF;
+    }
+
+    .shouye .navtar .list-inline .li a{
+        color: #FFFFFF;
+        font-size: 1.5em;
+    }
+    .shouye #container{
+        height:40em;
+        width:80em;
+        background-color: #ffffff;
+        border-radius: 5px;
+    }
+</style>
+<div class="container-fluid shouye">
+    <div class="row index">
+        <div class="col-xs-12 ">
+        <span class="h4">首页</span>
+        <span class="pull-right u">您好，欢迎使用平台 ！</span>
+        </div>  
+    </div>
+    <div class="row navtar">
+        <ul class="list-inline ">
+            <li class="li" style="background-color:#129AEC">
+                <a href="">
+                 <span class="col-xs-4">
+                     <i class="iconfont icon-jianzhu"></i>
+                    </span>
+                  <div class="col-xs-8">
+                     <ul class="list-unstyled">
+                         <li>在建工程</li>
+                         <li>9543</li>
+                     </ul>
+                  </div>
+                </a>
+            </li>
+            <li class="li" style="background-color:#04BDD9">
+                <a href="">
+                    <span class="col-xs-4">
+                        <i class="iconfont icon-qiyemenhu"></i>
+                    </span>
+                    <div class="col-xs-8">
+                        <ul class="list-unstyled">
+                            <li>企业数据</li>
+                            <li>84111</li>
+                        </ul>
+                    </div>
+                </a>
+            </li>
+            <li class="li" style="background-color:#1BD327">
+                <a href="">
+                    <span class="col-xs-4">
+                        <i class="iconfont icon-denglu1"></i>
+                    </span>
+                    <div class="col-xs-8">
+                        <ul class="list-unstyled">
+                            <li>人员数据</li>
+                            <li>5648</li>
+                        </ul>
+                    </div>
+                </a>
+            </li>
+            <li class="li" style="background-color:#6E6BFC">
+                <a href="">
+                    <span class="col-xs-4">
+                        <i class="iconfont icon-gouwuchekong"></i>
+                    </span>
+                    <div class="col-xs-8">
+                        <ul class="list-unstyled">
+                            <li>商城数据</li>
+                            <li>159845</li>
+                        </ul>
+                    </div>
+                </a>
+            </li>
+            <li class="li" style="background-color:#31479A">
+                    <a href="">
+                        <span class="col-xs-4">
+                            <i class="iconfont icon-qiyemenhu"></i>
+                        </span>
+                        <div class="col-xs-8">
+                            <ul class="list-unstyled">
+                                <li>房屋数据</li>
+                                <li>84111</li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+                <li class="li" style="background-color:#41BF47">
+                    <a href="">
+                        <span class="col-xs-4">
+                            <i class="iconfont icon-denglu1"></i>
+                        </span>
+                        <div class="col-xs-8">
+                            <ul class="list-unstyled">
+                                <li>会员数据</li>
+                                <li>5648</li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+                <li class="li" style="background-color:#FE643E">
+                <a href="">
+                    <span class="col-xs-4">
+                        <i class="iconfont icon-gouwuchekong"></i>
+                    </span>
+                    <div class="col-xs-8">
+                        <ul class="list-unstyled">
+                            <li>金融数据</li>
+                            <li>159845</li>
+                        </ul>
+                    </div>
+                </a>
+            </li>          
+        </ul>  
+    </div>
     <div class="row">
-        asdasdas
+        <div class="col-md-8" id="container"></div>
     </div>
 </div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+        title: {
+            text: '项目数据',
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['2019年','2018年']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: ['兴义市','兴仁市','安龙县','普安县','晴隆县','望谟县','册亨县']
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name:'2019年',
+                type:'line',
+                data:[11152, 8965, 2546, 5362, 5246, 1254, 523],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+            {
+                name:'2018年',
+                type:'line',
+                data:[6524, 5624, 1125, 3356, 4256, 523, 1125],
+                markPoint: {
+                    data: [
+                        {name: '最低', value: -2, xAxis: 1, yAxis: -1.5}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                }
+                            },
+                            type: 'max',
+                            name: '最高'
+                        }]
+                    ]
+                }
+            }
+        ]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+    $(".shouye").css({"margin-left":$("#wrapper").width()+6});
+</script>
+
