@@ -58,8 +58,8 @@
         </div>
         <div class="col-xs-7">
             <ul class="list-inline text-center nvatab">
-                <li class="col-xs-2 active" data-toggle="tab"><a  href="#">首页</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a href="#">工程项目</a></li>
+                <li class="col-xs-2 active" data-toggle="tab"><a  href="#" data-async="post" data-uri="/admin/menu/home">首页</a></li>
+                <li class="col-xs-2" data-toggle="tab"><a href="#" data-sync="post" data-uri="/admin/menu/preject">工程项目</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a  href="#">企业信息</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a  href="#">人才劳务</a></li>
                 <li class="col-xs-2" data-toggle="tab"><a  href="#">建材商城</a></li>
@@ -77,3 +77,20 @@
     </div>
 </div>
 <div class="contener-fluid header-space"></div>
+<script>
+function home(res){
+    console.log(res);
+    DL({
+        //dev : "on",
+        listID : "#side-menu",
+        //use : 1,
+        packet : {
+            error : 0,
+            data : res
+        },
+        befor : function(that){
+            console.log(that.results)
+        }
+    });
+}
+</script>

@@ -31,17 +31,19 @@
     <%- include(path('widgets') + '/admin/footer/footer.html'); %>
     
     
+    
+    <script src="/bootstrap/js/hAdmin.js?v=4.1.0"></script>
     <script>
         getItem('UIF');     //读取本地存储的用户信息
         jQuery(function($){
             app.load();
         });    
     </script>
-    <script src="/bootstrap/js/hAdmin.js?v=4.1.0"></script>
+    <script>
+        $(document).ready(function(){        
+            $("#left-space").css({"margin-left":$("#wrapper").width()+6});
+        })
+    </script>
 </body>
-|<script>
-    $(document).ready(function(){        
-        $("#left-space").css({"margin-left":$("#wrapper").width()+6});
-    })
-</script>
+|
 </html>
