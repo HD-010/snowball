@@ -20,9 +20,16 @@
 
 <body>
     <!-- header -->
-   <%- include(path('widgets') + '/admin/header/header.html'); %>
-   <!-- left-sidebar -->
-   <%- include(path('widgets') + '/admin/left/sidebar.html'); %>
+    <%- include(path('widgets') + '/admin/header/header.html'); %>
+     <!-- left-sidebar -->
+    <%- include(path('widgets') + '/admin/left/sidebar.html'); %>
+
+
+
+    <!-- footer -->
+    <%- include(path('widgets') + '/admin/footer/footer.html'); %>
+    
+    
     <script>
         getItem('UIF');     //读取本地存储的用户信息
         jQuery(function($){
