@@ -79,17 +79,12 @@
 <div class="contener-fluid header-space"></div>
 <script>
 function home(res){
-    console.log(res);
     DL({
-        //dev : "on",
         listId : "#side-menu",
         use : 1,
         packet : {
             error : 0,
             data : res
-        },
-        befor : function(that){
-            console.log(that.results)
         }
     });
 }
