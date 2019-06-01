@@ -95,32 +95,14 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" data-sync="get" data-uri="{{uri}}?tid={{id}}">
                             <i class="fa fa fa-bar-chart-o"></i>
-                            <span class="nav-label">{{title}}</span>
-                            <span class="fa arrow"></span>
+                            <span class="nav-label">{{name}}</span>
+                            <span class="{{icon}}"></span>
                         </a>
                         <ul class="nav nav-second-level collapse">
                             <li>
                                 <a class="J_menuItem" href="graph_echarts.html">百度ECharts</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_flot.html">Flot</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_morris.html">Morris.js</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_rickshaw.html">Rickshaw</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_peity.html">Peity</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_sparkline.html">Sparkline</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="graph_metrics.html">图表组合</a>
                             </li>
                         </ul>
                     </li>
@@ -132,3 +114,12 @@
     </div>
     <script src="/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/bootstrap/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script>
+    //默认加载首页下的栏目
+    DL({
+        listId : "#side-menu",
+        uri : '/admin/menu/type?tid=1',
+        use : 1,
+    });
+    
+    </script>

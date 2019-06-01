@@ -152,6 +152,8 @@ function ViewData(params){
     this.results = params.packet || [];
     //当没有数据时的提示,html代码
     this.nullData = params.nullData || '<div class="text-center">还没有数据...</div>';
+    //是否缓存数据
+    this.cached = params.cached || false;
     this.result = {};
     
 
@@ -184,7 +186,7 @@ function ViewData(params){
             }
             if(!that.uri) return;
             //y读取本地缓存数据，如果读取成功，则不发起请求
-            var cacheData = getDLData(this.queryStr());
+            var cacheData = that.cached ? getDLData(this.queryStr()) : false;
             if(cacheData){
                 that.results = cacheData;
                 that.run();

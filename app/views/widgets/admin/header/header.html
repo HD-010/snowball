@@ -57,13 +57,8 @@
             </ul>
         </div>
         <div class="col-xs-7">
-            <ul class="list-inline text-center nvatab">
-                <li class="col-xs-2 active" data-toggle="tab" data-async="post" data-uri="/admin/menu/home"><a href="#">首页</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a href="#" data-sync="post" data-uri="/admin/menu/preject">工程项目</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a  href="#">企业信息</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a  href="#">人才劳务</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a  href="#">建材商城</a></li>
-                <li class="col-xs-2" data-toggle="tab"><a  href="#">装修装饰</a></li>
+            <ul class="list-inline text-center nvatab" id="header-menu" data-uri="/admin/menu/type">
+                <li class="col-xs-2 {{- return index?'':'active'; }}" data-toggle="tab" data-async="post" data-uri="/admin/menu/type?tid={{id}}"><a href="#">{{name}}</a></li>
             </ul>
         </div>
         <div class="col-xs-3">
@@ -78,14 +73,19 @@
 </div>
 <div class="contener-fluid header-space"></div>
 <script>
-function home(res){
+DL({
+    dev : "on",
+    listId : "#header-menu",
+});
+
+/**
+ * 装载子栏目数据
+ * */
+function type(results){
     DL({
         listId : "#side-menu",
         use : 1,
-        packet : {
-            error : 0,
-            data : res
-        }
+        packet : results
     });
 }
 </script>
