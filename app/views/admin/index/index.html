@@ -32,6 +32,7 @@
         width:80em;
         background-color: #ffffff;
         border-radius: 5px;
+        margin-left: 1em;
     }
 </style>
 <div class="container-fluid shouye">
@@ -144,7 +145,7 @@
 <script type="text/javascript">
     var dom = document.getElementById("container");
     var myChart = echarts.init(dom);
-    var app = {};
+    // var appObj = {};
     option = null;
     option = {
         title: {
@@ -232,6 +233,5 @@
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }
-    $(".shouye").css({"margin-left":$("#wrapper").width()+6});
 </script>
 
