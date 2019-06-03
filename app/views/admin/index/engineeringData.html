@@ -1,0 +1,94 @@
+<div class="col-md-8" id="container"></div>
+
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    // var appObj = {};
+    option = null;
+    option = {
+        title: {
+            text: '项目数据',
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['2019年','2018年']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: ['兴义市','兴仁市','安龙县','普安县','晴隆县','望谟县','册亨县']
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 次'
+            }
+        },
+        series: [
+            {
+                name:'2019年',
+                type:'line',
+                data:[11152, 8965, 2546, 5362, 5246, 1254, 523],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+            {
+                name:'2018年',
+                type:'line',
+                data:[6524, 5624, 1125, 3356, 4256, 523, 1125],
+                markPoint: {
+                    data: [
+                        {name: '最低', value: -2, xAxis: 1, yAxis: -1.5}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                }
+                            },
+                            type: 'max',
+                            name: '最高'
+                        }]
+                    ]
+                }
+            }
+        ]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>

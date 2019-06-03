@@ -1,0 +1,108 @@
+/* 首页header导航开始 */
+.header{
+    position: fixed;
+    top:0px;
+    height: 60px;
+    width:100%;
+    line-height:60px;
+    background-color: #3ca2d7;
+    overflow: hidden;
+    color:#ffffff;
+    font-weight: 400;
+    z-index: 999999;
+}
+.header a{
+    color:#FFFFFF;
+}
+.header .icon-sousuo{
+    position: absolute;
+    z-index: 99999; 
+    color: #3ca2d7;
+    margin-left:5px; 
+    
+}
+.header .form-control{
+    display:inline;
+    padding-left:22px;
+    width: 50%;
+    border-radius: 10px;
+}
+.header .nvatab li a{
+    color:#ffffff;
+    font-weight:600;
+    font-size:16px;
+}
+.header .nvatab li:hover{
+    background-color: #5DB4E0;
+    cursor:pointer;
+}
+
+.active{
+    background-color: #5DB4E0;
+}
+
+.header-space{
+    border:0;
+    height:60px;
+}
+/* 首页header导航结束 */
+
+
+/* 首页右侧导航开始 */
+.shouye .index{
+    height:4em;
+    line-height:4em;
+    background-color: #ffffff;
+}
+.shouye .index .h4{
+    color: black;
+    font-weight:600;
+}
+.shouye .navtar .list-inline{
+    list-style: none;
+    margin: 1.5em 0 1em 0;
+}
+.shouye .navtar .list-inline .li{
+    margin-left:1em;
+    padding:  1em;
+    border-radius:5px;
+   
+}
+.shouye .navtar .list-inline .li i{
+    font-size: 2em;
+    color: #FFFFFF;
+}
+
+.shouye .navtar .list-inline .li a{
+    color: #FFFFFF;
+    font-size: 1.5em;
+}
+.shouye #container{
+    height:40em;
+    width:80em;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-left: 1em;
+}
+/* 首页右侧导航结束 */
+
+/* 首页echarts图形开始 */
+.shouye #engineeringAnalysis{
+   height: 40em;
+   width:45em; background-color: #ffffff;
+   border-radius: 5px;
+   margin-left: 1em;
+}
+
+.shouye .chinaMap{
+    margin-top: 1em;
+    height: 30em;
+}
+.shouye .chinaMap #chinaMap{
+    width:40em;
+    height: 31em;
+    margin-left: 1em;
+    background-color:#FFFFFF;
+    border-radius:5px;
+}
+/* 首页echarts图形结束 */
