@@ -102,7 +102,7 @@
                         </a>
                         <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
                             <li>
-                                <a class="J_menuItem" href="?" data-sync="get" data-uri="{{url1}}?tid={{id1}}">{{name1}}</a>
+                                <a class="J_menuItem" href="?" data-sync="get" data-uri="{{url_1}}?tid={{id_1}}">{{name1}}</a>
                             </li>
                         </ul>
                     </li>
@@ -142,9 +142,9 @@
         var curlist = $(o).children(".list-child");
         var listIndex = curlist.attr("data-index");
         var listId = curlist.attr("id");
-
-        var data = getDLData("#side-menu").data[listIndex].childrens || [];
-        data = chmod(data,['name','id','url'],['name1','id1','url1']);
+        var sideMenu = getDLData("#side-menu").data[listIndex];
+        var data = ('childrens' in sideMenu) ? sideMenu.childrens : [];
+        data = chmod(data,['name','id','url'],['name1','id_1','url_1']);
         DL({
             dev : "on",
             listId : '#'+listId,
@@ -152,7 +152,7 @@
                 error : data.length ? 0 : 1, 
                 data: data
             },
-            //after : bindevent
+            after : bindevent
         });
     }
     </script>
