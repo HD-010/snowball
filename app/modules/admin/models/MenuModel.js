@@ -19,7 +19,6 @@ function MenuModel(){
 
         this.DB().log().get(condition,function(error,results){
             data.data = error ? [] : that.model('DataProcess').structMenu(results);
-            log("999999999::",data.data)
             return callback(data);
         });
     }
