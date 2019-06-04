@@ -27,6 +27,7 @@ var app = {
     syncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
         var uri = $(obj).attr('data-uri');
+        if(!uri.length) return;
         if(uri.indexOf("?") !== -1){
             var data = uri.substr(uri.indexOf("?") + 1);
             data = this.parseQuery(data);
@@ -55,6 +56,7 @@ var app = {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var uri = app.host + $(obj).attr('data-uri');
+        if(!uri.length) return;
         var vars = (uri.substr(uri.indexOf("?")+1)).split('&');
         var obj = {};
         for(var i=0;i<vars.length;i++){
