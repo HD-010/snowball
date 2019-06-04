@@ -1,7 +1,9 @@
 <!-- admin/left/left_sidebar_0.html -->
 <!-- 视图加载 -->
     <!-- 左则导航-样式 -->
-  
+    <link rel="stylesheet" href="/bootstrap/css/font-awesome.css">
+    <link rel="stylesheet" href="/bootstrap/css/animate.css">
+    <link rel="stylesheet" href="/bootstrap/css/style.css">
     <style>
         #wrapper {
             min-width:190px;
@@ -10,63 +12,64 @@
             position: fixed;
             border: 1px solid #E5E5E6;
             height: 100%;
-            /* overflow: scroll; */
+            overflow: scroll;
+            margin-top:61px;
         }
         #wrapper {
             /* background-color: #2f4050; */
             background-color:#fff;
         }
-        #wrapper .nav-header {
+        .nav-header {
             /* background: #1c2b36; */
             background-color:#fff;
             border-bottom:1px solid #E4E4E5;
         }
-        #wrapper .black-bg {
+        .black-bg {
             /* background-color: #262626; */
             background-color:#fff;
         }
-        #wrapper .line {
+        .line {
             /* background-color: #131e26; */
             background-color:#fff;
         }
 
-        #wrapper .navbar-default .nav>li>a:focus {
+        .navbar-default .nav>li>a:focus {
             /* background-color: #131e26; */
             background-color:#fff;
         }
 
-        #wrapper .navbar-default {
+        .navbar-default {
             /* border-color: #2f4050; */
             background-color:#fff;
         }
-        #wrapper .gohome a {
+        .gohome a {
             /* background: #2f4050; */
             background-color:#fff;
         }
-        #wrapper .nav li>a{
+        .nav li>a{
             border-bottom:1px solid #E4E4E5;
         }
-        #wrapper .nav>li.active {
+        .nav>li.active {
             /* background: #131e26; */
             background-color:#F7F7F8;
         }
-        #wrapper .navbar-default .nav>li>a:hover, .navbar-default .nav>li>a:focus {
+        .navbar-default .nav>li>a:hover, .navbar-default .nav>li>a:focus {
             /* background-color: #131e26; */
             background-color: #fff;
             color: #A5ADB6;
         }
-        #wrapper .nav>li.active>a {
+        .nav>li.active>a {
             color: #A5ADB6;
         }
-        #wrapper .nav .user-infor>img{
-            border:0;
+        .nav .user-infor>img{
+            border:1px solid red;
             width:6em;
             height:6em;
             border-radius:3em;
             display: block;
             margin:auto;
         }
-        #wrapper .nav .user-infor>div{
+        .nav .user-infor>div{
             font-size:16px;
             color:#595959;
             display:blcok;
@@ -74,7 +77,7 @@
             margin-top:1em;
             border:0;
         }
-        #wrapper .nav .user-infor>div>strong{
+        .nav .user-infor>div>strong{
             display:block;
         }
     </style>
@@ -94,19 +97,37 @@
                             </div>
                         </div>
                     </li>
+                    
                     <li class="menu-list">
-                        <a href="#" data-sync="get" data-uri="{{- return url?url+'?tid='+id:''; }}">
+                        <a href="#">
                             <i class="fa fa fa-bar-chart-o"></i>
-                            <span class="nav-label">{{name}}</span>
+                            <span class="nav-label">统计图表</span>
                             <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
+                        <ul class="nav nav-second-level collapse list-child">
                             <li>
-                                <a class="J_menuItem" href="?" data-sync="get" data-uri="{{- return url?url+'?tid='+id:''; }}">{{name1}}</a>
+                                <a class="J_menuItem" href="graph_echarts.html">百度ECharts</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_flot.html">Flot</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_morris.html">Morris.js</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_rickshaw.html">Rickshaw</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_peity.html">Peity</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_sparkline.html">Sparkline</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="graph_metrics.html">图表组合</a>
                             </li>
                         </ul>
                     </li>
-                    
                 </ul>
             </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 465.324px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div></div>
         </nav>
@@ -120,37 +141,27 @@
         listId : "#side-menu",
         uri : '/admin/menu/type?tid=1',
         use : 1,
-        
     });
-    
     //重置列表
     function reset(){
         $("#side-menu").children().eq(1).nextAll().remove();
     }
 
     function bindevent(){
-        app.load();
-        $(".menu-list").unbind("click").on("click",loadChildList);
+        $(".menu-list").unbind("mouseover").on("mouseover",loadChildList);
     }
 
     function loadChildList(){
         var curlist = $(this).children(".list-child");
-        var listIndex = curlist.attr("data-index");
         var listId = curlist.attr("id");
-        curlist.css({
-            display: "block"
-        });
-        if($('#'+listId).children().length > 2) return;
+        var listIndex = curlist.attr("data-index");
         var data = getDLData("#side-menu").data[listIndex].childrens || [];
-        
-        data = chmod(data,'name','name1');
+        console.log( '#'+listId);
         
         DL({
             dev : "on",
             listId : '#'+listId,
-            packet : {error : 0, data: data},
-            after : bindevent
+            packet : {error : 0, data: data}
         });
     }
     </script>
-    
