@@ -364,7 +364,7 @@ function ViewData(params){
                 evalStr = evalStr.replace('&lt;','<');
                 evalStr = evalStr.replace('&gt;','>');
                 evalStr = evalStr.substr(3,evalStr.length - 5);
-                eval(('value = (function(){' + evalStr + '})()'));
+                eval(('value = (function(){try{' + evalStr + '}catch(e){return "";}})()'));
                 itemHtml = itemHtml.replace(matchs[i],value);
             }
         }
@@ -423,13 +423,11 @@ function chmod(data,name,newName){
         for(var j = 0; j < data.length; j ++){
             for(var i = 0; i < name.length; i ++){
                 tempData[j][newName[i]] = tempData[j][name[i]];
-                delete tempData[j][name[i]];
             }
         }
     }else{
         for(var i = 0; i < name.length; i ++){
             tempDat[newName[i]] = tempData[name[i]];
-            delete tempData[name[i]];
         }
     }
     return tempData;
