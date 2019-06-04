@@ -31,14 +31,19 @@ DL({
     listId : "#header-menu",
 });
 
+
 /**
  * 装载子栏目数据
  * */
 function type(results){
+    setDLData("#side-menu",results);
+    reset(); //重置列表
     DL({
         listId : "#side-menu",
         use : 1,
-        packet : results
+        packet : results,
+        befor : reset,
+        after : bindevent
     });
 }
 </script>
