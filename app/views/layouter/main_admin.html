@@ -29,8 +29,10 @@
      <!-- left-sidebar -->
     <%- include(path('widgets') + '/admin/left/sidebar.html'); %>
     <!-- load contents page -->
-    <div id="left-space" >
-        <%- include(viewPath) %>
+    <div id="left-space">
+        <% if(locals.viewPath){ %>
+        <%- include(viewPath);  %>
+        <% } %>
     </div>
     <!-- footer -->
     <%- include(path('widgets') + '/admin/footer/footer.html'); %>

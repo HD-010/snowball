@@ -95,14 +95,14 @@
                         </div>
                     </li>
                     <li class="menu-list">
-                        <a href="#" data-async="get" data-uri="{{- return url?url+'?tid='+id:''; }}">
+                        <a href="#" data-async="get" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
                             <i class="fa fa fa-bar-chart-o"></i>
                             <span class="nav-label">{{name}}</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
                             <li class="menu-list">
-                                <a class="J_menuItem" href="?" data-async="get" data-type="text" data-uri="{{url_1}}?tid={{id_1}}">{{name_1}}</a>
+                                <a class="J_menuItem" href="?" data-async="get" data-type="text" data-uri="{{url_1}}?tid={{id_1}}" target="left-space">{{name_1}}</a>
                             </li>
                         </ul>
                     </li>
@@ -120,7 +120,6 @@
         listId : "#side-menu",
         uri : '/admin/menu/type?tid=1',
         use : 1,
-        
     });
     
     //重置列表
@@ -129,20 +128,15 @@
     }
 
     function bindevent(){
-        var prefixed;
-        $(".menu-list a").unbind().on("click",function(e){
-            prefixed = ($(this).attr('data-uri')).split('/')[2];
+        $(".menu-list a").unbind('click').on("click",function(e){
             var curlist = $(this).siblings(".list-child");
             curlist.toggle();
             if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
             loadChildList(curlist);
-        });
-        $(document).find('[data-async]').click(function(event) {
-            app.asyncProcess(event, this, function(res) {
+            var tartget = $(this).attr('target')
+            app.asyncProcess(e, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
-                try{eval((prefixed + app['action'] + '(res);'));}catch(err){
-                    app.notice(res);
-                }
+                $("#" + tartget).html(res);
             });
         });
     }
@@ -163,10 +157,6 @@
             },
             after : bindevent
         });
-    }
-
-    function sysbase(res){
-        alert(res)
     }
     </script>
     
