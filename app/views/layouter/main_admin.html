@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>友邦拉拉-后台管理系统</title>
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"/> 
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/> 
     <link rel="stylesheet" href="/bootstrap/css/font-awesome.css">
     <link rel="stylesheet" href="/bootstrap/css/myAdmin.css">
+    <link rel="stylesheet" href="/bootstrap/css/plugins/sweetalert/sweetalert.css">
     <link rel="stylesheet" href="/bootstrap/css/animate.css">
     <link rel="stylesheet" href="/bootstrap/css/style.css">
 
-    <link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bootstrap/css/plugins/footable/footable.core.css">
 
     <script src="/bootstrap/js/jquery.min.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/javascripts/app/app.js"></script>
     <script src="/javascripts/app/autoload.js"></script>
+    <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 
     <!-- 我的图标 -->
@@ -47,6 +49,24 @@
         });    
     </script>
     <script>
+        /**
+         * 跳转到指定的页面
+         */
+         function go(url,layer){
+            layer = layer || '';
+            if(layer === "top") return location.href = url;
+            $.ajax({
+                url : url,
+                type : 'get',
+                dataType : 'text',
+                success : function(res){
+                    try{eval((res))}catch(e){
+                        $("#left-space").html(res);
+                    }
+                }
+            });
+        }
+        
         $(document).ready(function(){        
             $("#left-space").css({"margin-left":$("#wrapper").width()+6});
         })

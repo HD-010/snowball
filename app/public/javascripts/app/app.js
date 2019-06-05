@@ -76,7 +76,7 @@ var app = {
         $.ajax({
             url : uri,
             type : meched,
-            dat : obj,
+            data : obj,
             dataType : type,
             success : callback,
         });
@@ -530,6 +530,20 @@ function limitPrint(str,len){
         str=str.substring(0,len-2)+"......";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
     }
     return str;
+}
+
+/**
+ * 数组去重
+ * @param {*} arr 
+ */
+function unique(arr){
+    var res = [];
+    for(var i=0; i<arr.length; i++){
+        if( !res.includes(arr[i]) ){ // 如果res新数组包含当前循环item
+            res.push(arr[i]);
+        }
+    }
+    return res;
 }
 
 
