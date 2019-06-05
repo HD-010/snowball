@@ -106,3 +106,17 @@
     border-radius:5px;
 }
 /* 首页echarts图形结束 */
+
+/* 系统管理-系统设置-基本设置 开始*/
+.base{
+    background-color:#F8F8F8;
+}
+.base .head{
+    border:1px solid red;
+    height: 4em;
+    line-height:4em;
+}
+
+.base .tips{
+    margin:1em auto;
+}
