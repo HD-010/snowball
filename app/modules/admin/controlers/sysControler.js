@@ -2,7 +2,7 @@ function sysControler(){
     var that = this;
     this.base = function(){
        
-        that.renderLayer({});
+        that.render({});
     }
 }
 
