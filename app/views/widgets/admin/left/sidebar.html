@@ -95,7 +95,7 @@
                         </div>
                     </li>
                     <li class="menu-list">
-                        <a href="#" data-async="get" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
+                        <a href="#" data-async="get" data-type="text" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
                             <i class="fa fa fa-bar-chart-o"></i>
                             <span class="nav-label">{{name}}</span>
                             <span class="fa arrow"></span>
@@ -115,52 +115,43 @@
     <script src="/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/bootstrap/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script>
-    //默认加载首页下的栏目
-    DL({
-        listId : "#side-menu",
-        uri : '/admin/menu/type?tid=1',
-        use : 1,
-    });
-    
-    //重置列表
-    function reset(){
-        $("#side-menu").children().eq(1).nextAll().remove();
-    }
+        //重置列表
+        function reset(){
+            $("#side-menu").children().eq(1).nextAll().remove();
+        }
 
-    function bindevent(){
-        $(".menu-list a").unbind('click').on("click",function(e){
-            var curlist = $(this).siblings(".list-child");
-            curlist.toggle();
-            if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
-            loadChildList(curlist);
-            var tartget = $(this).attr('target')
-            app.asyncProcess(e, this, function(res) {
-                //调用用户义的与操作名称同名的回调函数
-                $("#" + tartget).html(res);
+        function bindevent(){
+            $(".menu-list a").unbind('click').on("click",function(e){
+                var curlist = $(this).siblings(".list-child");
+                curlist.toggle();
+                if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
+                loadChildList(curlist);
+                var tartget = $(this).attr('target')
+                app.asyncProcess(e, this, function(res) {
+                    //调用用户义的与操作名称同名的回调函数
+                    try{eval((res))}catch(e){
+                        $("#" + tartget).html(res);
+                    }
+                });
             });
-        });
-    }
+        }
 
-    function loadChildList(o){
-        var curlist = $(o);
-        var listIndex = curlist.attr("data-index");
-        var listId = curlist.attr("id");
-        var sideMenu = getDLData("#side-menu").data[listIndex];
-        var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
-        data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
-        DL({
-            dev : "on",
-            listId : '#'+listId,
-            packet : {
-                error : data.length ? 0 : 1, 
-                data: data
-            },
-            after : bindevent
-        });
-    }
-
-    function base(res){
-        alert("adf");
-    }
+        function loadChildList(o){
+            var curlist = $(o);
+            var listIndex = curlist.attr("data-index");
+            var listId = curlist.attr("id");
+            var sideMenu = getDLData("#side-menu").data[listIndex];
+            var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
+            data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
+            DL({
+                dev : "on",
+                listId : '#'+listId,
+                packet : {
+                    error : data.length ? 0 : 1, 
+                    data: data
+                },
+                after : bindevent
+            });
+        }
     </script>
     

@@ -31,9 +31,8 @@ DL({
     listId : "#header-menu",
 });
 
-
 /**
- * 装载子栏目数据
+ * 装载栏目数据
  * */
 function type(results){
     setDLData("#side-menu",results);
@@ -46,4 +45,7 @@ function type(results){
         after : bindevent
     });
 }
+
+//默认加载首页下的栏目
+$(document).ready(function(){$("#header-menu").children().eq(0).children('a').click()})
 </script>
