@@ -95,14 +95,14 @@
                         </div>
                     </li>
                     <li class="menu-list">
-                        <a href="#" data-sync="get" data-uri="{{- return url?url+'?tid='+id:''; }}">
+                        <a href="#" data-async="get" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
                             <i class="fa fa fa-bar-chart-o"></i>
                             <span class="nav-label">{{name}}</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
-                            <li>
-                                <a class="J_menuItem" href="?" data-sync="get" data-uri="{{url_1}}?tid={{id_1}}">{{name1}}</a>
+                            <li class="menu-list">
+                                <a class="J_menuItem" href="?" data-async="get" data-type="text" data-uri="{{url_1}}?tid={{id_1}}" target="left-space">{{name_1}}</a>
                             </li>
                         </ul>
                     </li>
@@ -120,7 +120,6 @@
         listId : "#side-menu",
         uri : '/admin/menu/type?tid=1',
         use : 1,
-        
     });
     
     //重置列表
@@ -129,22 +128,26 @@
     }
 
     function bindevent(){
-        app.load();
-        $(".menu-list").unbind("click").on("click",function(e){
-            var curlist = $(this).children(".list-child");
+        $(".menu-list a").unbind('click').on("click",function(e){
+            var curlist = $(this).siblings(".list-child");
             curlist.toggle();
             if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
-            loadChildList(this);
+            loadChildList(curlist);
+            var tartget = $(this).attr('target')
+            app.asyncProcess(e, this, function(res) {
+                //调用用户义的与操作名称同名的回调函数
+                $("#" + tartget).html(res);
+            });
         });
     }
 
     function loadChildList(o){
-        var curlist = $(o).children(".list-child");
+        var curlist = $(o);
         var listIndex = curlist.attr("data-index");
         var listId = curlist.attr("id");
         var sideMenu = getDLData("#side-menu").data[listIndex];
-        var data = ('childrens' in sideMenu) ? sideMenu.childrens : [];
-        data = chmod(data,['name','id','url'],['name1','id_1','url_1']);
+        var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
+        data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
         DL({
             dev : "on",
             listId : '#'+listId,

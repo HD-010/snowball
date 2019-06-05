@@ -56,6 +56,7 @@ var app = {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var uri = app.host + $(obj).attr('data-uri');
+        var type = $(obj).attr('data-type') || 'json';
         if(!uri.length) return;
         var vars = (uri.substr(uri.indexOf("?")+1)).split('&');
         var obj = {};
@@ -71,16 +72,14 @@ var app = {
         var start = uri.lastIndexOf('/')+1;
         app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
-        if (meched == 'post') {
-            console.log("=====数据请求地址：",uri);
-            $.ajax({
-                url : uri,
-                type : meched,
-                dat : obj,
-                dataType : 'json',
-                success : callback
-            });
-        }
+        console.log("=====数据请求地址：",uri);
+        $.ajax({
+            url : uri,
+            type : meched,
+            dat : obj,
+            dataType : type,
+            success : callback,
+        });
     },
 
     /**
