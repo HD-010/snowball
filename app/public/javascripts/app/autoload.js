@@ -411,7 +411,10 @@ function getDLData(key){
 
 /**
  * 修改对象属性名称
- * ['name','name2'],['newName','newName2']
+ * data array | object
+ * name array | string 如：['name','name2']
+ * newName array | string 如： ['newName','newName2']
+ * return array | object
  * */
 function chmod(data,name,newName){
     if(typeof name != 'object') name = [name];
