@@ -112,11 +112,67 @@
     background-color:#F8F8F8;
 }
 .base .head{
-    border:1px solid red;
     height: 4em;
     line-height:4em;
+    font-size: 1.3em;
 }
 
 .base .tips{
-    margin:1em auto;
+    margin:0 1em;
+    border: 2px dotted #62B3FF;
+    padding: 1em;
+    border-radius: 5px;
+    background-color:#F5FAFF;
+}
+.base .tips i{
+    color:#62B3FF;
+}
+.base .tips .ti{
+    font-size: 1.2em;
+}
+.base .tips .indent{
+    text-indent:1em;
+}
+
+.base .form{
+    margin: 1em;
+    background-color: #FFFFFF;
+}
+
+.base .form .table thead{
+    background-color:#F0F6FB;
+    border:1px solid #cccccc;
+  
+}
+.base .form .table thead tr{
+    height: 40px;
+}
+.base .form td,.base .form th{
+    border:1px solid #cccccc;
+}
+
+.base .form .table tbody tr{
+    height:40px;
+}
+.base .form .table tfoot tr{
+    height:40px;
+}
+.base .form .table tfoot tr td{
+    padding-left: 26px;
+  
+}
+.base .form .table tfoot tr td .btn{
+    padding: 8px 20px;
+    background: #1E9FFF;
+    color: #FFFFFF;
+}
+.base .form .table thead tr th:last-child{
+    padding-left: 26px;
+}
+
+.base .form .table tbody tr td .form-control{
+    height: 40px;
+}
+.base .form .table tbody tr td .form-group{
+    margin-bottom: 0px;
 }
