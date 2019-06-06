@@ -1,0 +1,91 @@
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-系统设置-安全设置</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+           </div>
+        </div>
+    </div>
+    <div class="row form">
+        <form action="" method="">
+           <table class="table">
+               <thead>
+                   <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                   </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                    <td>系统安全码：</td>
+                    <td>
+                        <div class="form-group col-xs-4">
+                            <input type="text" class="form-control" id="name"  placeholder="WyIgpIo85g"/>
+                        </div>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;系统加密串，请自定义修改，如：986jhgyutw.*x</span>
+                    </td>              
+                  </tr>
+                  <tr>
+                    <td>CSRF防御：</td>
+                    <td style="padding-left:26px;">
+                        <label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label>
+                    </td>              
+                  </tr>
+                  <tr>
+                    <td>后台修改模板：</td>
+                    <td style="padding-left:26px;">
+                        <label><input class="mui-switch mui-switch-anim" type="checkbox" ><em></em></label>
+                    </td>              
+                  </tr>
+                  
+                  <tr>
+                    <td>过滤关键词：</td>
+                    <td>
+                        <div class="form-group col-xs-5">
+                            <textarea class="form-control" rows="3" style="height: 100px" placeholder="网站升级中请联系管理员！"></textarea>
+                         </div>
+                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：脏话,不文明的话</span>
+                    </td>              
+                  </tr>
+                  <tr>
+                    <td>替换过滤关键词：</td>
+                    <td>
+                        <div class="form-group col-xs-5">
+                            <textarea class="form-control" rows="3" style="height: 100px" placeholder=""></textarea>
+                         </div>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;将敏感关键词替换</span>
+                    </td>              
+                  </tr>
+                 
+                  <tr>
+                    <td>禁止IP访问：</td>
+                    <td>
+                        <div class="form-group col-xs-5">
+                            <textarea class="form-control" rows="3" style="height: 100px"></textarea>
+                         </div>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;例：127.0.0.1|192.168.1.1-》SEO管理设置</span>
+                    </td>              
+                  </tr>
+                 
+                 
+               </tbody>
+               <tfoot>
+                  <tr>
+                      <td></td>
+                      <td>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                      </td>
+                  </tr>
+               </tfoot>
+           </table>
+        </form>
+    </div>
+</div>
+<script src="/bootstrap/js/switch.js"></script>

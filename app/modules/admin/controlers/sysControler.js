@@ -1,7 +1,17 @@
 function sysControler(){
     var that = this;
-    this.base = function(){
-       
+    // 基本设置
+    this.base = function(){       
+        that.render({});
+    }
+
+    //安全设置
+    this.securitySet = function(){
+        that.render({});
+    }
+    
+    //验证码设置
+    this.code = function(){
         that.render({});
     }
 }
