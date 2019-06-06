@@ -60,7 +60,7 @@ function DataProcessModel() {
      * tag 是存为session的key前缀，用大写标识
      * 如果不写tag,默认是'U'(该前缀值对应的是用户登录成功时写入的用户基本信息),
      */
-    this.getUseInfo = function(tag) {
+    this.getUserInfo = function(tag) {
         var sessinon = this.session()
             tag      = tag || 'U';
         var str      = sessinon[tag + '_' + this.sessionID()];
