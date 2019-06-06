@@ -28,6 +28,8 @@ function signControler(){
             }
             res = dataProcess.loginValid(res.data);
             res.infors = infors;
+            //获取openID
+            res.openID = createOpenID(that.req,infors);
 
             return that.render(res,true);
         });

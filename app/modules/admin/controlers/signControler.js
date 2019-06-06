@@ -14,6 +14,13 @@ function signControler(){
     this._up = function(){
         that.render({});
     }
+
+    /**
+     * 退出视图控制
+     */
+    this._exit = function(){
+        that.render({});
+    }
 }
 
 module.exports = signControler;

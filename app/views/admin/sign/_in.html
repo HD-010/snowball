@@ -5,33 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/> 
+    <link rel="stylesheet" href="/bootstrap/css/font-awesome.css">
+    <link rel="stylesheet" href="/bootstrap/css/myAdmin.css">
+    <link rel="stylesheet" href="/bootstrap/css/plugins/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="/bootstrap/css/animate.css">
+    <link rel="stylesheet" href="/bootstrap/css/style.css">
     <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/javascripts/app/app.js"></script>
     <script src="/javascripts/app/autoload.js"></script>
 </head>
 <body>
+    <style>
+        body,.contenter{
+            padding : 0;
+            margin : 0;
+        }
+        .contenter{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background-image: url('/img/sys/admin/login0.png');
+        }
+        input::-webkit-input-placeholder,
+        input::-moz-input-placeholder,
+        input::-ms-input-placeholder,
+        input::placeholder
+        {
+            color: #B1B0B2;
+        }
 
-    <form action="/passport/sign/_in" method="post" data-form-async='json'>
-        用户名：<input type="email" name="email" value=" " />
-        密  码:<input type="password" name="password" value="" />
-        <button type="submit">登 录</button>
-        <button type="reset">重 置</button>
-    </form>
+        .contenter form{
+            border: 0;
+            margin-top: 12%;
+            text-align: -webkit-center;
+        }
+        .contenter>form>table{
+            width: 32em;
+        }
+
+        .contenter>form thead th{
+            border: 0;
+            font-size: 49px;
+            color: #fff;
+            font-weight: bolder;
+            line-height: 70px;
+        }
+        .contenter>form tbody .infor{
+            display: inline-block;
+            width: 100%;
+            height: 2.8em;
+            text-align: center;
+            font-weight: 700;
+            color: #B1B0B2;
+            font-size: large;
+            border-radius: 8px;
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+        }
+        .contenter>form tbody .oper-text{
+            text-align: center;
+            color: #fff;
+        }
+        .contenter>form tbody .oper-text a{
+            color: #fff;
+            text-decoration:none;
+        }
+        .contenter>form tbody .bt-login{
+            display: inline-block;
+            width: 25%;
+            height: 1.7em;
+            font-weight: 400;
+            text-align: center;
+            background: #135498;
+            font-size: 30px;
+            border:1px solid #095498;
+            border-radius: 3px;
+            margin-top: 1em;
+            margin-bottom: 0.3em;
+            color: #fff;
+        }
+    </style>
+
+    <div class="contenter">
+        <form action="/passport/sign/_in" method="post" data-form-async='json'>
+            <input type="hidden" name="backuri" value="/admin/index/index" />
+            <table>
+                <thead>
+                    <tr><th colspan=2 class="text-center">友邦拉拉平台</th></tr>
+                    <tr><th colspan=2 class="text-center">YBLL</th></tr>
+                </thead>
+
+                <tbody>
+                    <tr><td colspan=2><input class="infor" type="email" name="email" placeholder="用户名:e-mail / tel" value=" "/></td></tr>
+                    <tr><td colspan=2><input class="infor" type="password" name="password" placeholder="密码" value="" /></td></tr>
+                    <tr>
+                        <td class="oper-text"><input type="checkbox" name="storePass" value="记住密码" />记住密码</td>
+                        <td class="oper-text"><a href="?">忘记密码</a></td>
+                    </tr>
+                    <tr><td colspan=2 style="text-align:center"><button class="bt-login" type="submit">登 录</button></td></tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
     <script>
     /**
      * 登录处理方法
      */
     function _in(results){
-        console.log(results.infors);
-        if(!results.error){
-            results.uri = '/admin/index/index';
+        if(results.error === 0){
             setItem("UIF",results.infors);
+            setItem('OID',results.openID);
+            app.addonParams.push("oid=" + getItem("OID"));
             app.notice(results);
+        }else{
+            app.notice({error:1,message:"请输入正确的用户名和密码....."});
         }
     }
 
     jQuery(function($){
-        app.load();
+        app.load($);
     })
     
     </script>

@@ -8,14 +8,14 @@ function BehaviorModel() {
         }
      */
     this.ruler = {
-        //'*'              : ['validSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/admin/*'              : ['validSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
     }
 
     /**
      * 定义操作下不需要预执行的路由
      */
     this.notMatch = {
-        validSignature: ['/admin/sign/_in','/admin/sign/_up','/err404'],
+        validSignature: ['/admin/sign/_in','/admin/sign/_up','/admin/index/index','/err404'],
     }
 
 
@@ -53,12 +53,15 @@ function BehaviorModel() {
         var data = {error:0};
         var router = this.app.router.string;
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
-        var openID = this.POST('openID');
+        var openID = this.POST('oid') || this.GET('oid');
+        if(!openID) return callback({error:1,uri:"/err404"});
         var openIDObj = parseOpenID(openID);
-        var uid = parseInt(openIDOb.uid);
+        var uid = parseInt(openIDObj.uid);
+        
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid);
-        var signature = createSignature(this.req,userInfor);
+        var signature = createSignature(this.req,userInfor[0]);
         if(!signature) return callback({error:1,uri:"/err404"});
+        log("签名！！！！！！！！！！！！！！",signature," === ",openIDObj.sg);
         data.error = (signature === openIDObj.sg) ? 0 : 1;
         
         return callback(data);
