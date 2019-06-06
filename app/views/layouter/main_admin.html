@@ -85,7 +85,7 @@
         });
         //检测用户是否登录，如果没有登录则go
         if(!getItem("OID") || (getItem("OID").length < 32)) go('/admin/sign/_in','top');
-        app.addonParams.push(app.addonParams.push("oid=" + getItem("OID")));  //请求时附加的参数
+        app.addonParams.oid=getItem("OID");  //请求时附加的参数
         
     </script>
 </body>

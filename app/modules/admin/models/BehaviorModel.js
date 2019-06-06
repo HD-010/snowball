@@ -53,17 +53,16 @@ function BehaviorModel() {
         var data = {error:0};
         var router = this.app.router.string;
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
-        var openID = this.POST('oid') || this.GET('oid');
-        if(!openID) return callback({error:1,uri:"/err404"});
+        var openID = this.POST('oid') || this.GET('oid') || "";
+        if(!openID) return callback({error:1,uri:"/err404",message:"openID不存在"});
+        if(typeof openID == 'object') openID = openID[0];
         var openIDObj = parseOpenID(openID);
-        var uid = parseInt(openIDObj.uid);
+        var uid = parseInt(openIDObj.id);
         
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid);
         var signature = createSignature(this.req,userInfor[0]);
-        if(!signature) return callback({error:1,uri:"/err404"});
-        log("签名！！！！！！！！！！！！！！",signature," === ",openIDObj.sg);
-        data.error = (signature === openIDObj.sg) ? 0 : 1;
-        
+        if(!signature) return callback({error:1,uri:"/err404",message:"生成签名失败"});
+        data = (signature === openIDObj.sg) ? {error:0}: {error:1, uri:"/err404"};
         return callback(data);
     }
 }

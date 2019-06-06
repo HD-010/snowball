@@ -11,7 +11,7 @@ var app = {
     formMemory: $(document).find('form'),
     action:'',
     //请求附加参数（在发起请求时自动加入）
-    addonParams : [],
+    addonParams : {},
     host: (window.Hosts) ? Hosts[0] : '',
 
     /**
@@ -61,9 +61,9 @@ var app = {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var uri = app.host + $(obj).attr('data-uri');
-        uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
         var type = $(obj).attr('data-type') || 'json';
         if(!uri.length) return false;
+        uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
         var vars = (uri.substr(uri.indexOf("?")+1)).split('&');
         var obj = {};
         for(var i=0;i<vars.length;i++){
@@ -189,7 +189,7 @@ var app = {
      * @param {*} callback 
      */
     serializeParams: function(){
-        return app.addonParams.join('&');
+        return $.param(app.addonParams);
     },
 
     /**
