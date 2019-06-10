@@ -226,7 +226,9 @@ function UserInforModel() {
      * 清除用户登录信息
      */
     this.clear = function(callback){
-        var key     = "U_" + this.sessionID();
+        var uid = this.POST('uid');
+        uid = (typeof uid === 'number') ? uid : this.sessionID();
+        var key     = "U_" + uid;
         var session = this.session();
         delete session[key];
         var data    = {

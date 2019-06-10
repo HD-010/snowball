@@ -10,6 +10,8 @@ var app = {
     //表单项记忆对象
     formMemory: $(document).find('form'),
     action:'',
+    //请求附加参数（在发起请求时自动加入）
+    addonParams : {},
     host: (window.Hosts) ? Hosts[0] : '',
 
     /**
@@ -29,11 +31,14 @@ var app = {
         var uri = $(obj).attr('data-uri');
         if(!uri.length) return;
         if(uri.indexOf("?") !== -1){
+            uri += '&'+app.serializeParams();
             var data = uri.substr(uri.indexOf("?") + 1);
             data = this.parseQuery(data);
             var query_params = uri.substr(0,uri.indexOf("?"));
             var query_params = $.md5(query_params);
             sessionStorage.setItem(query_params,JSON.stringify(data));
+        }else{
+            uri += '?'+ app.serializeParams();
         }
         //return; 
         console.log("=====数据请求地址：",uri);
@@ -57,22 +62,20 @@ var app = {
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var uri = app.host + $(obj).attr('data-uri');
         var type = $(obj).attr('data-type') || 'json';
-        if(!uri.length) return;
+        if(!uri.length) return false;
+        uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
         var vars = (uri.substr(uri.indexOf("?")+1)).split('&');
         var obj = {};
         for(var i=0;i<vars.length;i++){
             obj[vars[i].split("=")[0]]= vars[i].split("=")[1];
         }
 
-        if (!uri) {
-            alert('请写入url');
-            return false;
-        }
         var point = uri.indexOf('?');
         var start = uri.lastIndexOf('/')+1;
         app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
         console.log("=====数据请求地址：",uri);
+        console.log("=====数据请求参数：",obj);
         $.ajax({
             url : uri,
             type : meched,
@@ -167,7 +170,7 @@ var app = {
         
         //获取对象的值
         console.log($(obj)[0])
-        var formData = $(obj).serialize();
+        var formData = $(obj).serialize() + "&" + app.serializeParams();
         
         //console.log(formData)
         console.log("=====数据请求地址：",url);
@@ -179,6 +182,15 @@ var app = {
             success : callback
         });
 
+    },
+
+    /**
+     * 初始化请求附加参数
+     * @param {*} obj 
+     * @param {*} callback 
+     */
+    serializeParams: function(){
+        return $.param(app.addonParams);
     },
 
     /**
@@ -203,6 +215,9 @@ var app = {
         setTimeout(function() {
             $("#" + notice).remove();
             if(obj.go) history.go(obj.go);
+            obj.uri += (obj.uri.indexOf('?') === -1) ? 
+            "?" + app.serializeParams() : 
+            "&" + app.serializeParams();
             if(obj.uri) location.href = obj.uri;
             if(!obj.uri && ('uri' in obj)) location.reload();
             if(typeof callback === 'function') callback();

@@ -2,6 +2,7 @@
 
 sessionStorage{
     'UIF' : 登录成功时暂存的用户信息
+    'OID' : 当前系统openID
 }
 
 cookieStorage{
@@ -12,3 +13,5 @@ cookieStorage{
 
 post、get参数参考：
 tid : 栏目id
+uid : 用户id
+oid : 当前系统openID

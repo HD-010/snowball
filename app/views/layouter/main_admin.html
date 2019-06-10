@@ -21,7 +21,6 @@
 
     <script src="/javascripts/app/app.js"></script>
     <script src="/javascripts/app/autoload.js"></script>
-    <script src="/javascripts/app/autoload.js"></script>
     <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 
@@ -47,24 +46,24 @@
     
     
     <script src="/bootstrap/js/hAdmin.js?v=4.1.0"></script>
-    <script>
-        getItem('UIF');     //读取本地存储的用户信息
-        jQuery(function($){
-            app.load();
-        });    
-    </script>
+    
     <script>
         /**
          * 跳转到指定的页面
          */
          function go(url,layer){
-            layer = layer || '';
+            var callback = null;
+            if(typeof layer == 'function'){
+                callback = layer;
+                layer = '';
+            }
+            url += (url.indexOf('?') === -1) ? '?oid=' + getItem("OID") : '&oid=' + getItem("OID");
             if(layer === "top") return location.href = url;
             $.ajax({
                 url : url,
                 type : 'get',
                 dataType : 'text',
-                success : function(res){
+                success : callback || function(res){
                     try{eval((res))}catch(e){
                         $("#left-space").html(res);
                     }
@@ -75,6 +74,18 @@
         $(document).ready(function(){        
             $("#left-space").css({"margin-left":$("#wrapper").width()+6});
         })
+    </script>
+    <script>
+        // console.log(getItem("UIF"));  //获取登录后的用户信息
+        // console.log(getItem("OID"));  //获取登录后的OID
+        getItem('UIF');     //读取本地存储的用户信息
+        jQuery(function($){
+            app.load();
+        });
+        //检测用户是否登录，如果没有登录则go
+        if(!getItem("OID")) go('/admin/sign/_in','top');
+        app.addonParams.oid=getItem("OID");  //请求时附加的参数
+        
     </script>
 </body>
 

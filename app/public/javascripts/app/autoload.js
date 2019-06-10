@@ -195,12 +195,24 @@ function ViewData(params){
             $.ajax({
                 url:  that.host + that.uri,
                 data: that.data,
-                dataType: "json",
+                dataType: "text",
                 type: "POST",
                 async:true,
                 success: function(results){
-                    that.results = results;
-                    setDLData(that.queryStr(),results)
+                    var json = '';
+                    var text = '';
+                    try{
+                        json = JSON.parse(results);
+                    }catch(e){
+                        try{
+                            eval((results));
+                        }catch(e){
+                            text = results;
+                        };
+                    }
+                    that.results = json || text || '';
+                    if(!that.results) return;
+                    setDLData(that.queryStr(),that.results);
                     that.run();
                 },
                 error: function(results){
@@ -235,8 +247,11 @@ function ViewData(params){
         this.error = this.results.error || this.results.errcode;
         if(this.dev === 'on') this.log();
         if(typeof this.befor === "function") this.befor(this);
+        //如果befor函数未尾设置exit,将取消执行后继的步骤
+        if(this.dev === 'exit') return;
         this.loadData();
         if(typeof this.after === "function") this.after(this);
+        //设置效果
         this.setEffect();
         app.load();
     }
