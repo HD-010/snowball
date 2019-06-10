@@ -71,6 +71,7 @@ function BehaviorModel() {
         if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
         var uid = parseInt(openIDObj.id);
+        log("openIDObj::::", openIDObj);
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
         if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",message:'用户信息不存在'});
         var signature = createSignature(this.req,userInfor);
