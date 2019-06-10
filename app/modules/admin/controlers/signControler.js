@@ -1,3 +1,7 @@
+/**
+ * 用户登录流程说明：sign._in()操作输出登录视图,向passport:sign._in()操作请求数据验证。
+ * 验证成功时保存登录用户信息到session，并返回用户信息到客户端暂存于sessionStorage
+ */
 function signControler(){
     var that = this;
     
