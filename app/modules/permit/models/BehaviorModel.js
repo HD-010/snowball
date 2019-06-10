@@ -27,64 +27,8 @@ function BehaviorModel() {
             message: "执行成功的描述(通常不需要)",
         }
      */
-    /**
-     * 测试调用是否成功
-     */
-    this.func1 = function(data,callback){
-        console.log("测试调用是否成功1");
-        callback({
-            error  : 0,
-            message: '数据校验错误',
-        });
-    }
-
-    /**
-     * 测试调用是否成功
-     */
-    this.func2 = function(data,callback){
-        console.log("测试调用是否成功2");
-        setTimeout(function(){
-            callback({
-                error: 0,
-            });
-        },2);
-    }
-    /**
-     * 测试调用是否成功
-     */
-    this.func9 = function(data,callback){
-        console.log("测试调用是否成功9");
-        callback({
-            error: 0,
-        });
-    }
-    /**
-     * 测试调用是否成功
-     */
-    this.func10 = function(data,callback){
-        console.log("测试调用是否成功10");
-        callback({
-            error: 0,
-        });
-    }
-
     
-
-    /**
-     * 使用案例：实例化TestService并调用showApp()方法
-     */
-    this.showApp = function(data,callback){
-        callback = callback;
-        //使用案例：实例化TestService并调用showApp()方法
-        var service = this.service('Test');
-        service.showApp(data,function(res){
-            console.log(res);
-            callback({
-                error: 0,
-            });
-        });
-        
-    }
+    
 }
 
 module.exports = BehaviorModel;

@@ -45,9 +45,7 @@ function UserInforModel() {
             {error  : 1, message: "帐号或者用户名错误"} : 
             {error: 0,data : results};
             
-            
-            callback(data);
-            return;
+            return callback(data);
         });
     }
 

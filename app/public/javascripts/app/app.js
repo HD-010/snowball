@@ -213,6 +213,7 @@ var app = {
             'z-index'   : 999999,
         }));
         setTimeout(function() {
+            if(typeof callback === 'function') return callback();
             $("#" + notice).remove();
             if(obj.go) history.go(obj.go);
             obj.uri += (obj.uri.indexOf('?') === -1) ? 
@@ -220,7 +221,6 @@ var app = {
             "&" + app.serializeParams();
             if(obj.uri) location.href = obj.uri;
             if(!obj.uri && ('uri' in obj)) location.reload();
-            if(typeof callback === 'function') callback();
         }, 2000);
     },
 
