@@ -75,6 +75,7 @@ var app = {
         app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
         console.log("=====数据请求地址：",uri);
+        console.log("=====数据请求参数：",obj);
         $.ajax({
             url : uri,
             type : meched,

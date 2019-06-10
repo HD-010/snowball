@@ -21,6 +21,15 @@ function signControler(){
     this._exit = function(){
         that.render({});
     }
+
+    
+    /**
+     * 检查用户信息，如查服务端session过期，或盗链接。则跳转到登录页
+     */
+    this._check = function(){
+        that.render({});
+    }
+
 }
 
 module.exports = signControler;

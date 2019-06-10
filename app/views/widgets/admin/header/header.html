@@ -29,6 +29,7 @@
 DL({
     dev : "on",
     data : {oid :getItem("OID")},  //请求时附加的参数
+    cached : 1,
     listId : "#header-menu",
 });
 
@@ -41,6 +42,7 @@ function type(results){
     DL({
         listId : "#side-menu",
         use : 1,
+        cached : 1,
         packet : results,
         befor : reset,
         after : bindevent

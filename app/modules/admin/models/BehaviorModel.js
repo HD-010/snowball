@@ -15,7 +15,13 @@ function BehaviorModel() {
      * 定义操作下不需要预执行的路由
      */
     this.notMatch = {
-        validSignature: ['/admin/sign/_in','/admin/sign/_up','/admin/index/index','/err404'],
+        validSignature: [
+            '/admin/sign/_in',
+            '/admin/sign/_up',
+            '/admin/sign/_check',
+            '/admin/index/index',
+            '/err404'
+        ],
     }
 
 
@@ -54,15 +60,23 @@ function BehaviorModel() {
         var router = this.app.router.string;
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
-        if(!openID) return callback({error:1,uri:"/err404",message:"openID不存在"});
-        if(typeof openID == 'object') openID = openID[0];
+        // log("-----------------------oid--------------------------");
+        // log("openID:",openID);
+        // log("POST:",this.POST());
+        // log("GET:",this.GET());
+        // log("query:",this.req.query);
+        // log("body:",this.req.body);
+        // log("-----------------------oid--------------------------");
+
+        if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
         var uid = parseInt(openIDObj.id);
-        
-        var userInfor = this.model("passport:DataProcess").getUserInfo(uid);
-        var signature = createSignature(this.req,userInfor[0]);
+        var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
+        if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",message:'用户信息不存在'});
+        var signature = createSignature(this.req,userInfor);
         if(!signature) return callback({error:1,uri:"/err404",message:"生成签名失败"});
         data = (signature === openIDObj.sg) ? {error:0}: {error:1, uri:"/err404"};
+        
         return callback(data);
     }
 }

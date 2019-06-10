@@ -17,7 +17,7 @@ function MenuModel(){
         condition.where.push("pid='" + pid + "'");
         condition.where.push("`show`='1'");
 
-        this.DB().log().get(condition,function(error,results){
+        this.DB().get(condition,function(error,results){
             data.data = error ? [] : that.model('DataProcess').structMenu(results);
             return callback(data);
         });

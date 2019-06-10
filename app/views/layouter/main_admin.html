@@ -21,7 +21,6 @@
 
     <script src="/javascripts/app/app.js"></script>
     <script src="/javascripts/app/autoload.js"></script>
-    <script src="/javascripts/app/autoload.js"></script>
     <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 
@@ -58,7 +57,7 @@
                 callback = layer;
                 layer = '';
             }
-            url = url + '?oid=' + getItem("OID");
+            url += (url.indexOf('?') === -1) ? '?oid=' + getItem("OID") : '&oid=' + getItem("OID");
             if(layer === "top") return location.href = url;
             $.ajax({
                 url : url,
@@ -84,7 +83,7 @@
             app.load();
         });
         //检测用户是否登录，如果没有登录则go
-        if(!getItem("OID") || (getItem("OID").length < 32)) go('/admin/sign/_in','top');
+        if(!getItem("OID")) go('/admin/sign/_in','top');
         app.addonParams.oid=getItem("OID");  //请求时附加的参数
         
     </script>

@@ -95,14 +95,14 @@
                         </div>
                     </li>
                     <li class="menu-list">
-                        <a href="#" data-async="get" data-type="text" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
+                        <a href="#" data-async="post" data-type="text" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
                             <i class="fa fa fa-bar-chart-o"></i>
                             <span class="nav-label">{{name}}</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
                             <li class="menu-list">
-                                <a class="J_menuItem" href="?" data-async="get" data-type="text" data-uri="{{url_1}}?tid={{id_1}}" target="left-space">{{name_1}}</a>
+                                <a class="J_menuItem" href="?" data-async="post" data-type="text" data-uri="{{url_1}}?tid={{id_1}}" target="left-space">{{name_1}}</a>
                             </li>
                         </ul>
                     </li>
@@ -146,6 +146,7 @@
             DL({
                 dev : "on",
                 listId : '#'+listId,
+                cached : 1,
                 packet : {
                     error : data.length ? 0 : 1, 
                     data: data
