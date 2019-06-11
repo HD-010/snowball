@@ -77,6 +77,23 @@ function UserInforModel() {
     }
 
     /**
+     * 读取用户权限，保存在session 中
+     */
+    this.getPermit = function(params,callback){
+        var dataProcess = this.model('DataProcess');
+        this.CURL({
+            uri:"http://127.0.0.1:3005/permit/permit/p-list?uid=" + params.uid,
+            callback:(error,source)=>{
+                if(error) source.message = '读取用户权限失败';
+                source.permit = source.data;
+                delete source.data;
+                dataProcess.setUserInfo(source,'PERMIT',params.uid);
+                return callback(source);
+            }
+        });
+    }
+
+    /**
      * 写入用户注册 信息
      */
     this.insertRegInfo = function(params,callback){
@@ -224,11 +241,15 @@ function UserInforModel() {
      * 清除用户登录信息
      */
     this.clear = function(callback){
-        var uid = this.POST('uid');
+        var uid = this.POST('uid') || this.GET('uid');
         uid = (typeof uid === 'number') ? uid : this.sessionID();
-        var key     = "U_" + uid;
         var session = this.session();
+        //删除用户信息
+        var key     = "U_" + uid;
         delete session[key];
+        key = "PERMIT_" + uid;
+        delete session[key]; 
+
         var data    = {
             error  : 0,
             message: "成功退出登录！",

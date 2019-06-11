@@ -2,7 +2,9 @@
 
 sessionStorage{
     'UIF' : 登录成功时暂存的用户信息
+    'UID' : 登录成功时暂存的用户ID
     'OID' : 当前系统openID
+    'PERMIT' : 权限数据
 }
 
 cookieStorage{

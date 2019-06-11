@@ -12,10 +12,12 @@
     },
     function (isConfirm) {
         if (isConfirm) {
-            go('/passport/sign/_exit?backuri=/admin/sign/_in',function(res){
+            var uid = getItem("UIF").id;
+            go('/passport/sign/_exit?uid='+ uid +'&backuri=/admin/sign/_in',function(res){
                 res = JSON.parse(res);
                 setItem('OID',null);
                 setItem('UIF',null);
+                setItem('PERMIT',null);
                 console.log("退出成功：",getItem('OID'),'||:',getItem('UIF'));
                 if(!res.error){
                     swal({
