@@ -31,14 +31,14 @@
                 <tbody>
                     <tr>
                         <td>用户组权限：</td>
-                        <td style="padding-left:26px;">
+                        <td>
                             <div class="page-content">                              
                                 <input name="id" type="hidden" value=""/>
                                 <div class="form-group">
                                     <label class="col-lg control-label must">
-                                        角色
+                                       组名称
                                     </label>
-                                    <div class="col-sm-9 col-xs-12">
+                                    <div class="col-sm-4 col-xs-4">
                                         <input class="form-control" data-rule-required="true" name="rolename" type="text" value=""/>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                     <div class="col-sm-9 col-xs-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                                <div class="panel-heading" style="background:#f8f8f8;display:">
+                                                <div class="panel-heading" style="background:#f8f8f8;">
                                                     <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapseshop">
                                                         <i class="fa fa-angle-down">
                                                         </i>
@@ -75,10 +75,10 @@
                                                     </a>
                                                     <label class="checkbox-inline">
                                                         <input class="perm-all perms" data-group="shop" id="perm_shop" type="checkbox" value="shop"/>
-                                                        商城管理
+                                                        系统管理
                                                     </label>
                                                 </div>
-                                                <div class="panel-collapse in" id="collapseshop">
+                                                <div class="panel-collapse collapse" id="collapseshop">
                                                     <div class="panel-body perm-group">
                                                         <span>
                                                             <label class="checkbox-inline" style="display: ">
@@ -194,7 +194,7 @@
                                                     </a>
                                                     <label class="checkbox-inline">
                                                         <input class="perm-all perms" data-group="goods" id="perm_goods" type="checkbox" value="goods"/>
-                                                        商品管理
+                                                        项目管理
                                                     </label>
                                                 </div>
                                                 <div class="panel-collapse collapse" id="collapsegoods">
