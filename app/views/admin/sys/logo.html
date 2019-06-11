@@ -1,5 +1,5 @@
 <style>
-.yun_bth_pic {
+.yun_bth_pic{
     height: 38px;
     line-height: 38px;
     background: #f8f8f8 url(/img/sys/pic_img.png) no-repeat 10px center;
@@ -51,7 +51,7 @@ button, input, optgroup, option, select, textarea {
                     <td>整站LOGO：<br/>
                         300px * 45px</td>
                     <td style="padding-left:26px;">
-                        <button type="button" class="yun_bth_pic adminupload" lay-data="{name: 'sy_logo',imgid: 'imglogo'}">上传图片</button>
+                        <button type="button" class="yun_bth_pic" >上传图片</button>
                         <input class="layui-upload-file" type="file" name="file">
                         <!-- <input type="hidden" id="layupload_type" value="2">
                         <input type="hidden" id="upload_path" value="logo">
@@ -64,7 +64,7 @@ button, input, optgroup, option, select, textarea {
                    <td>个人会员中心LOGO：<br/>
                     300px X 45px	：</td>
                     <td style="padding-left:26px;">
-                        <button type="button" class="yun_bth_pic adminupload" lay-data="{name: 'sy_logo',imgid: 'imglogo'}">上传图片</button>
+                        <button type="button" class="yun_bth_pic">上传图片</button>
                         <input class="layui-upload-file" type="file" name="file" value=""/>                       
                         <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
                     </td>           
@@ -74,7 +74,7 @@ button, input, optgroup, option, select, textarea {
                     <td>企业会员中心LOGO：<br>
                             300px X 45px</td>
                             <td style="padding-left:26px;">
-                                <button type="button" class="yun_bth_pic adminupload" lay-data="{name: 'sy_logo',imgid: 'imglogo'}">上传图片</button>
+                                <button type="button" class="yun_bth_pic">上传图片</button>
                                 <input class="layui-upload-file" type="file" name="file" value=""/>                               
                                 <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
                             </td>
@@ -85,7 +85,7 @@ button, input, optgroup, option, select, textarea {
                     <td>手机LOGO：<br>
                             300px X 45px</td>
                         <td style="padding-left:26px;">
-                            <button type="button" class="yun_bth_pic adminupload" lay-data="{name: 'sy_logo',imgid: 'imglogo'}">上传图片</button>
+                            <button type="button" class="yun_bth_pic">上传图片</button>
                             <input class="layui-upload-file" type="file" name="file" value=""/>                          
                             <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
                         </td>
@@ -94,7 +94,7 @@ button, input, optgroup, option, select, textarea {
                      <tr>                                        
                         <td>WAP二维码：</td>
                         <td style="padding-left:26px;">
-                            <button type="button" class="yun_bth_pic adminupload" lay-data="{name: 'sy_wap_qcode',imgid: 'imgwapqcode'}">上传图片</button>
+                            <button type="button" class="yun_bth_pic">上传图片</button>
                             <input class="layui-upload-file" type="file" name="file" value=""/>
                             <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15549844961.PNG" style="max-width:100px;_width:100px">
                         </td>
@@ -136,20 +136,6 @@ button, input, optgroup, option, select, textarea {
                 }
                 $(this).siblings('.imglogo').attr('src',src);            
             })
-        });
-
-        //图片上传显示
-
-        // $('layui-upload-file').on('change',function(){
-        //     var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
-        //         fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
-        //     // 检查是否是图片
-        //     if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
-        //         error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
-        //         return;  
-        //     }
-        //     $('#cropedBigImg').attr('src',filePath);
-        //     $('#loding').show();
-        // });
+        })
     });
 </script>
