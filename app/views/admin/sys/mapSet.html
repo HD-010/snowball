@@ -1,0 +1,82 @@
+<div class="container-fluid base">
+    
+        <div class="row head">
+                <div class="col-xs-12">
+                    <span>系统管理-系统设置-LOGO    设置</span>
+                </div>
+            </div>
+            <div class="row tips">
+                <div class="col-xs-12">
+                    <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+                   <div class="col-xs-12">
+                        <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+                   </div>
+                </div>
+            </div>  
+            <div class="row form">
+                <form action="" method="">
+                   <table class="table">
+                       <thead>
+                           <tr>
+                                <th class="col-xs-2">参数说明</th>
+                                <th>参数值</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <tr>
+                            <td>IP跳转到当前城市：</td>
+                                <td>
+                                    <div class="radio i-checks">
+                                        <label>
+                                            <input type="radio"  value="option2" name="codeType" checked/> <i></i> 跳转
+                                        </label>
+                                        <label>
+                                            <input type="radio"  value="option2" name="codeType"/> <i></i> 保持默认坐标
+                                        </label>
+                                    </div>                        
+                                </td>              
+                              </tr>
+                              <tr>
+                                    <td>百度地图KEY：</td>
+                                    <td>
+                                        <div class="form-group col-xs-4">
+                                                <label>
+                                           <input name="map_key" id="map_key" autocomplete="off" class="layui-input" type="text" value="F9bfbeb26054d97898571a1df965d8af" size="60" maxlength="255">
+                                                
+                                 <span class="admin_web_tip">
+                              <a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">申请地址</a> 地图版本：1.5 </label>
+                           </span>
+                                    </td>              
+                                  </tr>
+                
+                                <tr>
+                                    <td>默认坐标：</td>
+                                    <td>X：<input class="input-text" type="text" name="map_x" id="map_x" value="104.883555" size="20" maxlength="255">&nbsp;&nbsp;Y：
+                                        <input class="input-text" type="text" name="map_y" id="map_y" value="25.106977" size="20" maxlength="255"> 
+                                    <a href="javascript:;" id="getclick">点击获取坐标</a>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                   <tr>
+                                       <td>
+                                   </td>
+                             <td>
+                                    <button type="submit" class="btn">确定</button>
+                                    <button type="reset" class="btn">重置</button>
+                              </td>
+                          </tr>
+                       </tfoot>
+                   </table>
+                </form>
+            </div>
+        </div>
+        <script src="/bootstrap/js/plugins/iCheck/icheck.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                });
+            });
+        </script>
