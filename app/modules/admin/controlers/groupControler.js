@@ -8,6 +8,13 @@ function GroupControler(){
         that.render({});  
     }
 
+    /**
+     * 
+     * 管理用户组
+     */
+    this.groupList = function(){
+        that.render({});
+    }
 }
 
 module.exports = GroupControler;
