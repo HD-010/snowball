@@ -27,6 +27,7 @@ function signControler(){
                 });
             }
             res = dataProcess.loginValid(res.data);
+            delete infors.password;
             res.infors = infors;
             //获取openID
             res.openID = createOpenID(that.req,infors);
