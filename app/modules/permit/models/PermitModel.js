@@ -13,8 +13,10 @@ function PermitModel(){
             orderBy:[]
         };
         condition.where.push(params.tagName + '=' + params.tagVal);
+        condition.where.push("`enable`='1' and `show`='1'");
+        if(params.tagName === 'groupId') condition.where.push('userId is null');
 
-        this.DB().log().get(condition,function(error,results){
+        this.DB().get(condition,function(error,results){
             if(results.length === 0) data.error = -1;       //查询结果为空
             data.data = results;
             return callback(data);
@@ -33,7 +35,7 @@ function PermitModel(){
         };
         condition.where.push("id=" + params.id);
 
-        this.DB().log().get(condition,function(error,results){
+        this.DB().get(condition,function(error,results){
             if(error) data.error = 1;
             data.data = results;
             return callback(data);

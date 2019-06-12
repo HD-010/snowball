@@ -14,8 +14,8 @@ function signControler(){
     this._in = function(){
         //查询用户信息
         var dataProcess = this.model("DataProcess");
-        
-        this.model('UserInfor').infors({}, function(res) {
+        var userInfor = this.model('UserInfor');
+        userInfor.infors({}, function(res) {
             if (res.error) return that.render(res.data,true);
             var infors = res.data[0];
             
@@ -31,8 +31,12 @@ function signControler(){
             res.infors = infors;
             //获取openID
             res.openID = createOpenID(that.req,infors);
+            //读取用户权限列表
+            userInfor.getPermit({uid:infors.id},function(res1){
+                var results = mergeObj([res,res1]);
+                return that.render(results,true);
+            });
 
-            return that.render(res,true);
         });
     }
 

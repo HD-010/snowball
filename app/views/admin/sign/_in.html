@@ -117,11 +117,15 @@
     function _in(results){
         if(results.error === 0){
             setItem("UIF",results.infors);
+            setItem("UID",results.infors.id);
             setItem('OID',results.openID);
+            setItem('PERMIT',results.permit);
             app.addonParams.push("oid=" + getItem("OID"));
             app.notice(results);
         }else{
-            app.notice({error:1,message:"请输入正确的用户名和密码....."});
+            results.error = 1;
+            delete results.uri;
+            app.notice(results);
         }
     }
 
