@@ -23,6 +23,7 @@ function signControler(){
      * 退出视图控制
      */
     this._exit = function(){
+        this.DB('Redis').set("MENU",'');
         that.render({});
     }
 

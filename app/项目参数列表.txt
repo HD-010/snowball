@@ -11,6 +11,10 @@ cookieStorage{
     '':''
 }
 
+redis{
+    'MENU' : 暂存的所有菜单
+}
+
 
 
 post、get参数参考：

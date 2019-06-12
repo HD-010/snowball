@@ -92,12 +92,39 @@ function BehaviorModel() {
      * 根据用户id获取用户权限列表
      */
     this.validPermit = function(data, callback){
+        var that = this;
         var data = {error:0};
         var router = this.app.router.string;
+        var redis = that.DB("Redis");
         if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
-        var permit = this.model("DataProcess").getUserInfo('PERMIT',this.uid);
+        var process = this.model("DataProcess");
+        var permit = process.getUserInfo('PERMIT',this.uid);
         if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
-        return callback(data)
+        //向缓存获取所有菜单列表
+        redis.get('MENU',function(error,res){
+            if(!error){
+                //向数据库获取所有菜单列表
+                that.model('Menu').lists({tid: -1},(res)=>{
+                    if(res.length){
+                        redis.set('MENU',res,function(err,res){
+                            if(err) return callback({error:1,message:'MENU缓存失败'});
+                        });
+                        //检查访问权权限
+                        //当前路由对应的id
+                        return callback(check(res));
+                    } 
+                });
+            }else{
+                //检查访问权权限
+                return callback(check(res));
+            }
+        });
+        return callback(data);
+
+        function check(res){
+            var menuId = array2value(res,'url',router,'id');
+            return (array2value(permit,'menuId',menuId,'show') === '1') ? data : {error: 1, message: '权限不足',uri:"/err404"};
+        }
     }
 }
 

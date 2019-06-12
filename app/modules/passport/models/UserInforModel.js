@@ -84,7 +84,7 @@ function UserInforModel() {
         this.CURL({
             uri:"http://127.0.0.1:3005/permit/permit/p-list?uid=" + params.uid,
             callback:(error,source)=>{
-                if(error || !source.data.length) source.message = '读取用户权限失败';
+                if(error || !source.data.length) source.message = '禁止访问！请联系管理员受予访问权';
                 source.permit = source.data;
                 delete source.data;
                 dataProcess.setUserInfo(source,'PERMIT',params.uid);
