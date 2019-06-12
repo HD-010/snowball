@@ -97,7 +97,6 @@ function BehaviorModel() {
         if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
         var permit = this.model("DataProcess").getUserInfo('PERMIT',this.uid);
         if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
-        log("666666666666666666:",permit)
         return callback(data)
     }
 }

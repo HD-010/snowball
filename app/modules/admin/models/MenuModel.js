@@ -17,8 +17,9 @@ function MenuModel(){
         (pid > 0) ? condition.where.push("pid='" + pid + "' or (pid in (select id from youbang_sys_menu where pid = '" + pid + "'))") :
         condition.where.push("pid='" + pid + "'");
         condition.where.push("`show`='1'");
+
         var process = this.model("DataProcess");
-        this.DB().get(condition,function(error,results){
+        this.DB().log().get(condition,function(error,results){
             //过滤禁止访问的菜单
             if(!error){
                 var permit = process.getUserInfo("PERMIT",parseInt(uid)).permit; 

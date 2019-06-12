@@ -43,9 +43,8 @@ function permitControler (){
     this.gList = function(pid){
         var data = {error:1,message:"参数错误"};
         var permit = that.model("Permit");
-        pid = (pid != undefined) || that.POST('gid');
-        if(!pid) return that.renderJson(data);
-        
+        pid = (pid === undefined) ? that.POST('gid') : pid;
+        if(pid === false) return that.renderJson(data);
         permit.power({
             tagName : 'groupId',
             tagVal : pid
