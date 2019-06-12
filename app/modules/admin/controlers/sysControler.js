@@ -24,6 +24,14 @@ function sysControler(){
     this.mapSet = function (){
         that.render({});
     }
+    
+  
+    //缓存设置
+    this.cache = function (){
+         that.render({});
+    }
 }
+
+
 
 module.exports = sysControler;
