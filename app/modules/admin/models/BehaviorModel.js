@@ -94,6 +94,7 @@ function BehaviorModel() {
         var process = this.model("DataProcess");
         var permit = process.getUserInfo('PERMIT',uid);
         if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
+        
         //向缓存获取所有菜单列表
         redis.get('MENU',function(error,res){
             if(error || !res || !(res.constructor.name == 'Array')){
@@ -123,7 +124,7 @@ function BehaviorModel() {
             //当前路由在菜单列表,但免权限验证
             //log("=========menu.valid==========",menu.valid)
             if(menu.valid === '0') return data;
-            var pagePermit = array2value(permit.permit,'url',router);
+            var pagePermit = array2value(permit.permit,'menuId',menu.id);
             //设置页面权限()
             process.setUserInfo(pagePermit,'PPER',uid);
             //log("=========pagePermit==========",pagePermit)
