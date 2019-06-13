@@ -22,13 +22,6 @@ function BehaviorModel() {
             '/admin/index/index',
             '/err404'
         ],
-        validPermit: [
-            '/admin/sign/_in',
-            '/admin/sign/_up',
-            '/admin/sign/_check',
-            '/admin/index/index',
-            '/err404'
-        ]
     }
 
 
@@ -96,7 +89,6 @@ function BehaviorModel() {
         var data = {error:0};
         var router = this.app.router.string;
         var redis = that.DB("Redis");
-        if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
         var process = this.model("DataProcess");
         var permit = process.getUserInfo('PERMIT',this.uid);
         if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
