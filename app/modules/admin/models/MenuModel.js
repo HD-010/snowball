@@ -14,7 +14,7 @@ function MenuModel(){
         var pid = params.tid || this.GET('tid') || 0;    
         var condition = {
             table:["youbang_sys_menu"],                                 //查询的表名
-            fields:["id","pid","name","weight","icon","url"],           //被查询的字段名称（别名在此指定）
+            fields:["id","pid","name","weight","icon","url","valid"],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['pid asc',' weight asc']
         };

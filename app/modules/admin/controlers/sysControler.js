@@ -1,7 +1,11 @@
 function sysControler(){
     var that = this;
     // 基本设置
-    this.base = function(){       
+    this.base = function(){ 
+        var process = this.model("DataProcess");
+        var userInfor = process.getUserInfo();
+        var ppermit = process.getUserInfo('PPER',1)
+        log('*********************',ppermit)
         that.render({});
     }
 

@@ -1,4 +1,5 @@
 function BehaviorModel() {
+    var uid;
     /**
      * 定义执行请求操作前执行的操作名称
      * 规则：
@@ -19,6 +20,7 @@ function BehaviorModel() {
             '/admin/sign/_in',
             '/admin/sign/_up',
             '/admin/sign/_check',
+            '/admin/sign/_exit',
             '/admin/index/index',
             '/err404'
         ],
@@ -60,18 +62,18 @@ function BehaviorModel() {
         var router = this.app.router.string;
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
-        // log("-----------------------oid--------------------------");
-        // log("openID:",openID);
-        // log("POST:",this.POST());
-        // log("GET:",this.GET());
-        // log("query:",this.req.query);
-        // log("body:",this.req.body);
-        // log("-----------------------oid--------------------------");
+        log("-----------------------oid--------------------------");
+        log("openID:",openID);
+        log("POST:",this.POST());
+        log("GET:",this.GET());
+        log("query:",this.req.query);
+        log("body:",this.req.body);
+        log("-----------------------oid--------------------------");
 
         if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
-        this.uid = parseInt(openIDObj.id);
-        var userInfor = this.model("passport:DataProcess").getUserInfo(this.uid)[0];
+        uid = parseInt(openIDObj.id);
+        var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
         if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",message:'用户信息不存在'});
         var signature = createSignature(this.req,userInfor);
         if(!signature) return callback({error:1,uri:"/err404",message:"生成签名失败"});
@@ -90,32 +92,44 @@ function BehaviorModel() {
         var router = this.app.router.string;
         var redis = that.DB("Redis");
         var process = this.model("DataProcess");
-        var permit = process.getUserInfo('PERMIT',this.uid);
+        var permit = process.getUserInfo('PERMIT',uid);
         if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
         //向缓存获取所有菜单列表
         redis.get('MENU',function(error,res){
-            if(!error){
+            if(error || !res || !(res.constructor.name == 'Array')){
                 //向数据库获取所有菜单列表
                 that.model('Menu').lists({tid: -1},(res)=>{
-                    if(res.length){
-                        redis.set('MENU',res,function(err,res){
-                            if(err) return callback({error:1,message:'MENU缓存失败'});
-                        });
+                    if(!res.length) return callback(data);
+                    redis.set('MENU',res,function(err){
+                        if(err) return callback({error:1,message:'MENU缓存失败'});
                         //检查访问权权限
                         //当前路由对应的id
                         return callback(check(res));
-                    } 
+                    });
                 });
             }else{
                 //检查访问权权限
                 return callback(check(res));
             }
         });
-        return callback(data);
 
         function check(res){
-            var menuId = array2value(res,'url',router,'id');
-            return (array2value(permit,'menuId',menuId,'show') === '1') ? data : {error: 1, message: '权限不足',uri:"/err404"};
+            //将用户id暂存session
+            process.setUserInfo(uid,'UID');
+            //查找当前路由对应的菜单对象
+            var menu = array2value(res,'url',router);
+            //当前路由不在菜单列表
+            if(!menu) return data;
+            //当前路由在菜单列表,但免权限验证
+            //log("=========menu.valid==========",menu.valid)
+            if(menu.valid === '0') return data;
+            var pagePermit = array2value(permit.permit,'url',router);
+            //设置页面权限()
+            process.setUserInfo(pagePermit,'PPER',uid);
+            //log("=========pagePermit==========",pagePermit)
+            //当前路由在菜单列表,验证权限通过
+            if(pagePermit.enable === '1') return data;
+            return {error: 1, message: '权限不足',uri:"/err404"};
         }
     }
 }

@@ -13,9 +13,13 @@ cookieStorage{
 
 redis{
     'MENU' : 暂存的所有菜单
+    'PERMIT' : 权限数据
+    'PPER' : 页面权限数据，在controler、model、service能过DataProcess.getUserInfo('PPER',this.uid)读取
 }
 
-
+session{
+    "UID" : '请求验证成功时暂存的用户ID'
+}
 
 post、get参数参考：
 tid : 栏目id

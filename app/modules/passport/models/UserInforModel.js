@@ -247,6 +247,7 @@ function UserInforModel() {
         //删除用户信息
         var key     = "U_" + uid;
         delete session[key];
+        //删除权限表
         key = "PERMIT_" + uid;
         delete session[key]; 
 
