@@ -118,7 +118,7 @@
 }
 
 .base .tips{
-    margin:0 1em;
+    margin:1em;
     border: 2px dotted #62B3FF;
     padding: 1em;
     border-radius: 5px;
@@ -211,11 +211,11 @@
 }
 
 /* 管理员折叠 */
-.base .form td, .base .form th {
+.base .collapseTwo .form td, .base #collapseTwo .form th {
     border: none;
 }
 
-.base .admin_screenlist_box {
+.base .collapseTwo .admin_screenlist_box {
     border: 1px solid #eaeaea;
     margin-top: -15px;
     position: relative;
@@ -223,11 +223,11 @@
     background: #fff;
     display: none;
 }
-.base .admin_screenlist {
+.base .collapseTwo .admin_screenlist {
     padding: 10px 5px 10px 70px;
     position: relative;
 }
-.base .admin_screenlist_name {
+.base .collapseTwo .admin_screenlist_name {
     position: absolute;
     left: 5px;
     top: 9px;
@@ -236,20 +236,20 @@
     width: 70px;
     text-align: center;
 }
-.base .admin_screenlist a {
+.base .collapseTwo .admin_screenlist a {
     display: inline-block;
     padding: 3px 5px;
     margin-right: 10px;
 }
 
-.base .admin_screenlist_cur {
+.base .collapseTwo .admin_screenlist_cur {
     background: #31b4e1;
     color: #fff;
     display: inline-block;
     padding: 3px 5px;
     border-radius: 3px;
 }
-.base .admin_screenlist a {
+.base .collapseTwo .admin_screenlist a {
     display: inline-block;
     padding: 3px 5px;
     margin-right: 10px;
