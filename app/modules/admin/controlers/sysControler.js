@@ -30,6 +30,12 @@ function sysControler(){
     this.cache = function (){
          that.render({});
     }
+    //上传设置
+    this.upload = function (){
+        console.log("=====================================")
+        that.render({});
+   }
+
 }
 
 
