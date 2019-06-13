@@ -8,7 +8,7 @@ function BehaviorModel() {
         }
      */
     this.ruler = {
-        '/admin/*'              : ['validSignature'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/admin/*'              : ['validSignature','validPermit'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
     }
 
     /**
@@ -22,6 +22,13 @@ function BehaviorModel() {
             '/admin/index/index',
             '/err404'
         ],
+        validPermit: [
+            '/admin/sign/_in',
+            '/admin/sign/_up',
+            '/admin/sign/_check',
+            '/admin/index/index',
+            '/err404'
+        ]
     }
 
 
@@ -70,15 +77,54 @@ function BehaviorModel() {
 
         if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
-        var uid = parseInt(openIDObj.id);
-        log("openIDObj::::", openIDObj);
-        var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
+        this.uid = parseInt(openIDObj.id);
+        var userInfor = this.model("passport:DataProcess").getUserInfo(this.uid)[0];
         if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",message:'用户信息不存在'});
         var signature = createSignature(this.req,userInfor);
         if(!signature) return callback({error:1,uri:"/err404",message:"生成签名失败"});
         data = (signature === openIDObj.sg) ? {error:0}: {error:1, uri:"/err404"};
         
         return callback(data);
+    }
+
+    /**
+     * 用户权限验证
+     * 根据用户id获取用户权限列表
+     */
+    this.validPermit = function(data, callback){
+        var that = this;
+        var data = {error:0};
+        var router = this.app.router.string;
+        var redis = that.DB("Redis");
+        if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
+        var process = this.model("DataProcess");
+        var permit = process.getUserInfo('PERMIT',this.uid);
+        if(!permit) return callback({error:0,uri:"/admin/sign/_check",message:'权限调取失败，'});
+        //向缓存获取所有菜单列表
+        redis.get('MENU',function(error,res){
+            if(!error){
+                //向数据库获取所有菜单列表
+                that.model('Menu').lists({tid: -1},(res)=>{
+                    if(res.length){
+                        redis.set('MENU',res,function(err,res){
+                            if(err) return callback({error:1,message:'MENU缓存失败'});
+                        });
+                        //检查访问权权限
+                        //当前路由对应的id
+                        return callback(check(res));
+                    } 
+                });
+            }else{
+                //检查访问权权限
+                return callback(check(res));
+            }
+        });
+        return callback(data);
+
+        function check(res){
+            var menuId = array2value(res,'url',router,'id');
+            return (array2value(permit,'menuId',menuId,'show') === '1') ? data : {error: 1, message: '权限不足',uri:"/err404"};
+        }
     }
 }
 

@@ -135,7 +135,7 @@
 }
 
 .base .form{
-    margin: 1em;
+    margin:0 1em;
     background-color: #FFFFFF;
 }
 
@@ -175,4 +175,82 @@
 }
 .base .form .table tbody tr td .form-group{
     margin-bottom: 0px;
+}
+.base .tabs_info{  
+    height: 45px;
+    line-height: 45px;
+    margin-bottom: 1em;
+    border-bottom: 1px solid rgb(98, 179, 255);
+}
+.base .tabs_info span{
+    display: block;
+    height: 45px;
+    width:100px;
+    line-height: 45px;
+    background-color: rgb(98, 179, 255);
+    color:white;
+    text-align: center;
+    border-radius: 4px 4px 0px 0px;
+    margin-left: -15px;
+}
+
+.base .tipss{   
+    padding: 1em;
+    border-radius: 5px;
+   
+}
+.base .tipss ul{
+    height: 35px;
+}
+.base .tipss ul li .form-control{
+    margin-top: 2px;
+    padding: 0px 10px;
+}
+.base .tipss ul li .btn{
+    margin-top: -3px;
+}
+
+/* 管理员折叠 */
+.base .form td, .base .form th {
+    border: none;
+}
+
+.base .admin_screenlist_box {
+    border: 1px solid #eaeaea;
+    margin-top: -15px;
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    display: none;
+}
+.base .admin_screenlist {
+    padding: 10px 5px 10px 70px;
+    position: relative;
+}
+.base .admin_screenlist_name {
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    padding: 3px 0px;
+    display: inline-block;
+    width: 70px;
+    text-align: center;
+}
+.base .admin_screenlist a {
+    display: inline-block;
+    padding: 3px 5px;
+    margin-right: 10px;
+}
+
+.base .admin_screenlist_cur {
+    background: #31b4e1;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+.base .admin_screenlist a {
+    display: inline-block;
+    padding: 3px 5px;
+    margin-right: 10px;
 }

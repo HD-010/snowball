@@ -9,7 +9,7 @@
         </div>
         <div class="col-xs-7">
             <ul class="list-inline text-center nvatab" id="header-menu" data-uri="/admin/menu/type">
-                <li class="col-xs-2 {{- return index?'':'active'; }}" data-toggle="tab" data-async="post" data-uri="/admin/menu/type?tid={{id}}">
+                <li class="col-xs-2 {{- return index?'':'active'; }}" data-toggle="tab" data-async="post" data-uri="/admin/menu/type?tid={{id}}&uid={{- return getItem('UID'); }}">
                     <a href="#">{{name}}</a>
                 </li>
             </ul>
@@ -28,9 +28,9 @@
 <script>
 DL({
     dev : "on",
-    data : {oid :getItem("OID")},  //请求时附加的参数
+    data : {oid :getItem("OID"),uid:getItem("UID")},  //请求时附加的参数
     //cached : 1,
-    listId : "#header-menu",
+    listId : "#header-menu"
 });
 
 /**
