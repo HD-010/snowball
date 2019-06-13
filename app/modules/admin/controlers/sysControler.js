@@ -14,6 +14,24 @@ function sysControler(){
     this.code = function(){
         that.render({});
     }
+
+     //logo设置
+     this.logo = function(){
+        that.render({});
+    }
+  
+    //地图设置
+    this.mapSet = function (){
+        that.render({});
+    }
+    
+  
+    //缓存设置
+    this.cache = function (){
+         that.render({});
+    }
 }
+
+
 
 module.exports = sysControler;
