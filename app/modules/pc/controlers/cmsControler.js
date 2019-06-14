@@ -9,7 +9,7 @@ function cmsControler(){
 
         //获取视图模块配置
         data.viewModels = this.model('Template').pageModel();
-        log(data);
+        log("this is data ",data);
         this.renderLayer(data);
     }
 
