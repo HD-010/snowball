@@ -30,7 +30,7 @@ function permitControler (){
             if(result.error == -1) {
                 permit.group({id:uid},function(results){
                     if(results.error) return that.renderJson(data);
-                    that.gList(results.data[0].pid);
+                    that.gList(results.data[0].groupId);
                 });
             }
         });

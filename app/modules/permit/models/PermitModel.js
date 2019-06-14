@@ -30,12 +30,12 @@ function PermitModel(){
         var data = {error: 0};
         var condition = {
             table:["youbang_sys_acount"],                                 //查询的表名
-            fields:['pid'],             //被查询的字段名称（别名在此指定）
+            fields:['groupId'],             //被查询的字段名称（别名在此指定）
             where:[],                   //查询条件
         };
         condition.where.push("id=" + params.id);
 
-        this.DB().get(condition,function(error,results){
+        this.DB().log().get(condition,function(error,results){
             if(error) data.error = 1;
             data.data = results;
             return callback(data);
