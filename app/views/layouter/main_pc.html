@@ -1,1 +1,81 @@
-布局文件 main_pc
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+
+    <title>
+        <%= title %>
+    </title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css?v=3.3.6" >
+    <link rel="stylesheet" href="/bootstrap/css/style.css?v=4.1.0" >
+    <link rel="stylesheet" type="text/css" href="/stylesheets/common.css"/>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1046753_ens6fid7yic.css"/>
+    <style> <%= viewModels.style; %> </style>
+    
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/jquery.md5.js"></script>
+    <script>
+        //设置全局参数
+        <%
+        if(locals.config) {%>
+            window.Hosts = <%- JSON.stringify(config.params.apiHost) %>;
+        <% } %>
+    </script>
+    <script src="/javascripts/app/app.js"></script>
+    <script src="/javascripts/app/autoload.js"></script>
+    <script>
+
+        <% if(locals.userInfo) { %>
+            setItem('UserInfo',<%- JSON.stringify(userInfo) %>);
+        <% } %>
+        <% if(locals.sid) { %>
+            setItem('suppid',<%- sid %>);
+        <% } %>
+        
+        //设置全局参数
+        var userInfo = getItem('UserInfo');
+        if(userInfo){
+            //设置用户id
+            setItem('usid',userInfo.id);
+        }
+        
+    </script>
+</head>
+<body>
+    
+    <div class="container-fluid">
+        <% if(typeof locals.viewModels === 'string') { %>
+            <%- '<script> location.href="'+locals.viewModels+'" </script>' %>
+        <% } %>
+        
+        <%
+        if(typeof locals.viewModels.models === 'object'){
+            if(!locals.params) var params = {};
+            params.theme = viewModels.theme;
+            console.log(viewModels.models)
+            for(var i = 0; i < viewModels.models.length; i ++){
+        %>
+        <%- include('../widgets/'+ viewModels.models[i] + '.html',params) %>
+        <% }} %>
+    </div>
+    <!-- 全局js -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script>  $(document).ready(function(){app.load()}); </script>
+</body>
+
+</html>

@@ -13,7 +13,7 @@ function BehaviorModel() {
     h5_shop.push('validUser');
 
     this.ruler = {
-        '/snow/*' : ['parseTemplate'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/pc/*' : ['parseTemplate'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
     }
     
 
@@ -21,7 +21,7 @@ function BehaviorModel() {
      * 定义操作下不需要预执行的路由
      */
     this.notMatch = {
-        parseTemplate: ['/snow/err/_404'],
+        parseTemplate: ['/pc/err/_404','/m/err/_404'],
     }
 
     /**
@@ -34,7 +34,7 @@ function BehaviorModel() {
         var templateId = 1;
         var data = {
             error: 1,
-            uri: '/snow/err/_404'
+            uri: '/pc/err/_404'
         }
         let router = this.app.router.string;
         if(this.notMatch.parseTemplate.indexOf(router) !== -1 )  return callback({ error: 0 });
