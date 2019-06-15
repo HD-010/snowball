@@ -1,3 +1,9 @@
+<style>
+       thead{     
+        
+            line-height: 40px;
+        }
+        </style>
 <div class="container-fluid base">
     <div class="row head">
         <div class="col-xs-12">
@@ -13,51 +19,79 @@
            </div>
         </div>
     </div>
-    <div class="admin_new_search_name">搜索类型：</div>
-    <input class="admin_Filter_search" placeholder="输入你要搜索的关键字" type="text" name="keyword" size="25" style="float:left">
-    <table width="100%">
-        <thead>
-          <tr class="admin_table_top">
-            <th><label for="chkall">
-              <input type="checkbox" id="chkAll" onclick="CheckAll(this.form)">
-              </label></th>
-            <th> 编号 </th>
-            <th align="left">链接标题</th>
-            <th align="left">链接地址</th>
-            <th align="left">显示站点</th>
-            <th align="left">发布时间</td>
-            <th>类型</th>
-            <td>排序 </td>
-            <th>状态</th>
-            <th class="admin_table_th_bg" width="120">操作</th>
-          </tr>
-        </thead>
-        <tbody>
+    <form action="" method="get" name="myform">
+        <ul class="list-inline">
+            <li>搜索类型</li>
         
-    <tr align="center" id="list4">
-          <td><input type="checkbox" value="4" name="del[]" onclick="unselectall()" class="check_all" rel="del_chk"></td>
-          <td><span>4</span></td>
-          <td class="ud" align="left">逸辉人才系统</td>
-          <td class="od" align="left"><a href="http://yhrc.pykj.xyz" target="_blank">http://yhrc.pykj.xyz</a></td>
-          <td class="ud" align="left">总站</td>
-          <td>2019-03-15</td>
-          <td> 文字链接 </td>
-          <td>1</td>
-          <td> <span class="admin_com_Audited">已审核</span></td>		  
-          <td width="180"> <a href="javascript:void(0);" class="user_status admin_new_c_bth admin_new_c_bthsh" pid="4" status="1">审核</a>
+            <li>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name"  placeholder="请输入你要搜索的关键字"/>
+                </div>
+            </li>
+            <li>
+                <button type="button" class="btn btn-success">搜索</button>
+            </li>
+            <li>
+                <a data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"><button type="button" class="btn btn-success">高级搜索</button></a>
+            </li>
+            <li>
+                <button type="button" class="btn btn-default" style="border:1px solid#EC5051;"><span style="color:#EC5051;"> + 添加会员</span></button>
+            </li>
+        </ul>
+    </form>
+    <div class="table-list">
+            <div class="admin_table_border">
+              <iframe id="supportiframe" name="supportiframe" onload="returnmessage('supportiframe');" style="display:none"></iframe>
+              <form action="index.php?m=link&amp;c=del" name="myform" method="post" id="myform" target="supportiframe">
+                <input type="hidden" name="pytoken" id="pytoken" value="4574fbe372cf">
+                <table width="100%">
+                  <thead style=" line-height: 40px;">
+                  
+                    <tr class="admin_table_top">
+                      <th><label for="chkall">
+                        <input type="checkbox" id="chkAll" onclick="CheckAll(this.form)">
+                        </label></th>
+                      <th>  <a href="http://yhrc.pykj.xyz/user/index.php?m=link&amp;order=asc&amp;t=id">编号<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th align="left">链接标题</th>
+                      <th align="left">链接地址</th>
+                      <th align="left">显示站点</th>
+                      <th>  <a href="http://yhrc.pykj.xyz/user/index.php?m=link&amp;order=asc&amp;t=link_time">发布时间<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th>类型</th>
+                      <th>  <a href="http://yhrc.pykj.xyz/user/index.php?m=link&amp;order=asc&amp;t=link_sorting">排序<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th>状态</th>
+                      <th class="admin_table_th_bg" width="120">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody style=" line-height: 40px;" >
+                    <tr class="admin_table_top">
+                        <th><label for="chkall">
+                          <input type="checkbox" id="chkAll" onclick="CheckAll(this.form)">
+                          </label></th>
+                        <th><span>4</span></th>
+                        <th align="left">逸辉人才系统</th>
+                        <th><a href="http://yhrc.pykj.xyz" target="_blank">http://yhrc.pykj.xyz</a></th>
+                        <th align="left">总站</th>
+                        <th> 2019-03-15 </th>
+                        <th>文字链接</th>
+                        <th> 1 </th>
+                        
+                        <td> <span class="admin_com_Audited">已审核</span></td>
+                        <td width="180"> <a href="javascript:void(0);" class="user_status admin_new_c_bth admin_new_c_bthsh" pid="4" status="1">审核</a>
 		  
-           <a href="index.php?m=link&amp;c=add&amp;id=4" class="admin_new_c_bth">修改</a> 
-           <a href="javascript:void(0)" onclick="layer_del('确定要删除？', 'index.php?m=link&amp;c=del&amp;id=4');" class="admin_new_c_bth admin_new_c_bth_sc">删除</a> </td>
-        </tr>
-                <tr style="background: #f1f1f1;">
-          <td align="center"><input type="checkbox" id="chkAll2" onclick="CheckAll2(this.form)"></td>
-          <td colspan="2"><label for="chkAll2">全选</label>
-            &nbsp;
-			   <input class="admin_button" type="button" name="delsub" value="批量选择分站" onclick="checksiteall('index.php?m=link&amp;c=checksitedid');">
-            <input class="admin_button" type="button" name="delsub" value="删除所选" onclick="return really('del[]')"></td>
+                            <a href="index.php?m=link&amp;c=add&amp;id=4" class="admin_new_c_bth">修改</a> 
+                              <a href="javascript:void(0)" onclick="layer_del('确定要删除？', 'index.php?m=link&amp;c=del&amp;id=4');" class="admin_new_c_bth admin_new_c_bth_sc">删除</a> </td>
+                      </tr>
+                      <tr class="admin_table_top">
+                        <th><label for="chkall">
+                        
+                          <input type="checkbox" id="chkAll2" onclick="CheckAll2(this.form)">
+                          </label></th>
+                       
+                      <th colspan="2"><label for="chkAll2">全选</label>
+                   &nbsp;
+			        <input class="admin_button" type="button" name="delsub" value="批量选择分站">
+                  <input class="admin_button" type="button" name="delsub" value="删除所选"></th>
        
-		  <td colspan="7" class="digg"></td>
-        </tr>
-        </tbody>
-        
-      </table>
+		         <th colspan="7" class="digg"></th>
+                </tr>
+               </tbody>
