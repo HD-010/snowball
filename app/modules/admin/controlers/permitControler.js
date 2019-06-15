@@ -10,5 +10,10 @@ function permitControler(){
     that.userRights = function(){
         that.render({});
     }
+
+    //添加权限组
+    that.addGlist = function(){
+        that.render({});
+    }
 }
 module.exports = permitControler;
