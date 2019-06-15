@@ -15,6 +15,7 @@ redis{
     'MENU' : 暂存的所有菜单
     'PERMIT' : 权限数据
     'PPER' : 页面权限数据，在controler、model、service能过DataProcess.getUserInfo('PPER',this.uid)读取
+    'SYS_OPTIONS' : 系统参数  (于BehaviorModel.loadSysOption() 写入)
 }
 
 session{
@@ -25,3 +26,10 @@ post、get参数参考：
 tid : 栏目id
 uid : 用户id
 oid : 当前系统openID
+
+系统参数见数据表：
+youbang_sys_upload、
+youbang_sys_cached、
+youbang_sys_logo、
+youbang_sys_map、
+youbang_sys_option、
