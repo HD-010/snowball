@@ -1,0 +1,76 @@
+<style>
+ul{
+    list-style-type: none;
+}
+.compontents{
+    border:0;
+}
+.compontents li{
+    border:1px solid;
+    padding : 0;
+    height:5.5em;
+    width:17em;
+    margin:1em;
+    display: -webkit-inline-box;
+}
+.component-icon{
+    width:60%;
+    border:0;
+}
+.component-icon img{
+    vertical-align:middle;
+    line-height:5.5em;
+}
+.component-oper{
+    width:30%;
+    border:0;
+    margin-left: 5%;
+    text-align: right;
+    padding-top:0.5em;
+}
+.component-oper a{
+    width:100%;
+    display:inline-block;
+    text-align:center;
+}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-应用列表</span>
+        </div>
+    </div>
+    <div class="row ibox-content">
+        <ul class="compontents" id="compontents-list">
+            <li>
+                <div class="component-icon">
+                    <img src="{{icon}}"/ >
+                    {{comname}}
+                </div>
+                <div class="component-oper">
+                    <a class="oper-item" data-uri="/admin/component/edit?cid={{id}}">编辑</a>
+                    <a class="oper-item" data-uri="/admin/component/view?cid={{id}}">查看</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+ 
+    var compontents = <%- JSON.stringify({error: error, data: data}); %>
+    DL({
+        listId : "#compontents-list",
+        packet : compontents,
+        after : loadEve
+    });
+
+    //事件相关
+    function loadEve(){
+        $('.oper-item').unbind('click').on('click',function(o){
+            var uri = $(this).attr('data-uri');
+            go(uri)
+        })
+    }
+</script>
