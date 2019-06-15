@@ -9,7 +9,8 @@ function BehaviorModel() {
         }
      */
     this.ruler = {
-        '/admin/*'              : ['validSignature','validPermit'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/*' : ['loadSysOption'],
+        '/admin/*': ['validSignature','validPermit'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
     }
 
     /**
@@ -51,25 +52,39 @@ function BehaviorModel() {
         });
     }
 
+    /**
+     * 加载系统参数
+     */
+    this.loadSysOption = function(params,callback){
+        var that = this;
+        if(global.sysOtion) return callback({error:0});
+        var option = that.model('SysOption');
+        option.options({},function(res){
+            if(!res.error) return callback(res);
+            that.DB("Redis").set("SYS_OPTIONS",res.data);
+            global.sysOtion = 1;
+            return callback(res);
+        });
+    }
+
 
 
     /**
      * 验证签名
      * 用户登录后请求的数据需要验证签名,签名存储在redis，以uid为参考
      */
-    this.validSignature = function(data, callback){
+    this.validSignature = function(params, callback){
         var data = {error:0};
         var router = this.app.router.string;
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
-        log("-----------------------oid--------------------------");
-        log("openID:",openID);
-        log("POST:",this.POST());
-        log("GET:",this.GET());
-        log("query:",this.req.query);
-        log("body:",this.req.body);
-        log("-----------------------oid--------------------------");
-
+        // log("-----------------------oid--------------------------");
+        // log("openID:",openID);
+        // log("POST:",this.POST());
+        // log("GET:",this.GET());
+        // log("query:",this.req.query);
+        // log("body:",this.req.body);
+        // log("-----------------------oid--------------------------");
         if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
         uid = parseInt(openIDObj.id);
@@ -86,7 +101,7 @@ function BehaviorModel() {
      * 用户权限验证
      * 根据用户id获取用户权限列表
      */
-    this.validPermit = function(data, callback){
+    this.validPermit = function(params, callback){
         var that = this;
         var data = {error:0};
         var router = this.app.router.string;
