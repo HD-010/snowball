@@ -2,49 +2,31 @@ function permitModel(){
 
     var that = this;
     /**
-     列表
+     * 查询当前管理组所具有的权限
+     * 条件 根据管理组id查询
+     * 表名 youbang_sys_permit
+     * 所取字段 id,userId,groupId,menuId,add,delete,edit,show
+     * 必要条件 enable = 1
      */
-    that.lists = function(params,callback){
-        var data = {error: 0}; 
+    that.listPermits = function(params,callback){
+        var id = that.GET('id') || that.POST('id') || '';
         var condition = {
-            table:["youbang_sys_acount_group"],                                 //查询的表名
-            fields:["id","pid","groupName","type","status","deleted",'addTime'],           //被查询的字段名称（别名在此指定）
+            table:["youbang_sys_permit as p"],                                 //查询的表名
+            fields:["p.id","p.`userId`","m.`name`","p.`menuId`","p.`add`","p.`delete`",'p.`edit`','p.`show`'],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
-            orderBy:['id asc']
+            orderBy:['id asc'],
+            joinOn:" LEFT JOIN youbang_sys_menu as m ON m.id = p.menuId "
         };
-        // if(pid > 0) condition.where.push("pid=" + pid + " or (pid in (select id from youbang_sys_menu where pid = " + pid + "))");
-        // if(pid === 0) condition.where.push("pid=" + pid );
-        // if(pid != -1) condition.where.push("`show`='1'");
 
-       // var process = this.model("DataProcess");
-       that.DB().get(condition,function(error,results){
-          if(results) callback(results)
-        });
+        //判断管理组id 
+        if(id){ 
+            condition.where.push("groupId ="+id);
+            condition.where.push("enable = '1'");
+            that.DB().log().get(condition,function(error,results){
+                if(results) callback(results)
+            });
+        }       
     }
-
-    /**
-     * 修改列表
-     */
-    that.updateGlist = function(params,callback){
-        var data = {error: 0}; 
-        //var id = that.GET(id);
-        var id = that.GET('id');
-        var condition = {
-            table:["youbang_sys_acount_group"],                                 //查询的表名
-            fields:["id","pid","groupName","type","status","deleted",'addTime'],           //被查询的字段名称（别名在此指定）
-            where:[],           //查询条件
-            orderBy:[]
-        };
-        // if(pid > 0) condition.where.push("pid=" + pid + " or (pid in (select id from youbang_sys_menu where pid = " + pid + "))");
-         if(id) condition.where.push("id=" + id );
-        // if(pid != -1) condition.where.push("`show`='1'");
-
-       // var process = this.model("DataProcess");
-       that.DB().get(condition,function(error,results){
-          if(results) callback(results)
-        });
-    }
-    
 }
 
 module.exports = permitModel;
