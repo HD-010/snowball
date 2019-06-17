@@ -1,10 +1,10 @@
-function ComponentModel(){
-    //获取组件列表
+function TypeModel(){
     this.list = function(params,callback){
         var data = {};
         var conditions = {
-            table : ['youbang_components'],
-            fields : ['*']
+            table : ['youbang_arctype'],
+            fields : ['*'],
+            orderBy:['topid asc', 'id desc'],
         };
 
         this.DB().get(conditions,function(error,res){
@@ -15,4 +15,4 @@ function ComponentModel(){
     }
 }
 
-module.exports = ComponentModel;
+module.exports = TypeModel;
