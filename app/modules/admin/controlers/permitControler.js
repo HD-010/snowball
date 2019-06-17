@@ -3,7 +3,14 @@ function permitControler(){
 
     //管理组权限
     that.glist = function(){
-        that.render({});
+         var permit = that.model("permit");
+         permit.lists({},function(res){
+            if(res){
+                console.log(res)
+                that.render({data:res});
+            }
+         })
+        
     }
     
     //管理组用户权限
@@ -13,6 +20,22 @@ function permitControler(){
 
     //添加权限组
     that.addGlist = function(){
+        that.render({});
+    }
+    
+    //修改权限组
+    that.updateGlist = function(){
+        var permit = that.model("permit");
+         permit.updateGlist({},function(res){
+            if(res){
+                console.log(res)
+                that.render({data:res});
+            }
+         })
+    }
+
+    //删除权限组
+    that.delGlist = function(){
         that.render({});
     }
 }
