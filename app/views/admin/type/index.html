@@ -48,8 +48,8 @@
                                     <td>Internet Explorer 4.0
                                     </td>
                                     <td>{{keywords}}</td>
-                                    <td style="padding-left:26px;">
-                                        <label><input class="mui-switch mui-switch-anim" data-stat="{{ishidden}}" type="checkbox" valus="{{ishidden}}"><em></em></label>
+                                    <td style="padding-left:26px;">                                       
+                                            <label><input class="mui-switch mui-switch-anim" data-stat="{{ishidden}}" type="checkbox" value="{{ishidden}}"><em></em></label>                                      
                                     </td> 
                                     <td class="project-actions">
                                         <a href="" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
@@ -94,21 +94,18 @@
     });
    
     $(document).ready(function(){
-
-    
         var cl  = $(".mui-switch");
-        
         for(var i=0;i<cl.length;i++){
-            if(cl[i].getAttribute('data-stat') == '1'){
-                cl[i].nextSibling.innerText='显示';
-                cl[i].nextSibling.style.color="#FFFFFF";
-                cl[i].nextSibling.style.marginLeft='0px';
-                cl[i].nextSibling.setAttribute('checked','checked');
-            }else{
-                cl[i].nextSibling.innerText='隐藏';
-                cl[i].nextSibling.style.color="#D2D2D2";
-                cl[i].nextSibling.style.marginLeft='16px';
-            }
+                if($(cl[i]).attr("data-stat")=='1'){
+                    cl[i].nextSibling.innerText='显示';
+                    cl[i].nextSibling.style.color="#FFFFFF";
+                    cl[i].nextSibling.style.marginLeft='0px';
+                    cl[i].checked=true;
+                }else{
+                    cl[i].nextSibling.innerText='隐藏';
+                    cl[i].nextSibling.style.color="#D2D2D2";
+                    cl[i].nextSibling.style.marginLeft='16px';
+                }
         }
         cl.click(function(){
                 if(this.checked){
