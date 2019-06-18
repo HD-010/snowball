@@ -210,11 +210,11 @@ var app = {
             'text-align': 'center',
             'position'  : 'fixed',
             'width'     : '100%',
-            'z-index'   : 999999,
+            'z-index'   : 999999999999,
         }));
         setTimeout(function() {
-            if(typeof callback === 'function') return callback();
             $("#" + notice).remove();
+            if(typeof callback === 'function') return callback();
             if(obj.go) history.go(obj.go);
             obj.uri += (obj.uri.indexOf('?') === -1) ? 
             "?" + app.serializeParams() : 
@@ -302,15 +302,16 @@ var app = {
     /**
      * 绑定相关事件
      */
-    load : function(){
+    load : function(el){
+        el = (typeof el === 'string') ? el : document;
         // 记忆表单项
         app.memory();
             
         // 恢复表单项记忆
         app.remember();
-
         //异步请求
-        $(document).find('[data-async]').unbind('click').click(function(event) {
+        
+        $(el).find('[data-async]').unbind('click').click(function(event) {
             app.asyncProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
                 try{eval((app['action'] + '(res);'));}catch(err){
@@ -320,12 +321,12 @@ var app = {
         });
 
         //同步请求
-        $(document).find('[data-sync]').unbind('click').click(function(event) {
+        $(el).find('[data-sync]').unbind('click').click(function(event) {
             app.syncProcess(event, this, function(res) {});
         });
 
         //form表单提交不跳转
-        $(document).find('[data-form-async]').submit(function(event) {
+        $(el).find('[data-form-async]').submit(function(event) {
             event.preventDefault();
             app.formProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
