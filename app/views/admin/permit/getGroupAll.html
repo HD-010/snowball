@@ -60,20 +60,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                       <% for(var i in data){%> 
+                       <% for(var i in results){%> 
                         <tr>
-                            <td><%=data[i].id%></td>                           
-                            <td><%=data[i].groupName%></td>
+                            <td><%=results[i].id%></td>                           
+                            <td><%=results[i].groupName%></td>
                             <td>
                                 <%
                                     var st = ['禁用','启用'];
                                     var stcolor = ['btn-danger','btn-info'];
                                 %>
-                                <button type="button" class="btn <%=stcolor[data[i].status]%>" style="padding: 2px 4px;"><%=st[data[i].status]%></button>
+                                <button type="button" class="btn <%=stcolor[results[i].status]%>" style="padding: 2px 4px;"><%=st[results[i].status]%></button>
                             </td> 
-                            <td><%=getStandardDate(data[i].addTime)%></td>                           
+                            <td><%=getStandardDate(results[i].addTime)%></td>                           
                             <td class="project-actions">
-                                <a href="#" class="btn btn-white btn-sm" onclick="go('/admin/permit/editGlist?id=<%=data[i].id%>')"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                <a href="#" class="btn btn-white btn-sm" onclick="go('/admin/permit/editGlist?id=<%=results[i].id%>&name=<%=results[i].groupName%>')"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
                                 <a href="" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
                         </tr>

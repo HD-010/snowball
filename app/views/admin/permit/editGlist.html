@@ -34,15 +34,16 @@
                         <td>
                             <div class="page-content">                              
                                 <input name="id" type="hidden" value=""/>
-                                <div class="form-group">
+                                <div class="form-group" style="margin-bottom:20px;">
                                     <label class="col-lg control-label must">
                                        权限组名称
                                     </label>
                                     <div class="col-sm-4 col-xs-4">
-                                        <input class="form-control" data-rule-required="true" name="rolename" type="text" value=""/>
+                                        <input class="form-control" data-rule-required="true" name="groupPermit" type="text" value="<%=name%>" disabled/>
+                                        <input name="groupPermitId" type="hidden" value="<%=id%>"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label class="col-lg control-label">
                                         状态
                                     </label>
@@ -59,7 +60,7 @@
                                             如果禁用，则当前角色的操作员全部会禁止使用
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label class="col-lg control-label">
                                         可用权限
@@ -67,6 +68,8 @@
                                     <div class="col-sm-9 col-xs-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
+                                                
+                                                <% for(var i in loginUserPermit){ %>
                                                 <div class="panel-heading" style="background:#f8f8f8;">
                                                     <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapseshop">
                                                         <i class="fa fa-angle-down">
@@ -74,13 +77,15 @@
                                                         展开
                                                     </a>
                                                     <label class="checkbox-inline">
-                                                        <input class="perm-all perms" data-group="shop" id="perm_shop" type="checkbox" value="shop"/>
-                                                        系统管理
+                                                        <input class="perm-all perms" data-group="<%=loginUserPermit[i]menuId%>" id="perm_shop" type="checkbox" value="shop"/>
+                                                        <%=loginUserPermit[i].name%>
                                                     </label>
                                                 </div>
                                                 <div class="panel-collapse collapse" id="collapseshop">
                                                     <div class="panel-body">
                                                         
+
+                                                        <% for(var j in loginUserPermit[i].childrens[0]){ %>
                                                         <div class="panel-heading" style="background:#f8f8f8;">
                                                             <a class="btn btn-link btn-sm pull-right" data-parent="#accordionbase" data-toggle="collapse" href="#collapseshopbase">
                                                                 <i class="fa fa-angle-down">
@@ -147,7 +152,7 @@
                                                                 <br>
                                                             </div>
                                                         </div>
-                                                        
+                                                        <% } %>                                                        
 
 
 
@@ -197,7 +202,7 @@
                                                         </div>                                                                                                            
                                                     </div>
                                                 </div>
-                                                
+                                                <% } %>
                                                 
 
 
