@@ -52,8 +52,8 @@
                                             <label><input class="mui-switch mui-switch-anim" data-stat="{{ishidden}}" type="checkbox" value="{{ishidden}}"><em></em></label>                                      
                                     </td> 
                                     <td class="project-actions">
-                                        <a href="" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
-                                        <a href="" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                        <a onclick='go("/admin/type/edt?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
+                                        <a onclick='go("/admin/type/etl?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -88,37 +88,35 @@
         },
         after: function(){
             $('.footable').footable();
-            //switchEffect()
-            
+            switchEffect()
         }
     });
    
-    $(document).ready(function(){
+    function switchEffect(){
         var cl  = $(".mui-switch");
         for(var i=0;i<cl.length;i++){
                 if($(cl[i]).attr("data-stat")=='1'){
-                    cl[i].nextSibling.innerText='显示';
+                    cl[i].nextSibling.innerText='是';
                     cl[i].nextSibling.style.color="#FFFFFF";
                     cl[i].nextSibling.style.marginLeft='0px';
                     cl[i].checked=true;
                 }else{
-                    cl[i].nextSibling.innerText='隐藏';
+                    cl[i].nextSibling.innerText='否';
                     cl[i].nextSibling.style.color="#D2D2D2";
                     cl[i].nextSibling.style.marginLeft='16px';
                 }
         }
         cl.click(function(){
                 if(this.checked){
-                    this.nextSibling.innerText='显示';
+                    this.nextSibling.innerText='是';
                     this.nextSibling.style.color="#FFFFFF";
                     this.nextSibling.style.marginLeft='0px';
                 }else{
-                    this.nextSibling.innerText='隐藏';
+                    this.nextSibling.innerText='否';
                     this.nextSibling.style.color="#D2D2D2";
                     this.nextSibling.style.marginLeft='16px';                
-                    
                 }
         })
-    })
+    }
 
 </script>
