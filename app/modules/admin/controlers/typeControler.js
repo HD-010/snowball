@@ -65,7 +65,11 @@ function typeControler(){
      * 保存栏目编辑后的信息
      */
     this.save = function(){
-        this.model("Type").save({},function(res){
+        var param = {
+            tag: that.POST('tag'),
+            atid: that.GET('atid')
+        };
+        this.model("Type").save(param,function(res){
             that.renderJson(res);
         });
     }
