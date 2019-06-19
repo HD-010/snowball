@@ -24,6 +24,7 @@ session{
 
 post、get参数参考：
 tid : 栏目id
+atid : 指定栏目id
 uid : 用户id
 oid : 当前系统openID
 cid : 组件id

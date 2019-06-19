@@ -7,7 +7,7 @@ function ComponentModel(){
             fields : ['*']
         };
 
-        this.DB().log().get(conditions,function(error,res){
+        this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
             data.data = res;
             return callback(data);

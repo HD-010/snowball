@@ -1,0 +1,192 @@
+<div class="container-fluid base type-edt">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理-编辑栏目</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+           </div>
+        </div>
+    </div>
+    <div class="row form">
+        <form id="type-edt" data-form-async='json' action="/admin/type/save" method="post" >
+            <input type="hidden" name='tag' value="edt" />
+            <input type="hidden" name='atid' value="{{id}}" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>栏目名称：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" name="typename" placeholder="栏目名称" value="{{typename}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                        </td>              
+                    </tr>
+                    <tr>
+                        <td>所属栏目：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" name='topid'  placeholder="当前栏目是顶级栏目" value="{{- return array2value(allType,'id',aType[0].topid,'typename')||0; }}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>隐藏栏目：</td>
+                        <td style="padding-left:26px; ">
+                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="ishidden" data-stat="{{-return ishidden||1; }}" value="{{ishidden}}" /><em></em></label>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
+                        </td>    
+                    </tr>
+                    <tr>
+                        <td>是否发布：</td>
+                        <td style="padding-left:26px; ">
+                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" data-stat="{{issend}}" name="issend" value="{{issend}}"/><em></em></label>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如果没有为是，没前栏目有可以网站中访问</span>
+                        </td>    
+                    </tr>
+                    <tr>
+                        <td>最大页数：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="number" class="form-control" placeholder="当前栏目能创建多少页" name="maxpage" value="{{maxpage}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置当前栏目最多能创建多少个页面,-1表示不无限个</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>权重：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="number" class="form-control" placeholder="用于排序" name="corank" value="{{corank}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;数字越大越靠前</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>SEO标题：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" placeholder="用于SEO" name="seotitle" value="{{seotitle}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;SEO标题</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>关键词：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" placeholder="用于SEO" name="keywords" value="{{keywords}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;优化栏目关键词让搜索引擎更容易找到</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>栏目描述：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" placeholder="描述一下栏目有哪些特点" name="description" value="{{description}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;描述一下栏目有哪些特点</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>网站路由：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" placeholder="" name="sitepath" value="{{sitepath}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;</span>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>网站url：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" placeholder="" name="siteurl" value="{{siteurl}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;</span>
+                        </td> 
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    var error = <%- error %>;
+    var aType = <%- JSON.stringify(aType) %>;
+    var allType = <%- JSON.stringify(allType) %>;
+    app.addonParams = {oid: getItem('OID')};
+
+    DL({
+        id: "#type-edt",
+        packet:{
+            error: error,
+            data: aType[0]
+        },
+        after: function(){
+            switchEffect();
+            app.load(".type-edt");
+        }
+    });
+
+    function switchEffect(){
+        var cl  = $(".mui-switch");
+        for(var i=0;i<cl.length;i++){
+                if($(cl[i]).attr("data-stat")=='1'){
+                    cl[i].nextSibling.innerText='是';
+                    cl[i].nextSibling.style.color="#FFFFFF";
+                    cl[i].nextSibling.style.marginLeft='0px';
+                    cl[i].checked=true;
+                }else{
+                    cl[i].nextSibling.innerText='否';
+                    cl[i].nextSibling.style.color="#D2D2D2";
+                    cl[i].nextSibling.style.marginLeft='16px';
+                }
+        }
+        cl.click(function(){
+                if(this.checked){
+                    this.nextSibling.innerText='是';
+                    this.nextSibling.style.color="#FFFFFF";
+                    this.nextSibling.style.marginLeft='0px';
+                }else{
+                    this.nextSibling.innerText='否';
+                    this.nextSibling.style.color="#D2D2D2";
+                    this.nextSibling.style.marginLeft='16px';                
+                }
+        })
+    }
+
+    /**
+     * 数据保存后的操作 
+     */
+    function save(res){
+        delete res.uri;
+        app.notice(res,function(){
+            if(!res.error) go('/admin/type/index');
+        });
+    }
+</script>

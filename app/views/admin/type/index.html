@@ -1,0 +1,122 @@
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理</span>
+        </div>
+    </div>
+    
+    <div class="row ibox-content">
+        <div class="col-sm-12">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>栏目列表</h5>
+            
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">选项 01</a>
+                                </li>
+                                <li><a href="#">选项 02</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索栏目名称...">
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+                            <thead>
+                                <tr>
+                                    <th>栏目名称</th>
+                                    <th>浏览器</th>
+                                    <th data-sort-ignore="true">关键词</th>
+                                    <th data-sort-ignore="true">隐藏</th>
+                                    <th data-sort-ignore="true">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="type-list">
+                                <tr class="grade{{- return index%2?'C':'A'; }}">
+                                    <td>{{typename}}</td>
+                                    <td>Internet Explorer 4.0
+                                    </td>
+                                    <td>{{keywords}}</td>
+                                    <td style="padding-left:26px;">                                       
+                                            <label><input class="mui-switch mui-switch-anim" data-stat="{{ishidden}}" type="checkbox" value="{{ishidden}}"><em></em></label>                                      
+                                    </td> 
+                                    <td class="project-actions">
+                                        <a onclick='go("/admin/type/edt?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
+                                        <a onclick='go("/admin/type/etl?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+
+
+<script>
+    var error = <%- error %>;
+    var data = <%- JSON.stringify(data) %>;
+    DL({
+        dev: "on",
+        listId: "#type-list",
+        packet: {
+            error: error,
+            data: data
+        },
+        after: function(){
+            $('.footable').footable();
+            switchEffect()
+        }
+    });
+   
+    function switchEffect(){
+        var cl  = $(".mui-switch");
+        for(var i=0;i<cl.length;i++){
+                if($(cl[i]).attr("data-stat")=='1'){
+                    cl[i].nextSibling.innerText='是';
+                    cl[i].nextSibling.style.color="#FFFFFF";
+                    cl[i].nextSibling.style.marginLeft='0px';
+                    cl[i].checked=true;
+                }else{
+                    cl[i].nextSibling.innerText='否';
+                    cl[i].nextSibling.style.color="#D2D2D2";
+                    cl[i].nextSibling.style.marginLeft='16px';
+                }
+        }
+        cl.click(function(){
+                if(this.checked){
+                    this.nextSibling.innerText='是';
+                    this.nextSibling.style.color="#FFFFFF";
+                    this.nextSibling.style.marginLeft='0px';
+                }else{
+                    this.nextSibling.innerText='否';
+                    this.nextSibling.style.color="#D2D2D2";
+                    this.nextSibling.style.marginLeft='16px';                
+                }
+        })
+    }
+
+</script>
