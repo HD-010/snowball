@@ -1,4 +1,4 @@
-<div class="container-fluid base type-edt">
+<div class="container-fluid base type-add">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-栏目管理-编辑栏目</span>
@@ -135,22 +135,23 @@
 
 
 <script>
+    app.load(".type-add");
+    switchEffect()
     var error = <%- error %>;
     var aType = [];
     var allType = <%- JSON.stringify(allType) %>;
     app.addonParams = {oid: getItem('OID')};
-
-    DL({
-        id: "#type-add",
-        packet:{
-            error: error,
-            data: aType[0]
-        },
-        after: function(){
-            switchEffect();
-            app.load(".type-add");
-        }
-    });
+    // DL({
+    //     id: "#type-add",
+    //     packet:{
+    //         error: error,
+    //         data: aType[0]
+    //     },
+    //     after: function(){
+    //         switchEffect();
+    //         app.load(".type-add");
+    //     }
+    // });
 
     function switchEffect(){
         var cl  = $(".mui-switch");

@@ -21,22 +21,24 @@ function TypeModel(){
     }
 
     /**
-     * 保存栏目编辑后的信息
+     * 保存栏目信息
+     * 当前方法供栏目信息修改后保存，新增栏目信息保存调用
      */
     this.save = function(param, callback){
         var data = {
             error: 1,
             message:"参数错误"
         };
-        var id = this.POST('atid');
-        if(!id) return callback(data);
-        var conditions = {
+        if(((param.tag === 'edt') && (param.atid)) &&
+        (param.tag === 'add')) return callback(data);
+
+       var conditions = {
             table:'youbang_arctype',
             where:[],
             fields:[]
         }
         
-        if(id) conditions.where.push("id=" + id);
+        if(param.atid) conditions.where.push("id=" + param.atid);
         var upData = {};
         upData.typename = this.POST('typename') || "";
         upData.ishidden = parseInt(this.POST('ishidden')) || 0;
