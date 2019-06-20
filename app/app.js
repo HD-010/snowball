@@ -13,6 +13,12 @@ var ueditor      = require('ueditor');                        //加载ueditor模
 var myUeditor    = require('./e/vendor/esoft/plug/ueditor');  //加载ueditor插件入口文件
 var appRouter    = require('./e/app');
 var app          = express();
+var sessionStore = new RedisStore({
+    host:'127.0.0.1',
+    port:6379,
+    logErrors: true,
+    db:1
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -33,12 +39,7 @@ app.use(bodyParser.json());
 //开启session
 app.use(session({
     secret: 'node_snowball',
-    store: new RedisStore({
-        host:'127.0.0.1',
-        port:6379,
-        logErrors: true,
-        db:1
-    }),
+    store: sessionStore,
     cookie: {maxAge:60*1000*10},
     saveUninitialized: true,
     resave: true
