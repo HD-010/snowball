@@ -39,6 +39,12 @@ function sysControler(){
         console.log("=====================================")
         that.render({});
    }
+   //友情链接
+   this.flink = function (){
+    console.log("=====================================")
+    that.render({});
+}
+
 
 }
 

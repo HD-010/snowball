@@ -1,0 +1,136 @@
+<style>
+       .thead{     
+            line-height: 50px;
+        }
+        .admin_table_top{
+         background: #e6e6e6;
+         }
+         .admin_table_top2{
+        border-top: 1px dotted #e6e6e6;
+        border-bottom:1px dotted #e6e6e6;
+        line-height: 60px;
+         }     
+         </style>
+
+
+           <script type="text/javascript">
+            function quanxuan()
+            {
+                for(var i=1;i<=3;i++)
+                {
+                    var cbox_id="cb"+i;
+                    var cbox=document.getElementById(cbox_id);
+                    //alert(cbox.value);
+                    if(document.getElementById("cb_quanxuan").checked)
+                        cbox.checked=true;
+                    else
+                        cbox.checked=false;
+                }
+            }
+            function fanxuan()
+            {
+                for(var i=1;i<=3;i++)
+                {
+                    var cbox_id="cb"+i;
+                    var cbox=document.getElementById(cbox_id);
+                    if(document.getElementById("cb_fanxuan").checked)
+                    {//选中全选框
+                        if(cbox.checked)
+                            cbox.checked=false;
+                        else
+                            cbox.checked=true;
+                    }
+                    else
+                    {
+                        if(cbox.checked)
+                            cbox.checked=false;
+                        else
+                            cbox.checked=true;
+                    }
+                }
+            }
+        </script>
+        
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统 - 设置 - 友情链接</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">该页面展示了网站的友情链接信息，可对友情链接进行审核，删除操作。</p>
+                 <p class="indent">可输入名称关键字进行搜索，也可进行详细的高级搜索</p>          
+           </div>
+        </div>
+    </div>
+    <form action="" method="get" name="myform">
+        <ul class="list-inline">
+            <li>搜索类型</li>
+            <li>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name"  placeholder="请输入你要搜索的关键字"/>
+                </div>
+            </li>
+            <li>
+                <button type="button" class="btn btn-success">检索</button>
+            </li>
+            <li>
+                <a data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"><button type="button" class="btn btn-success">高级搜索</button></a>
+            </li>
+            <li>
+                <button type="button" class="btn btn-default" style="border:1px solid#EC5051;"><span style="color:#EC5051;"> + 添加会员</span></button>
+            </li>
+        </ul>
+    </form>
+    <div class="table-list">
+            <div class="admin_table_border">
+              <iframe id="supportiframe" name="supportiframe" onload="returnmessage('supportiframe');" style="display:none"></iframe>
+              <form action="index.php?m=link&amp;c=del" name="myform" method="post" id="myform" target="supportiframe">
+                <input type="hidden" name="pytoken" id="pytoken" value="4574fbe372cf">
+                <table width="100%">
+                  <thead style=" line-height: 40px;">
+                    <tr class="admin_table_top">
+                      <th><label for="chkall">
+                        
+                        </label></th>
+                      <th>  <a href="#">编号<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th align="left">链接标题</th>
+                      <th align="left">链接地址</th>
+                      <th align="left">显示站点</th>
+                      <th>  <a href="#">发布时间<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th>类型</th>
+                      <th>  <a href="#">排序<img src="http://yhrc.pykj.xyz/user/images/sanj2.jpg"></a>  </th>
+                      <th>状态</th>
+                      <th class="admin_table_th_bg" width="120">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody style=" line-height: 40px;" >
+                    <tr class="admin_table_top1">
+                        <th><label for="chkall">
+                            <input type="checkbox" id="cb1" value="1" /> 
+                          </label></th>
+                          <td><span>4</span></td>
+                          <td class="ud" align="left">逸辉人才系统</td>
+                          <td class="od" align="left"><a href="http://yhrc.pykj.xyz" target="_blank">http://yhrc.pykj.xyz</a></td>
+                          <td class="ud" align="left">总站</td>
+                          <td>2019-03-15</td>
+                          <td> 文字链接 </td>
+                          <td>1</td>
+                          <td> <span class="admin_com_Audited">已审核</span></td>      
+                          <td width="180"> <a href="javascript:void(0);" class="user_status admin_new_c_bth admin_new_c_bthsh" pid="4" status="1">审核</a>
+                           <a href="index.php?m=link&amp;c=add&amp;id=4" class="admin_new_c_bth">修改</a> 
+                           <a href="javascript:void(0)" onclick="layer_del('确定要删除？', 'index.php?m=link&amp;c=del&amp;id=4');" class="admin_new_c_bth admin_new_c_bth_sc">删除</a> </td>
+                        </tr>
+                      <tr class="admin_table_top2">
+                        <th><label for="chkall">
+                            <input type="checkbox" id="cb_fanxuan" onclick="fanxuan()" />
+                          </label></th>
+                      <td colspan="2"><label for="cb_fanxuan">全选</label>
+                   <button type="button" class="btn btn-success">批量选择分站</button>
+                   <a data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"><button type="button" class="btn btn-success">删除所选</button></td>
+		         <th colspan="7" class="digg"></th>
+                </tr>
+            </tbody>
