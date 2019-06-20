@@ -197,7 +197,7 @@ function ViewData(params){
                 data: that.data,
                 dataType: "text",
                 type: "POST",
-                async:true,
+                async: that.async,
                 success: function(results){
                     var json = '';
                     var text = '';
