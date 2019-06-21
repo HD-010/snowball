@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" href="/bootstrap/css/v3.css"/>
 <style>
 .panel-collapse{
@@ -33,7 +34,7 @@
                         <td>用户组权限：</td>
                         <td>
                             <div class="page-content">                              
-                                <input name="id" type="hidden" value=""/>
+                                <input name="groupId" type="hidden" value="<%=id%>"/>
                                 <div class="form-group" style="margin-bottom:20px;">
                                     <label class="col-lg control-label must">
                                        权限组名称
@@ -43,24 +44,7 @@
                                         <input name="groupPermitId" type="hidden" value="<%=id%>"/>
                                     </div>
                                 </div>
-                                <!-- <div class="form-group">
-                                    <label class="col-lg control-label">
-                                        状态
-                                    </label>
-                                    <div class="col-sm-9 col-xs-12">
-                                        <label class="radio-inline">
-                                            <input name="status" type="radio" value="1"/>
-                                            启用
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input checked="" name="status" type="radio" value="0"/>
-                                            禁用
-                                        </label>
-                                        <span class="help-block">
-                                            如果禁用，则当前角色的操作员全部会禁止使用
-                                        </span>
-                                    </div>
-                                </div> -->
+                                
                                 <div class="form-group">
                                     <label class="col-lg control-label">
                                         可用权限
@@ -68,238 +52,88 @@
                                     <div class="col-sm-9 col-xs-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                                
-                                                <% for(var i in loginUserPermit){ %>
+                                               
+                                                <% for(var i in loginUserPermit){  
+                                                    
+
+                                                    var list = array2value(listPermits,'id',loginUserPermit[i].id);
+                                                    
+                                                    
+                                                    %>
+                                                  
                                                 <div class="panel-heading" style="background:#f8f8f8;">
-                                                    <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapseshop">
+                                                    <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapseshop<%= loginUserPermit[i].id %>">
                                                         <i class="fa fa-angle-down">
                                                         </i>
                                                         展开
                                                     </a>
                                                     <label class="checkbox-inline">
-                                                        <input class="perm-all perms" data-group="<%=loginUserPermit[i]menuId%>" id="perm_shop" type="checkbox" value="shop"/>
-                                                        <%=loginUserPermit[i].name%>
+                                                       
+                                                        <input class="perm-all perms" data-show="<%=list.show %>" data-add="<%=list.add%>" data-edit="<%=list.edit%>" data-delete="<%=list.delete%>" data-permitId="<%=list.permitId%>" data-userId="<%=list.userId%>" data-menuId="<%=list.menuId%>" data-groupId="<%=list.groupId%>" data-group="<%= loginUserPermit[i].id %>" id="perm_shop_<%= loginUserPermit[i].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>"/>
+                                                       
+                                                     
+                                                        <%= loginUserPermit[i].name %>
                                                     </label>
                                                 </div>
-                                                <div class="panel-collapse collapse" id="collapseshop">
+                                                <div class="panel-collapse collapse" id="collapseshop<%= loginUserPermit[i].id %>">
                                                     <div class="panel-body">
-                                                        
-                                                        <%=%>
-                                                        <% for(var j in loginUserPermit[i].childrens[0]){ %>
+                                                    
+                                                        <% for(var j in loginUserPermit[i].childrens){                                                          
+                                                            var list1 = array2value(listPermits,'id',loginUserPermit[i].childrens[j].id);                                                                                                                   
+                                                            %>
                                                         <div class="panel-heading" style="background:#f8f8f8;">
-                                                            <a class="btn btn-link btn-sm pull-right" data-parent="#accordionbase" data-toggle="collapse" href="#collapseshopbase">
+                                                            <a class="btn btn-link btn-sm pull-right" data-parent="#accordionbase_<%= loginUserPermit[i].childrens[j].id %>" data-toggle="collapse" href="#collapseshopbase<%= loginUserPermit[i].childrens[j].id %>">
                                                                 <i class="fa fa-angle-down">
                                                                 </i>
                                                                 展开
                                                             </a>
                                                             <label class="checkbox-inline">
-                                                                <input class="perm-all-item-base perms" data-group="shop" data-id="collapseshopbase" type="checkbox" value="shop.base"/>
-                                                                系统设置
+                                                                <input class="perm-all-item-base perms" data-show="<%=list1.show %>" data-add="<%=list1.add%>" data-edit="<%=list1.edit%>" data-delete="<%=list1.delete%>" data-permitId="<%=list1.permitId%>" data-userId="<%=list1.userId%>" data-menuId="<%=list1.menuId%>" data-groupId="<%=list.groupId%>" data-group="<%=loginUserPermit[i].id %>" data-id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>"/>
+                                                                <%= loginUserPermit[i].childrens[j].name %>
                                                             </label>
                                                         </div>
-                                                        <div class="panel-collapse collapse" id="collapseshopbase">
+                                                        <div class="panel-collapse collapse" id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>">
                                                             <div class="panel-body perm-group">
+
+                                                                <% if(loginUserPermit[i].childrens[j].childrens.length > 0){ %>
+                                                                <% for(var h in loginUserPermit[i].childrens[j].childrens){ 
+                                                                    var list2 = array2value(listPermits,'id',loginUserPermit[i].childrens[j].childrens[h].id);
+                                                                    %>    
                                                                 <span>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.base.adv"/>
+                                                                        <input class="perm-all-item perms" data-show="<%=list2.show %>" data-add="<%=list2.add%>" data-edit="<%=list2.edit%>" data-delete="<%=list2.delete%>" data-permitId="<%=list2.permitId%>" data-userId="<%=list2.userId%>" data-menuId="<%=list2.menuId%>" data-groupId="<%=list.groupId%>"  data-group="<%= loginUserPermit[i].id %>" data-parent="adv" data-son="text" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>"/>
                                                                         <b>
-                                                                            上传设置
+                                                                            <%=loginUserPermit[i].childrens[j].childrens[h].name %>
                                                                         </b>
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="adv" data-son="main" type="checkbox" value="shop.base.adv.main"/>
+                                                                        <input class="perm-item-show perms"  data-show="<%=list2.show %>"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="main" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.show"/>
                                                                         查看
                                                                     </label>                                                                   
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="adv" data-son="add" type="checkbox" value="shop.base.adv.add"/>
+                                                                        <input class="perm-item perms" data-add="<%=list2.add %>" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="add" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.add"/>
                                                                         添加
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="adv" data-son="edit" type="checkbox" value="shop.base.adv.edit"/>
+                                                                        <input class="perm-item perms" data-edit="<%=list2.edit %>"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="edit" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.edit"/>
                                                                         修改
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="adv" data-son="delete" type="checkbox" value="shop.base.adv.delete"/>
+                                                                        <input class="perm-item perms" data-delete="<%=list2.delete %>" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="delete" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.delete"/>
                                                                         删除
                                                                     </label>
                                                                 </span>
                                                                 <br>
-                                                                <span>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-all-item perms" data-group="shop" data-parent="advv" data-son="text" type="checkbox" value="shop.base.advv"/>
-                                                                        <b>
-                                                                            缓存设置
-                                                                        </b>
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="main" type="checkbox" value="shop.base.advv.main"/>
-                                                                        查看
-                                                                    </label>
-                                                                   
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="add" type="checkbox" value="shop.base.advv.add"/>
-                                                                        添加
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="edit" type="checkbox" value="shop.base.advv.edit"/>
-                                                                        修改
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="delete" type="checkbox" value="shop.base.advv.delete"/>
-                                                                        删除
-                                                                    </label>
-                                                                </span>
-                                                                <br>
+                                                               <% } %>
+                                                               <% } %>
+                                                                
                                                             </div>
                                                         </div>
-                                                        <% } %>                                                        
-
-
-
-
-                                                        
-                                                        <!-- 二级分类 -->
-                                                        <div class="panel-heading" style="background:#f8f8f8;">
-                                                            <a class="btn btn-link btn-sm pull-right" data-parent="#accordionbase" data-toggle="collapse" href="#collapseshopnum">
-                                                                <i class="fa fa-angle-down">
-                                                                </i>
-                                                                展开
-                                                            </a>
-                                                            <label class="checkbox-inline">
-                                                                <input class="perm-all-item-base perms" data-group="shop" data-id="collapseshopnum" type="checkbox" value="shop.num"/>
-                                                                原数据管理
-                                                            </label>
-                                                        </div>
-                                                        <div class="panel-collapse collapse" id="collapseshopnum">
-                                                            <div class="panel-body perm-group">
-                                                                <span>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-all-item perms" data-group="shop" data-parent="advv" data-son="text" type="checkbox" value="shop.base.advv"/>
-                                                                        <b>
-                                                                            缓存设置
-                                                                        </b>
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="main" type="checkbox" value="shop.base.advv.main"/>
-                                                                        查看
-                                                                    </label>
-                                                                   
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="add" type="checkbox" value="shop.base.advv.add"/>
-                                                                        添加
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="edit" type="checkbox" value="shop.base.advv.edit"/>
-                                                                        修改
-                                                                    </label>
-                                                                    <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-group="shop" data-parent="advv" data-son="delete" type="checkbox" value="shop.base.advv.delete"/>
-                                                                        删除
-                                                                    </label>
-                                                                </span>
-                                                                <br>
-                                                            </div>
-                                                        </div>                                                                                                            
+                                                        <% } %>                                         
+                                                                                                              
                                                     </div>
                                                 </div>
                                                 <% } %>
-                                                
-
-
-
-                                                <div class="panel-heading" style="background:#f8f8f8;display:">
-                                                    <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapsemember">
-                                                        <i class="fa fa-angle-down">
-                                                        </i>
-                                                        展开
-                                                    </a>
-                                                    <label class="checkbox-inline">
-                                                        <input class="perm-all perms" data-group="member" id="perm_member" type="checkbox" value="member"/>
-                                                        会员管理
-                                                    </label>
-                                                </div>
-                                                <div class="panel-collapse collapse" id="collapsemember">
-                                                    <div class="panel-body perm-group">
-                                                        <span>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-all-item perms" data-group="member" data-parent="group" data-son="text" type="checkbox" value="member.group"/>
-                                                                <b>
-                                                                    会员组
-                                                                </b>
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="group" data-son="main" type="checkbox" value="member.group.main"/>
-                                                                查看列表
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="group" data-son="add" type="checkbox" value="member.group.add"/>
-                                                                添加
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="group" data-son="edit" type="checkbox" value="member.group.edit"/>
-                                                                修改
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="group" data-son="delete" type="checkbox" value="member.group.delete"/>
-                                                                删除
-                                                            </label>
-                                                        </span>
-                                                        <br>
-                                                        <span>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-all-item perms" data-group="member" data-parent="level" data-son="text" type="checkbox" value="member.level"/>
-                                                                <b>
-                                                                    会员等级
-                                                                </b>
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="level" data-son="main" type="checkbox" value="member.level.main"/>
-                                                                查看列表
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="level" data-son="add" type="checkbox" value="member.level.add"/>
-                                                                添加
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="level" data-son="edit" type="checkbox" value="member.level.edit"/>
-                                                                修改
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="level" data-son="delete" type="checkbox" value="member.level.delete"/>
-                                                                删除
-                                                            </label>
-                                                        </span>
-                                                        <br>
-                                                        <span>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-all-item perms" data-group="member" data-parent="list" data-son="text" type="checkbox" value="member.list"/>
-                                                                <b>
-                                                                    会员管理
-                                                                </b>
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="list" data-son="main" type="checkbox" value="member.list.main"/>
-                                                                浏览
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="list" data-son="edit" type="checkbox" value="member.list.edit"/>
-                                                                修改
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="list" data-son="view" type="checkbox" value="member.list.view"/>
-                                                                查看
-                                                            </label>
-                                                            <label class="checkbox-inline" >
-                                                                <input class="perm-item perms" data-group="member" data-parent="list" data-son="delete" type="checkbox" value="member.list.delete"/>
-                                                                删除
-                                                            </label>
-                                                        </span>
-                                                        <br>                                                                    
-                                                    </div>
-                                                </div>
-
-
-
 
                                             </div>
                                         </div>
@@ -324,6 +158,38 @@
 </div>
 <script language="javascript">
 $(function () {
+    //提交组装数据
+    $("form").submit(function (event) {
+        event.preventDefault()       
+        // $(this).attr('stop',1);
+        // var perms = [];
+        // $(".perms:checked").each(function (index,e) {         
+        //     perms[index]=$(this).val();
+        // });   
+        // perms = perms.join(',')
+        // console.log(perms)
+        // $("input[name=permsarray]").val(perms);
+
+        // $(this).attr('stop',0);
+        // return true;
+
+        //自动组装
+        var perms=[];
+        $("input[data-menuId]").each(function(index,e){
+            if($(this).attr("data-menuId")){
+                perms.push({"menuId":$(this).attr("data-menuId"),"id":$(this).attr("data-permitId"),"userId":$(this).attr("data-userId"),"groupId":$(this).attr("data-groupId"),"add":$(this).attr("data-add"),"delete":$(this).attr("data-delete"),"edit":$(this).attr("data-edit"),"show":$(this).attr("data-show")});                
+            }
+        });
+        console.log(perms)
+
+
+
+    });
+
+
+
+
+
 
     //父级选中 全部选中
     $('.perm-all').click(function () {
@@ -332,22 +198,22 @@ $(function () {
 
         var group = $(this).data('group');
 
-        $(".perm-all-item-base[data-group='" + group + "'],.perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").each(function () {
+        $(".perm-all-item-base[data-group='" + group + "'],.perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
 
             $(this).get(0).checked = checked;
-
+           alert(checked)
         })
 
     })
 
     //二级分类点击
     $('.perm-all-item-base').click(function () {
-    
         var checked = $(this).get(0).checked;
 
         var group = $(this).data('group');
         var id = $(this).attr('data-id');
-        $("#"+id).find(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").each(function () {
+
+        $("#"+id).find(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
 
             $(this).get(0).checked = checked;
 
@@ -370,7 +236,7 @@ $(function () {
         var grandson = $(this).data('grandson');
 
         //找到他下面子类
-        $(this).parents("span").find(".perm-item").each(function () {
+        $(this).parents("span").find(".perm-item,.perm-item-show[data-group='" + group + "']").each(function () {
 
             $(this).get(0).checked = checked;
 
@@ -406,6 +272,54 @@ $(function () {
         });
 
         var allitem = $(this).parents("span").find(".perm-all-item");
+        var allitemShow = $(this).parents("span").find(".perm-item-show");
+        
+        if (allitem.length == 1) {
+
+            allitem.get(0).checked = check;
+
+        }
+        if (allitemShow.length == 1) {
+
+            allitemShow.get(0).checked = check;
+
+        }
+
+        group_check(this);
+        group_check_parent(this)
+    });
+
+
+    $('.perm-item-show').click(function () {
+
+        var group = $(this).data('group');
+
+        var parent = $(this).data('parent');
+
+        var son = $(this).data('son');
+
+        var grandson = $(this).data('grandson');
+
+        var check = false;
+
+        $(this).closest('span').find(".perm-item-show").each(function () {
+            
+            if ($(this).get(0).checked) {
+
+                check = true;
+
+                return false;
+
+            }else{
+                $(this).closest('span').find(".perm-item").each(function(){
+                    $(this).get(0).checked=check;
+                });
+            }
+
+        });
+
+        var allitem = $(this).parents("span").find(".perm-all-item");
+
 
         if (allitem.length == 1) {
 
@@ -415,7 +329,7 @@ $(function () {
 
         group_check(this);
         group_check_parent(this)
-        });
+    });
 
 
     //样式调节
@@ -437,26 +351,10 @@ $(function () {
 
     });
 
-    $("form").submit(function (event) {
-        event.preventDefault()
-       
-        $(this).attr('stop',1);
-
-        var perms = [];
-
-        $(".perms:checked").each(function (index,e) {
-            perms[index]=$(this).val();
-
-        });
-        perms = perms.join(',')
-        console.log(perms)
-        $("input[name=permsarray]").val(perms);
-
-        $(this).attr('stop',0);
-
-        return true;
-
-    });
+    $("input[data-show='1']").attr('checked',true);
+    $("input[data-add='1']").attr('checked',true);
+    $("input[data-edit='1']").attr('checked',true);
+    $("input[data-delete='1']").attr('checked',true);
 
 });
 
