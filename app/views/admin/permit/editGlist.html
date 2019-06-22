@@ -53,12 +53,8 @@
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
                                                
-                                                <% for(var i in loginUserPermit){  
-                                                    
-
+                                                <% for(var i in loginUserPermit){
                                                     var list = array2value(listPermits,'id',loginUserPermit[i].id);
-                                                    
-                                                    
                                                     %>
                                                   
                                                 <div class="panel-heading" style="background:#f8f8f8;">
@@ -107,19 +103,19 @@
                                                                         </b>
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item-show perms"  data-show="<%=list2.show %>"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="main" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.show"/>
+                                                                        <input class="perm-item-show perms"  data-list="data-show"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="main" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.show"/>
                                                                         查看
                                                                     </label>                                                                   
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-add="<%=list2.add %>" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="add" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.add"/>
+                                                                        <input class="perm-item perms" data-list="data-add" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="add" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.add"/>
                                                                         添加
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-edit="<%=list2.edit %>"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="edit" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.edit"/>
+                                                                        <input class="perm-item perms" data-list="data-edit"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="edit" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.edit"/>
                                                                         修改
                                                                     </label>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-item perms" data-delete="<%=list2.delete %>" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="delete" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.delete"/>
+                                                                        <input class="perm-item perms" data-list="data-delete" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="delete" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.delete"/>
                                                                         删除
                                                                     </label>
                                                                 </span>
@@ -196,27 +192,71 @@ $(function () {
 
         var checked = $(this).get(0).checked;
 
+        //自己本身也在改变
+        if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
         var group = $(this).data('group');
 
         $(".perm-all-item-base[data-group='" + group + "'],.perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
 
             $(this).get(0).checked = checked;
-           alert(checked)
+            if(checked){
+                $(this).attr("data-show","1");
+                $(this).attr("data-add","1");
+                $(this).attr("data-edit","1");
+                $(this).attr("data-delete","1");
+            }else{
+                $(this).attr("data-show","0");
+                $(this).attr("data-add","0");
+                $(this).attr("data-edit","0");
+                $(this).attr("data-delete","0");
+            }
         })
+
 
     })
 
     //二级分类点击
     $('.perm-all-item-base').click(function () {
         var checked = $(this).get(0).checked;
-
+        //自己本身也在改变
+        if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
         var group = $(this).data('group');
         var id = $(this).attr('data-id');
 
         $("#"+id).find(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
 
             $(this).get(0).checked = checked;
-
+            if(checked){
+                $(this).attr("data-show","1");
+                $(this).attr("data-add","1");
+                $(this).attr("data-edit","1");
+                $(this).attr("data-delete","1");
+            }else{
+                $(this).attr("data-show","0");
+                $(this).attr("data-add","0");
+                $(this).attr("data-edit","0");
+                $(this).attr("data-delete","0");
+            }
         })
         group_check_parent(this)
     })
@@ -226,6 +266,18 @@ $(function () {
     $('.perm-all-item').click(function () {
 
         var checked = $(this).get(0).checked;//得到他是否被选中
+         //自己本身也在改变
+         if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
 
         var group = $(this).data('group');
 
@@ -274,14 +326,23 @@ $(function () {
         var allitem = $(this).parents("span").find(".perm-all-item");
         var allitemShow = $(this).parents("span").find(".perm-item-show");
         
+        //自定义属性
+        var ch  = $(this).get(0).checked;
+        if(ch){
+            allitem.attr("data-show",'1');
+            allitem.attr($(this).attr("data-list"),"1");
+        }else{
+            allitem.attr($(this).attr("data-list"),"0");
+        }
+
         if (allitem.length == 1) {
 
-            allitem.get(0).checked = check;
+            allitem.get(0).checked = true;
 
         }
         if (allitemShow.length == 1) {
 
-            allitemShow.get(0).checked = check;
+            allitemShow.get(0).checked = true;
 
         }
 
@@ -319,7 +380,14 @@ $(function () {
         });
 
         var allitem = $(this).parents("span").find(".perm-all-item");
-
+        if(check){
+            allitem.attr("data-show","1");
+        }else{
+            allitem.attr("data-show","0");
+            allitem.attr("data-add","0");
+            allitem.attr("data-edit","0");
+            allitem.attr("data-delete","0");
+        }
 
         if (allitem.length == 1) {
 
@@ -369,7 +437,18 @@ function group_check(obj) {
 
     var group = $(obj).eq(0).data('group');
    $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").get(0).checked = check;
-    
+    //自定义属性
+    if(check){
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-show","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-add","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-edit","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-delete","1");
+    }else{
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-show","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-add","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-edit","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-delete","0");
+    }
 }
 
 
@@ -380,12 +459,24 @@ function group_check_parent(obj) {
         if (item.checked) {
             check = true;           
         }
-
     });
 
     var group = $(obj).eq(0).data('group');
 
     $(".perm-all[data-group=" + group + "]").get(0).checked = check;
+
+    //自定义属性
+    if(check){
+        $(".perm-all[data-group=" + group + "]").attr("data-show","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-add","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-edit","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-delete","1");
+    }else{
+        $(".perm-all[data-group=" + group + "]").attr("data-show","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-add","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-edit","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-delete","0");
+    }
     
 }
     </script>
