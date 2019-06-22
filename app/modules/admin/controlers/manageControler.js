@@ -1,5 +1,5 @@
 //用户管理
-function memberControler(){
+function manageControler(){
     var that = this;
 
     //添加用户
@@ -13,4 +13,4 @@ function memberControler(){
     }
 
 }
-module.exports = memberControler;
+module.exports = manageControler;

@@ -15,7 +15,7 @@ function GroupModel(){
         var process =  that.model("DataProcess");
         var uid = process.getUserInfo('UID');        
         data.userInfo =process.getUserInfo(uid)[0];
-
+        console.log("userinfo",data.userInfo)
 
         var id = that.GET('id') || that.POST('id') || '';//获取管理组ID
         var condition = {
@@ -27,7 +27,7 @@ function GroupModel(){
        
         if(id) condition.where.push("id=" + id );
         if(data.userInfo) condition.where.push(' pid= '+data.userInfo.pid);
-        condition.where.push("deleted = 0");//查询可用
+        condition.where.push("deleted = 0 ");//查询可用
         that.DB().get(condition,function(error,results){
             data.results = results;
           if(results) callback(data)
