@@ -9,7 +9,8 @@
                 _stepselect: 'select',
                 _htmltext: 'uediter',
             };
-            formCode[codeType['_'+type]](index);
+            if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
+            return "formCode不存在" + codeType['_'+type] + "组件";
         },
 
         input: function(index){
