@@ -22,7 +22,7 @@ function ArcModel(){
         record.litpic = this.POST('litpic') || '';
         conditions.fields.push(record);
 
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.results = results;
@@ -35,7 +35,7 @@ function ArcModel(){
      * 保存数据到附加表
      */
     this.saveAddon = function(params,callback){
-        var listfields = params.listfields.split(',');
+        var listfields = queryresultKeyValue(params.fieldset,'field');
         var conditions = {
             table:'youbang_addoninfos',
             fields: [],
@@ -51,13 +51,13 @@ function ArcModel(){
         }
         record.aid = params.aid;
         conditions.fields.push(record);
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             callback(results);
         });
     }
 
     /**
-     * 查询附加表字段信息
+     * 查询youbang_components，获取附加表字段信息
      */
     this.addonTableInfor = function(params,callback){
         //使用案例：实例化TestService并调用showApp()方法

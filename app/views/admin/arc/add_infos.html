@@ -1,3 +1,52 @@
+<%
+    var formCode = {
+        get: function(index){
+            var type = array2value(addInfo,'field',addlist[i],'type');
+            var codeType = {
+                _text: 'input',
+                _int: 'input',
+                _datetime: 'input',
+                _stepselect: 'select',
+                _htmltext: 'uediter',
+            };
+            formCode[codeType['_'+type]](index);
+        },
+
+        input: function(index){
+            
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input class="form-control" name="' + addlist[i] + ' '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + '" value=" "/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ this.defNull(array2value(addInfo,'field',addlist[i],'comment')) + '</span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        select: function(index){
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input type="' + array2value(addInfo,'field',addlist[i],'type') + '" class="form-control" name="' + addlist[i] + '" placeholder="'+ array2value(addInfo,'field',addlist[i],'placeholder') + '" value=" "/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ array2value(addInfo,'field',addlist[i],'comment') + '</span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        defNull: function(d){
+            return d || '';
+        }
+    }
+%>
+
 <style>
 .add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
@@ -30,7 +79,7 @@
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
                 
-                
+                <!-- tab-1的表单是固定的 -->
                 <table class="table" id="tab-1">
                     <thead>
                         <tr>
@@ -124,9 +173,6 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
                         </tr>
-                        
-                        
-                        
                     </tbody>
                     <tfoot>
                         <tr>
@@ -138,7 +184,9 @@
                         </tr>
                     </tfoot>
                 </table>
-                
+                <% log("======addInfo======-0:",addInfo) %>
+                <% log("======addList======-0:",addlist) %>
+                <!-- tab-1的表单由系统生成 -->
                 <table class="table hidden" id="tab-2">
                     <thead>
                         <tr>
@@ -147,17 +195,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>信息类别：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="infotype" placeholder="信息类别" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
-                            </td>              
-                        </tr>
+                        <% for(var i in addlist){ %>
+                            <%- formCode.get(i); %>
+                        <% } %>
 
-                        <tr>
+                        <!-- <tr>
                             <td>联系人:</td>:</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -206,7 +248,7 @@
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;内容详情</span>
                             </td>              
-                        </tr>
+                        </tr> -->
                         
                     </tbody>
                     <tfoot>

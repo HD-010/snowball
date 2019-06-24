@@ -1,3 +1,6 @@
+/**
+ * 注：添加删除修改查看的关键参数 nid
+ */
 function arcControler(){
     var that = this;
 
@@ -5,16 +8,29 @@ function arcControler(){
      * 添加文章
      */
     this.add = function(){
-        var nid = 'infos';
+        var nid = 'infos';   //这是组件标识，由客户端传来
         var viewer = 'add_' + nid;
-        that.render({},viewer);
+        var data = {};
+        var params = {nid: nid};
+        var arc = this.model("Arc");
+        //查询附加表字段信息
+        arc.addonTableInfor(params,function(res){
+            if(res.error) {
+                res.message = "查询表信息失败，请稍后重试";
+                return that.render(res);
+            }
+            
+            data.addInfo = res.results[0].fieldset;  //附加表字段信息
+            data.addlist = res.results[0].listfields.split(',');
+            that.render(data,viewer);
+        });
     }
 
     /**
      * 保存内容
      */
     this.save = function(){
-        var nid = 'infos';
+        var nid = 'infos';          //这是组件标识，由客户端传来
         var arc = this.model("Arc");
         var params = {};
         params.nid = nid;
@@ -32,15 +48,12 @@ function arcControler(){
                     return that.render(res);
                 }
                 params.fieldset = res.results[0].fieldset;
-                params.listfields = res.results[0].listfields;
                 arc.saveAddon(params,function(res){
                     log(res)
                 });
             });
 
         });
-
-        
     }
 
     /**
