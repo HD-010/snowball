@@ -276,7 +276,7 @@
 
 <script>
     app.load(".add-infor");
-    switchEffect()
+    switchEffect();
     function switchEffect(){
         var cl  = $(".mui-switch");
         for(var i=0;i<cl.length;i++){
@@ -302,5 +302,10 @@
                     this.nextSibling.style.marginLeft='16px';                
                 }
         })
+    }
+
+    function save(res){
+        console.log("============================324",res);
+        app.notice(res);
     }
 </script>

@@ -52,7 +52,11 @@ function ArcModel(){
         record.aid = params.aid;
         conditions.fields.push(record);
         this.DB().set(conditions,function(error,results,fields){
-            callback(results);
+            var data = {};
+            data.error = error ? 1 : 0;
+            data.message = "保存成功！";
+            data.results = results
+            callback(data);
         });
     }
 
@@ -70,6 +74,7 @@ function ArcModel(){
         this.DB().get(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
+            data.uri = "";
             data.results = recodeJsonParse(results,'fieldset');
             callback(data);
         });

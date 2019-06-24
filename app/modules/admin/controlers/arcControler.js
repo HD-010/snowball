@@ -49,7 +49,7 @@ function arcControler(){
                 }
                 params.fieldset = res.results[0].fieldset;
                 arc.saveAddon(params,function(res){
-                    log(res)
+                    that.renderJson(res)
                 });
             });
 
