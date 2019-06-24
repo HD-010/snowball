@@ -1,1 +1,305 @@
-添加分类信息页面
+<%
+    var formCode = {
+        get: function(index){
+            var type = array2value(addInfo,'field',addlist[i],'type');
+            var codeType = {
+                _text: 'input',
+                _int: 'input',
+                _datetime: 'input',
+                _stepselect: 'select',
+                _htmltext: 'uediter',
+            };
+            formCode[codeType['_'+type]](index);
+        },
+
+        input: function(index){
+            
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input class="form-control" name="' + addlist[i] + ' '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + '" value=" "/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ this.defNull(array2value(addInfo,'field',addlist[i],'comment')) + '</span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        select: function(index){
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input type="' + array2value(addInfo,'field',addlist[i],'type') + '" class="form-control" name="' + addlist[i] + '" placeholder="'+ array2value(addInfo,'field',addlist[i],'placeholder') + '" value=" "/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ array2value(addInfo,'field',addlist[i],'comment') + '</span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        defNull: function(d){
+            return d || '';
+        }
+    }
+%>
+
+<style>
+.add-infor .active{background-color:#FFF;}
+.table .active{background-color:#23AD44;}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理-编辑栏目</span>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" style="background-color:#fff">
+        <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
+        </li>
+        <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
+        </li>
+    </ul>
+    <div class="add-infor">
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+               </div>
+            </div>
+        </div>
+        <div class="row form tab-content">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" >
+                <input type="hidden" name='tag' value="add" />
+                <input type="hidden" name='typeid' value="" />
+                <input type="hidden" name='parenttypeid2' value="" />
+                <input type="hidden" name='componentid' value="-8" />
+                
+                <!-- tab-1的表单是固定的 -->
+                <table class="table" id="tab-1">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="title" placeholder="标题" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>短标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>推荐：</td>
+                            <td style="padding-left:26px;">
+                                <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="" value="" /><em></em></label>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
+                            </td>    
+                        </tr>
+
+                        <tr>
+                            <td>标签：</td>
+                            <td style="padding-left:26px;"> 
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-outline btn-success dim">
+                                        <input type="checkbox"  name="flag"> 推荐<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                    </label>                                   
+                                </div>
+                                &nbsp;
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-outline btn-success dim">
+                                        <input type="checkbox" name="flag"> 头条<i class="fa fa-check"></i>
+                                    </label>                                   
+                                </div>
+                                &nbsp;
+                            </td>              
+                            </tr>
+
+                        <tr>
+                            <td>关键字：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="keywords" placeholder="关键字" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>描述：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="description" placeholder="描述" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>权重：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="number" class="form-control" name="weight" placeholder="权重" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>缩略图：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="litpic" placeholder="缩略图：" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <% log("======addInfo======-0:",addInfo) %>
+                <% log("======addList======-0:",addlist) %>
+                <!-- tab-1的表单由系统生成 -->
+                <table class="table hidden" id="tab-2">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i in addlist){ %>
+                            <%- formCode.get(i); %>
+                        <% } %>
+
+                        <!-- <tr>
+                            <td>联系人:</td>:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="tel" class="form-control" name="linkman" placeholder="联系人" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;联系人</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>联系电话：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="tel" class="form-control" name="tel" placeholder="联系电话" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;联系电话</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>email:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="email" class="form-control" name="email" placeholder="email" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;email</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>地址:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="address" placeholder="地址" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;地址</span>
+                            </td>              
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td>内容详情:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="body" placeholder="内容详情" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;内容详情</span>
+                            </td>              
+                        </tr> -->
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("a[data-toggle='tab']").click(function(){
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+</script>
+
+<script>
+    app.load(".add-infor");
+    switchEffect()
+    function switchEffect(){
+        var cl  = $(".mui-switch");
+        for(var i=0;i<cl.length;i++){
+                if($(cl[i]).attr("data-stat")=='1'){
+                    cl[i].nextSibling.innerText='是';
+                    cl[i].nextSibling.style.color="#FFFFFF";
+                    cl[i].nextSibling.style.marginLeft='0px';
+                    cl[i].checked=true;
+                }else{
+                    cl[i].nextSibling.innerText='否';
+                    cl[i].nextSibling.style.color="#D2D2D2";
+                    cl[i].nextSibling.style.marginLeft='16px';
+                }
+        }
+        cl.click(function(){
+                if(this.checked){
+                    this.nextSibling.innerText='是';
+                    this.nextSibling.style.color="#FFFFFF";
+                    this.nextSibling.style.marginLeft='0px';
+                }else{
+                    this.nextSibling.innerText='否';
+                    this.nextSibling.style.color="#D2D2D2";
+                    this.nextSibling.style.marginLeft='16px';                
+                }
+        })
+    }
+</script>
