@@ -195,6 +195,10 @@ var app = {
 
     /**
      * 顶部提示信息
+     * obj.message 提示消息
+     * obj.uri 跳转的url
+     * obj.error 显示对应提示的信息样式 错误编号notice_0 notice_1 notice_2 notice_3
+     * function callback 
      */
     notice: function(obj, callback) {
         var box = {

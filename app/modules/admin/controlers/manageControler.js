@@ -9,7 +9,11 @@ function manageControler(){
 
     //查询用户列表信息
     that.listManage = function(){
-        that.render({});
+        var Manage = that.model("Manage");
+        Manage.getChildManage(function(res){
+            that.render({list:res});
+        })
+       
     }
 
 }

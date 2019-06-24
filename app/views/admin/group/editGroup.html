@@ -4,10 +4,10 @@
     overflow:auto;
 }
 </style>
-<div class="container-fluid base base_add_group">
+<div class="container-fluid base base_update_group">
     <div class="row head">
         <div class="col-xs-12">
-            <span>系统管理-用户组管理-添加用户组</span>
+            <span>系统管理-用户组管理-编辑用户组</span>
         </div>
     </div>
     <div class="row tips">
@@ -20,7 +20,7 @@
     </div>
     <div class="row form">
         
-        <form data-form-async='json' action="/admin/group/saveGroup" class="form-horizontal form-validate" enctype="multipart/form-data" method="post" >
+        <form data-form-async='json' action="/admin/group/updateGroup" class="form-horizontal form-validate" enctype="multipart/form-data" method="post" >
             <table class="table">
                 <thead>
                     <tr>
@@ -30,16 +30,16 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>添加管理组：</td>
+                        <td>编辑管理组：</td>
                         <td>
                             <div class="page-content">                              
-                                <input name="id" type="hidden" value=""/>
+                                <input name="id" type="hidden" value="<%=list[0].id%>"/>
                                 <div class="form-group">
                                     <label class="col-lg control-label must">
                                        组名称
                                     </label>
                                     <div class="col-sm-4 col-xs-4">
-                                        <input class="form-control" data-rule-required="true" name="groupName" type="text" value="" placeholder="请输入管理组名称" required="required"/>
+                                        <input class="form-control" data-rule-required="true" name="groupName" type="text" value="<%=list[0].groupName %>" placeholder="" required="required"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -47,6 +47,7 @@
                                         状态
                                     </label>
                                     <div class="col-sm-9 col-xs-12">
+                                        <% if(list[0].status){ %>
                                         <label class="radio-inline">
                                             <input name="status" type="radio" value="1" checked/>
                                             启用
@@ -55,6 +56,16 @@
                                             <input name="status" type="radio" value="0"/>
                                             禁用
                                         </label>
+                                        <% }else{ %>
+                                        <label class="radio-inline">
+                                            <input name="status" type="radio" value="1" />
+                                            启用
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input name="status" type="radio" value="0" checked/>
+                                            禁用
+                                        </label>
+                                        <% } %>
                                         <span class="help-block">
                                             如果禁用，则当前管理组下的的操作员全部会禁止使用
                                         </span>
@@ -80,7 +91,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <button type="submit" class="btn">提交</button>
+                            <button type="submit" class="btn">提交修改</button>
                         </td>
                     </tr>
                 </tfoot>
@@ -89,8 +100,8 @@
     </div>
 </div>
 <script language="javascript">
-    app.load(".base_add_group");
-    function saveGroup(results){
+    app.load(".base_update_group");
+    function updateGroup(results){
         app.notice(results,function(){
             go(results.uri);
         });

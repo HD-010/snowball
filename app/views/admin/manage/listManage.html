@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xs-12" style="padding-left: 30px;padding-right: 30px;">
             <div class="col-xs-12 tabs_info">
-                <span>全部会员</span>
+                <span>全部管理员用户</span>
             </div>          
         </div>
     </div>
@@ -106,7 +106,7 @@
 
     <div class="row form">
         <div class="ibox-content">
-            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="5">
                 <thead>
                     <tr> 
                         <th data-sort-ignore="true" style="width:82px;">
@@ -116,171 +116,36 @@
                            
                         </th>                      
                         <th data-toggle="true">用户ID</th>
-                        <th>用户昵称</th>
-                        <th>账号</th>                       
-                        <th>手机</th>
-                        <th>注册时间</th>
-                        <th>来源</th>
+                        <th data-sort-ignore="true">用户昵称</th>
+                        <th data-sort-ignore="true">账号</th>                       
+                        <th data-sort-ignore="true">手机</th>
+                        <th data-sort-ignore="true">注册时间</th>
+                        <th data-sort-ignore="true">所具有权限组</th>
                         <th data-sort-ignore="true">操作</th>
                     </tr>
                 </thead>
                 <tbody>
+
+                    <% for(var i in list){ %>
                     <tr>
                         <td>
                             <label class="checkbox-inline">
                                 <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.a"/>                                       
                             </label>
                         </td>   
-                        <td>1</td>
-                        <td>袁岳</td>
-                        <td>0800 051213</td>
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
+                        <td><%= list[i].id %></td>
+                        <td><%= list[i].userName %></td>
+                        <td><%= list[i].acount %></td>
+                        <td><%= list[i].tel %></td>
+                        <td><%= getStandardDate(list[i].addTime) %></td>
+                        <td><%= list[i].groupName %></td> 
                         <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
+                            <button class="btn btn-default " type="button"><i class="fa fa-pencil">编辑</i></button>
+                            <button class="btn btn-default " type="button"><i class="fa fa-trash">删除</i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.b"/>                                       
-                            </label>
-                        </td>
-                        <td>2</td>
-                        <td>付守永</td>
-                        <td>0500 780909</td>
-                     
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.c"/>                                       
-                            </label>
-                        </td>
-                        <td>3</td>
-                        <td>张有为</td>
-                        <td>0800 1111</td>                      
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.a"/>                                       
-                            </label>
-                        </td>   
-                        <td>4</td>
-                        <td>袁岳</td>
-                        <td>0800 051213</td>
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.b"/>                                       
-                            </label>
-                        </td>
-                        <td>5</td>
-                        <td>付守永</td>
-                        <td>0500 780909</td>
-                        
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.c"/>                                       
-                            </label>
-                        </td>
-                        <td>6</td>
-                        <td>张有为</td>
-                        <td>0800 1111</td>                      
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.a"/>                                       
-                            </label>
-                        </td>   
-                        <td>7</td>
-                        <td>袁岳</td>
-                        <td>0800 051213</td>
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.b"/>                                       
-                            </label>
-                        </td>
-                        <td>8</td>
-                        <td>付守永</td>
-                        <td>0500 780909</td>
-                        
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="shop.c"/>                                       
-                            </label>
-                        </td>
-                        <td>9</td>
-                        <td>张有为</td>
-                        <td>0800 1111</td>                      
-                        <td>13388888888</td>
-                        <td>2019-6-10 12:01:35</td>
-                        <td>手机端</td> 
-                        <td class="project-actions">
-                            <button class="btn btn-success dim" type="button"><i class="fa fa-pencil">编辑</i></button>
-                            <button class="btn btn-default dim" type="button"><i class="fa fa-trash">删除</i></button>
-                        </td>
-                    </tr>                
+                     <% } %>   
+                    
                 </tbody>
                 <tfoot>
                     <t>
