@@ -1,0 +1,482 @@
+
+<link rel="stylesheet" href="/bootstrap/css/v3.css"/>
+<style>
+.panel-collapse{
+    overflow:auto;
+}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-用户组管理-添加权限组</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">管理员根据网站运营需求，添加不同类型的管理员！管理员类型分为：“CRM、超级管理员、分站管理员”用户权限组成相关设置，超级管理员可以根据运营需求设置。</p>
+            </div>
+        </div>
+    </div>
+    <div class="row form">
+        
+        <form action="" class="form-horizontal form-validate" enctype="multipart/form-data" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>用户组权限：</td>
+                        <td>
+                            <div class="page-content">                              
+                                <input name="groupId" type="hidden" value="<%=id%>"/>
+                                <div class="form-group" style="margin-bottom:20px;">
+                                    <label class="col-lg control-label must">
+                                       权限组名称
+                                    </label>
+                                    <div class="col-sm-4 col-xs-4">
+                                        <input class="form-control" data-rule-required="true" name="groupPermit" type="text" value="<%=name%>" disabled/>
+                                        <input name="groupPermitId" type="hidden" value="<%=id%>"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg control-label">
+                                        可用权限
+                                    </label>
+                                    <div class="col-sm-9 col-xs-12">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                               
+                                                <% for(var i in loginUserPermit){
+                                                    var list = array2value(listPermits,'id',loginUserPermit[i].id);
+                                                    %>
+                                                  
+                                                <div class="panel-heading" style="background:#f8f8f8;">
+                                                    <a class="btn btn-link btn-sm pull-right" data-parent="#accordion" data-toggle="collapse" href="#collapseshop<%= loginUserPermit[i].id %>">
+                                                        <i class="fa fa-angle-down">
+                                                        </i>
+                                                        展开
+                                                    </a>
+                                                    <label class="checkbox-inline">
+                                                       
+                                                        <input class="perm-all perms" data-show="<%=list.show %>" data-add="<%=list.add%>" data-edit="<%=list.edit%>" data-delete="<%=list.delete%>" data-permitId="<%=list.permitId%>" data-userId="<%=list.userId%>" data-menuId="<%=list.menuId%>" data-groupId="<%=list.groupId%>" data-group="<%= loginUserPermit[i].id %>" id="perm_shop_<%= loginUserPermit[i].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>"/>
+                                                       
+                                                     
+                                                        <%= loginUserPermit[i].name %>
+                                                    </label>
+                                                </div>
+                                                <div class="panel-collapse collapse" id="collapseshop<%= loginUserPermit[i].id %>">
+                                                    <div class="panel-body">
+                                                    
+                                                        <% for(var j in loginUserPermit[i].childrens){                                                          
+                                                            var list1 = array2value(listPermits,'id',loginUserPermit[i].childrens[j].id);                                                                                                                   
+                                                            %>
+                                                        <div class="panel-heading" style="background:#f8f8f8;">
+                                                            <a class="btn btn-link btn-sm pull-right" data-parent="#accordionbase_<%= loginUserPermit[i].childrens[j].id %>" data-toggle="collapse" href="#collapseshopbase<%= loginUserPermit[i].childrens[j].id %>">
+                                                                <i class="fa fa-angle-down">
+                                                                </i>
+                                                                展开
+                                                            </a>
+                                                            <label class="checkbox-inline">
+                                                                <input class="perm-all-item-base perms" data-show="<%=list1.show %>" data-add="<%=list1.add%>" data-edit="<%=list1.edit%>" data-delete="<%=list1.delete%>" data-permitId="<%=list1.permitId%>" data-userId="<%=list1.userId%>" data-menuId="<%=list1.menuId%>" data-groupId="<%=list.groupId%>" data-group="<%=loginUserPermit[i].id %>" data-id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>"/>
+                                                                <%= loginUserPermit[i].childrens[j].name %>
+                                                            </label>
+                                                        </div>
+                                                        <div class="panel-collapse collapse" id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>">
+                                                            <div class="panel-body perm-group">
+
+                                                                <% if(loginUserPermit[i].childrens[j].childrens.length > 0){ %>
+                                                                <% for(var h in loginUserPermit[i].childrens[j].childrens){ 
+                                                                    var list2 = array2value(listPermits,'id',loginUserPermit[i].childrens[j].childrens[h].id);
+                                                                    %>    
+                                                                <span>
+                                                                    <label class="checkbox-inline" >
+                                                                        <input class="perm-all-item perms" data-show="<%=list2.show %>" data-add="<%=list2.add%>" data-edit="<%=list2.edit%>" data-delete="<%=list2.delete%>" data-permitId="<%=list2.permitId%>" data-userId="<%=list2.userId%>" data-menuId="<%=list2.menuId%>" data-groupId="<%=list.groupId%>"  data-group="<%= loginUserPermit[i].id %>" data-parent="adv" data-son="text" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>"/>
+                                                                        <b>
+                                                                            <%=loginUserPermit[i].childrens[j].childrens[h].name %>
+                                                                        </b>
+                                                                    </label>
+                                                                    <label class="checkbox-inline" >
+                                                                        <input class="perm-item-show perms"  data-list="data-show"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="main" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.show"/>
+                                                                        查看
+                                                                    </label>                                                                   
+                                                                    <label class="checkbox-inline" >
+                                                                        <input class="perm-item perms" data-list="data-add" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="add" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.add"/>
+                                                                        添加
+                                                                    </label>
+                                                                    <label class="checkbox-inline" >
+                                                                        <input class="perm-item perms" data-list="data-edit"  data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="edit" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.edit"/>
+                                                                        修改
+                                                                    </label>
+                                                                    <label class="checkbox-inline" >
+                                                                        <input class="perm-item perms" data-list="data-delete" data-group="<%= loginUserPermit[i].id %>" data-parent="<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>" data-son="delete" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>.delete"/>
+                                                                        删除
+                                                                    </label>
+                                                                </span>
+                                                                <br>
+                                                               <% } %>
+                                                               <% } %>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <% } %>                                         
+                                                                                                              
+                                                    </div>
+                                                </div>
+                                                <% } %>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input name="permsarray" type="hidden" value=""/>                   
+                                </div>                                
+                            </div>        
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn">提交</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="javascript">
+$(function () {
+    //提交组装数据
+    $("form").submit(function (event) {
+        event.preventDefault()       
+        // $(this).attr('stop',1);
+        // var perms = [];
+        // $(".perms:checked").each(function (index,e) {         
+        //     perms[index]=$(this).val();
+        // });   
+        // perms = perms.join(',')
+        // console.log(perms)
+        // $("input[name=permsarray]").val(perms);
+
+        // $(this).attr('stop',0);
+        // return true;
+
+        //自动组装
+        var perms=[];
+        $("input[data-menuId]").each(function(index,e){
+            if($(this).attr("data-menuId")){
+                perms.push({"menuId":$(this).attr("data-menuId"),"id":$(this).attr("data-permitId"),"userId":$(this).attr("data-userId"),"groupId":$(this).attr("data-groupId"),"add":$(this).attr("data-add"),"delete":$(this).attr("data-delete"),"edit":$(this).attr("data-edit"),"show":$(this).attr("data-show")});                
+            }
+        });
+        console.log(perms)
+
+
+
+    });
+
+
+
+
+
+
+    //父级选中 全部选中
+    $('.perm-all').click(function () {
+
+        var checked = $(this).get(0).checked;
+
+        //自己本身也在改变
+        if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
+        var group = $(this).data('group');
+
+        $(".perm-all-item-base[data-group='" + group + "'],.perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
+
+            $(this).get(0).checked = checked;
+            if(checked){
+                $(this).attr("data-show","1");
+                $(this).attr("data-add","1");
+                $(this).attr("data-edit","1");
+                $(this).attr("data-delete","1");
+            }else{
+                $(this).attr("data-show","0");
+                $(this).attr("data-add","0");
+                $(this).attr("data-edit","0");
+                $(this).attr("data-delete","0");
+            }
+        })
+
+
+    })
+
+    //二级分类点击
+    $('.perm-all-item-base').click(function () {
+        var checked = $(this).get(0).checked;
+        //自己本身也在改变
+        if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
+        var group = $(this).data('group');
+        var id = $(this).attr('data-id');
+
+        $("#"+id).find(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "'],.perm-item-show[data-group='" + group + "']").each(function () {
+
+            $(this).get(0).checked = checked;
+            if(checked){
+                $(this).attr("data-show","1");
+                $(this).attr("data-add","1");
+                $(this).attr("data-edit","1");
+                $(this).attr("data-delete","1");
+            }else{
+                $(this).attr("data-show","0");
+                $(this).attr("data-add","0");
+                $(this).attr("data-edit","0");
+                $(this).attr("data-delete","0");
+            }
+        })
+        group_check_parent(this)
+    })
+
+
+    //选中它子类选中
+    $('.perm-all-item').click(function () {
+
+        var checked = $(this).get(0).checked;//得到他是否被选中
+         //自己本身也在改变
+         if(checked){
+            $(this).attr("data-show","1");
+            $(this).attr("data-add","1");
+            $(this).attr("data-edit","1");
+            $(this).attr("data-delete","1");
+        }else{
+            $(this).attr("data-show","0");
+            $(this).attr("data-add","0");
+            $(this).attr("data-edit","0");
+            $(this).attr("data-delete","0");
+        }
+
+        var group = $(this).data('group');
+
+        var parent = $(this).data('parent');
+
+        var son = $(this).data('son');
+
+        var grandson = $(this).data('grandson');
+
+        //找到他下面子类
+        $(this).parents("span").find(".perm-item,.perm-item-show[data-group='" + group + "']").each(function () {
+
+            $(this).get(0).checked = checked;
+
+        });
+
+        group_check(this);
+        group_check_parent(this)
+    });
+
+    //选中它让他父类选中
+    $('.perm-item').click(function () {
+
+        var group = $(this).data('group');
+
+        var parent = $(this).data('parent');
+
+        var son = $(this).data('son');
+
+        var grandson = $(this).data('grandson');
+
+        var check = false;
+
+        $(this).closest('span').find(".perm-item").each(function () {
+
+            if ($(this).get(0).checked) {
+
+                check = true;
+
+                return false;
+
+            }
+
+        });
+
+        var allitem = $(this).parents("span").find(".perm-all-item");
+        var allitemShow = $(this).parents("span").find(".perm-item-show");
+        
+        //自定义属性
+        var ch  = $(this).get(0).checked;
+        if(ch){
+            allitem.attr("data-show",'1');
+            allitem.attr($(this).attr("data-list"),"1");
+        }else{
+            allitem.attr($(this).attr("data-list"),"0");
+        }
+
+        if (allitem.length == 1) {
+
+            allitem.get(0).checked = true;
+
+        }
+        if (allitemShow.length == 1) {
+
+            allitemShow.get(0).checked = true;
+
+        }
+
+        group_check(this);
+        group_check_parent(this)
+    });
+
+
+    $('.perm-item-show').click(function () {
+
+        var group = $(this).data('group');
+
+        var parent = $(this).data('parent');
+
+        var son = $(this).data('son');
+
+        var grandson = $(this).data('grandson');
+
+        var check = false;
+
+        $(this).closest('span').find(".perm-item-show").each(function () {
+            
+            if ($(this).get(0).checked) {
+
+                check = true;
+
+                return false;
+
+            }else{
+                $(this).closest('span').find(".perm-item").each(function(){
+                    $(this).get(0).checked=check;
+                });
+            }
+
+        });
+
+        var allitem = $(this).parents("span").find(".perm-all-item");
+        if(check){
+            allitem.attr("data-show","1");
+        }else{
+            allitem.attr("data-show","0");
+            allitem.attr("data-add","0");
+            allitem.attr("data-edit","0");
+            allitem.attr("data-delete","0");
+        }
+
+        if (allitem.length == 1) {
+
+            allitem.get(0).checked = check;
+
+        }
+
+        group_check(this);
+        group_check_parent(this)
+    });
+
+
+    //样式调节
+    $(".panel-body").find("span").each(function (index, item) {
+
+        if ($(this).find("label").length != 1) {
+
+            $($(this).find("label").get(0)).wrap("<div class='col-sm-2' style='white-space:nowrap;'></div>");
+
+            $($(this).find("label").not($(this).find("label").get(0))).wrapAll("<div class='col-sm-10'></div>");
+
+        }
+
+        else {
+
+            $($(this).find("label").get(0)).wrap("<div class='col-sm-12'></div>");
+
+        }
+
+    });
+
+    $("input[data-show='1']").attr('checked',true);
+    $("input[data-add='1']").attr('checked',true);
+    $("input[data-edit='1']").attr('checked',true);
+    $("input[data-delete='1']").attr('checked',true);
+
+});
+
+function group_check(obj) {
+    var check = false;
+    $(obj).parents('.perm-group').find(":checkbox").each(function (index, item) {
+        if (item.checked) {
+            check = true;           
+        }
+
+    });
+
+    var group = $(obj).eq(0).data('group');
+   $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").get(0).checked = check;
+    //自定义属性
+    if(check){
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-show","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-add","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-edit","1");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-delete","1");
+    }else{
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-show","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-add","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-edit","0");
+        $(obj).parents(".perm-group").parent().prev().find(".perm-all-item-base[data-group=" + group + "]").attr("data-delete","0");
+    }
+}
+
+
+function group_check_parent(obj) {
+     var check = false;   
+
+    $(obj).parents('.panel-body').find(":checkbox").each(function (index, item) {
+        if (item.checked) {
+            check = true;           
+        }
+    });
+
+    var group = $(obj).eq(0).data('group');
+
+    $(".perm-all[data-group=" + group + "]").get(0).checked = check;
+
+    //自定义属性
+    if(check){
+        $(".perm-all[data-group=" + group + "]").attr("data-show","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-add","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-edit","1");
+        $(".perm-all[data-group=" + group + "]").attr("data-delete","1");
+    }else{
+        $(".perm-all[data-group=" + group + "]").attr("data-show","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-add","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-edit","0");
+        $(".perm-all[data-group=" + group + "]").attr("data-delete","0");
+    }
+    
+}
+    </script>
