@@ -4,8 +4,13 @@ function ComponentModel(){
         var data = {};
         var conditions = {
             table : ['youbang_components'],
-            fields : ['*']
+            fields : ['*'],
+            where: [],
+            limit: []
         };
+
+        if(params.limit) conditions.limit.push(params.limit);
+        if(params.id) conditions.where.push("id=" + params.id);
 
         this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;

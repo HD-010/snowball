@@ -412,6 +412,45 @@ var app = {
     }
 /** ===========================scrool事件监听 end====================== */
 
+/** ==============================效果插件============================= */
+var effect = {
+    /**
+     * 开关效果
+     * html 代码 ：<label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label> 
+     * 属性 checked 表示默认打开状态
+     * @param {*} selecter 事件监听的元素
+     * @param {*} on 打开状态显示的字样
+     * @param {*} off 关闭状态显示的字样
+     */
+    switch: function(selecter,onVal,offVal){
+        var cl  = $(selecter);
+        for(var i=0;i<cl.length;i++){
+            if(cl[i].checked){
+                cl[i].nextSibling.innerText = onVal;
+                cl[i].nextSibling.style.color = "#FFFFFF";
+                cl[i].nextSibling.style.marginLeft = '0px';
+            }else{
+                cl[i].nextSibling.innerText = offVal;
+                cl[i].nextSibling.style.color="#D2D2D2";
+                cl[i].nextSibling.style.marginLeft='16px';
+            }
+        }
+        cl.unbind('click').on('click',function(){
+            if(this.checked){
+                this.nextSibling.innerText = onVal;
+                this.nextSibling.style.color = "#FFFFFF";
+                this.nextSibling.style.marginLeft = '0px';
+            }else{
+                this.nextSibling.innerText = offVal;
+                this.nextSibling.style.color = "#D2D2D2";
+                this.nextSibling.style.marginLeft='16px';                
+            }
+        })
+    }
+
+}
+
+/** ============================效果插件 end=========================== */
 /** ===============================tools============================== */
 /**
  * 返回请求时暂存的参数，如果参数不存在则返回null
@@ -565,6 +604,8 @@ function unique(arr){
     }
     return res;
 }
+
+
 
 
 /** ===============================tools end============================== */

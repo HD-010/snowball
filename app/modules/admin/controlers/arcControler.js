@@ -8,10 +8,10 @@ function arcControler(){
      * 添加文章
      */
     this.add = function(){
-        var nid = 'infos';   //这是组件标识，由客户端传来
-        var viewer = 'add_' + nid;
+        var ctag = this.GET('ctag') || 'infos';   //这是组件标识，由客户端传来
+        var viewer = 'add_' + ctag;
         var data = {};
-        var params = {nid: nid};
+        var params = {ctag: ctag};
         var arc = this.model("Arc");
         //查询附加表字段信息
         arc.addonTableInfor(params,function(res){
@@ -30,10 +30,10 @@ function arcControler(){
      * 保存内容
      */
     this.save = function(){
-        var nid = 'infos';          //这是组件标识，由客户端传来
+        var ctag = this.GET('ctag')  || 'infos';          //这是组件标识，由客户端传来
         var arc = this.model("Arc");
         var params = {};
-        params.nid = nid;
+        params.ctag = ctag;
         //保存数据到主表
         arc.saveHives({},function(res){
             if(res.error) {

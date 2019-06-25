@@ -70,7 +70,7 @@ function ArcModel(){
             where:[],
             limit:[1]
         }
-        if(params.nid) conditions.where.push("nid='" + params.nid + "'");
+        if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
         this.DB().get(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;

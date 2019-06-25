@@ -12,8 +12,17 @@ function componentControler(){
 
     //编辑应用
     this.edit = function(){
+        var cid = this.GET('cid');
+        if(!cid) return this.render({},"/err404");
+        var component = that.model('Component');
+        //获取组件信息
+        var param = {limit: 1,id: cid};
+        component.list(param,function(res){
+            
+            that.render(res);
+        });
 
-        that.renderJson({message:"this is component edit"});
+        
     }
 }
 
