@@ -10,7 +10,7 @@
                 _htmltext: 'uediter',
             };
             if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
-            return "formCode不存在" + codeType['_'+type] + "组件";
+            return "formCode中不存在" + codeType['_'+type] + "组件";
         },
 
         input: function(index){
@@ -19,9 +19,9 @@
                     '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addlist[i] + ' '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + '" value=" "/>' +
+                            '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "/>' +
                         '</div>' +
-                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ this.defNull(array2value(addInfo,'field',addlist[i],'comment')) + '</span>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
                 '</tr>';
 
@@ -276,34 +276,9 @@
 
 <script>
     app.load(".add-infor");
-    switchEffect();
-    function switchEffect(){
-        var cl  = $(".mui-switch");
-        for(var i=0;i<cl.length;i++){
-                if($(cl[i]).attr("data-stat")=='1'){
-                    cl[i].nextSibling.innerText='是';
-                    cl[i].nextSibling.style.color="#FFFFFF";
-                    cl[i].nextSibling.style.marginLeft='0px';
-                    cl[i].checked=true;
-                }else{
-                    cl[i].nextSibling.innerText='否';
-                    cl[i].nextSibling.style.color="#D2D2D2";
-                    cl[i].nextSibling.style.marginLeft='16px';
-                }
-        }
-        cl.click(function(){
-                if(this.checked){
-                    this.nextSibling.innerText='是';
-                    this.nextSibling.style.color="#FFFFFF";
-                    this.nextSibling.style.marginLeft='0px';
-                }else{
-                    this.nextSibling.innerText='否';
-                    this.nextSibling.style.color="#D2D2D2";
-                    this.nextSibling.style.marginLeft='16px';                
-                }
-        })
-    }
-
+    effect.switch(".mui-switch",'是','否');
+    effect.setDefVal(".add-infor");     //设置页面默认值
+    effect.setComments(".add-infor");
     function save(res){
         app.notice(res);
     }

@@ -446,6 +446,39 @@ var effect = {
                 this.nextSibling.style.marginLeft='16px';                
             }
         })
+    },
+
+    /**
+     * 显示默认值
+     * html代码结构：
+        <input type="text" class="form-control" name="title" data-def="默认值" placeholder="标题" value=" "/>
+     * 
+     */
+    setDefVal: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var defVal = $(item).attr('data-def'); 
+            if(typeof defVal != 'undefined') $(item).val(defVal);
+        });
+    },
+
+    /**
+     * 设置注释
+     * html代码结构：
+     *  <parent>
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" name="title" data-comments="注释内容" placeholder="标题" value=" "/>
+            </div>
+            <span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+        </parent>
+     * 
+     */
+    setComments: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var comment = $(item).attr('data-comment'); 
+            if(typeof comment != 'undefined') $(item).parent().siblings().find('.comment').after(comment);
+        });
     }
 
 }
