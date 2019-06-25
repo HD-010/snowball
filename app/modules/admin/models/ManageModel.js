@@ -33,7 +33,6 @@ function ManageModel(){
         data.password = this.POST('password');
         data.groupId = this.POST('groupId');
         data.tel = this.POST('tel');
-        console.log("====data",data)
         var condition = {
             table:["youbang_sys_acount"],                                 //查询的表名
             fields:[{
@@ -57,6 +56,28 @@ function ManageModel(){
                 callback(obj)
             }
         })
+   }
+
+   /**
+    * 根据管理者ID删除管理者信息
+    */
+   that.delManage = function(callback){
+        var data = {};
+        data.id = that.GET("id");
+        data.id = data.id.split("_");
+        if(data){
+           var sql  = "delete from youbang_sys_acount where id in ("+data.id+")"; 
+            that.DB().log().query(sql,function(error,results){
+                if(results.affectedRows){
+                    var obj={
+                        message:"管理者删除成功!",
+                        uri:"/admin/manage/listManage",
+                        error:0
+                    }
+                    callback(obj)                
+                }
+            })
+        }
    }
 }
 module.exports = ManageModel;
