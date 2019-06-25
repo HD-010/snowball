@@ -14,8 +14,11 @@
         </div>
     </div>
     <div class="row" style="margin: 20px auto">
-        <div class="col-xs-12" >            
-            <a class="btn btn-success btn-sm"  href="javascript:go('/admin/group/addGroup')"><i class="fa fa-plus"></i> 添加用户组</a>
+        <div class="col-xs-1" >            
+            <a class="btn btn-success btn-sm"  href="javascript:go('/admin/group/addGroup')"><i class="fa fa-plus"></i> 添加用户组</a>           
+        </div>
+        <div class="col-xs-6">
+                <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
         </div>
     </div>
     <div class="row form">
@@ -25,7 +28,7 @@
                     <h5>用户组列表信息</h5> 
                 </div>
                 <div class="ibox-content">        
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6" data-filter=#filter>
                             <thead>
                                 <tr>                                              
                                     <th data-sort-ignore="true">角色ID</th>                                                  

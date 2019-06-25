@@ -17,5 +17,46 @@ function ManageModel(){
             })
         }
     }
+    
+   /**
+    * 保存添加的用户
+    */
+   that.saveManage = function(callback){
+        var data = {};
+        //获取当前登录用户ID
+        var process =  that.model("DataProcess");
+        data.pid = process.getUserInfo('UID');
+        //获取插入信息    
+       
+        data.acount = this.POST('acount');
+        data.userName = this.POST('userName');
+        data.password = this.POST('password');
+        data.groupId = this.POST('groupId');
+        data.tel = this.POST('tel');
+        console.log("====data",data)
+        var condition = {
+            table:["youbang_sys_acount"],                                 //查询的表名
+            fields:[{
+                "pid":data.pid,
+                "acount": data.acount,
+                "userName":data.userName,
+                "password":data.password,
+                "groupId":data.groupId,
+                "tel":data.tel,
+                "addTime":'NOW()',
+            }],           //被查询的字段名称（别名在此指定）
+        
+        };
+        that.DB().set(condition,function(error,results){
+            if(results.insertId){
+                var obj={
+                    message:"用户组组添加成功!",
+                    uri:"/admin/manage/listManage",
+                    error:0
+                }
+                callback(obj)
+            }
+        })
+   }
 }
 module.exports = ManageModel;

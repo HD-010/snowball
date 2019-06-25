@@ -4,7 +4,11 @@ function manageControler(){
 
     //添加用户
     that.addManage = function(){
-        that.render({});
+        var Group = that.model("Group");
+        Group.getGroup({},function(res){
+            that.render(res);
+        })
+       
     }
 
     //查询用户列表信息
@@ -14,6 +18,14 @@ function manageControler(){
             that.render({list:res});
         })
        
+    }
+
+    //保存用户
+    that.saveManage = function(){
+        var Manage = that.model("Manage");
+        Manage.saveManage(function(res){
+            that.renderJson(res);
+        })
     }
 
 }
