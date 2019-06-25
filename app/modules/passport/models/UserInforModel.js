@@ -29,10 +29,7 @@ function UserInforModel() {
         var _acount = this.service('Acount');
         
         _acount.querySysAcount(sqlStruct,function(error,results,fields){
-            var data = {
-                error  : 1,
-                message: "帐号或者用户名错误"
-            };
+            var data = {};
             if(error){
                 data = {
                     error  : 2,
@@ -41,8 +38,8 @@ function UserInforModel() {
                 callback(data);
                 return;
             }
-            data = (!error && (Object.keys(results).length === 0)) ?
-            {error  : 1, message: "帐号或者用户名错误"} : 
+            data = (error || (Object.keys(results[0]).length === 0)) ?
+            {error  : 1,uri: '/admin/sign/_in', message: "帐号或者用户名错误"} : 
             {error: 0,data : results};
             
             return callback(data);
