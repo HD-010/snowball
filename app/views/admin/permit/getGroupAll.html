@@ -8,7 +8,7 @@
     margin: 1em;
     background-color: white;
     height:300px;
-  
+    margin-top: 0px;
 }
 .memberform .memberinfo{
     border:1px solid #E6E6E6;
@@ -41,6 +41,11 @@
             </div>
         </div>
     </div>
+    <div class="row" style="margin-left: 0px;">
+        <div class="col-xs-6">
+                <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
+        </div>
+    </div>
     <div class="row memberform">               
         <div class="col-xs-12 memberinfo">
             <h4>权限组信息<button type="button" class="btn btn-default" style="border:1px solid#EC5051;padding: 4px 8px;margin-left: 10px;" onclick="go('/admin/permit/addGlist')"><span style="color:#EC5051;"> + 添加权限组</span></button></h4>
@@ -48,7 +53,7 @@
         </div>
         <div class="col-xs-12" style='height: 300px;'>              
             <div class="ibox-content">
-                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
+                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6" data-filter=#filter>
                     <thead>
                         <tr>                                              
                             <th data-sort-ignore="true">角色ID</th>                                                  

@@ -17,5 +17,67 @@ function ManageModel(){
             })
         }
     }
+    
+   /**
+    * 保存添加的用户
+    */
+   that.saveManage = function(callback){
+        var data = {};
+        //获取当前登录用户ID
+        var process =  that.model("DataProcess");
+        data.pid = process.getUserInfo('UID');
+        //获取插入信息    
+       
+        data.acount = this.POST('acount');
+        data.userName = this.POST('userName');
+        data.password = this.POST('password');
+        data.groupId = this.POST('groupId');
+        data.tel = this.POST('tel');
+        var condition = {
+            table:["youbang_sys_acount"],                                 //查询的表名
+            fields:[{
+                "pid":data.pid,
+                "acount": data.acount,
+                "userName":data.userName,
+                "password":data.password,
+                "groupId":data.groupId,
+                "tel":data.tel,
+                "addTime":'NOW()',
+            }],           //被查询的字段名称（别名在此指定）
+        
+        };
+        that.DB().set(condition,function(error,results){
+            if(results.insertId){
+                var obj={
+                    message:"用户组组添加成功!",
+                    uri:"/admin/manage/listManage",
+                    error:0
+                }
+                callback(obj)
+            }
+        })
+   }
+
+   /**
+    * 根据管理者ID删除管理者信息
+    */
+   that.delManage = function(callback){
+        var data = {};
+        data.id = that.GET("id");
+        data.id = data.id.split("_");
+        if(data){
+           var sql  = "delete from youbang_sys_acount where id in ("+data.id+")"; 
+            that.DB().log().query(sql,function(error,results){
+                if(results.affectedRows){
+                    var obj={
+                        message:"管理者删除成功!",
+                        uri:"/admin/manage/listManage",
+                        error:0
+                    }
+                    callback(obj)                
+                }
+            })
+        }
+   }
 }
 module.exports = ManageModel;
