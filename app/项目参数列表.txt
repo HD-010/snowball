@@ -29,6 +29,7 @@ atid : 指定栏目id
 uid : 用户id
 oid : 当前系统openID
 cid : 组件id
+ctag : 组件标识
 
 系统参数见数据表：
 youbang_sys_upload、
