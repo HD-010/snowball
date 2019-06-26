@@ -38,6 +38,34 @@ function manageControler(){
         })
     }
 
+    /**
+     * 编辑管理员信息
+     */
+    that.editManage = function(){
+        var Manage = that.model("Manage");
+        Manage.editManage(function(res){
+            that.render(res);
+        })
+    }
 
+    /**
+     * update管理员信息
+     */
+    that.updateManage = function(){
+        var Manage = that.model("Manage");
+        Manage.updateManage(function(res){
+            that.renderJson(res);
+        })
+    }
+
+    /**
+     * 重置管理员密码
+     */
+    that.resetPassword = function(){
+        var Manage  = that.model("Manage");
+        Manage.resetPassword(function(res){
+            that.renderJson(res);
+        })
+    }
 }
 module.exports = manageControler;

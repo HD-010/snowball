@@ -135,7 +135,7 @@
                         <td><%= getStandardDate(list[i].addTime) %></td>
                         <td><%= list[i].groupName %></td> 
                         <td class="project-actions">
-                            <button class="btn btn-default " type="button"><i class="fa fa-pencil">编辑</i></button>
+                            <button class="btn btn-default " type="button"><i class="fa fa-pencil"  onclick = "go('/admin/manage/editManage?pid=<%=list[i].id%>')">编辑</i></button>
                             <button class="btn btn-default " type="button"><i class="fa fa-trash" data-async="post" data-uri='/admin/manage/delManage?id=<%=list[i].id%>'>删除</i></button>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@
                             </label>
                         </th>                       
                         <th colspan="7">
-                            <button type="button" class="btn btn-info" data-async="post" data-uri=''>删除全部</button>
+                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='delall'>删除全部</button>
                         </th>
                     </tr>
                     <tr>

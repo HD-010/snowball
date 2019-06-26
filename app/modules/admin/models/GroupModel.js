@@ -71,7 +71,6 @@ function GroupModel(){
         var process =  that.model("DataProcess");
         var uid = process.getUserInfo('UID');        
         data.userInfo =process.getUserInfo(uid)[0];
-        console.log("userinfo",data.userInfo)
 
         var id = that.GET('id') || that.POST('id') || '';//获取管理组ID
         var condition = {

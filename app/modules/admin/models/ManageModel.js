@@ -79,5 +79,74 @@ function ManageModel(){
             })
         }
    }
+
+   /**
+    * 根据管理员ID编辑管理员信息
+    */
+   that.editManage = function(callback){
+       var data = {};
+        var Group = that.model("Group");
+        Group.getGroup({},function(res){
+            if(res.results.length){
+                data.results = res.results;
+                data.id = that.GET("pid");
+                var sql = "select id,acount,userName,password,tel,groupId from youbang_sys_acount where id = "+data.id;
+                that.DB().query(sql,function(error,results){
+                    if(results) data.manageInfo = results;
+                    callback(data)
+                })
+            }
+        })
+   }
+
+   /**
+    * 修改管理员信息
+    */
+   that.updateManage = function(callback){
+       var data = {};
+        data.id = this.POST('id');       
+        data.userName = this.POST('userName');    
+        data.groupId = this.POST('groupId');
+        data.tel = this.POST('tel');
+        if(data){
+            var sql = "update youbang_sys_acount set userName = '"+data.userName+"',tel = "+data.tel+",groupId = "+data.groupId+" where id = "+data.id;          
+            that.DB().log().query(sql,function(error,results){
+                if(results.affectedRows){
+                    var obj={
+                        message:"用户修改加成功!",
+                        uri:"/admin/manage/listManage",
+                        error:0
+                    }
+                    callback(obj)
+                }
+            })
+        }
+   }
+
+   /**
+    * 重置管理员账户密码
+    */
+   that.resetPassword = function(callback){
+       var data = {};
+       data.id = this.GET('userId');
+       this.CURL({
+        uri:"http://127.0.0.1:3005/passport/manager/resetPassword?password=123456",
+        callback:(error,source)=>{
+          if(source.password.password){
+            var sql = "update youbang_sys_acount set password = '"+source.password.password+"',addTime = '"+source.password.time+"' where id ="+data.id;
+            that.DB().query(sql,function(error,results){
+                if(results.affectedRows){
+                    var obj={
+                        message:"密码重置成功!",
+                        uri:"",
+                        error:0
+                    }
+                    callback(obj)
+                }
+            })
+          }
+        }
+    });
+   }
 }
 module.exports = ManageModel;
