@@ -6,6 +6,7 @@
                 _text: 'input',
                 _int: 'input',
                 _datetime: 'input',
+                _checkbox: 'inputCheckbox',
                 _stepselect: 'select',
                 _htmltext: 'uediter',
             };
@@ -14,9 +15,8 @@
         },
 
         input: function(index){
-            
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
                             '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "/>' +
@@ -28,18 +28,52 @@
             return str;
         },
 
+        inputCheckbox: function(index){
+            var str = '<tr>' +
+                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
+        inputRadio: function(index){
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="radio" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
         select: function(index){
             var str = '<tr>' +
                     '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
                     '<td>' +
-                        '<div class="form-group col-xs-4">' +
-                            '<input type="' + array2value(addInfo,'field',addlist[i],'type') + '" class="form-control" name="' + addlist[i] + '" placeholder="'+ array2value(addInfo,'field',addlist[i],'placeholder') + '" value=" "/>' +
+                        '<div class="col-sm-4 col-xs-4 auto-select">' +
+                            '<select class="form-control" name="' + addlist[i] + '" '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "></select>' +
                         '</div>' +
-                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：'+ array2value(addInfo,'field',addlist[i],'comment') + '</span>' +
                     '</td>' +           
                 '</tr>';
 
             return str;
+        },
+
+        uediter: function(index){
+            return '<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>' +
+            '<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>' +
+            '<script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"> </script>' +
+            '<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>';
         },
 
         defNull: function(d){
@@ -118,24 +152,6 @@
                         </tr>
 
                         <tr>
-                            <td>标签：</td>
-                            <td style="padding-left:26px;"> 
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-success dim">
-                                        <input type="checkbox"  name="flag"> 推荐<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
-                                    </label>                                   
-                                </div>
-                                &nbsp;
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-success dim">
-                                        <input type="checkbox" name="flag"> 头条<i class="fa fa-check"></i>
-                                    </label>                                   
-                                </div>
-                                &nbsp;
-                            </td>              
-                            </tr>
-
-                        <tr>
                             <td>关键字：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -185,8 +201,8 @@
                         </tr>
                     </tfoot>
                 </table>
-                <% log("======addInfo======-0:",addInfo) %>
-                <% log("======addList======-0:",addlist) %>
+                <% //log("======addInfo======-0:",addInfo) %>
+                <% //log("======addList======-0:",addlist) %>
                 <!-- tab-1的表单由系统生成 -->
                 <table class="table hidden" id="tab-2">
                     <thead>
@@ -279,7 +295,11 @@
     effect.switch(".mui-switch",'是','否');
     effect.setDefVal(".add-infor");     //设置页面默认值
     effect.setComments(".add-infor");
+    effect.setCheckbox(".auto-checkbox");
+    effect.setRadio(".auto-radio");
+    effect.setSelect(".auto-select");
     function save(res){
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&||",res);
         app.notice(res);
     }
 </script>

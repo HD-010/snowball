@@ -479,7 +479,102 @@ var effect = {
             var comment = $(item).attr('data-comment'); 
             if(typeof comment != 'undefined') $(item).parent().siblings().find('.comment').after(comment);
         });
+    },
+
+    /**
+     * 设置checkbox选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="btn-group 监听的选择器" data-toggle="buttons">
+            <label class="btn btn-outline btn-success dim">
+                <input type="checkbox" data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' > 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+            </label>                                   
+        </div>
+     */
+    setCheckbox: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='checkbox']");
+            var key = itemAttr.attr('data-key').split('-');
+            var val = itemAttr.attr('data-val').split('-');
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='checkbox']").prop('checked',true);
+                curCode.find("input[type='checkbox']").val(key[i]);
+                curCode.find("input[type='checkbox']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+            loadEvent();
+        });
+        function loadEvent(){
+            $('[data-toggle="buttons"] .btn').unbind('click').on('click',function(e){
+                var curCheckbox = $(this).find('[type="checkbox"]');
+                curCheckbox.click();
+                (curCheckbox.prop('checked')) ?
+                $(this).addClass('active'):
+                $(this).removeClass('active');
+            });
+        }
+    },
+
+    /**
+     * 
+     * @param {*} selecter 
+     */
+    setRadio: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='radio']");
+            var dataKey = itemAttr.attr('data-key');
+            var key = dataKey ? dataKey.split('-') :[];
+            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='radio']").prop('selected',true);
+                curCode.find("input[type='radio']").val(key[i]);
+                curCode.find("input[type='radio']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+        });
+    },
+
+    /**
+     * 设置select选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="col-sm-4 col-xs-4 监听的选择器">
+            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' ></select>
+        </div>
+     */
+    setSelect: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("select");
+            var dataKey = itemAttr.attr('data-key');
+            var key = dataKey ? dataKey.split('-') : [];
+            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var optHtml = '';
+            var stlected;
+            for(var i=0; i < key.length; i ++){
+                stlected = (defVal == key[i]) ? 'selected' : '';
+                optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
+            }
+            $(item).find("select").html(optHtml);
+        });
     }
+
 
 }
 

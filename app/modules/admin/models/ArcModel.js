@@ -12,7 +12,7 @@ function ArcModel(){
         var record = {};
         var flag = this.POST('flag');
         flag = (typeof flag == 'object') ? flag : [flag];
-        record.flag = "'" + flag.join("','") + "'";
+        record.flag = flag.join('-');
         record.title = this.POST('title') || '';
         record.shorttitle = this.POST('shorttitle') || '';
         record.component = this.POST('component') || '1';
@@ -22,7 +22,7 @@ function ArcModel(){
         record.litpic = this.POST('litpic') || '';
         conditions.fields.push(record);
 
-        this.DB().set(conditions,function(error,results,fields){
+        this.DB().log().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.results = results;
@@ -45,13 +45,14 @@ function ArcModel(){
         var field = "";
         for(var i in listfields){
             field = this.POST(listfields[i]);
+            if(typeof field == 'object') field = field.join('-');
             record[listfields[i]] = field ? field : 
             array2value(params.fieldset,'field',listfields[i],'default');
             field = "";
         }
         record.aid = params.aid;
         conditions.fields.push(record);
-        this.DB().set(conditions,function(error,results,fields){
+        this.DB().log().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.message = "保存成功！";
