@@ -1,0 +1,100 @@
+<style>
+        .memberform{
+            margin: 1em;
+            background-color: white;
+            height:300px;
+          
+        }
+        .memberform .memberinfo{
+            border:1px solid #E6E6E6;
+            height: 35px;
+            background-color:#F0F6FB;
+        }
+        .memberform .memberinfo h4{
+            line-height: 25px;
+        }
+        </style>
+        <div class="container-fluid base base_update_manage">
+            <div class="row head">
+                <div class="col-xs-12">
+                    <span>系统管理-用户管理-编辑管理员</span>
+                </div>
+            </div>
+            <div class="row tips">
+                <div class="col-xs-12">
+                    <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+                   <div class="col-xs-12">
+                        <p class="indent">该页面展示了添加个人会员信息，可添加个人会员操作。</p>              
+                   </div>
+                </div>
+            </div>
+            <div class="row memberform">               
+                <div class="col-xs-12 memberinfo">
+                    <h4>会员信息</h4>
+                </div>
+                <div class="col-xs-10" style='height: 300px;margin-top: 2.2em'>              
+                    <form class="form-horizontal" role="form"  data-form-async='json' action="/admin/Manage/updateManage" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="id" value="<%= manageInfo[0].id %>">
+                        <div class="form-group">
+                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i>登录邮箱:</label>
+                            <div class="col-xs-4">
+                            <input type="email" class="form-control" placeholder="请输入邮箱@" required="required" name="acount" value="<%= manageInfo[0].acount %>" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 用户昵称:</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control" placeholder="请输入用户名" required="required" name="userName" value="<%= manageInfo[0].userName %>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-xs-2 control-label"></i> 密码重置:</label>
+                            <div class="col-xs-4">
+                                    <button type="button" class="btn btn-danger" data-async='post' data-uri="/admin/manage/resetPassword?userId=<%= manageInfo[0].id %>">点击重置</button>
+                                    <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;重置后密码为"123456"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 联系手机:</label>
+                            <div class="col-xs-4">
+                                <input type="number" class="form-control" placeholder="请输入手机" required="required" name="tel" value="<%= manageInfo[0].tel %>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 分配组组权限:</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" name="groupId" style="height:35px">
+                                    <% for(var i in results){ 
+                                        var ckeck = results[i].id==manageInfo[0].groupId?"selected":"";
+                                        
+                                        %>
+                                    <option value="<%= results[i].id%>" <%=ckeck%>><%= results[i].groupName%></option> 
+                                    <% } %>
+                                </select>  
+        
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info">提交编辑</button>
+                            </div>
+                        </div>              
+                    </form>                   
+                </div>        
+            </div>
+        </div>
+        
+        <script language="javascript">
+            app.load(".base_update_manage");
+            app.addonParams = {oid: getItem('OID')};
+            function updateManage(results){
+                app.notice(results,function(){
+                    go(results.uri);
+                });
+            }
+            function resetPassword(results){
+                delete results.uri;
+                app.notice(results);
+            }
+        </script>

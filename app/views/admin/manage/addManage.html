@@ -83,6 +83,7 @@
 
 <script language="javascript">
     app.load(".base_add_manage");
+    app.addonParams = {oid: getItem('OID')};
     function saveManage(results){
         app.notice(results,function(){
             go(results.uri);

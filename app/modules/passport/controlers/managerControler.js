@@ -270,5 +270,17 @@ function managerControler(){
         
     }
 
+    /**
+     * 重置密码
+     */
+    this.resetPassword = function(){
+        var dataProcess  = this.model("dataProcess");
+        var pass = dataProcess.createPasswd();
+        var results = {};
+        results.error = 0;
+        results.password = pass;
+        if(results.password) return  this.renderJson(results);
+    }
+
 }
 module.exports = managerControler;
