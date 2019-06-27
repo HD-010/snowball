@@ -56,6 +56,10 @@ function arcControler(){
         });
     }
 
+    this.ueditor = function(){
+        this.render();
+    }
+
     /**
      * 获取附加表节构
      */
