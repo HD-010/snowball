@@ -115,7 +115,6 @@
      * 登录处理方法
      */
     function _in(results){
-        log(results);
         if(results.error === 0){
             setItem("UIF",results.infors);
             setItem("UID",results.infors.id);
@@ -131,7 +130,7 @@
     }
 
     jQuery(function($){
-        app.load($);
+        app.load();
     })
     
     </script>

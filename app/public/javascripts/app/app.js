@@ -172,7 +172,6 @@ var app = {
         // app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
         
         //获取对象的值
-        console.log($(obj)[0])
         var formData = $(obj).serialize() + "&" + app.serializeParams();
         
         //console.log(formData)
@@ -287,11 +286,12 @@ var app = {
      * 初始化action名称
      */
     initAction: function(dataUri){
-        var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
         var firstLine,firstQ,router;
+        var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
         dataUri = (lastPoint == -1) ? dataUri : dataUri.substr(lastPoint);
         firstLine = dataUri.indexOf('/');
         firstQ = dataUri.indexOf('?');
+        if(firstQ == -1) firstQ = dataUri.length;
         dataUri = dataUri.substr(firstLine + 1, firstQ - firstLine - 1);
         router = dataUri.split('/');
         this.action = (router.length % 2) ? router[2] : router[1];
