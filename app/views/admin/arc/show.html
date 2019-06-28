@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/bootstrap/css/v3.css"/>
+<style>
+.panel-collapse{
+    overflow:auto;
+}
+
+.arcinfo{
+    margin: 1em;
+    background-color: white;
+    min-height:50px;
+    margin-top: 0px;
+}
+.arcinfo .memberinfo{
+    border:1px solid #E6E6E6;
+    height: 35px;
+    background-color:#F0F6FB;
+}
+.arcinfo .memberinfo h4{
+    line-height: 25px;
+}
+.btn-white {
+    color: inherit;
+    background: white;
+    border: 1px solid #e7eaec;
+}
+.footable-odd{
+    background-color: white;
+}
+#arc-lists img{
+    width: 66px;
+    height: 66px;
+}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>项目管理-工程信息-查看信息</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">管理员根据网站运营需求，添加不同类型的管理员！管理员类型分为：“CRM、超级管理员、分站管理员”用户权限组成相关设置，超级管理员可以根据运营需求设置。</p>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-left: 0px;">
+        <div class="col-xs-6">
+                <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
+        </div>
+    </div>
+    <div class="row arcinfo">               
+        <div class="col-xs-12 memberinfo">
+            <h4>权限组信息<button type="button" class="btn btn-default" style="border:1px solid#EC5051;padding: 4px 8px;margin-left: 10px;" onclick="go('/admin/arc/add/ctag/infos')"><span style="color:#EC5051;"> + 发布信息</span></button></h4>
+            
+        </div>
+        <div class="col-xs-12">              
+            <div class="ibox-content">
+                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="20" data-filter=#filter>
+                    <thead>
+                        <tr>                                              
+                            <th data-sort-ignore="true">ID</th>                                                  
+                            <th data-sort-ignore="false">名称</th>
+                            <th data-sort-ignore="false">属主</th>
+                            <th data-sort-ignore="false">发布时间</th>
+                            
+                            <th data-sort-ignore="true">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="arc-lists">
+                        <tr>
+                            <td>{{id}}</td>                           
+                            <td><img src="{{litpic}}"/>{{title}}</td>
+                            <td>{{writer}}</td> 
+                            <td>{{senddate}}</td>                           
+                            <td class="project-actions">
+                                <a href="javascript:go('/admin/arc/edt/ctag/infos?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/infos?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>                       
+                        <tr>                           
+                            <td colspan="8">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>    
+            </div>     
+        </div>        
+    </div>
+</div>
+<% log("=========results=======+++", results); %>
+<script>
+    DL({
+        dev: 'on',
+        listId: "#arc-lists",
+        packet: {
+            error: <%= error; %>,
+            data: <%- JSON.stringify(results); %>
+        },
+        after: function(){
+            app.load(".arcinfo");
+        }
+    });
+
+    function del(res){
+        app.notice(res,function(){
+            go(res.uri)
+        })
+    }
+</script>
+
+
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.footable').footable();
+    });
+</script>

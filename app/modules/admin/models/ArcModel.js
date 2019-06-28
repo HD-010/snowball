@@ -1,6 +1,25 @@
 function ArcModel(){
     /**
-     * 
+     * 查询（文章）列表
+     */
+    this.lists = function(params,callback){
+        
+        var conditions = {
+            table: ['youbang_archives'],
+            fields: ['youbang_archives.*', params.addonTab + '.*'],
+            joinOn: ' left join ' + params.addonTab + ' on youbang_archives.id=' + params.addonTab + '.aid',
+            where:[]
+        };
+        conditions.where.push(params.addonTab + '.aid is not null');
+        this.DB().log().get(conditions,(error,results)=>{
+            var data = {};
+            data.error = error ? 1 : 0;
+            data.results = error ? [] : results;
+            callback(data);
+        });
+    }
+    
+    /**
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){

@@ -60,7 +60,9 @@ var app = {
     asyncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
-        var uri = app.host + $(obj).attr('data-uri');
+        var dataUri = $(obj).attr('data-uri');
+        this.initAction(dataUri);
+        var uri = app.host + dataUri;
         var type = $(obj).attr('data-type') || 'json';
         if(!uri.length) return false;
         uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
@@ -70,9 +72,9 @@ var app = {
             obj[vars[i].split("=")[0]]= vars[i].split("=")[1];
         }
 
-        var point = uri.indexOf('?');
-        var start = uri.lastIndexOf('/')+1;
-        app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
+        // var point = uri.indexOf('?');
+        // var start = uri.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
         console.log("=====数据请求地址：",uri);
         console.log("=====数据请求参数：",obj);
@@ -164,9 +166,10 @@ var app = {
             alert('请填写data-form-async属性的正确值');
             return false;
         }
-        var point = action.indexOf('?');
-        var start = action.lastIndexOf('/')+1;
-        app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
+        this.initAction(action);
+        // var point = action.indexOf('?');
+        // var start = action.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
         
         //获取对象的值
         console.log($(obj)[0])
@@ -278,6 +281,20 @@ var app = {
                 $(value).val(sessionStorage.getItem(key));
             }
         });
+    },
+
+    /**
+     * 初始化action名称
+     */
+    initAction: function(dataUri){
+        var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
+        var firstLine,firstQ,router;
+        dataUri = (lastPoint == -1) ? dataUri : dataUri.substr(lastPoint);
+        firstLine = dataUri.indexOf('/');
+        firstQ = dataUri.indexOf('?');
+        dataUri = dataUri.substr(firstLine + 1, firstQ - firstLine - 1);
+        router = dataUri.split('/');
+        this.action = (router.length % 2) ? router[2] : router[1];
     },
 
     /**

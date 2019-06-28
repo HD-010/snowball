@@ -8,8 +8,8 @@ function arcControler(){
      * 添加文章
      */
     this.add = function(){
-        var ctag = this.GET('ctag') || 'infos';   //这是组件标识，由客户端传来
-        var viewer = 'add_' + ctag;
+        var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
+        //var viewer = 'add_' + ctag;
         var data = {};
         var params = {ctag: ctag};
         var arc = this.model("Arc");
@@ -22,7 +22,27 @@ function arcControler(){
             
             data.addInfo = res.results[0].fieldset;  //附加表字段信息
             data.addlist = res.results[0].listfields.split(',');
-            that.render(data,viewer);
+            that.render(data);
+        });
+    }
+
+    /**
+     * 查看文章
+     */
+    this.show = function(){
+        var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
+        var params = {ctag: ctag};
+        var arc = this.model('Arc');
+        //查询附加表的信息
+        arc.addonTableInfor(params,function(res){
+            if(res.error || !res.results.length) {
+                res.message = "查询表信息失败，请稍后重试";
+                return that.render(res);
+            }
+            params.addonTab = res.results[0].addtable;
+            arc.lists(params, (res)=>{
+                that.render(res);
+            });
         });
     }
 
@@ -30,7 +50,7 @@ function arcControler(){
      * 保存内容
      */
     this.save = function(){
-        var ctag = this.GET('ctag')  || 'infos';          //这是组件标识，由客户端传来
+        var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
         var arc = this.model("Arc");
         var params = {};
         params.ctag = ctag;
@@ -56,6 +76,36 @@ function arcControler(){
         });
     }
 
+    /**
+     * 删除记录
+     */
+    this.del = function(){
+        var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
+        var data = {
+            error: 0,
+            message: '成功删除 1 条记录 ' + ctag,
+            uri: '/admin/arc/show/ctag/infos'
+        }
+        this.renderJson(data);
+    }
+
+    /**
+     * 编辑记录
+     */
+    this.edt = function(){
+        var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
+        var data = {
+            error: 0,
+            message: '成功删除 1 条记录' + ctag,
+            uri: '/admin/arc/show/ctag/infos'
+        }
+        this.render(data);
+    }
+
+
+    /**
+     * 返回ueditor组件
+     */
     this.ueditor = function(){
         this.render();
     }
