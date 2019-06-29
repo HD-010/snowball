@@ -120,7 +120,6 @@ function arcControler(){
                 }
                 data.error = res.error;
                 data.data = res.results;
-                log("============0000000000=============",data);
                 that.render(data);
             });
         });

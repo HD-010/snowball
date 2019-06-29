@@ -3,7 +3,7 @@ function ArcModel(){
      * 查询（文章）列表
      */
     this.lists = function(params,callback){
-        
+        var noVAlid = ['body'];     //定义的字段会被base64编码
         var conditions = {
             table: ['youbang_archives'],
             fields: ['youbang_archives.*', params.addonTab + '.*'],
@@ -16,10 +16,10 @@ function ArcModel(){
             conditions.limit.push(1);
         }
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().log().get(conditions,(error,results)=>{
+        this.DB().get(conditions,(error,results)=>{
             var data = {};
             data.error = error ? 1 : 0;
-            data.results = error ? [] : results;
+            data.results = error ? [] : recodeBase64decode(results,noVAlid);
             callback(data);
         });
     }
@@ -45,6 +45,8 @@ function ArcModel(){
         record.weight = this.POST('weight') || 0;
         record.litpic = this.POST('litpic') || '';
         conditions.fields.push(record);
+        var id = this.POST('id');
+        if(id) conditions.where.push('id=' + id);
 
         this.DB().log().set(conditions,function(error,results,fields){
             var data = {};
@@ -60,6 +62,7 @@ function ArcModel(){
      */
     this.saveAddon = function(params,callback){
         var utility = require('utility');
+        var noVAlid = ['body'];     //定义的字段会被base64编码
         var listfields = queryresultKeyValue(params.fieldset,'field');
         var conditions = {
             table:'youbang_addoninfos',
@@ -67,7 +70,6 @@ function ArcModel(){
             where : []
         }
         var record = {};
-        var noVAlid = ['body'];
         for(var i in listfields){
             var field = "";
             var saveField = false;      //是还安全字段
@@ -82,6 +84,9 @@ function ArcModel(){
         }
         record.aid = params.aid;
         conditions.fields.push(record);
+        var aid = this.POST('id');
+        if(aid) conditions.where.push('aid=' + aid);
+        
         this.DB().log().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
