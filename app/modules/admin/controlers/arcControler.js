@@ -68,6 +68,7 @@ function arcControler(){
                     return that.render(res);
                 }
                 params.fieldset = res.results[0].fieldset;
+                params.addtable = res.results[0].addtable;
                 arc.saveAddon(params,function(res){
                     that.renderJson(res)
                 });
@@ -81,13 +82,44 @@ function arcControler(){
      */
     this.del = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
+        var id = this.POST('id');
         var data = {
-            error: 0,
-            message: '成功删除 1 条记录 ' + ctag,
-            uri: '/admin/arc/show/ctag/infos'
+            error: 1,
+            message: '非法操作，已被取消！',
         }
+        if(!ctag || !id) return this.renderJson(data);
+        var arc = this.model("Arc");
+        var params = {
+            ctag: ctag,
+            id: id
+        }
+        //查询附加表字段信息
+        arc.addonTableInfor(params,function(res){
+            if(res.error) {
+                res.message = "查询表信息失败，请稍后重试";
+                return that.render(res);
+            }
+            params.addtable = res.results[0].addtable;
+            
+            arc.delHives(params,(res)=>{
+                data.error = res.error ? 1 : 0;
+                if(res.error) {
+                    data.message = '操作失败，请稍后再试！'
+                    return that.renderJson(data);
+                }
+                arc.delAddon(params,(res)=>{
+                    data.error = res.error ? 1 : 0;
+                    if(res.error) {
+                        data.message = '删除附加表数据出错！';
+                        return that.renderJson(data);
+                    }
+                    data.message = "操作成功，删除了" + res.results.affectedRows + "条记录";
+                    data.uri = '/admin/arc/show/ctag/infos';
+                    that.renderJson(data);
+                });
+            });
+        });
         
-        this.renderJson(data);
     }
 
     /**

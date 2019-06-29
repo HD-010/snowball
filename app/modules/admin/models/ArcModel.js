@@ -65,7 +65,7 @@ function ArcModel(){
         var noVAlid = ['body'];     //定义的字段会被base64编码
         var listfields = queryresultKeyValue(params.fieldset,'field');
         var conditions = {
-            table:'youbang_addoninfos',
+            table: params.addtable,
             fields: [],
             where : []
         }
@@ -112,6 +112,42 @@ function ArcModel(){
             data.error = error ? 1 : 0;
             data.uri = "";
             data.results = recodeJsonParse(results,'fieldset');
+            callback(data);
+        });
+    }
+
+    /**
+     * 删除主表记录
+     */
+    this.delHives = function(params, callback){
+        var conditions = {
+            table:'youbang_archives',
+            where:[]
+        }
+        if(params.id) conditions.where.push("id in (" + params.id.replace(/_/g,',') + ")");
+        this.DB().log().del(conditions,(error,results)=>{
+            var data = {
+                error: error,
+                results: results
+            }
+            callback(data);
+        });
+    }
+
+    /**
+     * 删除附加表记录
+     */
+    this.delAddon = function(params, callback){
+        var conditions = {
+            table: params.addtable,
+            where:[]
+        }
+        if(params.id) conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
+        this.DB().log().del(conditions,(error,results)=>{
+            var data = {
+                error: error,
+                results: results
+            }
             callback(data);
         });
     }
