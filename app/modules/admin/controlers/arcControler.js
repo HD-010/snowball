@@ -86,6 +86,7 @@ function arcControler(){
             message: '成功删除 1 条记录 ' + ctag,
             uri: '/admin/arc/show/ctag/infos'
         }
+        
         this.renderJson(data);
     }
 
@@ -94,12 +95,35 @@ function arcControler(){
      */
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
-        var data = {
-            error: 0,
-            message: '成功删除 1 条记录' + ctag,
-            uri: '/admin/arc/show/ctag/infos'
-        }
-        this.render(data);
+        var data = {}
+        var params = {ctag: ctag};
+        var arc = this.model("Arc");
+        //查询附加表字段信息
+        arc.addonTableInfor(params,function(res){
+            if(res.error) {
+                res.message = "查询表信息失败，请稍后重试";
+                return that.render(res);
+            }
+            //获取当前被编辑的记录
+            params.id = that.GET('id');
+            params.addonTab = res.results[0].addtable;
+            if(!params.id) {
+                res.message = "参数错误，请稍后重试";
+                return that.render(res);
+            }
+            data.addInfo = res.results[0].fieldset;  //附加表字段信息
+            data.addlist = res.results[0].listfields.split(',');
+            arc.lists(params,(res)=>{
+                if(res.error) {
+                    res.message = "查询数据失败，请稍后重试";
+                    return that.render(res);
+                }
+                data.error = res.error;
+                data.data = res.results;
+                log("============0000000000=============",data);
+                that.render(data);
+            });
+        });
     }
 
 

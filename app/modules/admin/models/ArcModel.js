@@ -8,8 +8,13 @@ function ArcModel(){
             table: ['youbang_archives'],
             fields: ['youbang_archives.*', params.addonTab + '.*'],
             joinOn: ' left join ' + params.addonTab + ' on youbang_archives.id=' + params.addonTab + '.aid',
-            where:[]
+            where: [],
+            limit: []
         };
+        if(params.id) {
+            conditions.where.push('youbang_archives.id=' + params.id);
+            conditions.limit.push(1);
+        }
         conditions.where.push(params.addonTab + '.aid is not null');
         this.DB().log().get(conditions,(error,results)=>{
             var data = {};
@@ -54,6 +59,7 @@ function ArcModel(){
      * 保存数据到附加表
      */
     this.saveAddon = function(params,callback){
+        var utility = require('utility');
         var listfields = queryresultKeyValue(params.fieldset,'field');
         var conditions = {
             table:'youbang_addoninfos',
@@ -61,13 +67,18 @@ function ArcModel(){
             where : []
         }
         var record = {};
-        var field = "";
+        var noVAlid = ['body'];
         for(var i in listfields){
-            field = this.POST(listfields[i]);
+            var field = "";
+            var saveField = false;      //是还安全字段
+            field = listfields[i];
+            saveField = noVAlid.indexOf(field) + 1;
+            if(saveField) field =  '!' + listfields[i];
+            field = this.POST(field);
+            if(saveField) field = utility.base64encode(field);
             if(typeof field == 'object') field = field.join('-');
             record[listfields[i]] = field ? field : 
             array2value(params.fieldset,'field',listfields[i],'default');
-            field = "";
         }
         record.aid = params.aid;
         conditions.fields.push(record);

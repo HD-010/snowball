@@ -1,1 +1,332 @@
-sdfsdfsdfsdfdsfdsdfsdf
+<%
+    var formCode = {
+        //uediter选项
+        uediterFields: [],
+
+        get: function(index){
+            var type = array2value(addInfo,'field',addlist[i],'type');
+            var codeType = {
+                _text: 'input',
+                _int: 'input',
+                _datetime: 'input',
+                _checkbox: 'inputCheckbox',
+                _stepselect: 'select',
+                _htmltext: 'uediter',
+            };
+            if('_'+type === '_htmltext') formCode.uediterFields.push(addlist[i]);
+            if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
+            return "formCode中不存在" + codeType['_'+type] + "组件";
+        },
+
+        input: function(index){
+            var str = '<tr>' +
+                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        inputCheckbox: function(index){
+            var str = '<tr>' +
+                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value="{{' + addlist[i] + '}}"> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
+        inputRadio: function(index){
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="radio" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
+        select: function(index){
+            var str = '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="col-sm-4 col-xs-4 auto-select">' +
+                            '<select class="form-control" name="' + addlist[i] + '" '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"></select>' +
+                        '</div>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        uediter: function(index){
+            return '<tr>' +
+                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' +
+                        '<div class="col-sm-12 col-xs-12 ueditor-box">' +
+                            '<input type="hidden" id="ue-contents" name="' + addlist[i] + '" value="" />'+
+                            '<iframe src="" name="iframe-' + addlist[i] + '" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
+                        '</div>' +
+                    '</td>' +           
+                '</tr>';
+        },
+
+        defNull: function(d){
+            return d || '';
+        }
+    }
+%>
+
+<style>
+.add-infor .active{background-color:#FFF;}
+.table .active{background-color:#23AD44;}
+.full-screen{
+    position: fixed;
+    z-index: 99999999999;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理-编辑栏目</span>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" style="background-color:#fff">
+        <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
+        </li>
+        <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
+        </li>
+    </ul>
+    <div class="add-infor">
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+               </div>
+            </div>
+        </div>
+        <div class="row form tab-content">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" >
+                <input type="hidden" name='tag' value="add" />
+                <input type="hidden" name='typeid' value="" />
+                <input type="hidden" name='parenttypeid2' value="" />
+                <input type="hidden" name='componentid' value="-8" />
+                
+                <!-- tab-1的表单是固定的 -->
+                <table class="table" id="tab-1">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="title" placeholder="标题" value="{{title}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>短标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value="{{shorttitle}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>推荐：</td>
+                            <td style="padding-left:26px;">
+                                <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="{{component}}" value="{{component}}" /><em></em></label>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
+                            </td>    
+                        </tr>
+
+                        <tr>
+                            <td>关键字：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="keywords" placeholder="关键字" value="{{keywords}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>描述：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="description" placeholder="描述" value="{{description}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>权重：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="number" class="form-control" name="weight" placeholder="权重" value="{{weight}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>缩略图：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="litpic" placeholder="缩略图：" value="{{litpic}}"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <% //log("======addInfo======-0:",addInfo) %>
+                <% //log("======addList======-0:",addlist) %>
+                <!-- tab-1的表单由系统生成 -->
+                <table class="table hidden" id="tab-2">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i in addlist){ %>
+                            <%- formCode.get(i); %>
+                        <% } %>
+                        <script>var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a id="test">测试</a>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    //选项卡相关
+    $("a[data-toggle='tab']").click(function(){
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+
+    //初始化表单的值
+    var data = {
+            error: <%- error %>,
+            data: <%- JSON.stringify(data[0]); %>
+        }
+    DL({
+        dev: 'on',
+        id: "#add-infor",
+        packet: data,
+        after: function(){
+            //加载ueditor
+            $("iframe").attr('src','/admin/arc/ueditor');
+
+            $("iframe").load(function(){
+                
+                UE.frame = $("iframe").eq(0);
+                //读取UE内容
+                UE.contents = function(){
+                    var ue = UE.frame[0].contentWindow.ue;
+                    return ue.getContent();
+                }
+                //标识UE是否全屏
+                UE.full =  false;
+
+                //绑定ue全屏件事
+                UE.frame.contents().find("#edui3_body").click(function(){
+                    UE.full ? $(".ueditor-box").removeClass('full-screen'):
+                    $(".ueditor-box").addClass('full-screen');
+                    UE.full = UE.full ? false : true;
+                });
+
+                //绑定ue获取内容事件
+                $('button[type="submit"]').mouseover(function(){
+                    $("#ue-contents").val(UE.contents());
+                });
+
+                var wt = setInterval(function(){
+                    (typeof UE.time == 'number') ?  UE.time ++ : UE.time = 0;
+                    if(UE.time > 1) {
+                        app.notice({
+                            error: 1,
+                            message: 'UEditor 加载超时！'
+                        });
+                        return clearInterval(wt);
+                    }
+                    if(!UE.frame[0].contentWindow.ue.body) return;
+                    clearInterval(wt);
+                    var field = UE.uediterFields[0];
+                    UE.frame[0].contentWindow.ue.setContent(data.data[field]); //将字段对应的值展示到ueditor中
+                },500)
+
+            });
+        }
+    });
+
+</script>
+
+
+<script>
+    app.load(".add-infor");
+    effect.switch(".mui-switch",'是','否');
+    effect.setDefVal(".add-infor");     //设置页面默认值
+    effect.setComments(".add-infor");
+    effect.setCheckbox(".auto-checkbox");
+    effect.setRadio(".auto-radio");
+    effect.setSelect(".auto-select");
+    
+    function save(res){
+        app.notice(res);
+    }
+</script>
