@@ -76,7 +76,7 @@ function ArcModel(){
             field = listfields[i];
             saveField = noVAlid.indexOf(field) + 1;
             if(saveField) field =  '!' + listfields[i];
-            field = this.POST(field);
+            field = this.POST(field) || "";
             if(saveField) field = utility.base64encode(field);
             if(typeof field == 'object') field = field.join('-');
             record[listfields[i]] = field ? field : 
