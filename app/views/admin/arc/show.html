@@ -59,7 +59,10 @@
             <div class="ibox-content">
                 <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="20" data-filter=#filter>
                     <thead>
-                        <tr>                                              
+                        <tr>    
+                            <td data-sort-ignore="true" style="width:82px;">
+                                <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /></label>
+                            </td>                                           
                             <th data-sort-ignore="false">ID</th>                                                  
                             <th data-sort-ignore="false">名称</th>
                             <th data-sort-ignore="false">属主</th>
@@ -70,6 +73,9 @@
                     </thead>
                     <tbody id="arc-lists">
                         <tr>
+                            <td data-sort-ignore="true" style="width:82px;">
+                                <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="{{id}}" /></label>
+                            </td> 
                             <td>{{id}}</td>                           
                             <td><img src="{{litpic}}"/>{{title}}</td>
                             <td>{{writer}}</td> 
@@ -80,7 +86,15 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>                       
+                    <tfoot>     
+                        <tr>
+                            <td>
+                                <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+                            </td>                       
+                            <td colspan="5">
+                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/infos?id=' id='del-records'>删除</button>
+                            </td>
+                        </tr>                  
                         <tr>                           
                             <td colspan="8">
                                 <ul class="pagination pull-right"></ul>
@@ -92,6 +106,7 @@
         </div>        
     </div>
 </div>
+
 <script>
     DL({
         dev: 'on',
@@ -102,15 +117,35 @@
         },
         after: function(){
             app.load(".arcinfo");
+            effect.unionSelect();
         }
     });
 
+    /**
+     * 删除回调
+     **/
     function del(res){
         app.notice(res,function(){
             go(res.uri)
         })
     }
+
+    /**
+     * 删除前的处理
+     **/
+    $("#del-records").unbind('mouseover').on("mouseover",function(){
+        var values = [];
+        var dataUri = $(this).attr('data-uri');
+        dataUri = dataUri.substr(0,dataUri.indexOf('?')) || dataUri.substr(0);
+        $(this).parentsUntil('table').parent().find('.union-child').each(function(index,item){
+            if($(item).prop('checked')) values.push($(item).val());
+        });
+        dataUri += '?id=' + values.join('_');
+        $(this).attr('data-uri',dataUri);
+    })
+     
 </script>
+
 
 
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>

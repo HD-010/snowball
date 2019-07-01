@@ -13,8 +13,9 @@ function arcControler(){
         var data = {};
         var params = {ctag: ctag};
         var arc = this.model("Arc");
+        var addonTable = this.model('Component');
         //查询附加表字段信息
-        arc.addonTableInfor(params,function(res){
+        addonTable.list(params,function(res){
             if(res.error) {
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res);
@@ -33,8 +34,9 @@ function arcControler(){
         var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
         var params = {ctag: ctag};
         var arc = this.model('Arc');
+        var addonTable = this.model('Component');
         //查询附加表的信息
-        arc.addonTableInfor(params,function(res){
+        addonTable.list(params,function(res){
             if(res.error || !res.results.length) {
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res);
@@ -52,6 +54,7 @@ function arcControler(){
     this.save = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
         var arc = this.model("Arc");
+        var addonTable = this.model('Component');
         var params = {};
         params.ctag = ctag;
         //保存数据到主表
@@ -62,7 +65,7 @@ function arcControler(){
             }
             params.aid = res.results.insertId;
             //查询附加表字段信息
-            arc.addonTableInfor(params,function(res){
+            addonTable.list(params,function(res){
                 if(res.error) {
                     res.message = "查询表信息失败，请稍后重试";
                     return that.render(res);
@@ -85,16 +88,17 @@ function arcControler(){
         var id = this.POST('id');
         var data = {
             error: 1,
-            message: '非法操作，已被取消！',
+            message: '操作错误，请选择你需要删除的对象！',
         }
         if(!ctag || !id) return this.renderJson(data);
         var arc = this.model("Arc");
+        var addonTable = this.model('Component');
         var params = {
             ctag: ctag,
             id: id
         }
         //查询附加表字段信息
-        arc.addonTableInfor(params,function(res){
+        addonTable.list(params,function(res){
             if(res.error) {
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res);
@@ -130,8 +134,9 @@ function arcControler(){
         var data = {}
         var params = {ctag: ctag};
         var arc = this.model("Arc");
+        var addonTable = this.model('Component');
         //查询附加表字段信息
-        arc.addonTableInfor(params,function(res){
+        addonTable.list(params,function(res){
             if(res.error) {
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res);
