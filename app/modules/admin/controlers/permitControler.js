@@ -16,13 +16,12 @@ function permitControler(){
     }
     
      /**
-      * 修改当前用户下组权限信息
+      * 编辑当前用户下组权限信息
       * 传值 管理组id
       */
      that.editGlist = function(){
         var permit = that.model("permit"); 
         permit.listPermits({},function(res){
-            //console.log("===========================",res)
             that.render(res);
         })     
         
@@ -38,6 +37,27 @@ function permitControler(){
                 that.render({list:res});
            }
         })
+    }
+
+    /**
+     * 修改权限组权限信息
+     */
+    that.updatePermit = function(){
+        var permit = that.model("permit"); 
+        permit.updatePermit(function(res){
+            that.renderJson(res);
+        })     
+    }
+
+    /**
+     * 编辑用户的权限
+     * 
+     */
+    that.editAcountPermit = function(){
+        var permit = that.model("permit"); 
+        permit.editAcountPermit(function(res){
+            that.render(res);
+        })     
     }
 
 }

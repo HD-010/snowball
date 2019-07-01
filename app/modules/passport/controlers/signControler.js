@@ -90,6 +90,14 @@ function signControler(){
         });
     }
 
+    /**
+     * 根据用户id获取用户信息
+     */
+    this.getUserById = function(){
+        this.model("UserInfor").getUserById({},function(results,fields) {
+            if (results) return that.renderJson(results);    
+        });
+    }
 
 }
 
