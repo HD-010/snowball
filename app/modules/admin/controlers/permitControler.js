@@ -28,5 +28,17 @@ function permitControler(){
         
     }
 
+    /**
+     * 查询管理用户权限丽列表信息
+     */
+    that.getAcountAll = function(){
+        var manageModel = that.model("Manage");
+        manageModel.getChildManage(function(res){
+           if(res){
+                that.render({list:res});
+           }
+        })
+    }
+
 }
 module.exports = permitControler;
