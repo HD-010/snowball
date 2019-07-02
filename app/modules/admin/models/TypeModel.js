@@ -12,8 +12,9 @@ function TypeModel(){
             orderBy:['topid asc', 'id desc'],
         };
         if(params.id) conditions.where.push("id=" + params.id);
+        if(params.nid) conditions.where.push("componentid=(select id from youbang_components where nid='" + params.nid + "')");    //查看组件id
 
-        this.DB().get(conditions,function(error,res){
+        this.DB().log().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
             data.data = res;
             return callback(data);

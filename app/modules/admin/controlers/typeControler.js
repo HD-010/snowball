@@ -14,21 +14,27 @@ function typeControler(){
      * 添加栏目信息
      */
     this.add = function(){
-        var type = that.model('Type');
         var ps = 1;
         var data = {};
         var atid = that.GET('atid');
-       
-        //所有栏目信息
-        type.list({},(res)=>{
+        var param = {};
+        param.nid = this.param("ctag");
+        var type = that.model('Type');
+
+        //所有栏目信息或当前组件下的栏目信息
+        type.list(param,(res)=>{
             data.error = res.error;
+            if(!res.data.length){
+                data.error = 1;
+                data.message = '<html>应用不存在，现在<a href="">添加</a><html>'
+            }
             data.allType = res.data;
             end(data);
         })
-
+        
         function end(data){
             ps--;
-            if(data.error) return render(data);
+            if(data.error) return that.render(data,'/notice');
             if(!ps) return that.render(data);
         }
     }

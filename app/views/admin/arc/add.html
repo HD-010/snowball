@@ -332,6 +332,9 @@
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
     function save(res){
-        app.notice(res);
+        if(!res.error) res.uri = '/admin/arc/show/ctag/infos' 
+        app.notice(res,function(){
+            go(res.uri);
+        });
     }
 </script>

@@ -590,8 +590,36 @@ var effect = {
             }
             $(item).find("select").html(optHtml);
         });
-    }
+    },
 
+    /**
+     * 全选选项关联事件
+     * html代码：
+     * 项目选框(注: class="union-child" data-union="union-top" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="{{id}}" /></label>
+     * 全选框（注：class="union-top" data-union="union-child" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+     * */
+    unionSelect: function(){
+        $("input[data-union]").on('change',function(){
+            var me = $(this);
+            var tab = me.parentsUntil('table').parent();
+            var val = me.prop('checked');
+            var unionTag = me.attr('data-union');
+            var all = true; 
+            
+            if(unionTag == 'union-top'){
+                tab.find('.union-child').each(function(index,item){
+                    if(!$(item).prop('checked')) all = false;
+                });
+            }
+            if(unionTag == 'union-child'){
+                all = val;
+                tab.find("." + unionTag).prop('checked',val);
+            }
+            tab.find('.union-top').prop('checked',all);
+        });
+    }
 
 }
 
