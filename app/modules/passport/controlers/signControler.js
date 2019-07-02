@@ -95,7 +95,7 @@ function signControler(){
      */
     this.getUserById = function(){
         this.model("UserInfor").getUserById({},function(results,fields) {
-            if (results) return that.renderJson(results);    
+            return (results) ? that.renderJson(results) : [];
         });
     }
 

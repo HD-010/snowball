@@ -27,6 +27,7 @@ function permitModel(){
             data.loginUserPermit = dataProcess.structMenu(res);
                 if(id){ 
                     condition.where.push("groupId ="+id);
+                    condition.where.push(" userId is null ");
                     condition.where.push("enable = '1'");
                     that.DB().get(condition,function(error,results){
                         data.listPermits = results;
@@ -120,20 +121,102 @@ function permitModel(){
     /**
      * 根据用户ID 获取用户的权限
      */
-    that.editAcountPermit = function(callback){
+    that.editAcountPermit = function(params,callback){
+        var dataProcess = that.model('DataProcess'); 
         var data = {};
-        data.uid = that.GET("uid");
-       //根据用户ID 获取用户信息
-       if( data.uid){
-            this.CURL({
-                uri:"http://127.0.0.1:3005/passport/sign/getUserById?id=" + data.uid,
-                callback:(error,source)=>{
-                    console.log("======",source)
+        data.userInfo = params;
+        data.id = data.userInfo.id;
+        data.name = data.userInfo.userName;
+        data.groupId = data.userInfo.groupId;
+        //获取登录用户的权限
+        that.loginUserPermit(function(res){
+            data.loginUserPermit = dataProcess.structMenu(res);
+             //根据用户ID 获取用户信息
+            if( data.id){           
+                if(data.userInfo){
+                    //根据用户id 查询权限，查不到 在根据用户的组ID查询
+                    var condition = {
+                        table:["youbang_sys_permit as p"],                                 //查询的表名
+                        fields:["p.id as permitId","p.`userId`","p.groupId","m.id","m.`name`","m.pid","p.`menuId`","p.`add`","p.`delete`",'p.`edit`','p.`show`'],           //被查询的字段名称（别名在此指定）
+                        where:[],           //查询条件
+                        orderBy:['id asc'],
+                        joinOn:" LEFT JOIN youbang_sys_menu as m ON m.id = p.menuId "
+                    };
+                    condition.where.push("userId ="+data.id);
+                    that.DB().get(condition,function(error,res){
+                        if(res.length){
+                            data.listPermits = res;
+                            callback(data);
+                            return;
+                        }else{
+                            condition.where.shift();
+                            condition.where.push(" groupId = "+data.userInfo.groupId);
+                            condition.where.push(" userId is null ");
+                            that.DB().get(condition,function(error,res){
+                                data.listPermits = res;
+                                callback(data);
+                                return; 
+                            });
+                        }
+                    })
                 }
-            });
-        }
-       
+               
+            }
+        })
     }
+
+    
+    /**
+     * 根据用户ID获取用户信息
+     * 
+     */
+    that.getUserById = function(id,callback){
+        that.CURL({
+            uri:"http://127.0.0.1:3005/passport/sign/getUserById?id=" + id,
+            callback:(error,source)=>{
+              callback(source)
+            }
+        });
+    }
+
+
+
+    /***
+     * 修改用户权限信息
+     * 
+     */
+    that.updateAcountPermit = function(callback){
+        var data = {};
+        data.base64 = that.POST("!database64");
+        try{
+            var utility = require('utility');
+            var getData = utility.base64decode(data.base64);       
+            data.base64 = JSON.parse(getData);
+        }catch(error){
+            return callback({error:0})
+        }
+
+        var groupId = data.base64[0].groupId;
+        var userId = data.base64[0].userId;
+        var sql  = "delete from youbang_sys_permit where userId = "+userId+" and groupId = "+groupId;
+        that.DB().log().query(sql,function(error,res){
+            var condition = {
+                table:["youbang_sys_permit"],                                 //查询的表名
+                fields:data.base64           //被查询的字段名称（别名在此指定）                       
+            };
+            that.DB().set(condition,function(error,results){
+               if(results.affectedRows){
+                var obj={
+                    message:"用户权限修改成功!",
+                    uri:"/admin/permit/getAcountAll",
+                    error:0
+                }
+                callback(obj)
+               }
+            })
+        })       
+    }
+
 
 }
 

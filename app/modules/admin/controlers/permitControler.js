@@ -22,6 +22,7 @@ function permitControler(){
      that.editGlist = function(){
         var permit = that.model("permit"); 
         permit.listPermits({},function(res){
+            console.log("data====",res)
             that.render(res);
         })     
         
@@ -54,9 +55,26 @@ function permitControler(){
      * 
      */
     that.editAcountPermit = function(){
+        var id = that.GET("uid");//获取用户ID
         var permit = that.model("permit"); 
-        permit.editAcountPermit(function(res){
-            that.render(res);
+        that.CURL({
+            uri:"http://127.0.0.1:3005/passport/sign/getUserById?id=" + id,
+            callback:(error,source)=>{
+                permit.editAcountPermit(source[0],function(results){
+                    that.render(results,'/admin/permit/editAcountPermit');
+                })   
+            }
+        });      
+    }
+
+
+    /**
+     * 修改用户权限信息
+     */
+    that.updateAcountPermit = function(){
+        var permit = that.model("permit"); 
+        permit.updateAcountPermit(function(res){
+            that.renderJson(res);
         })     
     }
 
