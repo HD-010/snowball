@@ -570,7 +570,7 @@ var effect = {
      * @param {*} selecter 
      * html代码结构：
      *  <div class="col-sm-4 col-xs-4 监听的选择器">
-            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' ></select>
+            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
         </div>
      */
     setSelect: function(selecter){
@@ -585,7 +585,7 @@ var effect = {
             var optHtml = '';
             var stlected;
             for(var i=0; i < key.length; i ++){
-                stlected = (defVal == key[i]) ? 'selected' : '';
+                stlected = (defVal.indexOf(key[i]) + 1) ? 'selected' : '';
                 optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
             }
             $(item).find("select").html(optHtml);

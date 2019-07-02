@@ -12,10 +12,12 @@
            </div>
         </div>
     </div>
+    
     <div class="row form">
         <form id="type-edt" data-form-async='json' action="/admin/type/save" method="post" >
             <input type="hidden" name='tag' value="edt" />
             <input type="hidden" name='atid' value="{{id}}" />
+            <input type="hidden" name='ctag' value="infos" />
             <table class="table">
                 <thead>
                     <tr>
@@ -36,8 +38,8 @@
                     <tr>
                         <td>所属栏目：</td>
                         <td>
-                            <div class="form-group col-xs-4">
-                                <input type="text" class="form-control" name='topid'  placeholder="当前栏目是顶级栏目" value="{{- return array2value(allType,'id',aType[0].topid,'typename')||0; }}"/>
+                            <div class="form-group col-xs-4 auto-type-name">
+                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" data-def=<%= aType[0].pid; %>  placeholder="当前栏目是顶级栏目" value="" ></select>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                         </td> 
@@ -139,8 +141,7 @@
     var error = <%- error %>;
     var aType = <%- JSON.stringify(aType) %>;
     var allType = <%- JSON.stringify(allType) %>;
-    app.addonParams = {oid: getItem('OID')};
-
+    
     DL({
         id: "#type-edt ",
         packet:{
@@ -148,37 +149,15 @@
             data: aType[0]
         },
         after: function(){
-            switchEffect();
+            effect.setSelect(".auto-type-name");
             app.load(".type-edt");
+            $('input[data-stat]').each(function(){
+                $(this).prop('checked',$(this).attr('data-stat'))
+            });
+            effect.switch('.mui-switch','是','否');
+            app.addonParams = {oid: getItem('OID')};
         }
     });
-
-    function switchEffect(){
-        var cl  = $(".mui-switch");
-        for(var i=0;i<cl.length;i++){
-                if($(cl[i]).attr("data-stat")=='1'){
-                    cl[i].nextSibling.innerText='是';
-                    cl[i].nextSibling.style.color="#FFFFFF";
-                    cl[i].nextSibling.style.marginLeft='0px';
-                    cl[i].checked=true;
-                }else{
-                    cl[i].nextSibling.innerText='否';
-                    cl[i].nextSibling.style.color="#D2D2D2";
-                    cl[i].nextSibling.style.marginLeft='16px';
-                }
-        }
-        cl.click(function(){
-                if(this.checked){
-                    this.nextSibling.innerText='是';
-                    this.nextSibling.style.color="#FFFFFF";
-                    this.nextSibling.style.marginLeft='0px';
-                }else{
-                    this.nextSibling.innerText='否';
-                    this.nextSibling.style.color="#D2D2D2";
-                    this.nextSibling.style.marginLeft='16px';                
-                }
-        })
-    }
 
     /**
      * 数据保存后的操作 
@@ -186,7 +165,7 @@
     function save(res){
         delete res.uri;
         app.notice(res,function(){
-            if(!res.error) go('/admin/type/index');
+            if(!res.error) go('/admin/type/index' + res.ctag);
         });
     }
 </script>

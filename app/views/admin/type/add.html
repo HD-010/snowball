@@ -35,10 +35,10 @@
                     <tr>
                         <td>所属栏目：</td>
                         <td>
-                            <div class="form-group col-xs-4">
-                                <input type="text" class="form-control" name='topid'  placeholder="当前栏目是顶级栏目" value=" "/>
+                            <div class="form-group col-xs-4 auto-type-name">
+                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" placeholder="当前栏目是顶级栏目" value=" "></select>
                             </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：选择栏目名称</span>
                         </td> 
                     </tr>
                     <tr>
@@ -136,49 +136,14 @@
 
 <script>
     app.load(".type-add");
-    switchEffect()
+    effect.setSelect(".auto-type-name");
+    effect.switch('.mui-switch-anim','是','否');
     var error = <%- error %>;
     var aType = [];
     var allType = <%- JSON.stringify(allType) %>;
     app.addonParams = {oid: getItem('OID')};
-    // DL({
-    //     id: "#type-add",
-    //     packet:{
-    //         error: error,
-    //         data: aType[0]
-    //     },
-    //     after: function(){
-    //         switchEffect();
-    //         app.load(".type-add");
-    //     }
-    // });
 
-    function switchEffect(){
-        var cl  = $(".mui-switch");
-        for(var i=0;i<cl.length;i++){
-                if($(cl[i]).attr("data-stat")=='1'){
-                    cl[i].nextSibling.innerText='是';
-                    cl[i].nextSibling.style.color="#FFFFFF";
-                    cl[i].nextSibling.style.marginLeft='0px';
-                    cl[i].checked=true;
-                }else{
-                    cl[i].nextSibling.innerText='否';
-                    cl[i].nextSibling.style.color="#D2D2D2";
-                    cl[i].nextSibling.style.marginLeft='16px';
-                }
-        }
-        cl.click(function(){
-                if(this.checked){
-                    this.nextSibling.innerText='是';
-                    this.nextSibling.style.color="#FFFFFF";
-                    this.nextSibling.style.marginLeft='0px';
-                }else{
-                    this.nextSibling.innerText='否';
-                    this.nextSibling.style.color="#D2D2D2";
-                    this.nextSibling.style.marginLeft='16px';                
-                }
-        })
-    }
+    
 
     /**
      * 数据保存后的操作 
