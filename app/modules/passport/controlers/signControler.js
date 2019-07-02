@@ -27,6 +27,7 @@ function signControler(){
             }
             var infors = res.data[0];
             res = dataProcess.loginValid(res.data);
+            if(res.error) return that.renderJson(res);
             delete infors.password;
             res.infors = infors;
             //获取openID
