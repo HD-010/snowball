@@ -2,7 +2,7 @@ function MenuModel(){
 
     var that = this;
     /**
-     * 查询顶级菜单
+     * 查询(顶级)菜单
      * 核心在于pid的取值:
      * >0  返回当前pid在的记录和其子记录
      * == 0 返回当前pid在的记录
