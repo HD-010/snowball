@@ -13,7 +13,7 @@ function ComponentModel(){
         if(params.id) conditions.where.push("id=" + params.id);
         if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
         
-        this.DB().get(conditions,function(error,results,fields){
+        this.DB().log().get(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.uri = "";

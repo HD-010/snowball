@@ -80,9 +80,9 @@ function BehaviorModel() {
      */
     this.validSignature = function(params, callback){
         var data = {error:0};
-        log("=======当前被验证的router=======",this.app.router);
-        var delimit = this.app.router.params ? '/' : '';
-        var router = this.app.router.string + delimit +  this.app.router.params || "";
+        log("=======当前被验证的router=======",this.req.router);
+        var delimit = this.req.router.params ? '/' : '';
+        var router = this.req.router.string + delimit +  this.req.router.params || "";
         if(!router) return callback(data);
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
@@ -112,8 +112,8 @@ function BehaviorModel() {
     this.validPermit = function(params, callback){
         var that = this;
         var data = {error:0};
-        var delimit = this.app.router.params ? '/' : '';
-        var router = this.app.router.string + delimit +  this.app.router.params || "";
+        var delimit = this.req.router.params ? '/' : '';
+        var router = this.req.router.string + delimit +  this.req.router.params || "";
         if(!router) return callback(data);
         if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
         var redis = that.DB("Redis");
