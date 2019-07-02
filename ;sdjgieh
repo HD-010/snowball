@@ -1,0 +1,578 @@
+[33mcommit 79c4a9e7d338be5fb5c739a0ac9f27e0050b4fe0[m[33m ([m[1;36mHEAD -> [m[1;32madmin-view[m[33m, [m[1;31morigin/admin-view[m[33m)[m
+Author: e01 <912744609@qq.com>
+Date:   Sun Jun 30 22:39:53 2019 +0800
+
+    wh修复框架数据错误
+
+[33mcommit 97d62e5cca5e82a43706e8fd79c19ed7680c0739[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 29 17:38:09 2019 +0800
+
+    修复已知错误
+
+[33mcommit d40f88b1d97b42e7ddec667f761e711ec671aa95[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 29 17:23:33 2019 +0800
+
+    添加内容删除功能
+
+[33mcommit 29d93356d7fa8e70a0c049682d7648c61f0f8cc5[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 29 16:23:10 2019 +0800
+
+    优化内容字段编码与解码
+
+[33mcommit 0baef6e2468a4c7243f05ddca076c7b4d97de847[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 29 15:36:30 2019 +0800
+
+    增加内容编辑功能
+
+[33mcommit 1c3c4f5c5041e998c96d28e8b3a896ff3f37dd5a[m
+Author: e01 <912744609@qq.com>
+Date:   Fri Jun 28 20:28:01 2019 +0800
+
+    修复已知错误
+
+[33mcommit a0bf1a70f4cf7a284f4c6b2e4a7cee30d1df10a0[m
+Author: e01 <912744609@qq.com>
+Date:   Fri Jun 28 18:01:18 2019 +0800
+
+    增加栏目信息查看，编辑
+
+[33mcommit 32e8582d87fa3e8069328b894219a2ab37a2eca1[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 27 18:02:02 2019 +0800
+
+    fddd
+
+[33mcommit aba522f798db0a841bcdc223696a5ba7b6862c3d[m
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 26 17:39:51 2019 +0800
+
+    优add_infos.html
+
+[33mcommit cd351e8c9b97c4ac6c39f6e292dee03441563c56[m
+Merge: f7eba35 110df61
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 26 17:10:58 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit f7eba359072f300e532556daf141ef884c5c813e[m
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 26 17:10:43 2019 +0800
+
+    信息管理组件信息入库
+
+[33mcommit 110df61a0b0a52b5cec4801a08a852a6251ac155[m
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 26 16:33:02 2019 +0800
+
+    用户信息完成
+
+[33mcommit 16403b2fd1d706e590afa24277c972d8cd7fce58[m
+Merge: dec7297 b7eed11
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 25 17:42:21 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit dec7297e87172b42cf4d13be9131bf63f4166060[m
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 25 17:42:09 2019 +0800
+
+    添加自动属性
+
+[33mcommit b7eed1178973290f1091b32a4035b59b84c71172[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 25 17:40:47 2019 +0800
+
+    删除全部
+
+[33mcommit de665d0d511f7a5c8636f909aed1360a3b123bed[m
+Merge: d889ece d7b0197
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 25 14:53:21 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit d889ece1362ce6940314f8c0215b7d804830d960[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 25 14:53:04 2019 +0800
+
+    用户信息
+
+[33mcommit d7b0197a35c157cb0861ca556842a046bfbc14b9[m
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 25 14:50:43 2019 +0800
+
+    添加组件编辑
+
+[33mcommit 82cf393137b9c3a507a0bfd72aa28b668b07bc38[m
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 25 09:48:14 2019 +0800
+
+    解决不能登录的问题
+
+[33mcommit 7c9f749b8eecfd7c796a7a11d07b8121aab7dcab[m
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 24 17:55:24 2019 +0800
+
+    修复已知错误
+
+[33mcommit c64e204b04e83e79063e40cbe2cdf22443132333[m
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 24 17:28:18 2019 +0800
+
+    kdd
+
+[33mcommit 0ecdf0b48a53c1cd0f3821ab5ffc1292557aac17[m
+Merge: 62a9936 7e56eca
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 24 17:16:16 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 62a9936b4a0063f171045680866512da0b2a0bed[m
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 24 17:15:57 2019 +0800
+
+    管理员列表
+
+[33mcommit 7e56eca7153b673327faf9593d3ba6ef1e8c03bf[m
+Merge: 9d7b4b7 22c7b17
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 24 17:12:08 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 9d7b4b72cbd7c71df3ba6522cb44d57d4da02ae3[m
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 24 17:11:25 2019 +0800
+
+    无法注释
+
+[33mcommit a1e4c420f5dd9f42de8ad79c4b9050d73c9f0b0c[m
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 24 14:49:13 2019 +0800
+
+    完成添加主附表记录
+
+[33mcommit 22c7b17e7605f5833b59bc171eca2146c9d76aff[m
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 22 14:29:16 2019 +0800
+
+    解决冲突
+
+[33mcommit eae095db0a6306cacf913dc33ceea297d2af631d[m
+Merge: f642847 890bb30
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 22 14:22:15 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit f642847a2cafef2f2a70e3dea32d73d2571c6404[m
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 22 14:21:45 2019 +0800
+
+    123
+
+[33mcommit d79503da6a42d38a5a646259a45fa427cc91d104[m
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 22 11:27:08 2019 +0800
+
+    权限管理
+
+[33mcommit c1131b9db2f47123ac67e670bc4feddebf421115[m
+Author: tianxin <3520605387@qq.com>
+Date:   Fri Jun 21 16:25:31 2019 +0800
+
+    权限页面数据没有通过JS改变
+
+[33mcommit 890bb30dfcda41fed81885f66554f72de71a3308[m
+Merge: 86ade49 098ed4a
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 20 17:58:48 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 86ade495e07bc0556626185acb6a2829782ea838[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 20 17:57:46 2019 +0800
+
+    友情链接
+
+[33mcommit 098ed4a715b0e8c70db2e047cc0ef2facafbc29b[m
+Merge: b0bb471 d40d3ee
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 20 17:21:14 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit b0bb471715101452647b09cb5460765152738761[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 20 17:21:00 2019 +0800
+
+    修复已知错误
+
+[33mcommit d40d3eef93d3520f1bf4c00af7ecc4533a1abd03[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 20 16:44:42 2019 +0800
+
+    友情链接
+
+[33mcommit 85c675b92f1c49d7a2c8eb3f5a91dd61bb5713e1[m
+Merge: da07d1b bb325e8
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 20 08:55:51 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit ce6258d8aad996ef676dbda67664f9737be13d65[m
+Merge: 328b83b bb325e8
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 19 16:11:48 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 328b83bf517b6b06712465073de8506ca7920f4b[m
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 19 16:10:57 2019 +0800
+
+    权限做了有一半
+
+[33mcommit a57d2c9fd0fed479e13b902da005455f8a38538b[m
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 19 16:07:36 2019 +0800
+
+    2019-06-19
+
+[33mcommit bb325e84ec3bdb7410d326063636fc2a81f422cf[m
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 19 12:04:18 2019 +0800
+
+    增加栏目添加功能，及sql set 日志优化
+
+[33mcommit da07d1bc626cca0793df71284e33ce33d4b13e2d[m
+Merge: 065ba92 6dd92dc
+Author: wangyongyong <myselyhero@163.com>
+Date:   Wed Jun 19 09:21:26 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 6dd92dc0ba42401faa390d267ed3a54eef7a8724[m
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 18 17:38:28 2019 +0800
+
+    添加栏目编辑功能
+
+[33mcommit 4bf047ccf3edda81045eb282a35ce900fed83890[m
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 17 18:08:54 2019 +0800
+
+    permit
+
+[33mcommit f125282c5a0d295a91f245ddf0da46eaaf3f3712[m
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 17 15:04:13 2019 +0800
+
+    type杰哥
+
+[33mcommit be8f85aab69730ea3a3fcd25ad3114e8ffd48b8c[m
+Merge: 3b99ae2 bc5c3e8
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 17 14:47:10 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 3b99ae2b44b0df423f705b0273c88aed8456fed8[m
+Author: tianxin <3520605387@qq.com>
+Date:   Mon Jun 17 14:46:16 2019 +0800
+
+    权限
+
+[33mcommit bc5c3e8d3ff892540e129544626d01f0dec78162[m
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 17 14:45:25 2019 +0800
+
+    添加栏目页面
+
+[33mcommit 065ba921645caaed6b1c6ac52a68cf2d3e746870[m
+Merge: 8cdc61a 9c33b83
+Author: wangyongyong <myselyhero@163.com>
+Date:   Mon Jun 17 09:07:43 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 8cdc61a83c908cceeb5225b2d9860973ac7672e7[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Sat Jun 15 17:37:34 2019 +0800
+
+    友情链接
+
+[33mcommit 9c33b837945d3eea89f0a71839b4bc37c6bc29a6[m
+Merge: 589f07e 5c35c58
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 15 17:37:29 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 589f07e7da57016080bda340733da6f977b3d703[m
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 15 17:33:59 2019 +0800
+
+    添加权限组
+
+[33mcommit 5c35c5838667bcc4aa14fc152da97dadfcf27e55[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 15 17:17:49 2019 +0800
+
+    增加查看系统组件
+
+[33mcommit e0419dca6db468fb2eecc1689e9a3431624481d6[m
+Merge: a5f3fd4 2ee9edc
+Author: wangyongyong <myselyhero@163.com>
+Date:   Sat Jun 15 14:21:22 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 2ee9edcec2189215247883fa19b62df6e7400479[m
+Author: e01 <912744609@qq.com>
+Date:   Sat Jun 15 10:51:44 2019 +0800
+
+    将系统参数写入Redis
+
+[33mcommit 7aee6950efce6908bdc3f669706bda25dbff96d9[m
+Author: tianxin <3520605387@qq.com>
+Date:   Sat Jun 15 10:51:23 2019 +0800
+
+    123
+
+[33mcommit a5f3fd48aac423c565720ac2386f541a3a3111e0[m
+Merge: c0cce43 2a3b6dd
+Author: wangyongyong <myselyhero@163.com>
+Date:   Fri Jun 14 14:06:57 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit c0cce43e232b927d6ab8857c5d179b0bec973c3b[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Fri Jun 14 14:06:44 2019 +0800
+
+    link
+
+[33mcommit 2a3b6dd23f59065f1e3dc13443e9f24e57dae853[m
+Author: e01 <912744609@qq.com>
+Date:   Fri Jun 14 14:04:05 2019 +0800
+
+    完成官网pc端布局
+
+[33mcommit 06a7479b9db5c26f84b78427f24196a1e631c80e[m
+Author: e01 <912744609@qq.com>
+Date:   Fri Jun 14 10:22:12 2019 +0800
+
+    修改权限读取字段错误
+
+[33mcommit de8a63c8b7bdd460f670421b34ac43f258fd075c[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 13 17:23:04 2019 +0800
+
+    修复权限管理和签名验证
+
+[33mcommit c67f7ee489f80bdbffef3ff9ddf1dc2b3b1d6860[m
+Merge: 4adb483 d0670b7
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 13 16:38:07 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 4adb48351bc0dd7cd820b950b52451338251fbc7[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 13 16:37:17 2019 +0800
+
+    增加页面权限
+
+[33mcommit d0670b7f938dcde97ffd33355fe9cdd90543af18[m
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 16:11:04 2019 +0800
+
+    map
+
+[33mcommit da6570951b8e425912ba3c136a2e540eba731a29[m
+Merge: b9da2ab 643b91c
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 13 15:54:05 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 643b91c9410751634282a27a75aa43db6663895a[m
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 15:53:55 2019 +0800
+
+    处理地图
+
+[33mcommit b9da2ab3d67c1b753b15c49b35a7d3a69e9fc143[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Thu Jun 13 15:53:48 2019 +0800
+
+    上传设置
+
+[33mcommit fd879304f21bd8d56ca6fd0bb937413bcd8838f0[m
+Merge: 1ec7177 3e79615
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 14:02:02 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 1ec71777e39ea20fb4bf8e21580886478fc3e8bf[m
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 14:01:12 2019 +0800
+
+    addmember
+
+[33mcommit 3e796157e8546e0fb993946ce8dfc74104774982[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 13 10:57:50 2019 +0800
+
+    BehaviorModel删除多余规则
+
+[33mcommit 6c196e1fbbd9a4438d7861cd2e73fdf702f01e33[m
+Author: e01 <912744609@qq.com>
+Date:   Thu Jun 13 10:39:33 2019 +0800
+
+    修复session对期后不能回到登录页
+
+[33mcommit 956593c67ebc1b4986a852ba25b43042fcc06ee1[m
+Merge: cac57ee 60a1f5a
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 10:05:22 2019 +0800
+
+    tyxx合并到admin-view
+
+[33mcommit 60a1f5aff31c4c84d4571b6d0cf6e36115db33d3[m[33m ([m[1;31morigin/tyxx[m[33m)[m
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 10:02:59 2019 +0800
+
+    login0.png
+
+[33mcommit 45824052c47b3bee63ac1bbef03db8e6545a2992[m
+Merge: e1a1613 cac57ee
+Author: tianxin <3520605387@qq.com>
+Date:   Thu Jun 13 09:48:44 2019 +0800
+
+    admin-view合并到tyxx
+
+[33mcommit cac57ee5fc2eb41c76783e6b053cd1d5516d3028[m
+Merge: e9344b5 9c5ffd8
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 12 17:26:48 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit e9344b5ef4d4aaf6fe1d3282bc226213dd2c7cc9[m
+Author: tianxin <3520605387@qq.com>
+Date:   Wed Jun 12 17:26:17 2019 +0800
+
+    member
+
+[33mcommit e1a1613b2326a1835b88306fba35fe75c1a48f54[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Wed Jun 12 17:25:56 2019 +0800
+
+    tyxx
+
+[33mcommit 9c5ffd8b50d8eb610b2220fbc8a63c41ee12859a[m
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 12 16:06:50 2019 +0800
+
+    修复菜单权限已知错误
+
+[33mcommit e6e97462eb38bf441cbf91c6000f0cc3ff739893[m
+Author: e01 <912744609@qq.com>
+Date:   Wed Jun 12 10:10:44 2019 +0800
+
+    完成菜单权限过滤
+
+[33mcommit 5ee1c1931a9c858e936e8abd3d180ea5a8729e11[m
+Merge: 7aea19e b7db717
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 11 17:59:04 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 7aea19e5fc72cfc7db1595efc2f289b12dd855f8[m
+Author: e01 <912744609@qq.com>
+Date:   Tue Jun 11 17:58:26 2019 +0800
+
+    增加权限验证
+
+[33mcommit b7db7173defbd54e4ca2f8dca2708365f45ee0e5[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 11 17:00:19 2019 +0800
+
+    group
+
+[33mcommit d80d5c142a59c8cd53a8f851b92aab6875df1205[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Tue Jun 11 16:48:21 2019 +0800
+
+    321
+
+[33mcommit cdbd5a2255b573969bd746eafcd89439b93a0f19[m
+Merge: a2e6ecb a3b13f5
+Author: wangyongyong <myselyhero@163.com>
+Date:   Tue Jun 11 16:44:58 2019 +0800
+
+    Merge branch 'tyxx' of http://132.232.151.139:8089/root/youbang into tyxx
+
+[33mcommit a3b13f561613f0fa9bdb2be39ca551f2e4069de1[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 11 16:45:48 2019 +0800
+
+    logo处理
+
+[33mcommit a2e6ecb8581cba0147748d9e6d0114dfb95aac77[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Tue Jun 11 16:44:44 2019 +0800
+
+    123
+
+[33mcommit b198a2639bcf50b04a3a15cc3b0931add18666e9[m
+Merge: a085820 af4104e
+Author: wangyongyong <myselyhero@163.com>
+Date:   Tue Jun 11 15:57:13 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into tyxx
+
+[33mcommit af4104e9217d544236f7a81d4a0b1a853b268344[m
+Merge: 36559b2 ad202b6
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 11 15:56:52 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view
+
+[33mcommit 36559b2a9517ec76622c4f9fb845d6712bf7d4c5[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 11 15:56:35 2019 +0800
+
+    管理组列表
+
+[33mcommit a085820d5abb0a782ec46f43ba0034c7b6c1a7fd[m
+Author: wangyongyong <myselyhero@163.com>
+Date:   Tue Jun 11 15:56:14 2019 +0800
+
+    tyxx
+
+[33mcommit c72391bc489fed7714d29d37099528c6d12dc9f8[m
+Author: tianxin <3520605387@qq.com>
+Date:   Tue Jun 11 14:33:58 2019 +0800
+
+    123
+
+[33mcommit ad202b62d0e102d58042c5c12ce298d7bb4675d8[m
+Merge: 6229d17 bb07f74
+Author: e01 <912744609@qq.com>
+Date:   Mon Jun 10 18:01:19 2019 +0800
+
+    Merge branch 'admin-view' of http://132.232.151.139:8089/root/youbang into admin-view

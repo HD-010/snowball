@@ -5,7 +5,7 @@
     overflow:auto;
 }
 </style>
-<div class="container-fluid base base_update_permit">
+<div class="container-fluid base base_update_acount_permit">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-用户组管理-添加权限组</span>
@@ -21,7 +21,7 @@
     </div>
     <div class="row form">
         
-        <form data-form-async='json' action="/admin/permit/updatePermit" class="form-horizontal form-validate" enctype="multipart/form-data" method="post" onsubmit="return check()">
+        <form data-form-async='json' action="/admin/permit/updateAcountPermit" class="form-horizontal form-validate" enctype="multipart/form-data" method="post" onsubmit="return check()">
             <input type="hidden" name="database64" value="" id="database64"/>
             <table class="table">
                 <thead>
@@ -66,7 +66,7 @@
                                                     </a>
                                                     <label class="checkbox-inline">
                                                        
-                                                        <input class="perm-all perms" data-show="<%=list.show %>" data-add="<%=list.add%>" data-edit="<%=list.edit%>" data-delete="<%=list.delete%>" data-permitId="<%=list.permitId%>" data-userId="<%=list.userId%>" data-menuId="<%=loginUserPermit[i].menuId%>" data-groupId="<%=id%>" data-group="<%= loginUserPermit[i].id %>" id="perm_shop_<%= loginUserPermit[i].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>"/>
+                                                        <input class="perm-all perms" data-show="<%=list.show %>" data-add="<%=list.add%>" data-edit="<%=list.edit%>" data-delete="<%=list.delete%>" data-permitId="<%=list.permitId%>" data-userId="<%=id%>" data-menuId="<%=loginUserPermit[i].menuId%>" data-groupId="<%=groupId%>" data-group="<%= loginUserPermit[i].id %>" id="perm_shop_<%= loginUserPermit[i].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>"/>
                                                        
                                                      
                                                         <%= loginUserPermit[i].name %>
@@ -85,7 +85,7 @@
                                                                 展开
                                                             </a>
                                                             <label class="checkbox-inline">
-                                                                <input class="perm-all-item-base perms" data-show="<%=list1.show %>" data-add="<%=list1.add%>" data-edit="<%=list1.edit%>" data-delete="<%=list1.delete%>" data-permitId="<%=list1.permitId%>" data-userId="<%=list1.userId%>" data-menuId="<%=loginUserPermit[i].childrens[j].menuId%>" data-groupId="<%=id%>" data-group="<%=loginUserPermit[i].id %>" data-id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>"/>
+                                                                <input class="perm-all-item-base perms" data-show="<%=list1.show %>" data-add="<%=list1.add%>" data-edit="<%=list1.edit%>" data-delete="<%=list1.delete%>" data-permitId="<%=list1.permitId%>" data-userId="<%=id%>" data-menuId="<%=loginUserPermit[i].childrens[j].menuId%>" data-groupId="<%=groupId%>" data-group="<%=loginUserPermit[i].id %>" data-id="collapseshopbase<%= loginUserPermit[i].childrens[j].id %>" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>"/>
                                                                 <%= loginUserPermit[i].childrens[j].name %>
                                                             </label>
                                                         </div>
@@ -98,7 +98,7 @@
                                                                     %>    
                                                                 <span>
                                                                     <label class="checkbox-inline" >
-                                                                        <input class="perm-all-item perms" data-show="<%=list2.show %>" data-add="<%=list2.add%>" data-edit="<%=list2.edit%>" data-delete="<%=list2.delete%>" data-permitId="<%=list2.permitId%>" data-userId="<%=list2.userId%>" data-menuId="<%=loginUserPermit[i].childrens[j].childrens[h].menuId%>" data-groupId="<%=id%>"  data-group="<%= loginUserPermit[i].id %>" data-parent="adv" data-son="text" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>"/>
+                                                                        <input class="perm-all-item perms" data-show="<%=list2.show %>" data-add="<%=list2.add%>" data-edit="<%=list2.edit%>" data-delete="<%=list2.delete%>" data-permitId="<%=list2.permitId%>" data-userId="<%=id%>" data-menuId="<%=loginUserPermit[i].childrens[j].childrens[h].menuId%>" data-groupId="<%=groupId%>"  data-group="<%= loginUserPermit[i].id %>" data-parent="adv" data-son="text" type="checkbox" value="<%= loginUserPermit[i].menuId %>.<%= loginUserPermit[i].childrens[j].menuId %>.<%= loginUserPermit[i].childrens[j].childrens[h].menuId %>"/>
                                                                         <b>
                                                                             <%=loginUserPermit[i].childrens[j].childrens[h].name %>
                                                                         </b>
@@ -181,10 +181,8 @@ $(function () {
         //自动组装
         var perms=[];
         $("input[data-menuId]").each(function(index,e){
-            if($(this).get(0).checked){
-                $(this).attr("data-userId") ?
-                perms.push({"menuId":$(this).attr("data-menuId"),"userId":$(this).attr("data-userId"),"groupId":$(this).attr("data-groupId"),"add":$(this).attr("data-add"),"delete":$(this).attr("data-delete"),"edit":$(this).attr("data-edit"),"show":$(this).attr("data-show")}):
-                perms.push({"menuId":$(this).attr("data-menuId"),"groupId":$(this).attr("data-groupId"),"add":$(this).attr("data-add"),"delete":$(this).attr("data-delete"),"edit":$(this).attr("data-edit"),"show":$(this).attr("data-show")});                
+            if($(this).get(0).checked){               
+                perms.push({"menuId":$(this).attr("data-menuId"),"userId":$(this).attr("data-userId"),"groupId":$(this).attr("data-groupId"),"add":$(this).attr("data-add"),"delete":$(this).attr("data-delete"),"edit":$(this).attr("data-edit"),"show":$(this).attr("data-show")});
             }
         });
 
@@ -499,9 +497,9 @@ function group_check_parent(obj) {
 }
 
 
-app.load(".base_update_permit");
+app.load(".base_update_acount_permit");
 app.addonParams = {oid: getItem('OID')};
-function updatePermit(results){
+function updateAcountPermit(results){
     app.notice(results,function(){
         go(results.uri);
     });
