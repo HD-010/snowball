@@ -120,7 +120,7 @@
             setItem("UID",results.infors.id);
             setItem('OID',results.openID);
             setItem('PERMIT',results.permit);
-            app.addonParams.push("oid=" + getItem("OID"));
+            app.addonParams = {oid: getItem("OID")};
             app.notice(results);
         }else{
             results.error = 1;
@@ -130,7 +130,7 @@
     }
 
     jQuery(function($){
-        app.load($);
+        app.load();
     })
     
     </script>

@@ -7,15 +7,18 @@ function TypeModel(){
         var data = {};
         var conditions = {
             table : ['youbang_arctype'],
-            fields : ['*'],
+            fields : ['*','topid as pid'],
             where : [],
-            orderBy:['topid asc', 'id desc'],
+            orderBy:['topid asc', 'id asc'],
         };
         if(params.id) conditions.where.push("id=" + params.id);
-
+        if(params.nid) conditions.where.push("componentid=(select id from youbang_components where nid='" + params.nid + "')");    //查看组件id
+        
         this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
+            if(params.addTop) res.push({id: 0,typename: '项级分类'});
             data.data = res;
+
             return callback(data);
         });
     }
@@ -52,10 +55,11 @@ function TypeModel(){
         upData.sitepath = this.POST('sitepath') || '';
         upData.siteurl = this.POST('siteurl') || '';
         conditions.fields.push(upData);
-
-        this.DB().set(conditions,function(error,results,fields){
+        
+        this.DB().log().set(conditions,function(error,results,fields){
             data.error = error?1:0;
-            data.data = results
+            data.data = results;
+            if(param.ctag) data.ctag =  '/ctag/' + param.ctag;
             if(error) data.message = "保存数据失败";
             if(!error) data.message = '数据保存成功,正在跳转到列表...';
             return callback(data);

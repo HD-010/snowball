@@ -23,8 +23,13 @@ function BehaviorModel() {
             '/admin/sign/_check',
             '/admin/sign/_exit',
             '/admin/index/index',
-            '/err404'
+            '/err404',
+            '/admin/index/third-party/codemirror',
+            '/admin/arc/ueditor'
         ],
+        validPermit: [
+            '/admin/index/third-party/codemirror'
+        ]
     }
 
 
@@ -75,7 +80,11 @@ function BehaviorModel() {
      */
     this.validSignature = function(params, callback){
         var data = {error:0};
-        var router = this.app.router.string;
+        var app = this.testApp();
+        log("=======当前被验证的router=======",app.router);
+        var delimit = app.router.params ? '/' : '';
+        var router = app.router.string + delimit +  app.router.params || "";
+        if(!router) return callback(data);
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
         // log("-----------------------oid--------------------------");
@@ -85,13 +94,13 @@ function BehaviorModel() {
         // log("query:",this.req.query);
         // log("body:",this.req.body);
         // log("-----------------------oid--------------------------");
-        if(!openID) return callback({error:1,uri:"/admin/sign/_check",message:"openID不存在"});
+        if(!openID) return callback({error:1,uri:"/admin/sign/_check",router:router,message:"openID不存在"});
         var openIDObj = parseOpenID(openID);
         uid = parseInt(openIDObj.id);
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
-        if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",message:'用户信息不存在'});
+        if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",router:router,message:'用户信息不存在'});
         var signature = createSignature(this.req,userInfor);
-        if(!signature) return callback({error:1,uri:"/err404",message:"生成签名失败"});
+        if(!signature) return callback({error:1,uri:"/err404",router:router,message:"生成签名失败"});
         data = (signature === openIDObj.sg) ? {error:0}: {error:1, uri:"/err404"};
         
         return callback(data);
@@ -103,8 +112,12 @@ function BehaviorModel() {
      */
     this.validPermit = function(params, callback){
         var that = this;
+        var app = this.testApp();
         var data = {error:0};
-        var router = this.app.router.string;
+        var delimit = app.router.params ? '/' : '';
+        var router = app.router.string + delimit +  app.router.params || "";
+        if(!router) return callback(data);
+        if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
         var redis = that.DB("Redis");
         var process = this.model("DataProcess");
         var permit = process.getUserInfo('PERMIT',uid);
@@ -147,6 +160,10 @@ function BehaviorModel() {
             if(pagePermit.enable === '1') return data;
             return {error: 1, message: '权限不足',uri:"/err404"};
         }
+    }
+
+    this.testApp = function(){
+        return (typeof this.app == 'undefined') ? this.req : this.app;
     }
 }
 

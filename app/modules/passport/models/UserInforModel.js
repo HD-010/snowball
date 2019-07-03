@@ -29,10 +29,7 @@ function UserInforModel() {
         var _acount = this.service('Acount');
         
         _acount.querySysAcount(sqlStruct,function(error,results,fields){
-            var data = {
-                error  : 1,
-                message: "帐号或者用户名错误"
-            };
+            var data = {};
             if(error){
                 data = {
                     error  : 2,
@@ -41,8 +38,8 @@ function UserInforModel() {
                 callback(data);
                 return;
             }
-            data = (!error && (Object.keys(results).length === 0)) ?
-            {error  : 1, message: "帐号或者用户名错误"} : 
+            data = (error || (Object.keys(results[0]).length === 0)) ?
+            {error  : 1,uri: '/admin/sign/_in', message: "帐号或者用户名错误"} : 
             {error: 0,data : results};
             
             return callback(data);
@@ -498,7 +495,31 @@ function UserInforModel() {
         });
     }
     
+    /**
+     * 根据用户ID 查询用户信息
+     */
+    this.getUserById = function(data,callback){
+         //使用案例：实例化ShimService并调用成员方法查询
+         var struct = {
+            where  : [],
+            groupBy: [],
+            orderBy: [],
+            limit  : []
+        };
+        struct.limit.push(1);
 
+        //添加查询条件
+        if(this.GET('id')) struct.where.push(" id =" + this.GET('id')); 
+
+        //初始化构造查询对象
+        var sqlStruct = this.SqlStruct(struct);        
+        //调用服务类进行查询
+        var acount = this.service('Acount'); 
+        
+        acount.querySysAcount(sqlStruct,function(error,results,fields){
+            callback(results,fields)
+        });
+    }
 
 }
 

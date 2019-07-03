@@ -36,7 +36,8 @@ function DataProcessModel() {
             (new Date(params[0].addTime)).valueOf(): 
             timeStr + '';
         var utility = require('utility');
-        var passwd  = utility.md5(this.POST('!password') + mask);
+        var password = this.POST('!password') || this.GET('!password')
+        var passwd  = utility.md5(password + mask);
         if (!params) {
             return {
                 password: passwd,

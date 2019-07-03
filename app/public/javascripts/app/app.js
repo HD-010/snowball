@@ -60,7 +60,9 @@ var app = {
     asyncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
-        var uri = app.host + $(obj).attr('data-uri');
+        var dataUri = $(obj).attr('data-uri');
+        this.initAction(dataUri);
+        var uri = app.host + dataUri;
         var type = $(obj).attr('data-type') || 'json';
         if(!uri.length) return false;
         uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
@@ -70,9 +72,9 @@ var app = {
             obj[vars[i].split("=")[0]]= vars[i].split("=")[1];
         }
 
-        var point = uri.indexOf('?');
-        var start = uri.lastIndexOf('/')+1;
-        app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
+        // var point = uri.indexOf('?');
+        // var start = uri.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
         console.log("=====数据请求地址：",uri);
         console.log("=====数据请求参数：",obj);
@@ -164,12 +166,12 @@ var app = {
             alert('请填写data-form-async属性的正确值');
             return false;
         }
-        var point = action.indexOf('?');
-        var start = action.lastIndexOf('/')+1;
-        app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
+        this.initAction(action);
+        // var point = action.indexOf('?');
+        // var start = action.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
         
         //获取对象的值
-        console.log($(obj)[0])
         var formData = $(obj).serialize() + "&" + app.serializeParams();
         
         //console.log(formData)
@@ -195,6 +197,10 @@ var app = {
 
     /**
      * 顶部提示信息
+     * obj.message 提示消息
+     * obj.uri 跳转的url
+     * obj.error 显示对应提示的信息样式 错误编号notice_0 notice_1 notice_2 notice_3
+     * function callback 
      */
     notice: function(obj, callback) {
         var box = {
@@ -274,6 +280,21 @@ var app = {
                 $(value).val(sessionStorage.getItem(key));
             }
         });
+    },
+
+    /**
+     * 初始化action名称
+     */
+    initAction: function(dataUri){
+        var firstLine,firstQ,router;
+        var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
+        dataUri = (lastPoint == -1) ? dataUri : dataUri.substr(lastPoint);
+        firstLine = dataUri.indexOf('/');
+        firstQ = dataUri.indexOf('?');
+        if(firstQ == -1) firstQ = dataUri.length;
+        dataUri = dataUri.substr(firstLine + 1, firstQ - firstLine - 1);
+        router = dataUri.split('/');
+        this.action = (router.length % 2) ? router[2] : router[1];
     },
 
     /**
@@ -408,6 +429,201 @@ var app = {
     }
 /** ===========================scrool事件监听 end====================== */
 
+/** ==============================效果插件============================= */
+var effect = {
+    /**
+     * 开关效果
+     * html 代码 ：<label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label> 
+     * 属性 checked 表示默认打开状态
+     * @param {*} selecter 事件监听的元素
+     * @param {*} on 打开状态显示的字样
+     * @param {*} off 关闭状态显示的字样
+     */
+    switch: function(selecter,onVal,offVal){
+        var cl  = $(selecter);
+        for(var i=0;i<cl.length;i++){
+            if(cl[i].checked){
+                cl[i].nextSibling.innerText = onVal;
+                cl[i].nextSibling.style.color = "#FFFFFF";
+                cl[i].nextSibling.style.marginLeft = '0px';
+            }else{
+                cl[i].nextSibling.innerText = offVal;
+                cl[i].nextSibling.style.color="#D2D2D2";
+                cl[i].nextSibling.style.marginLeft='16px';
+            }
+        }
+        cl.unbind('click').on('click',function(){
+            if(this.checked){
+                this.nextSibling.innerText = onVal;
+                this.nextSibling.style.color = "#FFFFFF";
+                this.nextSibling.style.marginLeft = '0px';
+            }else{
+                this.nextSibling.innerText = offVal;
+                this.nextSibling.style.color = "#D2D2D2";
+                this.nextSibling.style.marginLeft='16px';                
+            }
+        })
+    },
+
+    /**
+     * 显示默认值
+     * html代码结构：
+        <input type="text" class="form-control" name="title" data-def="默认值" placeholder="标题" value=" "/>
+     * 
+     */
+    setDefVal: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var defVal = $(item).attr('data-def'); 
+            if(typeof defVal != 'undefined') $(item).val(defVal);
+        });
+    },
+
+    /**
+     * 设置注释
+     * html代码结构：
+     *  <parent>
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" name="title" data-comments="注释内容" placeholder="标题" value=" "/>
+            </div>
+            <span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+        </parent>
+     * 
+     */
+    setComments: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var comment = $(item).attr('data-comment'); 
+            if(typeof comment != 'undefined') $(item).parent().siblings().find('.comment').after(comment);
+        });
+    },
+
+    /**
+     * 设置checkbox选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="btn-group 监听的选择器" data-toggle="buttons">
+            <label class="btn btn-outline btn-success dim">
+                <input type="checkbox" data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' > 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+            </label>                                   
+        </div>
+     */
+    setCheckbox: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='checkbox']");
+            var key = itemAttr.attr('data-key').split('-');
+            var val = itemAttr.attr('data-val').split('-');
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='checkbox']").prop('checked',true);
+                curCode.find("input[type='checkbox']").val(key[i]);
+                curCode.find("input[type='checkbox']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+            loadEvent();
+        });
+        function loadEvent(){
+            $('[data-toggle="buttons"] .btn').unbind('click').on('click',function(e){
+                var curCheckbox = $(this).find('[type="checkbox"]');
+                curCheckbox.click();
+                (curCheckbox.prop('checked')) ?
+                $(this).addClass('active'):
+                $(this).removeClass('active');
+            });
+        }
+    },
+
+    /**
+     * 
+     * @param {*} selecter 
+     */
+    setRadio: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='radio']");
+            var dataKey = itemAttr.attr('data-key');
+            var key = dataKey ? dataKey.split('-') :[];
+            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='radio']").prop('selected',true);
+                curCode.find("input[type='radio']").val(key[i]);
+                curCode.find("input[type='radio']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+        });
+    },
+
+    /**
+     * 设置select选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="col-sm-4 col-xs-4 监听的选择器">
+            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
+        </div>
+     */
+    setSelect: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("select");
+            var dataKey = itemAttr.attr('data-key');
+            var key = dataKey ? dataKey.split('-') : [];
+            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var optHtml = '';
+            var stlected;
+            for(var i=0; i < key.length; i ++){
+                stlected = (defVal.indexOf(key[i]) + 1) ? 'selected' : '';
+                optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
+            }
+            $(item).find("select").html(optHtml);
+        });
+    },
+
+    /**
+     * 全选选项关联事件
+     * html代码：
+     * 项目选框(注: class="union-child" data-union="union-top" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="{{id}}" /></label>
+     * 全选框（注：class="union-top" data-union="union-child" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+     * */
+    unionSelect: function(){
+        $("input[data-union]").on('change',function(){
+            var me = $(this);
+            var tab = me.parentsUntil('table').parent();
+            var val = me.prop('checked');
+            var unionTag = me.attr('data-union');
+            var all = true; 
+            
+            if(unionTag == 'union-top'){
+                tab.find('.union-child').each(function(index,item){
+                    if(!$(item).prop('checked')) all = false;
+                });
+            }
+            if(unionTag == 'union-child'){
+                all = val;
+                tab.find("." + unionTag).prop('checked',val);
+            }
+            tab.find('.union-top').prop('checked',all);
+        });
+    }
+
+}
+
+/** ============================效果插件 end=========================== */
 /** ===============================tools============================== */
 /**
  * 返回请求时暂存的参数，如果参数不存在则返回null
@@ -561,6 +777,8 @@ function unique(arr){
     }
     return res;
 }
+
+
 
 
 /** ===============================tools end============================== */
