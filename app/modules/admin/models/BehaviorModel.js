@@ -80,7 +80,7 @@ function BehaviorModel() {
      */
     this.validSignature = function(params, callback){
         var data = {error:0};
-        var app = testApp();
+        var app = this.testApp();
         log("=======当前被验证的router=======",app.router);
         var delimit = app.router.params ? '/' : '';
         var router = app.router.string + delimit +  app.router.params || "";
@@ -112,7 +112,7 @@ function BehaviorModel() {
      */
     this.validPermit = function(params, callback){
         var that = this;
-        var app = testApp();
+        var app = this.testApp();
         var data = {error:0};
         var delimit = app.router.params ? '/' : '';
         var router = app.router.string + delimit +  app.router.params || "";
@@ -160,10 +160,10 @@ function BehaviorModel() {
             if(pagePermit.enable === '1') return data;
             return {error: 1, message: '权限不足',uri:"/err404"};
         }
+    }
 
-        function testApp(){
-            return (typeof this.app == 'undefined') ? this.req : this.app;
-        }
+    this.testApp = function(){
+        return (typeof this.app == 'undefined') ? this.req : this.app;
     }
 }
 
