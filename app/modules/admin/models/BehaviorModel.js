@@ -80,9 +80,10 @@ function BehaviorModel() {
      */
     this.validSignature = function(params, callback){
         var data = {error:0};
-        log("=======当前被验证的router=======",this.app.router);
-        var delimit = this.app.router.params ? '/' : '';
-        var router = this.app.router.string + delimit +  this.app.router.params || "";
+        var app = testApp();
+        log("=======当前被验证的router=======",app.router);
+        var delimit = app.router.params ? '/' : '';
+        var router = app.router.string + delimit +  app.router.params || "";
         if(!router) return callback(data);
         if(this.notMatch.validSignature.indexOf(router) != -1 ) return callback(data);
         var openID = this.POST('oid') || this.GET('oid') || "";
@@ -111,9 +112,10 @@ function BehaviorModel() {
      */
     this.validPermit = function(params, callback){
         var that = this;
+        var app = testApp();
         var data = {error:0};
-        var delimit = this.app.router.params ? '/' : '';
-        var router = this.app.router.string + delimit +  this.app.router.params || "";
+        var delimit = app.router.params ? '/' : '';
+        var router = this.app.router.string + delimit +  app().router.params || "";
         if(!router) return callback(data);
         if(this.notMatch.validPermit.indexOf(router) != -1 ) return callback(data);
         var redis = that.DB("Redis");
@@ -157,6 +159,10 @@ function BehaviorModel() {
             //当前路由在菜单列表,验证权限通过
             if(pagePermit.enable === '1') return data;
             return {error: 1, message: '权限不足',uri:"/err404"};
+        }
+
+        function testApp(){
+            return (typeof this.app == 'undefined') ? this.req : this.app;
         }
     }
 }
