@@ -59,6 +59,7 @@
 <body>
     
     <div class="container-fluid">
+        <% console.log(locals.viewModels) %>
         <% if(typeof locals.viewModels === 'string') { %>
             <%- '<script> location.href="'+locals.viewModels+'" </script>' %>
         <% } %>
