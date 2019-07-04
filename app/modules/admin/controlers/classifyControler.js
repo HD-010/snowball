@@ -4,29 +4,21 @@ function classifyControler(){
      * 分类列表
      */
     this.index = function(){
-        var data = {};
+        var params = {};
         var ctag = this.param('ctag');
-        if(!ctag) that.render('/err404');
+        if(!ctag) return that.render('/err404');
+
         var process = this.model("DataProcess");
-        data.ctag = ctag;
-        data.uid = process.getUserInfo('UID');
-        that.render(data);
+        params.ctag = ctag;
+        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        
+        //获取当前商户的分类列表
+        var classify = this.model("Classify");
+        classify.get(params, function(res){
+            that.render(res);
+        });
     }
-
-    /**
-     * 添加分类
-     */
-    this.add = function(){
-        that.render({});
-    }
-
-    /**
-     * 编辑分类
-     */
-    this.edt = function(){
-        that.render({});
-    }
-
+    
     /**
      * 保存分类信息
      */

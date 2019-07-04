@@ -30,7 +30,7 @@
             <form class="form-horizontal" role="form" method="post" data-form-async="json" action="/admin/classify/save/ctag/infos" novalidate="novalidate">
                 <!-- 商品添加操作的标识 -->
                 <input type="hidden" name="classify" value="">
-                <input type="hidden" name="macid" value="<%= uid; %>">
+                <input type="hidden" name="macid" value="<%= macid; %>">
                 <input type="hidden" name="component" value="<%= ctag; %>">
                 <input type="hidden" name="id" value="<%= locals.id? id : '' %>">
                 
@@ -45,23 +45,9 @@
                                     启用分类
                                 </p>
                                 <div class="dd hidden" id="nestable2">
-                                    <ol class="dd-list">
-                                        <li class="dd-item" data-val="classify_<%= (new Date()).valueOf(); %>">
-                                            <div class="dd-handle">
-                                                <span class="label label-info"><i class="fa fa-cog"></i></span> 
-                                                <span class="dd-val" style="font-weight:100;">分类名称</span>
-                                            </div>
-                                            <div class="dd-edit">
-                                                <input class="hidden" type="text" name="spec" value="分类名称" />
-                                                <span class="fa fa-edit"></span>
-                                                <span class="fa fa-minus-square-o minus"></span>
-                                                <span class="fa fa-plus-square-o plus"></span>
-                                            </div>
-                                        </li>
-                                    </ol>
+                                    <ol class="dd-list"></ol>
                                 </div>
                             </div>
-        
                         </div>
                     </div>
                 </div>
@@ -69,7 +55,6 @@
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-2">
                         <button class="btn btn-primary ev-submit" type="submit" >提交</button>
-                        <button class="btn col-sm-offset-3" type="reset">重填</button>
                     </div>
                 </div>
             </form>
@@ -82,9 +67,32 @@
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 
 <script>
-   
-
     jQuery(function($){
+        //页面初始化
+        (function(){
+            var results = <%- results %>
+            var error = <%- error %>;
+            var initCode =  `<li class="dd-item" data-val="classify_`+<%= (new Date()).valueOf(); %>+`">
+                                <div class="dd-handle">
+                                    <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                    <span class="dd-val" style="font-weight:100;">分类名称</span>
+                                </div>
+                                <div class="dd-edit">
+                                    <input class="hidden" type="text" name="spec" value="分类名称" />
+                                    <span class="fa fa-edit"></span>
+                                    <span class="fa fa-minus-square-o minus"></span>
+                                    <span class="fa fa-plus-square-o plus"></span>
+                                </div>
+                            </li>`;
+            if(error) return $("#nestable2 ol").html(initCode);
+            
+            results.forEach(function(item,index){
+
+            });
+
+        })();
+
+
         //spec
         var spce = {
             selecter : '#nestable2',
@@ -278,6 +286,9 @@
 
 
     function save(res){
+        app.notice(res,function(){
+            if(!res.error) go(res.uri)
+        })
         console.log("===========-=====---------------",res);
     }
 
