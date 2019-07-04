@@ -4,7 +4,13 @@ function classifyControler(){
      * 分类列表
      */
     this.index = function(){
-        that.render({});
+        var data = {};
+        var ctag = this.param('ctag');
+        if(!ctag) that.render('/err404');
+        var process = this.model("DataProcess");
+        data.ctag = ctag;
+        data.uid = process.getUserInfo('UID');
+        that.render(data);
     }
 
     /**
@@ -19,6 +25,18 @@ function classifyControler(){
      */
     this.edt = function(){
         that.render({});
+    }
+
+    /**
+     * 保存分类信息
+     */
+    this.save = function(){
+        if(!this.POST('classify')) return this.renderJson({error: 1, message: '非法访问，操作已经被取消'});
+        var classify = this.model("Classify");
+        var params = {};
+        classify.save(params,function(res){
+            that.renderJson(res);
+        });
     }
 
     /**

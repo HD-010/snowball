@@ -332,7 +332,7 @@ var app = {
         app.remember();
         //异步请求
         
-        $(el).find('[data-async]').unbind('click').click(function(event) {
+        $(el).find('[data-async]').unbind('click').on('click',function(event) {
             app.asyncProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
                 try{eval((app['action'] + '(res);'));}catch(err){
@@ -342,12 +342,12 @@ var app = {
         });
 
         //同步请求
-        $(el).find('[data-sync]').unbind('click').click(function(event) {
+        $(el).find('[data-sync]').unbind('click').on('click',function(event) {
             app.syncProcess(event, this, function(res) {});
         });
 
         //form表单提交不跳转
-        $(el).find('[data-form-async]').submit(function(event) {
+        $(el).find('[data-form-async]').unbind('submit').on('submit',function(event) {
             event.preventDefault();
             app.formProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数

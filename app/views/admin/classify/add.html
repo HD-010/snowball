@@ -1,0 +1,282 @@
+
+    <style>
+       
+        .dd-list>li .dd-edit{
+            position: absolute;
+            right: 1em;
+            top: 0.6em;
+            height: 1.5em;
+            line-height: 1.5em;
+        }
+        .dd-list>li .dd-edit span{
+            margin-right:0.5em;
+        }
+    </style>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>分类管理</h5>
+                </div>
+                
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commodity-add-Form" role="form" method="post" data-form-async="json" action="/admin/commodity/add" novalidate="novalidate">
+                        <!-- 商品添加操作的标识 -->
+                        <input type="hidden" name="add" value="1">
+                        
+                        <!-- 规格项 -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">分类列表：</label>
+                            <div class="col-sm-8">
+                                <div class="ibox">
+                                    <div class="ibox-content">
+                                        <p class="m-b-lg">
+                                            <input type="checkbox" style="width:20px;height:20px;vertical-align:bottom;" id="usespec" name="usespec" checked value="1" />
+                                            启用分类
+                                        </p>
+                                        <div class="dd hidden" id="nestable2">
+                                            <input type="hidden" name="specname" value=""/>
+                                            <input type="hidden" name="specitem" value=""/>
+                                            <input type="hidden" name="specoption" value=""/>
+                                            
+                                            <ol class="dd-list">
+                                                <li class="dd-item" data-val="classify_<%= (new Date()).valueOf(); %>">
+                                                    <div class="dd-handle">
+                                                        <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                                        <span class="dd-val" style="font-weight:100;">分类名称</span>
+                                                    </div>
+                                                    <div class="dd-edit">
+                                                        <input class="hidden" type="text" name="spec" value="分类名称" />
+                                                        <span class="fa fa-edit"></span>
+                                                        <span class="fa fa-minus-square-o minus"></span>
+                                                        <span class="fa fa-plus-square-o plus"></span>
+                                                    </div>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <textarea id="nestable2-output" class="form-control" cols="100" rows="5"></textarea>
+                        <!-- 规格项 end -->
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <button class="btn btn-primary ev-submit" type="submit" >提交</button>
+                                <button class="btn col-sm-offset-3" type="reset">重填</button>
+                                <a id="flushSpec">测试</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<!-- Sweet alert -->
+<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+
+
+<script>
+
+    jQuery(function($){
+        //spec
+        var spce = {
+            selecter : '#nestable2',
+            preFixed : 'classify_',
+            data : [],
+            //是否使用自定义规格的开关。当不使用自定义规格时，会删除商品原有的规格属性
+            specOn : function(){
+                $("#nestable2").removeClass('hidden').fadeIn();
+                $("#spec-view").removeClass('hidden').fadeIn();
+            },
+            specOff : function(){
+                $("#nestable2").fadeOut();
+                $("#spec-view").fadeOut();
+            },
+
+            //将规格属性更新到属性列表
+            updateOutput : function (e) {
+                var list = e.length ? e : $(e.target);
+                output = list.data('output');
+                if(!output) return;
+                spce.data = list.nestable('serialize');
+                //output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            },
+
+            //同步数据和绑定事件
+            reset : function(e){
+                spce.dataSync();
+                spce.edit();
+                spce.plus();
+                spce.minus();
+            },
+            
+            //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
+            specName: function(){
+                var specName = [];
+                $("#nestable2>.dd-list").children('.dd-item').each(function(i,val){
+                    specName.push($(val).attr('data-val'));
+                });
+                return specName;
+            },
+
+            //获取规格item名称（用于表单提交时,与commidity_specitem中的title对应）
+            specItem : function(){
+                var specItme = [];
+                for(var i = 0; i < spce.specName().length; i ++){
+                    specItme.push(spce.childLists(i));
+                }
+                return specItme;
+            },
+
+            //获取子规格项
+            childLists : function(i){
+                var addItem = $("#nestable2>.dd-list").children('.dd-item');
+                var ddList = addItem.eq(i).children(".dd-list");
+                var td = [];
+                ddList.each(function(i1,v){
+                    $(v).children('li').each(function(i2,v){
+                        var val = $(v).attr('data-val');
+                        td.push(val);
+                    });
+                });
+                return td;
+            },
+
+            //编辑项操作
+            edit : function(){
+                $(".dd-list>li .dd-edit .fa-edit").unbind('click').on("click",function(e){
+                    var initVal = $(this).parent().prev().find('.dd-val').html();
+                    var input = $(this).siblings('input').removeClass("hidden").val(initVal).fadeIn().focus();
+                });
+            },
+
+            //添加项操作
+            plus : function(){
+                $('.plus').unbind('click').on('click',function(e){
+                    var curEl = $(this).parent().parent();
+                    var html = $(curEl[0].outerHTML);
+                    if(html.find('ol').length){
+                        html = html.find('ol').remove();
+                    }
+                    
+                    curEl.after($(html).attr('data-val','classify_' + (new Date()).valueOf()));
+                    spce.reset();
+                    $('#nestable2').nestable({group: 0}).change();
+                });
+            },
+
+            //删除项操作
+            minus : function(){
+                $('.minus').unbind('click').on('click',function (e) {
+                    var that = this;
+                    swal({
+                        title: "您确定要删除这项规格吗",
+                        text: "删除后将无法恢复，请谨慎操作！",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "删除",
+                        cancelButtonText: "取消",
+                        closeOnConfirm: false
+                    }, function () {
+                        $(that).parent().parent().remove();
+                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        $('#nestable2').nestable({group: 0}).change();
+                    });
+                });
+            },
+            
+            //数据同步
+            dataSync : function(){
+                $(".dd-list>li .dd-edit input").unbind('keyup').on('keyup',function(e){
+                    //同步列表名称
+                    $(this).parent().prev().find('.dd-val').html($(this).val());
+                    //同步列表数据
+                    //$(this).parent().parent().attr('data-val',$(this).val());
+                })
+
+                $(".dd-list>li .dd-edit input").unbind('blur').on('blur',function(e){
+                    $(this).removeClass("hidden").fadeToggle();
+                    $('#nestable2').nestable({group: 2}).change();
+                })
+                
+            },
+
+            //读取属性对象
+            readSpec : function(data){
+                data = data || spce.data;
+                var obj = [];
+                data.forEach(function(item,index){
+                    var temObj = {};
+                    temObj.val = item.val;
+                    temObj.name =  $(spce.selecter).find('li.dd-item[data-val="'+ item.val +'"]').find('span.dd-val').html();
+                    if(item.children) temObj.children = spce.readSpec(item.children);
+                    obj.push(temObj);
+                });
+                return obj;
+            }
+        };
+
+        
+        /**
+        * 用于事件测试的元素
+        * 读取属性对象
+        */
+        // $('#flushSpec').click(function(){
+        //     console.log("=========================|||:",spce.readSpec());
+        // });
+        
+        //activate Nestable for list 2
+        $('#nestable2').nestable({
+            group: 1
+        }).on('change', spce.updateOutput);
+    
+        // output initial serialised data
+        (function(){
+            spce.updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+            spce.reset()
+        })()
+            
+
+        //开阖事件
+        $('#nestable-menu').on('click', function (e) {
+            var target = $(e.target),
+                action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+
+        
+
+        //运行时加载
+        (function(){
+            //设置初始状态
+            $("#usespec").prop('checked') ? spce.specOn() : spce.specOff();
+           
+            //是否使用规格属性的开关
+            $("#usespec").change(function(e){
+                ($(this).prop('checked')) ? spce.specOn() : spce.specOff();
+            });
+
+            
+        })();
+    });
+
+
+</script>
+
+</body>
+</html>
+
+
