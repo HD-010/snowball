@@ -36,16 +36,44 @@ function sysControler(){
 
     //上传设置
     this.upload = function (){
-        console.log("=====================================")
         that.render({});
     }
 
    //友情链接
    this.flink = function (){
-        console.log("=====================================")
-        that.render({});
+       var sys = this.model("Sys")
+       sys.getFlink(function(res){
+            that.render({list:res});
+       });        
     }
 
+    //添加友情链接
+    that.addFlink = function(){
+        var data = {};
+        var oid = that.GET('oid') || that.POST('oid');
+        data.normalAsync = this.plug('Uploads',{
+          url:'/admin/sys/ajaxImg?oid=' + oid,      //上传文件的服务端地址
+          control:'#fileInput',                   //载入文件的input框id
+          form:'#testForm',                       //承载input框的form元素的id
+          successCallback:'imgfun',
+          faileCallback:'errorfun',
+      }).normalAsync;
+        that.render(data);
+    }
+
+
+    /**
+     * 图片上传路径
+     */
+    that.ajaxImg = function(){
+        that.app.model.upload({
+            req    : that.req,
+            res    : that.res,
+            path   : 'files/',   //上传文件大分类名称
+            typeDir: true        //需要分类管理文件（按日期分类）
+        });
+        
+    }
 
 }
 

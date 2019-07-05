@@ -1,0 +1,131 @@
+<style>
+    .yun_bth_pic{
+        height: 38px;
+        line-height: 38px;
+        background: #f8f8f8 url(/img/sys/pic_img.png) no-repeat 10px center;
+        border: 1px solid #ddd;
+        position: relative;
+        padding-left: 50px;
+        padding-right: 10px;
+        cursor: pointer;
+    }
+    
+    .layui-upload-file {
+        display: none!important;
+        opacity: .01;
+        filter: Alpha(opacity=1);
+    }
+    button, input, optgroup, option, select, textarea {
+        font-family: inherit;
+        font-size: inherit;
+        font-style: inherit;
+        font-weight: inherit;
+        outline: 0;
+    }
+    </style>
+    <div class="container-fluid base">
+        <div class="row head">
+            <div class="col-xs-12">
+                <span>系统管理-系统设置-友情链接添加    添加</span>
+            </div>
+        </div>
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">友情链接添加：请添加友情链接名称及友情链接的图片及网址链接</p>              
+               </div>
+            </div>
+        </div>  
+        <div class="row form">
+            <form action="" id="testForm"  method="post" enctype="multipart/form-data">
+               <table class="table">
+                   <thead>
+                       <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th >参数值</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                        <tr>
+                            <td>友情链接名称：</td>
+                            <td >
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" id="name"  placeholder="友情链接名称"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：友邦拉拉工程信息平台</span>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>友情链接网址：</td>
+                            <td >
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" id="name"  placeholder="友情链接网址"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：https://www.baiddu.com</span>
+                            </td>
+                        </tr> 
+    
+                        <tr>                                                       
+                        <td>友情链接LOGO：<br/>
+                            300px X 45px	：</td>
+                            <td style="padding-left:26px;">
+                                <button type="button" class="yun_bth_pic">上传图片</button>
+                                <input class="layui-upload-file" type="file" name="image" value="" id="fileInput"  size="50"/>                       
+                                <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px"> 
+                                <%- normalAsync %>
+                            </td>           
+                        </tr> 
+                        <tr>
+                            <td>状态：</td>
+                            <td style="padding-left:26px;">
+                                <label><input class="mui-switch mui-switch-anim" type="checkbox" name="enable" value="" checked><em></em></label>
+                            </td>              
+                        </tr>                      
+                   </tbody>
+                   <tfoot>
+                      <tr>
+                          <td></td>
+                          <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                          </td>
+                      </tr>
+                   </tfoot>
+               </table>
+            </form>
+        </div>
+    </div>
+    <script src="/bootstrap/js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+    
+            //点击按钮上图片
+            $('.yun_bth_pic').click(function(){
+               $(this).siblings('.layui-upload-file').click()
+               $(this).siblings('.layui-upload-file').on('change',function(){
+                    var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
+                        fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();//获取文件后缀
+                        src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+                        
+                    // 检查是否是图片
+                    if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+                        error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
+                        return;  
+                    }
+                    $(this).siblings('.imglogo').attr('src',src);            
+                })
+            })
+        });
+
+
+        function imgfun(res){
+            console.log("1436468743435==========",res.url)
+        }
+
+    </script>
+    <script src="/bootstrap/js/switch.js"></script>
