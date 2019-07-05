@@ -12,81 +12,92 @@
             margin-right:0.5em;
         }
     </style>
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>分类管理</h5>
+    <div class="container-fluid base">
+        <div class="row head">
+            <div class="col-xs-12">
+                <span>系统管理-工程信息-添加分類 </span>
+            </div>
+        </div>
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+                <div class="col-xs-12">
+                        <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
                 </div>
+            </div>
+        </div>  
+        <div class="row form classify-add-Form">
+            <form class="form-horizontal" role="form" method="post" data-form-async="json" action="/admin/classify/save/ctag/infos" novalidate="novalidate">
+                <!-- 商品添加操作的标识 -->
+                <input type="hidden" name="classify" value="">
+                <input type="hidden" name="macid" value="<%= macid; %>">
+                <input type="hidden" name="component" value="<%= ctag; %>">
+                <input type="hidden" name="id" value="<%= locals.id? id : '' %>">
                 
-                <div class="ibox-content">
-                    <form class="form-horizontal m-t" id="commodity-add-Form" role="form" method="post" data-form-async="json" action="/admin/commodity/add" novalidate="novalidate">
-                        <!-- 商品添加操作的标识 -->
-                        <input type="hidden" name="add" value="1">
-                        
-                        <!-- 规格项 -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">分类列表：</label>
-                            <div class="col-sm-8">
-                                <div class="ibox">
-                                    <div class="ibox-content">
-                                        <p class="m-b-lg">
-                                            <input type="checkbox" style="width:20px;height:20px;vertical-align:bottom;" id="usespec" name="usespec" checked value="1" />
-                                            启用分类
-                                        </p>
-                                        <div class="dd hidden" id="nestable2">
-                                            <input type="hidden" name="specname" value=""/>
-                                            <input type="hidden" name="specitem" value=""/>
-                                            <input type="hidden" name="specoption" value=""/>
-                                            
-                                            <ol class="dd-list">
-                                                <li class="dd-item" data-val="1">
-                                                    <div class="dd-handle">
-                                                        <span class="label label-info"><i class="fa fa-cog"></i></span> 
-                                                        <span class="dd-val" style="font-weight:100;">规格名称</span>
-                                                    </div>
-                                                    <div class="dd-edit">
-                                                        <input class="hidden" type="text" name="spec" value="规格名称" />
-                                                        <span class="fa fa-edit"></span>
-                                                        <span class="fa fa-minus-square-o minus"></span>
-                                                        <span class="fa fa-plus-square-o plus"></span>
-                                                    </div>
-                                                </li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                
+                <!-- 规格项 -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">分类列表：</label>
+                    <div class="col-sm-8">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <p class="m-b-lg">
+                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:bottom;" id="usespec" name="usespec" checked value="1" />
+                                    启用分类
+                                </p>
+                                <div class="dd hidden" id="nestable2">
+                                    <ol class="dd-list"></ol>
                                 </div>
                             </div>
                         </div>
-                        
-                        <textarea id="nestable2-output" class="form-control" cols="100" rows="30"></textarea>
-                        <!-- 规格项 end -->
-                        <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-2">
-                                <button class="btn btn-primary" type="submit" >提交</button>
-                                <button class="btn col-sm-offset-3" type="reset">重填</button>
-                                <a class="btn col-sm-offset-3" id="flushSpec" >重填</a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <!-- 规格项 end -->
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <button class="btn btn-primary ev-submit" type="submit" >提交</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <!-- Sweet alert -->
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 
-
-
 <script>
-
     jQuery(function($){
+        //页面初始化
+        (function(){
+            var results = <%- results %>
+            var error = <%- error %>;
+            var initCode =  `<li class="dd-item" data-val="classify_`+<%= (new Date()).valueOf(); %>+`">
+                                <div class="dd-handle">
+                                    <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                    <span class="dd-val" style="font-weight:100;">分类名称</span>
+                                </div>
+                                <div class="dd-edit">
+                                    <input class="hidden" type="text" name="spec" value="分类名称" />
+                                    <span class="fa fa-edit"></span>
+                                    <span class="fa fa-minus-square-o minus"></span>
+                                    <span class="fa fa-plus-square-o plus"></span>
+                                </div>
+                            </li>`;
+            if(error) return $("#nestable2 ol").html(initCode);
+            
+            results.forEach(function(item,index){
+
+            });
+
+        })();
+
+
         //spec
         var spce = {
+            selecter : '#nestable2',
+            preFixed : 'classify_',
+            data : [],
             //是否使用自定义规格的开关。当不使用自定义规格时，会删除商品原有的规格属性
             specOn : function(){
                 $("#nestable2").removeClass('hidden').fadeIn();
@@ -102,7 +113,8 @@
                 var list = e.length ? e : $(e.target);
                 output = list.data('output');
                 if(!output) return;
-                output.val(window.JSON.stringify(list.nestable('serialize'), null, 2));
+                spce.data = list.nestable('serialize');
+                //output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
             },
 
             //同步数据和绑定事件
@@ -145,18 +157,6 @@
                 return td;
             },
 
-            //获取父项步长
-            //col 当前所在的列
-            getSize : function(col,cols){
-                var items = [];
-                var size = 1;
-                for(var c = col; c <= cols; c ++){
-                    items = spce.childLists(c);
-                    size = size * (items.length || 1);
-                }
-                return size;
-            },
-
             //编辑项操作
             edit : function(){
                 $(".dd-list>li .dd-edit .fa-edit").unbind('click').on("click",function(e){
@@ -173,7 +173,8 @@
                     if(html.find('ol').length){
                         html = html.find('ol').remove();
                     }
-                    curEl.after(html);
+                    
+                    curEl.after($(html).attr('data-val','classify_' + (new Date()).valueOf()));
                     spce.reset();
                     $('#nestable2').nestable({group: 0}).change();
                 });
@@ -206,7 +207,7 @@
                     //同步列表名称
                     $(this).parent().prev().find('.dd-val').html($(this).val());
                     //同步列表数据
-                    $(this).parent().parent().attr('data-val',$(this).val());
+                    //$(this).parent().parent().attr('data-val',$(this).val());
                 })
 
                 $(".dd-list>li .dd-edit input").unbind('blur').on('blur',function(e){
@@ -215,13 +216,27 @@
                 })
                 
             },
+
+            //读取属性对象
+            readSpec : function(data){
+                data = data || spce.data;
+                var obj = [];
+                data.forEach(function(item,index){
+                    var temObj = {};
+                    temObj.val = item.val;
+                    temObj.name =  $(spce.selecter).find('li.dd-item[data-val="'+ item.val +'"]').find('span.dd-val').html();
+                    if(item.children) temObj.children = spce.readSpec(item.children);
+                    obj.push(temObj);
+                });
+                return obj;
+            }
         };
 
         
         //用于事件测试的元素
-        $('#flushSpec').click(function(){
-            $('#nestable2').nestable({group: 1}).change();
-        });
+        //$('#flushSpec').click(function(){
+            //console.log("=========================|||:",spce.readSpec());
+        //});
         
         //activate Nestable for list 2
         $('#nestable2').nestable({
@@ -235,7 +250,7 @@
         })()
             
 
-
+        //开阖事件
         $('#nestable-menu').on('click', function (e) {
             var target = $(e.target),
                 action = target.data('action');
@@ -247,6 +262,7 @@
             }
         });
 
+
         //运行时加载
         (function(){
             //设置初始状态
@@ -256,13 +272,25 @@
             $("#usespec").change(function(e){
                 ($(this).prop('checked')) ? spce.specOn() : spce.specOff();
             });
+
+            //读取
+            $('.ev-submit').mouseover(function(){
+                var val = encodeURI(JSON.stringify(spce.readSpec()));
+                $("input[name='classify']").val(window.btoa(val));
+            });
+
+            app.load(".classify-add-Form");
+            app.addonParams = {oid: getItem('OID')};
         })();
     });
 
 
+    function save(res){
+        app.notice(res,function(){
+            if(!res.error) go(res.uri)
+        })
+        console.log("===========-=====---------------",res);
+    }
+
+
 </script>
-
-</body>
-</html>
-
-
