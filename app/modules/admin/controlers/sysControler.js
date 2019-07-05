@@ -1,47 +1,59 @@
 function sysControler(){
     var that = this;
     // 基本设置
-    this.bases = function(){ 
-        var process = this.model("DataProcess");
+    that.bases = function(){ 
+        var process = that.model("DataProcess");
         var userInfor = process.getUserInfo();
         var ppermit = process.getUserInfo('PPER',1)
         that.render({});
     }
 
     //安全设置
-    this.securitySet = function(){
+    that.securitySet = function(){
         that.render({});
     }
     
     //验证码设置
-    this.code = function(){
+    that.code = function(){
         that.render({});
     }
 
      //logo设置
-     this.logo = function(){
+     that.logo = function(){
         that.render({});
     }
   
     //地图设置
-    this.mapSet = function (){
+    that.mapSet = function (){
         that.render({});
     }
     
   
     //缓存设置
-    this.cache = function (){
+    that.cache = function (){
          that.render({});
     }
 
     //上传设置
-    this.upload = function (){
-        that.render({});
+    that.upload = function (){
+        // var sys = that.model("Sys")
+        // sys.updateSet(function(){
+            that.render({});
+        //});
+        
+    }
+
+    //保存上传设置
+    that.saveUpdateSet = function(){
+        var sys = that.model("Sys")
+        sys.saveUpdateSet(function(res){
+            that.renderJson(res);
+        });
     }
 
    //友情链接
-   this.flink = function (){
-       var sys = this.model("Sys")
+   that.flink = function (){
+       var sys = that.model("Sys")
        sys.getFlink(function(res){
             that.render({list:res});
        });        
@@ -51,7 +63,7 @@ function sysControler(){
     that.addFlink = function(){
         var data = {};
         var oid = that.GET('oid') || that.POST('oid');
-        data.normalAsync = this.plug('Uploads',{
+        data.normalAsync = that.plug('Uploads',{
           url:'/admin/sys/ajaxImg?oid=' + oid,      //上传文件的服务端地址
           control:'#fileInput',                   //载入文件的input框id
           form:'#testForm',                       //承载input框的form元素的id
@@ -73,6 +85,60 @@ function sysControler(){
             typeDir: true        //需要分类管理文件（按日期分类）
         });
         
+    }
+
+
+    /**
+     * 保存友情连接信息
+     */
+    that.saveFlink = function(){
+        var sys = that.model("Sys");
+        sys.saveFlink(function(res){
+            that.renderJson(res);
+        })
+    }
+
+    /**
+     * 删除友情链接
+     */
+    that.delFlink = function(){
+        var sys = that.model("Sys");
+        sys.delFlink(function(res){
+            that.renderJson(res);
+        })
+    }
+
+    /**
+     * 编辑友情链接信息
+     * 
+     */
+    that.editFlink = function(){
+        var data = {};
+        
+        var oid = that.GET('oid') || that.POST('oid');        
+        data.normalAsync = that.plug('Uploads',{
+          url:'/admin/sys/ajaxImg?oid=' + oid,      //上传文件的服务端地址
+          control:'#fileInput',                   //载入文件的input框id
+          form:'#testForm',                       //承载input框的form元素的id
+          successCallback:'imgfun',
+          faileCallback:'errorfun',
+      }).normalAsync;
+        var sys = that.model("Sys");
+
+        sys.getFlink(function(res){
+            data.list = res;
+            that.render(data);
+        })
+    }
+
+    /**
+     * 修改友情链接信息
+     */
+    that.updateFlink = function(){
+        var sys = that.model("Sys");
+        sys.saveFlink(function(res){
+            that.renderJson(res);
+        })
     }
 
 }

@@ -23,7 +23,7 @@
         outline: 0;
     }
     </style>
-    <div class="container-fluid base base_add_flink">
+    <div class="container-fluid base base_edit_flink">
         <div class="row head">
             <div class="col-xs-12">
                 <span>系统管理-系统设置-友情链接添加    添加</span>
@@ -38,7 +38,8 @@
             </div>
         </div>  
         <div class="row form">
-            <form id="testForm"  method="post" enctype="multipart/form-data" data-form-async='json' action="/admin/sys/saveFlink">
+            <form id="testForm"  method="post" enctype="multipart/form-data" data-form-async='json' action="/admin/sys/updateFlink">
+                <input type="hidden" name="id" value="<%= list[0].id%>">
                <table class="table">
                    <thead>
                        <tr>
@@ -51,7 +52,7 @@
                             <td>友情链接名称：</td>
                             <td >
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="title" value="" id="name"  placeholder="友情链接名称" required/>
+                                    <input type="text" class="form-control" name="title" value="<%= list[0].title%>" id="name"  placeholder="友情链接名称" required/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：友邦拉拉工程信息平台</span>
                             </td>
@@ -60,7 +61,7 @@
                             <td>友情链接网址：</td>
                             <td >
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" id="name" name="linkurl" value=""  placeholder="友情链接网址" required/>
+                                    <input type="text" class="form-control" id="name" name="linkurl" value="<%= list[0].linkurl%>"  placeholder="友情链接网址" required/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：https://www.baiddu.com</span>
                             </td>
@@ -72,15 +73,19 @@
                             <td style="padding-left:26px;">
                                 <button type="button" class="yun_bth_pic">上传图片</button>
                                 <input class="layui-upload-file" type="file" name="image" value="" id="fileInput"  size="50"/>
-                                <input type="hidden" name="litpic" value=""/>                       
-                                <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px"> 
+                                <input type="hidden" name="litpic" value="<%= list[0].litpic %>"/>                       
+                                <img class="imglogo" src="<%= list[0].litpic %>" style="max-width:300px;_width:300px"> 
                                 <%- normalAsync %>
                             </td>           
                         </tr> 
                         <tr>
                             <td>状态：</td>
                             <td style="padding-left:26px;">
-                                <label><input class="mui-switch mui-switch-anim" type="checkbox" name="enable" value="1" checked/><em></em></label>
+                                <% if(list[0].enable=="1"){ %>
+                                    <label><input class="mui-switch mui-switch-anim" type="checkbox" name="enable" value="1" checked/><em></em></label>
+                                <% }else{ %>
+                                    <label><input class="mui-switch mui-switch-anim" type="checkbox" name="enable" value="1" /><em></em></label>
+                                <% } %>
                             </td>              
                         </tr>                      
                    </tbody>
@@ -140,8 +145,8 @@
     </script>
     <script src="/bootstrap/js/switch.js"></script>
     <script language="javascript">
-        app.load(".base_add_flink");
-        function saveFlink(results){
+        app.load(".base_edit_flink");
+        function updateFlink(results){
             app.notice(results,function(){
                 go(results.uri);
             });

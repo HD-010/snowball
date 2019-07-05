@@ -27,7 +27,7 @@
     background-color: white;
 }
 </style>
-<div class="container-fluid base">
+<div class="container-fluid base base_flink">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-系统设置-友情链接</span>
@@ -73,15 +73,15 @@
                             <td><%=list[i].linkurl%></td>
                             <td>
                                 <%
-                                    var st = ['禁用','启用'];
+                                    var st = ['关闭','开启'];
                                     var stcolor = ['btn-danger','btn-info'];
                                 %>
                                 <button type="button" class="btn <%=stcolor[list[i].enable]%>" style="padding: 2px 4px;"><%=st[list[i].enable]%></button>
                             </td> 
                             <td><%=getStandardDate(list[i].addtime)%></td>                           
                             <td class="project-actions">
-                                <a href="#" class="btn btn-white btn-sm" onclick="go('/admin/sys/editFlink?id=<%=list[i].id%>')"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
-                                <a href="" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                <a href="#" class="btn btn-white btn-sm" onclick="go('/admin/sys/editFlink?fid=<%=list[i].id%>')"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri='/admin/sys/delFlink?id=<%=list[i].id%>' ><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
                         </tr>
                         <% } %>                       
@@ -106,3 +106,15 @@
      });
 
  </script>
+ <script language="javascript">
+    app.load(".base_flink");
+    app.addonParams = {oid: getItem('OID')};
+
+    function delFlink(results){
+        console.log(results)
+        app.notice(results,function(){
+          
+            go(results.uri);
+        });
+    }
+</script>
