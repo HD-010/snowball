@@ -570,7 +570,7 @@ var effect = {
      * @param {*} selecter 
      * html代码结构：
      *  <div class="col-sm-4 col-xs-4 监听的选择器">
-            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
+            <select data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
         </div>
      */
     setSelect: function(selecter){
