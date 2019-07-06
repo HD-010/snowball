@@ -28,6 +28,9 @@ function ArcModel(){
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){
+        var data = {error: 1, message: '请填完整必填项！'};
+        var classify = this.POST('classify');
+        if(!classify) return callback(data);
         var conditions = {
             table:'youbang_archives',
             where:[],
@@ -38,6 +41,7 @@ function ArcModel(){
         flag = (typeof flag == 'object') ? flag : [flag];
         record.flag = flag.join('-');
         record.title = this.POST('title') || '';
+        record.classify = classify;
         record.shorttitle = this.POST('shorttitle') || '';
         record.component = this.POST('component') || '1';
         record.keywords = this.POST('keywords') || '';
@@ -49,7 +53,7 @@ function ArcModel(){
         if(id) conditions.where.push('id=' + id);
 
         this.DB().log().set(conditions,function(error,results,fields){
-            var data = {};
+            
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);

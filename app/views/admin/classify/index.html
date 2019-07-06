@@ -81,54 +81,8 @@
         jQuery(function($){
             var results = <%- error ? false : results %>;
             var error = <%- error; %>;
-            
-            
-            nestable(results,error,'#nes');
-            //页面初始化
-            function nestable(results,error,appendid){
-                var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
-                var nesBox = `<div class="dd hidden" id="nestable2">
-                                <ol class="dd-list"></ol>
-                            </div>`;
-                var initCode =  `<li class="dd-item" data-val="classify_`+<%= (new Date()).valueOf(); %>+`">
-                                    <div class="dd-handle">
-                                        <span class="label label-info"><i class="fa fa-cog"></i></span> 
-                                        <span class="dd-val" style="font-weight:100;">分类名称</span>
-                                    </div>
-                                    <div class="dd-edit">
-                                        <input class="hidden" type="text" name="spec" value="规格名称" />
-                                        <span class="fa fa-edit"></span>
-                                        <span class="fa fa-minus-square-o minus"></span>
-                                        <span class="fa fa-plus-square-o plus"></span>
-                                    </div>
-                                    
-                                </li>`;
-                $("#nesTemCode").html('');
-                $('body').append(nesPreBox);
-                $(appendid).find('#nestable2').remove();
-                $(appendid).append(nesBox);
-                if(error) return $("#nestable2 ol").html(initCode);
-                loadItem();
-                $("#nestable2 ol").html($("#nesTemCode").html());
-                /**
-                 * 组织项目结构
-                 **/
-                function loadItem(res,farther){
-                    res = res || results;
-                    res.forEach(function(item,index){
-                        var code = $(initCode);
-                        code.attr('data-val',item.val);
-                        code.find('.dd-val').html(item.name);
-                        code = code[0].outerHTML;
-                        (!farther) ?
-                        $("#nesTemCode").append(code) :
-                        $("#nesTemCode").find('li[data-val="' + farther + '"]').append('<ol class="dd-list">' + code + '</ol>');
-                        if(item.children) loadItem(item.children, item.val)
-                    });
-                }
-                
-            };
-    
+            //初始化nestable
+            effect.nestable(results,error,'#nes');
     
             //spec
             var spce = {
@@ -285,8 +239,7 @@
                 spce.updateOutput($('#nestable2').data('output', $('#nestable2-output')));
                 spce.reset()
             })();
-                
-    
+
             //开阖事件
             $('#nestable-menu').on('click', function (e) {
                 var target = $(e.target),

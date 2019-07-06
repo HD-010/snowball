@@ -19,6 +19,7 @@ function ClassifyModel(){
             data.ctag = params.ctag;
             data.id = results[0] ? results[0].id : '';
             data.enable = results[0] ? results[0].enable : '0';
+            
             callback(data);
         })
     }
@@ -42,7 +43,7 @@ function ClassifyModel(){
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
 
-        this.DB().log().set(conditions,function(error,results){
+        this.DB().set(conditions,function(error,results){
             var data = {};
             data.error = 1;
             data.message = "操作成功，请稍后再试";

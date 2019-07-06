@@ -619,7 +619,84 @@ var effect = {
             }
             tab.find('.union-top').prop('checked',all);
         });
-    }
+    },
+
+    /**
+     * nestable结构输出
+     * 环境：jquery2 bootstrap3
+     * 需要在页面引入：<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+     * results object 代结构的数据
+     * error 0 | 1  是results的状态标识 0表示结构数据合法，1表示不合法
+     * appendid id选择器，指定输入的视图追加在appendid的容器内
+     * 
+     * results数据结构如：
+     * [
+            {
+                "val":"classify_init",
+                "name":"分类名称",
+                "children":[
+                    {"val":"classify_1562384668706","name":"分类名称"},
+                    {"val":"classify_1562384668490","name":"分类名称"}
+                ]
+            },
+            {
+                "val":"classify_1562384668258",
+                "name":"分类名称"
+            },
+            {
+                "val":"classify_1562384672690",
+                "name":"分类名称"
+            }
+        ]
+     */
+    nestable: function(results,error,appendid){
+        var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
+        var nesBox = `<style>
+                        .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
+                        .dd-list>li .dd-addon-handel{position:absolute;right:0;top:0.6em;height:2em;border:0;left:5em;}
+                        .dd-list>li .dd-edit span{margin-right:0.5em;}
+                    </style>
+                    <div class="dd" id="nestable2">
+                        <ol class="dd-list"></ol>
+                    </div>`;
+        var initCode =  `<li class="dd-item" data-val="classify_init">
+                            <div class="dd-handle">
+                                <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                <span class="dd-val" style="font-weight:100;">分类名称</span>
+                            </div>
+                            <div class="dd-edit">
+                                <input class="hidden" type="text" name="spec" value="规格名称" />
+                                <span class="fa fa-edit"></span>
+                                <span class="fa fa-minus-square-o minus"></span>
+                                <span class="fa fa-plus-square-o plus"></span>
+                            </div>
+                            <div class="dd-addon-handel hidden"></div>
+                        </li>`;
+        $("#nesTemCode").html('');
+        $('body').append(nesPreBox);
+        $(appendid).find('#nestable2').remove();
+        $(appendid).append(nesBox);
+        if(error) return $("#nestable2 ol").html(initCode);
+        loadItem();
+        $("#nestable2 ol").html($("#nesTemCode").html());
+        /**
+         * 组织项目结构
+         **/
+        function loadItem(res,farther){
+            res = res || results;
+            res.forEach(function(item,index){
+                var code = $(initCode);
+                code.attr('data-val',item.val);
+                code.find('.dd-val').html(item.name);
+                code = code[0].outerHTML;
+                (!farther) ?
+                $("#nesTemCode").append(code) :
+                $("#nesTemCode").find('li[data-val="' + farther + '"]').append('<ol class="dd-list">' + code + '</ol>');
+                if(item.children) loadItem(item.children, item.val)
+            });
+        }
+    },
+
 
 }
 

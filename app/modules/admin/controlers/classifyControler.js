@@ -11,6 +11,7 @@ function classifyControler(){
         var process = this.model("DataProcess");
         params.ctag = ctag;
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        params.enable = '1';
         
         //获取当前商户的分类列表
         var classify = this.model("Classify");

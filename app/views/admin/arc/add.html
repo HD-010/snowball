@@ -142,7 +142,7 @@
                                 <div class="form-group col-xs-4">
                                     <input type="text" class="form-control" name="title" placeholder="标题" value=" "/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
                             </td>              
                         </tr>
 
@@ -152,7 +152,7 @@
                                 <div class="form-group col-xs-4">
                                     <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value=" "/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写短标题，长度限制25字</span>
                             </td>              
                         </tr>
 
@@ -162,7 +162,7 @@
                                 <div class="form-group col-xs-4">
                                     <select class="form-control" name="typeid" data-key='' data-val='' data-def='' placeholder="栏目" ></select>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                             </td>              
                         </tr>
 
@@ -170,9 +170,11 @@
                             <td>分类：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="classify" placeholder="所属分类" value=""/>
+                                    <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" class="form-control" name="classify" placeholder="所属分类" value=""/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
+                                <div class="col-xs-10" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
                         </tr>
 
@@ -308,8 +310,37 @@
         </div>
     </div>
 </div>
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script>
+    //分类相关
+    $("#oper-classify").click(function(){
+        $("#oper-classify-nes").fadeToggle();
+    })
 
+    var results = <%- error ? false : results %>;
+    var error = <%- error; %>;
+    //初始化nestable数据结构
+    effect.nestable(results,error,'#oper-classify-nes');
+    
+    var updateOutput = function (e) {
+        var list = e.length ? e : $(e.target),
+        output = list.data('output');
+    };
+    // activate Nestable for list 2
+    $('#nestable2').nestable({group: 1}).on('change', updateOutput);
+    $('.dd').nestable('collapseAll');    
+    //隐藏编辑按钮
+    $('.dd-edit').hide();
+    $(".dd-addon-handel").removeClass('hidden')
 
+    //设置被选择的值及效果
+    $('.dd-addon-handel').click(function(e){
+        $("#oper-classify").text($(this).parent().find(".dd-val").html());
+        $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
+        $("#oper-classify-nes").fadeToggle();
+    });
+</script>
+    
 
 <script>
     //ueditor相关
