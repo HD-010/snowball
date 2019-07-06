@@ -29,7 +29,7 @@
                         <td>上传文件大小：</td>
                         <td>
                             <div class="form-group col-xs-4">
-                                <input type="number" class="form-control"   placeholder="5" name="fileSize" value="" />
+                                <input type="number" class="form-control"   placeholder="5" name="fileSize" value="<%= list[0].key1.fileSize %>" />
                             </div><span class="lead">M</span>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传文件的最大限制，单位为 M，不填则默认5M</span>
                         </td>              
@@ -38,7 +38,7 @@
                         <td>上传图片大小：</td>
                         <td>
                             <div class="form-group col-xs-4">
-                                <input type="number" class="form-control"   placeholder="5" name="imgFileSize" value="" />
+                                <input type="number" class="form-control"   placeholder="5" name="imgFileSize" value="<%= list[0].key1.imgFileSize %>" />
                             </div><span class="lead">M</span>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传图片的最大限制，单位为 M，不填则默认5M</span>
                         </td>              
@@ -47,7 +47,7 @@
                         <td>上传图片类型：</td>
                         <td>
                             <div class="form-group col-xs-4">
-                                <input type="text" class="form-control"   placeholder="jpg,png,jpeg,bmp,gif" name="imgTtype" value="" />
+                                <input type="text" class="form-control"   placeholder="jpg,png,jpeg,bmp,gif" name="imgTtype" value="<%= list[0].key1.imgTtype %>" />
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传图片的类型，多个类型以英文逗号（,）分隔，不填则默认jpg,png,jpeg,bmp,gif</span>
                         </td>              
@@ -56,12 +56,12 @@
                             <td>上传文件类型：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control"   placeholder="rar,zip,doc,docx,xls" name="fileType" value="" />
+                                    <input type="text" class="form-control"   placeholder="rar,zip,doc,docx,xls" name="fileType" value="<%= list[0].key1.fileType %>" />
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传文件的类型，多个类型以英文逗号（,）分隔，不填则默认rar,zip,doc,docx,xls</span>
                             </td>              
                           </tr>
-                      <tr>
+                      <!-- <tr>
                         <td>图片安全验证：</td>
           
                         <td style="padding-left:26px;">
@@ -79,7 +79,7 @@
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;根据图片原始比例重新压缩成新图片，彻底去除图片中可能包含的非法代码，但有可能会影响图片清晰度</span>
                             
                         </td>              
-                      </tr>
+                      </tr> -->
                    </tbody>
                    <tfoot>
                       <tr>
@@ -146,6 +146,7 @@
         }
 
         app.load(".base_saveUpdateSet");
+        app.addonParams = {oid: getItem('OID')};
         function saveUpdateSet(results){
             app.notice(results,function(){
                 go(results.uri);

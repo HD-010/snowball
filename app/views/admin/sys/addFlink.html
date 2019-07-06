@@ -141,6 +141,7 @@
     <script src="/bootstrap/js/switch.js"></script>
     <script language="javascript">
         app.load(".base_add_flink");
+        app.addonParams = {oid: getItem('OID')};
         function saveFlink(results){
             app.notice(results,function(){
                 go(results.uri);

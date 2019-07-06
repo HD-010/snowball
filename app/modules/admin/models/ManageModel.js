@@ -28,9 +28,9 @@ function ManageModel(){
         data.pid = process.getUserInfo('UID');
         //获取插入信息    
        
-        data.acount = this.POST('acount');
+        data.acount = this.POST('!acount');
         data.userName = this.POST('userName');
-        data.password = this.POST('password');
+        data.password = this.POST('!password');
         data.groupId = this.POST('groupId');
         data.tel = this.POST('tel');
         var condition = {

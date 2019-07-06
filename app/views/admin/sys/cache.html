@@ -1,4 +1,4 @@
-<div class="container-fluid base">
+<div class="container-fluid base base_saveCacheSet">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-系统设置-安全设置</span>
@@ -13,7 +13,8 @@
         </div>
     </div>
     <div class="row form">
-        <form action="" method="">
+        <form  data-form-async='json' action="/admin/sys/saveCacheSet" method="POST" onsubmit="return check()">
+            <input type="hidden" name="updateData" value="" />
            <table class="table">
                <thead>
                    <tr>
@@ -24,40 +25,44 @@
                <tbody>
                  
                   <tr>
-                    <td>Memcache缓存：</td>
+                    <td>Redis缓存：</td>
                     <td style="padding-left:26px;">
-                        <label><input class="mui-switch mui-switch-anim" type="checkbox" ><em></em></label>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;注：如果服务器上未安装Memcache,则不要开启此项。</span>
+                            <% if(list[0].key1.redis=='1'){ %>
+                                <label><input class="mui-switch mui-switch-anim" type="checkbox" name="redis" value="1" checked/><em></em></label>
+                            <% }else{ %>
+                                <label><input class="mui-switch mui-switch-anim" type="checkbox" name="redis" value="0" /><em></em></label>
+                            <% } %>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;注：如果服务器上未安装Redis,则不要开启此项。不填默认不开启</span>
                     </td>              
                   </tr>
                   <tr>
-                    <td>Memcache服务器：</td>
+                    <td>Redis服务器：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control"   placeholder="127.0.0.1 "/>
+                            <input type="text" class="form-control"   placeholder="127.0.0.1" name="local" value="<%=list[0].key1.local%>" />
                         </div>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;服务器IP，本机127.0.0.1</span>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;服务器IP，本机127.0.0.1,不填默认127.0.0.1</span>
                     </td>              
                   </tr>
                   <tr>
-                    <td>Memcache端口：</td>
+                    <td>Redis端口：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control"   placeholder="11211 "/>
+                            <input type="text" class="form-control"   placeholder="6379" name="port" value="<%=list[0].key1.port%>"/>
                         </div>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;默认11211</span>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;默认6379，不填默认6379</span>
                     </td>              
                   </tr>
                   <tr>
-                    <td>Memcache缓存时间：</td>
+                    <td>Redis缓存时间：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control"   placeholder="3600 "/>
+                            <input type="text" class="form-control"   placeholder="3600 " name="cacheTime" value="<%=list[0].key1.cacheTime%>"/>
                         </div>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;秒为单位,一般为3600秒</span>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" ></i>&nbsp;秒为单位,一般为3600秒，不填默认6379</span>
                     </td>              
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>页面缓存：</td>
       
                     <td style="padding-left:26px;">
@@ -71,7 +76,7 @@
                         <div class="form-group col-xs-4">
                             <input type="text" class="form-control"   placeholder="1000 "/>
                         </div>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;秒为单位,一般为3600秒</span>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" ></i>&nbsp;秒为单位,一般为3600秒</span>
                     </td>              
                   </tr>
                   <tr>
@@ -86,10 +91,10 @@
                         <div class="form-group col-xs-4">
                             <input type="text" class="form-control"   placeholder="3600 "/>
                         </div>
-                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;秒为单位,一般为3600秒</span>
+                        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" ></i>&nbsp;秒为单位,一般为3600秒</span>
                     </td>              
                   </tr>
-                  
+                   -->
                
                  
                </tbody>
@@ -107,3 +112,35 @@
     </div>
 </div>
 <script src="/bootstrap/js/switch.js"></script>
+<script language="javascript">
+        //验证问文件类型的正确性
+        function check(){
+            var updateData = {
+                redis:$("input[name='redis']").val() || 0,
+                local:$("input[name='local']").val() || "127.0.0.1",
+                port:$("input[name='port']").val() || "6378",
+                cacheTime:$("input[name='cacheTime']").val() || "3600"
+            }
+            updateData = JSON.stringify(updateData);
+            $("input[name='updateData']").val(updateData);
+            console.log(updateData)
+            return true;
+        }
+
+        app.load(".base_saveCacheSet");
+        app.addonParams = {oid: getItem('OID')};
+        function saveCacheSet(results){
+            app.notice(results,function(){
+                go(results.uri);
+            });
+        }
+
+
+        $("input[name='redis']").change(function(){
+          if($(this).get(0).checked){
+            $(this).val(1)
+          }else{
+            $(this).val(0)
+          }
+       })
+    </script>

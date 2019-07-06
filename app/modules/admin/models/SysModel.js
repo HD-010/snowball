@@ -2,7 +2,7 @@ function SysModel(){
     var that = this;
 
 
-    that.getSysInfo = function(tagname){
+    that.getSysInfo = function(tagname,callback){
         //根据网站基本配置信息
         var condition = {
             table:["youbang_sys_option"],//查询的表名
@@ -10,8 +10,9 @@ function SysModel(){
           
         };
         if(tagname) condition.where.push(" tagname= '"+tagname+"'");
-        that.DB().log().get(condition,function(error,res){
-            if(res.length) return res;
+        that.DB().get(condition,function(error,res){
+            res[0].key1 = JSON.parse(res[0].key1);
+            if(res.length) callback(res);
         });
     }
     
@@ -110,7 +111,24 @@ function SysModel(){
      */
     that.updateSet = function(callback){
         var tagname  = "SYS_UPDATE";
-        console.log(that.getSysInfo(tagname))
+        that.getSysInfo(tagname,function(results){
+            if(results.length){
+                callback(results);
+            }
+        });
+    }
+
+
+     /**
+     * 缓存设置
+     */
+    that.cacheSet = function(callback){
+        var tagname  = "SYS_CACHE";
+        that.getSysInfo(tagname,function(results){
+            if(results.length){
+                callback(results);
+            }
+        });
     }
 
     /**
@@ -120,7 +138,38 @@ function SysModel(){
         var tagname  = "SYS_UPDATE";
         var data = {};
         data.updateData = that.POST("!updateData");
-        console.log("上传设置",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"上传设置修改成功!",
+                    uri:"/admin/sys/upload",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
+     /**
+     * 缓存设置
+     */
+    that.saveCacheSet = function(callback){
+        var tagname  = "SYS_CACHE";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"缓存修改成功!",
+                    uri:"/admin/sys/cache",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
     }
 
 }

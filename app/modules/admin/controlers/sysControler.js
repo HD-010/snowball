@@ -28,18 +28,31 @@ function sysControler(){
         that.render({});
     }
     
+
+     //保存缓存设置
+     that.saveCacheSet = function(){
+        console.log("123135456543154=======================");
+        var sys = that.model("Sys")
+        sys.saveCacheSet(function(res){
+            that.renderJson(res);
+        });
+    }
   
     //缓存设置
     that.cache = function (){
-         that.render({});
+        var sys = that.model("Sys")
+        sys.cacheSet(function(res){
+            console.log("cache",res)
+            that.render({list:res});
+        });
     }
 
     //上传设置
     that.upload = function (){
-        // var sys = that.model("Sys")
-        // sys.updateSet(function(){
-            that.render({});
-        //});
+        var sys = that.model("Sys")
+        sys.updateSet(function(res){
+            that.render({list:res});
+        });
         
     }
 
