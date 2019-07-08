@@ -7,7 +7,7 @@ function TypeModel(){
         var data = {};
         var conditions = {
             table : ['youbang_arctype'],
-            fields : ['*','topid as pid'],
+            fields : ['*', 'id as val','typename as name','topid as pid'],
             where : [],
             orderBy:['topid asc', 'id asc'],
         };

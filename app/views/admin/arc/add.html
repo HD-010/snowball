@@ -98,6 +98,15 @@
     left: 0;
     top: 0;
 }
+#nestable3 .dd-item>button {
+    font-family: FontAwesome;
+    height: 34px;
+    width: 33px;
+    color: #c1c1c1;
+}
+#nestable3 .dd-item>button:before {
+    content: "\f067";
+}
 </style>
 <div class="container-fluid base">
     <div class="row head">
@@ -123,7 +132,6 @@
         <div class="row form tab-content">
             <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" >
                 <input type="hidden" name='tag' value="add" />
-                <input type="hidden" name='typeid' value="" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
                 
@@ -160,9 +168,11 @@
                             <td>栏目：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <select class="form-control" name="typeid" data-key='' data-val='' data-def='' placeholder="栏目" ></select>
+                                    <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" value="" />
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                                <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
                         </tr>
 
@@ -171,10 +181,10 @@
                             <td>
                                 <div class="form-group col-xs-4">
                                     <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                    <input type="hidden" class="form-control" name="classify" placeholder="所属分类" value=""/>
+                                    <input type="hidden" name="classify" value=""/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
-                                <div class="col-xs-10" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                                <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
                         </tr>
 
@@ -312,20 +322,21 @@
 </div>
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
+    var error = <%- error; %>;
+    var updateOutput = function (e) {
+        var list = e.length ? e : $(e.target),
+        output = list.data('output');
+    };
+
     //分类相关
     $("#oper-classify").click(function(){
         $("#oper-classify-nes").fadeToggle();
     })
 
     var results = <%- error ? false : results %>;
-    var error = <%- error; %>;
     //初始化nestable数据结构
     effect.nestable(results,error,'#oper-classify-nes');
     
-    var updateOutput = function (e) {
-        var list = e.length ? e : $(e.target),
-        output = list.data('output');
-    };
     // activate Nestable for list 2
     $('#nestable2').nestable({group: 1}).on('change', updateOutput);
     $('.dd').nestable('collapseAll');    
@@ -334,14 +345,36 @@
     $(".dd-addon-handel").removeClass('hidden')
 
     //设置被选择的值及效果
-    $('.dd-addon-handel').click(function(e){
+    $('.handel-nestable2').click(function(e){
         $("#oper-classify").text($(this).parent().find(".dd-val").html());
         $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
         $("#oper-classify-nes").fadeToggle();
     });
+    
+    //栏目相关
+    $("#oper-types").click(function(){
+        $("#oper-types-nes").fadeToggle();
+    })
+    var types = <%- error ? false : JSON.stringify(types) %>;
+    //初始化nestable数据结构
+    effect.nestable(types,error,'#oper-types-nes');
+
+    // activate Nestable for list 2
+    $('#nestable3').nestable({group: 1}).on('change', updateOutput);
+    $('.dd').nestable('collapseAll');    
+    //隐藏编辑按钮
+    $('.dd-edit').hide();
+    $(".dd-addon-handel").removeClass('hidden')
+
+    //设置被选择的值及效果
+    $('.handel-nestable3').click(function(e){
+        $("#oper-types").text($(this).parent().find(".dd-val").html());
+        $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
+        $("#oper-types-nes").fadeToggle();
+    });
+
 </script>
     
-
 <script>
     //ueditor相关
     var UE = {
@@ -372,7 +405,6 @@
         $($(this).attr('data-target')).removeClass('hidden');
     });
 </script>
-
 
 <script>
     app.load(".add-infor");

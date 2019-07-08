@@ -648,15 +648,49 @@ var effect = {
                 "name":"分类名称"
             }
         ]
+
+        完整案例：
+            var error = <%- error; %>;
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            };
+
+            //分类相关
+            $("#oper-classify").click(function(){
+                $("#oper-classify-nes").fadeToggle();
+            })
+
+            var results = <%- error ? false : results %>;
+            //初始化nestable数据结构
+            effect.nestable(results,error,'#oper-classify-nes');
+            
+            // activate Nestable for list 2
+            $('#nestable2').nestable({group: 1}).on('change', updateOutput);
+            $('.dd').nestable('collapseAll');   
+        
+            //以下为动作事件
+            //隐藏编辑按钮
+            $('.dd-edit').hide();
+            $(".dd-addon-handel").removeClass('hidden')
+
+            //设置被选择的值及效果
+            $('.handel-nestable2').click(function(e){
+                $("#oper-classify").text($(this).parent().find(".dd-val").html());
+                $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
+                $("#oper-classify-nes").fadeToggle();
+            });
      */
     nestable: function(results,error,appendid){
+        var nesId = $(".dd").eq(0).attr('id');
+        nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
         var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
         var nesBox = `<style>
                         .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
                         .dd-list>li .dd-addon-handel{position:absolute;right:0;top:0.6em;height:2em;border:0;left:5em;}
                         .dd-list>li .dd-edit span{margin-right:0.5em;}
                     </style>
-                    <div class="dd" id="nestable2">
+                    <div class="dd" id="`+ nesId +`">
                         <ol class="dd-list"></ol>
                     </div>`;
         var initCode =  `<li class="dd-item" data-val="classify_init">
@@ -670,15 +704,15 @@ var effect = {
                                 <span class="fa fa-minus-square-o minus"></span>
                                 <span class="fa fa-plus-square-o plus"></span>
                             </div>
-                            <div class="dd-addon-handel hidden"></div>
+                            <div class="dd-addon-handel handel-`+ nesId +` hidden"></div>
                         </li>`;
         $("#nesTemCode").html('');
         $('body').append(nesPreBox);
-        $(appendid).find('#nestable2').remove();
+        $(appendid).find('#' + nesId).remove();
         $(appendid).append(nesBox);
-        if(error) return $("#nestable2 ol").html(initCode);
+        if(error) return $("#" + nesId + " ol").html(initCode);
         loadItem();
-        $("#nestable2 ol").html($("#nesTemCode").html());
+        $("#" + nesId + " ol").html($("#nesTemCode").html());
         /**
          * 组织项目结构
          **/

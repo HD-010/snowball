@@ -42,6 +42,7 @@ function ArcModel(){
         record.flag = flag.join('-');
         record.title = this.POST('title') || '';
         record.classify = classify;
+        record.typeid = parseInt(this.POST('typeid')) || 0;
         record.shorttitle = this.POST('shorttitle') || '';
         record.component = this.POST('component') || '1';
         record.keywords = this.POST('keywords') || '';
@@ -52,7 +53,7 @@ function ArcModel(){
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
 
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             
             data.error = error ? 1 : 0;
             data.results = results;
@@ -91,7 +92,7 @@ function ArcModel(){
         var aid = this.POST('id');
         if(aid) conditions.where.push('aid=' + aid);
         
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.message = "保存成功！";
@@ -110,7 +111,7 @@ function ArcModel(){
             where:[]
         }
         if(params.id) conditions.where.push("id in (" + params.id.replace(/_/g,',') + ")");
-        this.DB().log().del(conditions,(error,results)=>{
+        this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
                 results: results
@@ -128,7 +129,7 @@ function ArcModel(){
             where:[]
         }
         if(params.id) conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
-        this.DB().log().del(conditions,(error,results)=>{
+        this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
                 results: results
