@@ -4,7 +4,7 @@ span.jingdu {
     line-height: 40px;
 }
 </style>
-<div class="container-fluid base">
+<div class="container-fluid base base_saveMapSet">
     
     <div class="row head">
             <div class="col-xs-12">
@@ -20,7 +20,8 @@ span.jingdu {
             </div>
         </div>  
         <div class="row form">
-            <form action="" method="">
+            <form data-form-async='json' action="/admin/sys/saveMapSet" method="POST" onsubmit="return check()">
+                <input type="hidden" name="updateData" value=""/>
             <table class="table">
                 <thead>
                     <tr>
@@ -33,12 +34,21 @@ span.jingdu {
                         <td>IP跳转到当前城市：</td>
                             <td>
                                 <div class="radio i-checks">
+                                    <% if(list[0].key1.urlMap=="1"){ %>
                                     <label>
-                                        <input type="radio"  value="option2" name="codeType" checked/> <i></i> 跳转
+                                        <input type="radio"  value="1" name="urlMap" checked/> <i></i> 跳转
                                     </label>
                                     <label>
-                                        <input type="radio"  value="option2" name="codeType"/> <i></i> 保持默认坐标
+                                        <input type="radio"  value="0" name="urlMap"/> <i></i> 保持默认坐标
                                     </label>
+                                    <% }else{ %>
+                                    <label>
+                                        <input type="radio"  value="1" name="urlMap" /> <i></i> 跳转
+                                    </label>
+                                    <label>
+                                        <input type="radio"  value="0" name="urlMap" checked/> <i></i> 保持默认坐标
+                                    </label>
+                                    <% } %>
                                 </div>                        
                             </td>              
                         </tr>   
@@ -46,7 +56,7 @@ span.jingdu {
                 <td>百度地图KEY：</td>
                 <td>
                     <div class="form-group col-xs-4">
-                        <input type="text" class="form-control" id="name"  placeholder="F9bfbeb26054d97898571a1df965d8af"/>
+                        <input type="text" class="form-control" id="name" name="mapKey" placeholder="F9bfbeb26054d97898571a1df965d8af" value="<%=list[0].key1.mapKey%>"/>
                     </div>
                     <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp; 
                     <a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">申请地址</a> 地图版本：1.5 </span>
@@ -60,10 +70,10 @@ span.jingdu {
                     <div class="form-group">
                         
                         <div class="col-xs-2">
-                                <span class="jingdu">X:</span><input type="text" class="form-control" placeholder="请输入用经度" required="required" style="margin-left: 18px;" id="lng"/>
+                                <span class="jingdu">X:</span><input type="text" class="form-control" name="x" value="<%=list[0].key1.x%>" placeholder="请输入用经度"  style="margin-left: 18px;" id="lng"/>
                         </div>
                         <div class="col-xs-2">
-                                <span class="jingdu">Y:</span><input type="text" class="form-control" placeholder="请输入用纬度" required="required" style="margin-left: 18px;" id="lat"/>
+                                <span class="jingdu">Y:</span><input type="text" class="form-control" name="y" value="<%=list[0].key1.y%>" placeholder="请输入用纬度"  style="margin-left: 18px;" id="lat"/>
                         </div>
                         <span style="line-height: 40px;margin-left: 10px;cursor: pointer;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;<a data-toggle="collapse" data-parent="#accordion" 
                             href="#collapseTwo">点击获取坐标</a></span>
@@ -208,4 +218,27 @@ $(function(){
        }
     })
 })
+</script>
+<script language="javascript">
+    //验证问文件类型的正确性
+    function check(){
+        var updateData = {
+            urlMap:$("input[name='urlMap']").val() || "0",
+            mapKey:$("input[name='mapKey']").val() || "F9bfbeb26054d97898571a1df965d8af",
+            x:$("input[name='x']").val() || "104.914611",
+            y:$("input[name='y']").val() || "25.102187"
+        }
+        updateData = JSON.stringify(updateData);
+        $("input[name='updateData']").val(updateData);
+        console.log(updateData)
+        return true;
+    }
+
+    app.load(".base_saveMapSet");
+    app.addonParams = {oid: getItem('OID')};
+    function saveMapSet(results){
+        app.notice(results,function(){
+            go(results.uri);
+        });
+    }
 </script>

@@ -1,4 +1,4 @@
-<div class="container-fluid base">
+<div class="container-fluid base base_saveCodeSet">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-系统设置-验证码设置</span>
@@ -13,7 +13,8 @@
         </div>
     </div>
     <div class="row form">
-        <form action="" method="">
+        <form  data-form-async='json' action="/admin/sys/saveCodeSet" method="POST" onsubmit="return check()">
+            <input type="hidden" name="updateData" value=""/>
            <table class="table">
                <thead>
                    <tr>
@@ -26,26 +27,50 @@
                     <td>启用系统验证码：</td>
                     <td style="padding-left:26px;"> 
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-outline btn-success dim">
-                                <input type="checkbox"> 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
-                            </label>                                   
+                           
+                                <% if(list[0].key1.codeSwitch[0]=="reg"){ %>
+                            <label class="btn btn-outline btn-success dim codeSwitch active">
+                                <input type="checkbox" name="codeSwitch" value="reg" checked/> 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                            </label>      
+                                <% }else{ %>
+                                <label class="btn btn-outline btn-success dim codeSwitch">
+                                    <input type="checkbox" name="codeSwitch" value="reg"/> 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                </label>      
+                                <% } %>
+                                                        
                         </div>
                         &nbsp;
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-outline btn-success dim">
-                                <input type="checkbox"> 前台登录<i class="fa fa-check"></i>
-                            </label>                                   
+                            
+                                <% if(list[0].key1.codeSwitch[1]=="index"){ %>
+                            <label class="btn btn-outline btn-success dim codeSwitch active">
+                                <input type="checkbox" name="codeSwitch" value="index" checked/> 前台登录<i class="fa fa-check"></i>
+                            </label>   
+                                <% }else{ %>
+                            <label class="btn btn-outline btn-success dim codeSwitch">
+                                <input type="checkbox" name="codeSwitch" value="index" /> 前台登录<i class="fa fa-check"></i>
+                            </label>   
+                                <% } %>
+                                                            
                         </div>
                         &nbsp;
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-outline btn-success dim">
-                                <input type="checkbox"> 后台登录<i class="fa fa-check"></i>
-                            </label>                                   
+                           
+                                <% if(list[0].key1.codeSwitch[2]=="admin"){ %>
+                            <label class="btn btn-outline btn-success dim codeSwitch active">
+                                <input type="checkbox" name="codeSwitch" value="admin" checked/> 后台登录<i class="fa fa-check"></i>
+                            </label>    
+                                <% }else{ %>
+                            <label class="btn btn-outline btn-success dim codeSwitch">
+                                <input type="checkbox" name="codeSwitch" value="admin"/> 后台登录<i class="fa fa-check"></i>
+                            </label>    
+                                <% } %>
+                                                           
                         </div>                                             
                     
                     </td>              
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>验证码类型：</td>
                     <td>
                         <div class="radio i-checks">
@@ -57,19 +82,19 @@
                             </label>
                         </div>                        
                     </td>              
-                  </tr>
+                  </tr> -->
                   <tr>
                     <td>文字验证码生成类型：</td>
                     <td>
                         <div class="radio i-checks">
                             <label>
-                                <input type="radio"  value="0" name="fontCodeType" checked/> <i></i> 文字
+                                <input type="radio"  value="words" <%=list[0].key1.codeType=="words"?"checked":""%> name="codeType"/> <i></i> 文字
                             </label>
                             <label>
-                                <input type="radio"  value="1" name="fontCodeType"/> <i></i> 英文
+                                <input type="radio"  value="english" <%=list[0].key1.codeType=="english"?"checked":""%> name="codeType"/> <i></i> 英文
                             </label>
                             <label>
-                                <input type="radio"  value="2" name="fontCodeType"/> <i></i> 英文 + 数组
+                                <input type="radio"  value="wordsAndEnglish" <%=list[0].key1.codeType=="wordsAndEnglish"?"checked":""%> name="codeType"/> <i></i> 英文 + 数组
                             </label>
                         </div>      
                     </td>              
@@ -80,13 +105,13 @@
                     <td>
                         <div class="radio i-checks">
                             <label>
-                                <input type="radio"  value="0" name="fontFileType" checked/> <i></i> JPG
+                                <input type="radio"  value="jpg"  <%=list[0].key1.codeImgType=="jpg"?"checked":""%> name="codeImgType"/> <i></i> JPG
                             </label>
                             <label>
-                                <input type="radio"  value="1" name="fontFileType"/> <i></i> PNG
+                                <input type="radio"  value="png" <%=list[0].key1.codeImgType=="png"?"checked":""%> name="codeImgType"/> <i></i> PNG
                             </label>
                             <label>
-                                <input type="radio"  value="2" name="fontFileType"/> <i></i> GIF
+                                <input type="radio"  value="gif" <%=list[0].key1.codeImgType=="gif"?"checked":""%> name="codeImgType"/> <i></i> GIF
                             </label>
                         </div>    
                     </td>              
@@ -95,7 +120,7 @@
                     <td>验证码图片大小：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                           <input type="text" class="form-control"   placeholder="200*50"/>
+                           <input type="text" class="form-control" name="codeImgFize" value=""  placeholder="200*50"/>
                         </div><span class="lead">px</span>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;如：200*50,宽*高</span>
                     </td>              
@@ -105,7 +130,7 @@
                     <td>验证码字符数：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control"   placeholder="4"/>
+                            <input type="text" class="form-control" name="codeLength" value=""  placeholder="4"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;提示：字符数不要大于4</span>
                     </td>              
@@ -135,3 +160,42 @@
         });
     });
 </script>
+<script language="javascript">
+
+    $(".codeSwitch").click(function(){  
+        if($(this).find("input[name='codeSwitch']").get(0).checked){
+            $(this).find("input[name='codeSwitch']").get(0).checked = false
+        }else{
+           $(this).find("input[name='codeSwitch']").get(0).checked = true
+        }
+
+    })
+        var chbox=[];
+        //验证问文件类型的正确性
+        function check(){
+            $('input[name="codeSwitch"]:checked').each(function(){//遍历每一个名字为interest的复选框，其中选中的执行函数    
+              chbox.push($(this).val())   
+            });
+
+
+            var updateData = {
+                codeSwitch:chbox,
+                codeType:$("input[name='codeType']:checked").val() || "wordsAndEnglish",
+                codeImgType:$("input[name='codeImgType']:checked").val() || "codeImgType",
+                codeImgFize:$("input[name='codeImgFize']").val() || "200*50",
+                codeLength:$("input[name='codeLength']").val() || "4"
+            }
+            updateData = JSON.stringify(updateData);
+            $("input[name='updateData']").val(updateData);
+            console.log(updateData)
+            return true;
+        }
+    
+        app.load(".base_saveCodeSet");
+        app.addonParams = {oid: getItem('OID')};
+        function saveCodeSet(results){
+            app.notice(results,function(){
+                go(results.uri);
+            });
+        }
+    </script>

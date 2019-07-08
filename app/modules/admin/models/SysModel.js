@@ -131,6 +131,18 @@ function SysModel(){
         });
     }
 
+     /**
+     * 地图设置
+     */
+    that.mapSet = function(callback){
+        var tagname  = "SYS_MAP";
+        that.getSysInfo(tagname,function(results){
+            if(results.length){
+                callback(results);
+            }
+        });
+    }
+
     /**
      * 文件及图片的上传设置
      */
@@ -165,6 +177,92 @@ function SysModel(){
                 var obj={
                     message:"缓存修改成功!",
                     uri:"/admin/sys/cache",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
+    /**
+     * 地图设置
+     */
+    that.saveMapSet = function(callback){
+        var tagname  = "SYS_MAP";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"地图修改成功!",
+                    uri:"/admin/sys/mapSet",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
+     /**
+     * logo设置
+     */
+    that.saveLogoSet = function(callback){
+        var tagname  = "SYS_LOGO";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"logo修改成功!",
+                    uri:"/admin/sys/logo",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
+
+     /**
+     * 验证码设置
+     */
+    that.saveCodeSet = function(callback){
+        var tagname  = "SYS_CODE";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"验证码修改成功!",
+                    uri:"/admin/sys/code",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
+
+    /**
+     * 安全设置
+     */
+    that.saveSecuritySet = function(callback){
+        var tagname  = "SYS_SECUR";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"验证码修改成功!",
+                    uri:"/admin/sys/securitySet",
                     error:0
                 }
                 callback(obj)     
