@@ -102,7 +102,17 @@
     left: 0;
     top: 0;
 }
+#nestable3 .dd-item>button {
+    font-family: FontAwesome;
+    height: 34px;
+    width: 33px;
+    color: #c1c1c1;
+}
+#nestable3 .dd-item>button:before {
+    content: "\f067";
+}
 </style>
+
 <div class="container-fluid base">
     <div class="row head">
         <div class="col-xs-12">
@@ -128,7 +138,6 @@
             <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" >
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='id' value="{{id}}" />
-                <input type="hidden" name='typeid' value="" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
                 
@@ -158,6 +167,31 @@
                                     <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value="{{shorttitle}}"/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>栏目：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(types,'id',data[0].typeid,'name'); %></div>
+                                    <input type="hidden" name="typeid" value="<%= data[0].typeid; %>" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                                <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>分类：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <% var classify = JSON.parse(results) %>
+                                    <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
+                                    <input type="hidden" name="classify" value="<%= data[0].classify %>"/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
+                                <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
                         </tr>
 
@@ -233,7 +267,7 @@
                         <% for(var i in addlist){ %>
                             <%- formCode.get(i); %>
                         <% } %>
-                        <script>var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
+                        <script> var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -251,7 +285,64 @@
     </div>
 </div>
 
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script>
+    //初始化nestbale
+    var initNestable = function(){
+        var error = <%- error; %>;
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
+            output = list.data('output');
+        };
+    
+        //分类相关
+        $("#oper-classify").click(function(){
+            $("#oper-classify-nes").fadeToggle();
+        })
+    
+        var results = <%- error ? false : results %>;
+        //初始化nestable数据结构
+        effect.nestable(results,error,'#oper-classify-nes');
+        
+        // activate Nestable for list 2
+        $('#nestable2').nestable({group: 1}).on('change', updateOutput);
+        $('.dd').nestable('collapseAll');    
+        //隐藏编辑按钮
+        $('.dd-edit').hide();
+        $(".dd-addon-handel").removeClass('hidden')
+    
+        //设置被选择的值及效果
+        $('.handel-nestable2').click(function(e){
+            $("#oper-classify").text($(this).parent().find(".dd-val").html());
+            $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
+            $("#oper-classify-nes").fadeToggle();
+        });
+        
+        //栏目相关
+        $("#oper-types").click(function(){
+            $("#oper-types-nes").fadeToggle();
+        })
+        var types = <%- error ? false : JSON.stringify(types) %>;
+        console.log("%%%%%%%%%%%%%%%:",types);
+        //初始化nestable数据结构
+        effect.nestable(types,error,'#oper-types-nes');
+    
+        // activate Nestable for list 2
+        $('#nestable3').nestable({group: 1}).on('change', updateOutput);
+        $('.dd').nestable('collapseAll');    
+        //隐藏编辑按钮
+        $('.dd-edit').hide();
+        $(".dd-addon-handel").removeClass('hidden')
+    
+        //设置被选择的值及效果
+        $('.handel-nestable3').click(function(e){
+            $("#oper-types").text($(this).parent().find(".dd-val").html());
+            $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
+            $("#oper-types-nes").fadeToggle();
+        });
+    }
 
+</script>
 
 <script>
     //选项卡相关
@@ -311,6 +402,7 @@
                     UE.frame[0].contentWindow.ue.setContent(data.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 
+                initNestable();
             });
         }
     });

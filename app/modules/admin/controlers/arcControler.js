@@ -155,10 +155,37 @@ function arcControler(){
      */
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
+        var ps = 3;         
         var data = {}
-        var params = {ctag: ctag};
+        var params = {};
         var arc = this.model("Arc");
+        var process = this.model("DataProcess");
         var addonTable = this.model('Component');
+
+        //获取当前组件的栏目列表
+        params.nid = ctag;
+        var type = this.model('Type');
+        type.list(params,function(res){
+            if(res.error){
+                res.message = "查询栏目信息失败，请稍后重试";
+                return that.testRender(res,ps);
+            }
+            data.types = treeStrcut(res.data); 
+            ps = that.testRender(data,ps);
+        });
+        
+        //获取当前商户的分类列表
+        var classify = this.model("Classify");
+        //查询分类需要参数：ctag,macid,enable
+        params.ctag = ctag;
+        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        params.enable = '1';
+        classify.get(params, function(res){
+            data = mergeObj([data,res]);
+            log("++++++++++++results:",data);
+            ps = that.testRender(data,ps);
+        });
+
         //查询附加表字段信息
         addonTable.list(params,function(res){
             if(res.error) {
@@ -181,7 +208,7 @@ function arcControler(){
                 }
                 data.error = res.error;
                 data.data = res.results;
-                that.render(data);
+                ps = that.testRender(data);
             });
         });
     }
