@@ -1,11 +1,28 @@
 function sysControler(){
     var that = this;
+
+
+    //保存基本设置
+    that.saveBase = function(){
+        var sys = that.model("Sys")
+        sys.saveBase(function(res){
+            that.renderJson(res);
+        });
+    }
+
+
     // 基本设置
     that.bases = function(){ 
         var process = that.model("DataProcess");
         var userInfor = process.getUserInfo();
         var ppermit = process.getUserInfo('PPER',1)
-        that.render({});
+        var data = {};
+        var sys = that.model("Sys");
+        sys.getSysInfo("SYS_BASIC",function(res){
+            data.list = res;
+            console.log("+++++++++",data.list[0].key1)
+            that.render(data);
+        })
     }
 
 
@@ -24,7 +41,6 @@ function sysControler(){
         var sys = that.model("Sys");
         sys.getSysInfo("SYS_SECUR",function(res){
             data.list = res;
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data.list[0].key1)
             that.render(data);
         })
     }

@@ -270,5 +270,26 @@ function SysModel(){
         })
     }
 
+     /**
+     * 安全设置
+     */
+    that.saveBase = function(callback){
+        var tagname  = "SYS_BASIC";
+        var data = {};
+        data.updateData = that.POST("!updateData");
+        console.log("得到的数据",data.updateData);
+        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        that.DB().log().query(sql,function(error,results){
+            if(results.affectedRows){
+                var obj={
+                    message:"基本设置修改成功!",
+                    uri:"/admin/sys/bases",
+                    error:0
+                }
+                callback(obj)     
+            }
+        })
+    }
+
 }
 module.exports = SysModel;
