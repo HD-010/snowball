@@ -1108,5 +1108,25 @@ function unique(arr){
 			}
 		});
     })(jQuery);
-    
+
     /** ===============================md5 end============================== */
+
+    
+
+/**
+ * 扩展Array方法, 去除数组中空白数据
+ * 调用方法
+    var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
+    var b = a.notempty();
+    输出b    [1, 2, 4, 5, 7, 0, 8]
+ */
+function arrNotempty(array){
+    var arr = [];
+    array.map(function(val, index) {
+        //过滤规则为，不为空串、不为null、不为undefined，也可自行修改
+        if (val !== "" && val != undefined) {
+            arr.push(val);
+        }
+    });
+    return arr;
+}

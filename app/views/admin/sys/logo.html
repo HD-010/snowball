@@ -23,7 +23,7 @@ button, input, optgroup, option, select, textarea {
     outline: 0;
 }
 </style>
-<div class="container-fluid base">
+<div class="container-fluid base base_saveLogoSet">
     <div class="row head">
         <div class="col-xs-12">
             <span>系统管理-系统设置-LOGO    设置</span>
@@ -38,7 +38,8 @@ button, input, optgroup, option, select, textarea {
         </div>
     </div>  
     <div class="row form">
-        <form action="" method="">
+        <form id="testForm" data-form-async='json' action="/admin/sys/saveLogoSet" method="POST" onsubmit="return check()">
+            <input type="hidden" name="updateData" value=""/>
            <table class="table">
                <thead>
                    <tr>
@@ -52,11 +53,9 @@ button, input, optgroup, option, select, textarea {
                         300px * 45px</td>
                     <td style="padding-left:26px;">
                         <button type="button" class="yun_bth_pic" >上传图片</button>
-                        <input class="layui-upload-file" type="file" name="file">
-                        <!-- <input type="hidden" id="layupload_type" value="2">
-                        <input type="hidden" id="upload_path" value="logo">
-                        <input type="hidden" name="sy_logo" value="data/logo/20190316/15567153043.PNG"> -->
-                        <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
+                        <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                        <input type="hidden" name="pcImage" value="<%=list[0].key1.pcImage%>"/>  
+                        <img class="imglogo" src="/<%=list[0].key1.pcImage%>" style="max-width:300px;_width:300px">
                     </td>
                 </tr> 
 
@@ -65,8 +64,9 @@ button, input, optgroup, option, select, textarea {
                     300px X 45px	：</td>
                     <td style="padding-left:26px;">
                         <button type="button" class="yun_bth_pic">上传图片</button>
-                        <input class="layui-upload-file" type="file" name="file" value=""/>                       
-                        <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
+                        <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                        <input type="hidden" name="menberImage" value="<%=list[0].key1.menberImage%>"/>                     
+                        <img class="imglogo" src="/<%=list[0].key1.menberImage%>" style="max-width:300px;_width:300px">
                     </td>           
                 </tr>
 
@@ -75,8 +75,9 @@ button, input, optgroup, option, select, textarea {
                             300px X 45px</td>
                             <td style="padding-left:26px;">
                                 <button type="button" class="yun_bth_pic">上传图片</button>
-                                <input class="layui-upload-file" type="file" name="file" value=""/>                               
-                                <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
+                                <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                                <input type="hidden" name="merchantImage" value="<%=list[0].key1.merchantImage%>"/>                                
+                                <img class="imglogo" src="/<%=list[0].key1.merchantImage%>" style="max-width:300px;_width:300px">
                             </td>
                          </td>              
                     </tr>
@@ -86,8 +87,9 @@ button, input, optgroup, option, select, textarea {
                             300px X 45px</td>
                         <td style="padding-left:26px;">
                             <button type="button" class="yun_bth_pic">上传图片</button>
-                            <input class="layui-upload-file" type="file" name="file" value=""/>                          
-                            <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15567153043.PNG" style="max-width:300px;_width:300px">
+                            <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                            <input type="hidden" name="mobelImage" value="<%=list[0].key1.mobelImage%>"/>                           
+                            <img class="imglogo" src="/<%=list[0].key1.mobelImage%>" style="max-width:300px;_width:300px">
                         </td>
                     </tr>
             
@@ -95,8 +97,9 @@ button, input, optgroup, option, select, textarea {
                         <td>WAP二维码：</td>
                         <td style="padding-left:26px;">
                             <button type="button" class="yun_bth_pic">上传图片</button>
-                            <input class="layui-upload-file" type="file" name="file" value=""/>
-                            <img class="imglogo" src="http://yhrc.pykj.xyz/data/logo/20190316/15549844961.PNG" style="max-width:100px;_width:100px">
+                            <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                            <input type="hidden" name="wapImage" value="<%=list[0].key1.wapImage%>"/>  
+                            <img class="imglogo" src="/<%=list[0].key1.wapImage%>" style="max-width:100px;_width:100px">
                         </td>
                     </tr>
                </tbody>
@@ -113,9 +116,11 @@ button, input, optgroup, option, select, textarea {
         </form>
     </div>
 </div>
+<%- normalAsync %>         
 <script src="/bootstrap/js/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
+        $(".imglogo").css({"width":"300px","height":"45px"});
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
@@ -138,4 +143,46 @@ button, input, optgroup, option, select, textarea {
             })
         })
     });
+</script>
+<script language="javascript">
+    var btn_img={};
+    var updateData = {};
+    $("input[name='updateData']").val();
+    //获取当前要上传的图片对象
+    $(function(){
+        $(".yun_bth_pic").click(function(){
+            btn_img = $(this).parent();
+        })
+    })
+
+    //验证问文件类型的正确性
+    function check(){
+        updateData = {
+            pcImage:$("input[name='pcImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            menberImage:$("input[name='menberImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            merchantImage:$("input[name='merchantImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            mobelImage:$("input[name='mobelImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            wapImage:$("input[name='wapImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+        }
+        updateData = JSON.stringify(updateData);
+        $("input[name='updateData']").val(updateData);
+        console.log(updateData)
+        return false;
+    }
+
+    app.load(".base_saveLogoSet");
+    app.addonParams = {oid: getItem('OID')};
+    function saveLogoSet(results){
+        app.notice(results,function(){
+            go(results.uri);
+        });
+    }
+
+    function imgfun(res){
+        if(res.url){        
+            btn_img.find("input[type='hidden']").val(res.url);
+            console.log(btn_img);
+        }
+    }
+
 </script>
