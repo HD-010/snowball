@@ -92,10 +92,6 @@ function sysControler(){
       })
     }
 
-
-
-  
-
      //保存地图设置
      that.saveMapSet = function(){
         var sys = that.model("Sys")
