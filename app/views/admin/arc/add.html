@@ -475,7 +475,7 @@
             </div>`;
             
         $("#img-add").before($(addObj));
-        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="'+ data.url +'" />'));
+        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
         imgIndex ++;

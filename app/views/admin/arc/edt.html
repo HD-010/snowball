@@ -270,7 +270,7 @@
                             <td id="uris">
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">
-                                        <%- data[0].litpic ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="/' + data[0].litpic + '" /></div> ' : ''; %>
+                                        <%- data[0].litpic ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="' + data[0].litpic + '" /></div> ' : ''; %>
                                         
                                         <label class="col-sm-2 control-label" id="img-add" for="replaceImg">
                                             <img src="/img/plus.png" />
@@ -480,7 +480,7 @@
             </div>`;
             
         $("#img-add").before($(addObj));
-        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="'+ data.url +'" />'));
+        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
         imgIndex ++;
