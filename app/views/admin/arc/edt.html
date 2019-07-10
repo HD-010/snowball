@@ -186,7 +186,7 @@
                             <td>分类：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <% var classify = JSON.parse(results) %>
+                                    <% var classify = JSON.parse(results); %>
                                     <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
                                     <input type="hidden" name="classify" value="<%= data[0].classify %>"/>
                                 </div>
@@ -312,7 +312,7 @@
         $(".dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
-        $('.handel-nestable2').click(function(e){
+        $('.handel-nestable2').unbind('click').on('click',function(e){
             $("#oper-classify").text($(this).parent().find(".dd-val").html());
             $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
             $("#oper-classify-nes").fadeToggle();
@@ -323,7 +323,6 @@
             $("#oper-types-nes").fadeToggle();
         })
         var types = <%- error ? false : JSON.stringify(types) %>;
-        console.log("%%%%%%%%%%%%%%%:",types);
         //初始化nestable数据结构
         effect.nestable(types,error,'#oper-types-nes');
     
@@ -335,12 +334,12 @@
         $(".dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
-        $('.handel-nestable3').click(function(e){
+        $('.handel-nestable3').unbind('click').on('click',function(e){
             $("#oper-types").text($(this).parent().find(".dd-val").html());
             $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
             $("#oper-types-nes").fadeToggle();
         });
-    }
+    } 
 
 </script>
 

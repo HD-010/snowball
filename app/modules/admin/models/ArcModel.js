@@ -88,6 +88,7 @@ function ArcModel(){
             array2value(params.fieldset,'field',listfields[i],'default');
         }
         record.aid = params.aid;
+        record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);
         var aid = this.POST('id');
         if(aid) conditions.where.push('aid=' + aid);

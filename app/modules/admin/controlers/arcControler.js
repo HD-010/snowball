@@ -118,17 +118,17 @@ function arcControler(){
         var arc = this.model("Arc");
         var addonTable = this.model('Component');
         var params = {
-            ctag: ctag,
-            id: id
+            ctag: ctag
         }
         //查询附加表字段信息
         addonTable.list(params,function(res){
-            if(res.error) {
+            if(res.error || !res.results.length) {
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res);
             }
             params.addtable = res.results[0].addtable;
             
+            params.id = id;
             arc.delHives(params,(res)=>{
                 data.error = res.error ? 1 : 0;
                 if(res.error) {
@@ -182,7 +182,6 @@ function arcControler(){
         params.enable = '1';
         classify.get(params, function(res){
             data = mergeObj([data,res]);
-            log("++++++++++++results:",data);
             ps = that.testRender(data,ps);
         });
 
