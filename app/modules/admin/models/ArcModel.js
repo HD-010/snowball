@@ -28,6 +28,11 @@ function ArcModel(){
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){
+        var data = {error: 1, message: '请填完整必填项！'};
+        var classify = this.POST('classify');
+        if(!classify) return callback(data);
+        var uris = this.POST('uris');
+        uris = (typeof uris == 'object') ? uris[0] : uris;
         var conditions = {
             table:'youbang_archives',
             where:[],
@@ -38,18 +43,20 @@ function ArcModel(){
         flag = (typeof flag == 'object') ? flag : [flag];
         record.flag = flag.join('-');
         record.title = this.POST('title') || '';
+        record.classify = classify;
+        record.typeid = parseInt(this.POST('typeid')) || 0;
         record.shorttitle = this.POST('shorttitle') || '';
         record.component = this.POST('component') || '1';
         record.keywords = this.POST('keywords') || '';
         record.description = this.POST('description') || '';
         record.weight = this.POST('weight') || 0;
-        record.litpic = this.POST('litpic') || '';
+        record.litpic = uris || '';
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
 
-        this.DB().log().set(conditions,function(error,results,fields){
-            var data = {};
+        this.DB().set(conditions,function(error,results,fields){
+            
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);
@@ -64,6 +71,7 @@ function ArcModel(){
         var utility = require('utility');
         var noVAlid = ['body'];     //定义的字段会被base64编码
         var listfields = queryresultKeyValue(params.fieldset,'field');
+        
         var conditions = {
             table: params.addtable,
             fields: [],
@@ -83,11 +91,15 @@ function ArcModel(){
             array2value(params.fieldset,'field',listfields[i],'default');
         }
         record.aid = params.aid;
+        var uris = this.POST('uris');
+        uris = (typeof uris == 'object') ? uris[0] : uris;
+        record.litpic = uris || "";
+        record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);
         var aid = this.POST('id');
         if(aid) conditions.where.push('aid=' + aid);
         
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.message = "保存成功！";
@@ -106,7 +118,7 @@ function ArcModel(){
             where:[]
         }
         if(params.id) conditions.where.push("id in (" + params.id.replace(/_/g,',') + ")");
-        this.DB().log().del(conditions,(error,results)=>{
+        this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
                 results: results
@@ -124,7 +136,7 @@ function ArcModel(){
             where:[]
         }
         if(params.id) conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
-        this.DB().log().del(conditions,(error,results)=>{
+        this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
                 results: results

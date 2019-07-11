@@ -13,7 +13,8 @@
         </div>
     </div>
     <div class="row form">
-        <form action="" method="">
+        <form  data-form-async='json' action="/admin/sys/saveBase" method="POST" onsubmit="return check()">
+            <input type="hidden" name="updateData" value=""/>
            <table class="table">
                <thead>
                    <tr>
@@ -26,7 +27,7 @@
                     <td>网站名称：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="网站名称"/>
+                            <input type="text" class="form-control"  name="webName" value="<%=list[0].key1.webName%>"  placeholder="网站名称"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：友邦拉拉工程信息平台</span>
                     </td>              
@@ -35,7 +36,7 @@
                     <td>网站地址：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="网站地址"/>
+                            <input type="text" class="form-control"  name="webAddress" value="<%=list[0].key1.webAddress%>"  placeholder="网站地址"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：http://www.youbanglala.com</span>
                     </td>              
@@ -43,14 +44,18 @@
                   <tr>
                     <td>网站开启：</td>
                     <td style="padding-left:26px; ">
-                        <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label>
+                        <% if(list[0].key1.webSwitch=="1"){ %>
+                        <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="webSwitch" value="1" checked><em></em></label>
+                        <% }else{ %>
+                        <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="webSwitch" value="1"><em></em></label>
+                        <% } %>
                     </td>              
                   </tr>
                   <tr>
                     <td>后台列表页显示条数：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="10"/>
+                            <input type="text" class="form-control"  name="webList" value="<%=list[0].key1.webList%>"  placeholder="10"/>
                         </div>
                         <span style="line-height: 40px;">条</span>
                     </td>              
@@ -59,7 +64,7 @@
                     <td>网站关闭原因：</td>
                     <td>
                         <div class="form-group col-xs-5">
-                            <textarea class="form-control" rows="3" style="height: 100px" placeholder="网站升级中请联系管理员！"></textarea>
+                            <textarea class="form-control" rows="3" style="height: 100px" name="closeReason" value="<%=list[0].key1.closeReason%>" placeholder="网站升级中请联系管理员！"><%=list[0].key1.closeReason%></textarea>
                          </div>
                        
                     </td>              
@@ -68,7 +73,7 @@
                     <td>网站版权信息：</td>
                     <td>
                         <div class="form-group col-xs-5">
-                            <textarea class="form-control" rows="3" style="height: 100px" placeholder="Copyright C 2019 All Rights Reserved 版权所有 友邦拉拉，拉拉友邦"></textarea>
+                            <textarea class="form-control" rows="3" style="height: 100px" name="webCopyright" value="<%=list[0].key1.webCopyright%>" placeholder="Copyright C 2019 All Rights Reserved 版权所有 友邦拉拉，拉拉友邦"><%=list[0].key1.webCopyright%></textarea>
                          </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;提示：© 可复制使用</span>
                     </td>              
@@ -77,7 +82,7 @@
                     <td>网站关键词：</td>
                     <td>
                         <div class="form-group col-xs-5">
-                            <textarea class="form-control" rows="3" style="height: 100px" placeholder="友邦拉拉，拉拉友邦"></textarea>
+                            <textarea class="form-control" rows="3" style="height: 100px" name="webkeyWords" value="<%=list[0].key1.webkeyWords%>" placeholder="友邦拉拉，拉拉友邦"><%=list[0].key1.webkeyWords%></textarea>
                          </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;提示：网站关键词作为公共部分详细设置请到系统-》SEO设置单独设置</span>
                     </td>              
@@ -86,7 +91,7 @@
                     <td>网站描述：</td>
                     <td>
                         <div class="form-group col-xs-5">
-                            <textarea class="form-control" rows="3" style="height: 100px"></textarea>
+                            <textarea class="form-control" rows="3" name="webDiscripts" value="<%=list[0].key1.webDiscripts%>" style="height: 100px"><%=list[0].key1.webDiscripts%></textarea>
                          </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="一个采用 PHP 和 MySQL 数据库构建的高效的解决方案。"></i>&nbsp;提示：网站描述作为公共部分，详细设置请到系统-》SEO管理设置</span>
                     </td>              
@@ -95,7 +100,7 @@
                     <td>站长EMAIL：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="3414602696@qq.com"/>
+                            <input type="text" class="form-control"  name="webEmail" value="<%=list[0].key1.webEmail%>" placeholder="3414602696@qq.com"/>
                         </div>
                         
                     </td>              
@@ -104,7 +109,7 @@
                     <td>站长手机：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="18999999999"/>
+                            <input type="tel" class="form-control"  name="webPhone" value="<%=list[0].key1.webPhone%>"  placeholder="18999999999"/>
                         </div>
                        
                     </td>              
@@ -113,7 +118,7 @@
                     <td>站长传真：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="XXXX-836XXXXX"/>
+                            <input type="text" class="form-control"  name="webFxa" value="<%=list[0].key1.webFxa%>"  placeholder="XXXX-836XXXXX"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：0859-88888888</span>
                     </td>              
@@ -123,7 +128,7 @@
                     <td>备案号：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="黔ICP备4549413号-3"/>
+                            <input type="text" class="form-control"   name="recordNo" value="<%=list[0].key1.recordNo%>" placeholder="黔ICP备4549413号-3"/>
                         </div>
                     </td>              
                   </tr>
@@ -131,7 +136,7 @@
                     <td>客服电话：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="888-8888-888"/>
+                            <input type="text" class="form-control"  name="serviceMobel"  value="<%=list[0].key1.serviceMobel%>" placeholder="888-8888-888"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：888-8888-888</span>
                     </td>              
@@ -140,7 +145,7 @@
                     <td>工作时间：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="9：00-17：30"/>
+                            <input type="text" class="form-control" name="workTime" value="<%=list[0].key1.workTime%>"  placeholder="9：00-17：30"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：工作日 9:00-18:00</span>
                     </td>              
@@ -149,7 +154,7 @@
                     <td>客服QQ：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="3414602696"/>
+                            <input type="text" class="form-control" name="serviceQQ" value="<%=list[0].key1.serviceQQ%>" placeholder="3414602696"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;多个则用半角逗号隔开！</span>
                     </td>              
@@ -158,19 +163,19 @@
                     <td>公司地址：</td>
                     <td>
                         <div class="form-group col-xs-4">
-                            <input type="text" class="form-control" id="name"  placeholder="贵州省兴义市桔山镇"/>
+                            <input type="text" class="form-control" name="compAddress" value="<%=list[0].key1.compAddress%>"  placeholder="贵州省兴义市桔山镇"/>
                         </div>
                         <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：黔西南兴义市某某街道某某号</span>
                     </td>              
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>统计代码：</td>
                     <td>
                         <div class="form-group col-xs-5">
-                            <textarea class="form-control" rows="3" style="height: 100px"></textarea>
+                            <textarea class="form-control" rows="3" name="statisticalCcode" value="" style="height: 100px"></textarea>
                          </div>
                     </td>              
-                  </tr>
+                  </tr> -->
                  
                </tbody>
                <tfoot>
@@ -187,3 +192,41 @@
     </div>
 </div>
 <script src="/bootstrap/js/switch.js"></script>
+<script language="javascript">
+
+    //验证问文件类型的正确性
+    function check(){
+        var updateData = {
+            webName:$("input[name='webName']").val(),
+            webAddress:$("input[name='webAddress']").val(),
+            webSwitch:$("input[name='webSwitch']:checked").val() || "0",
+            webList:$("input[name='webList']").val(),
+            closeReason:$("textarea[name='closeReason']").val(),
+            webCopyright:$("textarea[name='webCopyright']").val(),
+            webkeyWords:$("textarea[name='webkeyWords']").val() ,
+            webDiscripts:$("textarea[name='webDiscripts']").val(),
+            webEmail:$("input[name='webEmail']").val(),
+            webPhone:$("input[name='webPhone']").val(),
+            webFxa:$("input[name='webFxa']").val(),
+            recordNo:$("input[name='recordNo']").val() ,
+            serviceMobel:$("input[name='serviceMobel']").val(),
+            workTime:$("input[name='workTime']").val(),
+            serviceQQ:$("input[name='serviceQQ']").val() ,
+            compAddress:$("input[name='compAddress']").val(),
+            //statisticalCcode:$("textarea[name='statisticalCcode']").val()
+        }
+        
+        updateData = JSON.stringify(updateData);
+        $("input[name='updateData']").val(updateData);
+        console.log(updateData)
+        return true;
+    }
+        
+    app.load(".base");
+    app.addonParams = {oid: getItem('OID')};
+    function saveBase(results){
+        app.notice(results,function(){
+            go(results.uri);
+        });
+    }
+</script>

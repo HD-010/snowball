@@ -7,7 +7,7 @@ function TypeModel(){
         var data = {};
         var conditions = {
             table : ['youbang_arctype'],
-            fields : ['*','topid as pid'],
+            fields : ['*', 'id as val','typename as name','topid as pid'],
             where : [],
             orderBy:['topid asc', 'id asc'],
         };
@@ -16,7 +16,7 @@ function TypeModel(){
         
         this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
-            if(params.addTop) res.push({id: 0,typename: '项级分类'});
+            if(params.addTop) res.push({id: 0,typename: '项级栏目'});
             data.data = res;
 
             return callback(data);
@@ -56,7 +56,7 @@ function TypeModel(){
         upData.siteurl = this.POST('siteurl') || '';
         conditions.fields.push(upData);
         
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             data.error = error?1:0;
             data.data = results;
             if(param.ctag) data.ctag =  '/ctag/' + param.ctag;

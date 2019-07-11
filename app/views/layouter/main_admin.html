@@ -53,12 +53,13 @@
          * 跳转到指定的页面
          */
          function go(url,layer){
+            if(!url) return;
             var callback = null;
             if(typeof layer == 'function'){
                 callback = layer;
                 layer = '';
             }
-            url += (url.indexOf('?') === -1) ? '?oid=' + getItem("OID") : '&oid=' + getItem("OID");
+            url += (url.indexOf('?') + 1) ? '&oid=' + getItem("OID") : '?oid=' + getItem("OID") ;
             if(layer === "top") return location.href = url;
             $.ajax({
                 url : url,

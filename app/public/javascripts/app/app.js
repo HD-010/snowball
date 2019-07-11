@@ -332,7 +332,7 @@ var app = {
         app.remember();
         //异步请求
         
-        $(el).find('[data-async]').unbind('click').click(function(event) {
+        $(el).find('[data-async]').unbind('click').on('click',function(event) {
             app.asyncProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
                 try{eval((app['action'] + '(res);'));}catch(err){
@@ -342,12 +342,12 @@ var app = {
         });
 
         //同步请求
-        $(el).find('[data-sync]').unbind('click').click(function(event) {
+        $(el).find('[data-sync]').unbind('click').on('click',function(event) {
             app.syncProcess(event, this, function(res) {});
         });
 
         //form表单提交不跳转
-        $(el).find('[data-form-async]').submit(function(event) {
+        $(el).find('[data-form-async]').unbind('submit').on('submit',function(event) {
             event.preventDefault();
             app.formProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
@@ -570,7 +570,7 @@ var effect = {
      * @param {*} selecter 
      * html代码结构：
      *  <div class="col-sm-4 col-xs-4 监听的选择器">
-            <stlect data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
+            <select data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
         </div>
      */
     setSelect: function(selecter){
@@ -619,7 +619,118 @@ var effect = {
             }
             tab.find('.union-top').prop('checked',all);
         });
-    }
+    },
+
+    /**
+     * nestable结构输出
+     * 环境：jquery2 bootstrap3
+     * 需要在页面引入：<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+     * results object 代结构的数据
+     * error 0 | 1  是results的状态标识 0表示结构数据合法，1表示不合法
+     * appendid id选择器，指定输入的视图追加在appendid的容器内
+     * 
+     * results数据结构如：
+     * [
+            {
+                "val":"classify_init",
+                "name":"分类名称",
+                "children":[
+                    {"val":"classify_1562384668706","name":"分类名称"},
+                    {"val":"classify_1562384668490","name":"分类名称"}
+                ]
+            },
+            {
+                "val":"classify_1562384668258",
+                "name":"分类名称"
+            },
+            {
+                "val":"classify_1562384672690",
+                "name":"分类名称"
+            }
+        ]
+
+        完整案例：
+            var error = <%- error; %>;
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            };
+
+            //分类相关
+            $("#oper-classify").click(function(){
+                $("#oper-classify-nes").fadeToggle();
+            })
+
+            var results = <%- error ? false : results %>;
+            //初始化nestable数据结构
+            effect.nestable(results,error,'#oper-classify-nes');
+            
+            // activate Nestable for list 2
+            $('#nestable2').nestable({group: 1}).on('change', updateOutput);
+            $('.dd').nestable('collapseAll');   
+        
+            //以下为动作事件
+            //隐藏编辑按钮
+            $('.dd-edit').hide();
+            $(".dd-addon-handel").removeClass('hidden')
+
+            //设置被选择的值及效果
+            $('.handel-nestable2').click(function(e){
+                $("#oper-classify").text($(this).parent().find(".dd-val").html());
+                $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
+                $("#oper-classify-nes").fadeToggle();
+            });
+     */
+    nestable: function(results,error,appendid){
+        var nesId = $(".dd").eq(0).attr('id');
+        nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
+        var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
+        var nesBox = `<style>
+                        .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
+                        .dd-list>li .dd-addon-handel{position:absolute;right:0;top:0.6em;height:2em;border:0;left:5em;}
+                        .dd-list>li .dd-edit span{margin-right:0.5em;}
+                    </style>
+                    <div class="dd" id="`+ nesId +`">
+                        <ol class="dd-list"></ol>
+                    </div>`;
+        var initCode =  `<li class="dd-item" data-val="classify_init">
+                            <div class="dd-handle">
+                                <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                <span class="dd-val" style="font-weight:100;">分类名称</span>
+                            </div>
+                            <div class="dd-edit">
+                                <input class="hidden" type="text" name="spec" value="规格名称" />
+                                <span class="fa fa-edit"></span>
+                                <span class="fa fa-minus-square-o minus"></span>
+                                <span class="fa fa-plus-square-o plus"></span>
+                            </div>
+                            <div class="dd-addon-handel handel-`+ nesId +` hidden"></div>
+                        </li>`;
+        $("#nesTemCode").html('');
+        $('body').append(nesPreBox);
+        $(appendid).find('#' + nesId).remove();
+        $(appendid).append(nesBox);
+        if(error) return $("#" + nesId + " ol").html(initCode);
+        loadItem();
+        $("#" + nesId + " ol").html($("#nesTemCode").html());
+        /**
+         * 组织项目结构
+         **/
+        function loadItem(res,farther){
+            res = res || results;
+            res.forEach(function(item,index){
+                var code = $(initCode);
+                code.attr('data-val',item.val);
+                code.find('.dd-val').html(item.name);
+                code = code[0].outerHTML;
+                (!farther) ?
+                $("#nesTemCode").append(code) :
+                $("#nesTemCode").find('li[data-val="' + farther + '"]').append('<ol class="dd-list">' + code + '</ol>');
+                if(item.children) loadItem(item.children, item.val)
+            });
+        }
+    },
+
 
 }
 
@@ -997,5 +1108,25 @@ function unique(arr){
 			}
 		});
     })(jQuery);
-    
+
     /** ===============================md5 end============================== */
+
+    
+
+/**
+ * 扩展Array方法, 去除数组中空白数据
+ * 调用方法
+    var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
+    var b = a.notempty();
+    输出b    [1, 2, 4, 5, 7, 0, 8]
+ */
+function arrNotempty(array){
+    var arr = [];
+    array.map(function(val, index) {
+        //过滤规则为，不为空串、不为null、不为undefined，也可自行修改
+        if (val !== "" && val != undefined) {
+            arr.push(val);
+        }
+    });
+    return arr;
+}

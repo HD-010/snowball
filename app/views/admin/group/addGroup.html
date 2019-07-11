@@ -90,6 +90,7 @@
 </div>
 <script language="javascript">
     app.load(".base_add_group");
+    app.addonParams = {oid: getItem('OID')};
     function saveGroup(results){
         app.notice(results,function(){
             go(results.uri);
