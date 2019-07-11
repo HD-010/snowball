@@ -56,7 +56,7 @@ function TypeModel(){
         upData.siteurl = this.POST('siteurl') || '';
         conditions.fields.push(upData);
         
-        this.DB().log().set(conditions,function(error,results,fields){
+        this.DB().set(conditions,function(error,results,fields){
             data.error = error?1:0;
             data.data = results;
             if(param.ctag) data.ctag =  '/ctag/' + param.ctag;

@@ -111,6 +111,38 @@
 #nestable3 .dd-item>button:before {
     content: "\f067";
 }
+.replaceImg-label{
+    border:1px solid silver;
+    padding: 0;
+    margin : 0;
+    display: inline-table;
+    float: none;
+}
+.replaceImg-label label{
+    margin-top: -5px;
+}
+.replaceImg-label img{
+    width: 130px;
+    height: 130px;
+    overflow:hidden;
+    padding:0;
+    margin-top: 6px;
+    margin : 0;
+    float: left;
+}
+.replaceImg-label .fa-size{
+    font-size:40px;
+    padding:45px ;
+    padding-top:39px;
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    color:#fff;
+    visibility:hidden;
+}
+.fa-size :hover{
+    visibility:visible;
+}
+
 </style>
 
 <div class="container-fluid base">
@@ -135,7 +167,7 @@
             </div>
         </div>
         <div class="row form tab-content">
-            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" >
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='id' value="{{id}}" />
                 <input type="hidden" name='parenttypeid2' value="" />
@@ -186,7 +218,7 @@
                             <td>分类：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <% var classify = JSON.parse(results) %>
+                                    <% var classify = JSON.parse(results); %>
                                     <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
                                     <input type="hidden" name="classify" value="<%= data[0].classify %>"/>
                                 </div>
@@ -235,11 +267,19 @@
 
                         <tr>
                             <td>缩略图：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="litpic" placeholder="缩略图：" value="{{litpic}}"/>
+                            <td id="uris">
+                                <div class="form-group col-xs-8">
+                                    <div class="replaceImg-label">
+                                        <%- data[0].litpic ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="' + data[0].litpic + '" /></div> ' : ''; %>
+                                        
+                                        <label class="col-sm-2 control-label" id="img-add" for="replaceImg">
+                                            <img src="/img/plus.png" />
+                                        </label>
+                                    </div>
+                                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="uris"  value="' + data[0].litpic + '" />' : '' %>
                             </td>              
                         </tr>
                     </tbody>
@@ -253,8 +293,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <% //log("======addInfo======-0:",addInfo) %>
-                <% //log("======addList======-0:",addlist) %>
                 <!-- tab-1的表单由系统生成 -->
                 <table class="table hidden" id="tab-2">
                     <thead>
@@ -285,6 +323,8 @@
     </div>
 </div>
 
+
+
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
     //初始化nestbale
@@ -312,7 +352,7 @@
         $(".dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
-        $('.handel-nestable2').click(function(e){
+        $('.handel-nestable2').unbind('click').on('click',function(e){
             $("#oper-classify").text($(this).parent().find(".dd-val").html());
             $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
             $("#oper-classify-nes").fadeToggle();
@@ -323,7 +363,6 @@
             $("#oper-types-nes").fadeToggle();
         })
         var types = <%- error ? false : JSON.stringify(types) %>;
-        console.log("%%%%%%%%%%%%%%%:",types);
         //初始化nestable数据结构
         effect.nestable(types,error,'#oper-types-nes');
     
@@ -335,12 +374,12 @@
         $(".dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
-        $('.handel-nestable3').click(function(e){
+        $('.handel-nestable3').unbind('click').on('click',function(e){
             $("#oper-types").text($(this).parent().find(".dd-val").html());
             $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
             $("#oper-types-nes").fadeToggle();
         });
-    }
+    } 
 
 </script>
 
@@ -423,3 +462,57 @@
         app.notice(res);
     }
 </script>
+
+<script>
+    /**
+     * 图片上传处理器
+     * */
+    var imgIndex = 0;
+    function upProcess(data){
+        var info = {
+            error : 1,
+            message : "上传失败，请重新上传！"
+        };
+        if(data.state != 1) return app.notice(info);
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ imgIndex +`">
+            <span class="fa fa-close fa-size"></span>
+            <img src="/` + data.url + `" />
+            </div>`;
+            
+        $("#img-add").before($(addObj));
+        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="/'+ data.url +'" />'));
+        info.message = "恭喜您上传成功！";
+        app.notice(info);
+        imgIndex ++;
+
+        setEffect();
+    }
+    function setEffect(){
+        $(".img-handl").unbind('mouseover').on("mouseover",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'visible'
+            });
+        })
+        $(".img-handl").unbind('mouseout').on("mouseout",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'hidden'
+            });
+        })
+        //删除上传的图片
+        $(".img-handl").unbind('click').on("click",function(e){
+            var dataImg = $(this).attr('data-img');
+            $('[data-img='+ dataImg +']').remove();
+            var arr = dataImg.split('-');
+            var index = arr[arr.length - 1];
+            delete j[index];
+            j.length --;
+        })
+    } 
+    //效果初始化
+    setEffect();
+</script>
+
+<!-- 输出视图组件 -->
+<%- cropperView %>
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
