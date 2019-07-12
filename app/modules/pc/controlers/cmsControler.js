@@ -97,6 +97,43 @@ function cmsControler(){
         this.renderLayer(data);
     }
 
+    
+    /**
+     * 内容管理系统-首页-招标信息
+     */
+    this.information = function(){
+        var data = {error:0,title:"招标信息"};
+
+        //获取视图模块配置
+        data.viewModels = this.model('Template').pageModel();
+        log("this is data ",data);
+        this.renderLayer(data);
+    }
+
+     /**
+     * 内容管理系统-首页-招标公告
+     */
+    this.Notice = function(){
+        var data = {error:0,title:"招标公告"};
+
+        //获取视图模块配置
+        data.viewModels = this.model('Template').pageModel();
+        log("this is data ",data);
+        this.renderLayer(data);
+    }
+
+     /**
+     * 内容管理系统-首页-中标公告
+     */ 
+    this.WinningBid = function(){
+        var data = {error:0,title:"中标公告"};
+
+        //获取视图模块配置
+        data.viewModels = this.model('Template').pageModel();
+        log("this is data ",data);
+        this.renderLayer(data);
+    }
+
     /**
      * 内容管理系统-视频（内容）页
      */
