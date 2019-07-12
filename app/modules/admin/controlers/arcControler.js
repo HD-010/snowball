@@ -88,16 +88,31 @@ function arcControler(){
         var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
         var params = {ctag: ctag};
         var arc = this.model('Arc');
-        var addonTable = this.model('Component');
+        var ps = 2;
+        var data = {};
+        //查询栏目列表
+        var type = this.model('Type');
+        type.list(params,function(res){
+            if(res.error || !res.data.length) {
+                data.error = 1;
+                data.message = '获取栏目失败！';
+                return that.testRender(data);
+            }
+            data.type = res.data;
+            ps = that.testRender(data, ps);
+        });
+        
         //查询附加表的信息
+        var addonTable = this.model('Component');
         addonTable.list(params,function(res){
             if(res.error || !res.results.length) {
                 res.message = "查询表信息失败，请稍后重试";
-                return that.render(res);
+                return that.testRender(res);
             }
             params.addonTab = res.results[0].addtable;
             arc.lists(params, (res)=>{
-                that.render(res);
+                data = mergeObj([data,res]);
+                ps = that.testRender(data,ps);
             });
         });
     }
