@@ -38,7 +38,7 @@
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value="{{' + addlist[i] + '}}"> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value="{{' + addlist[i] + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -391,20 +391,20 @@
     });
 
     //初始化表单的值
-    var data = {
+    var recodData = {
             error: <%- error %>,
             data: <%- JSON.stringify(data[0]); %>
         }
+        console.log(recodData);
     DL({
         dev: 'on',
         id: "#add-infor",
-        packet: data,
+        packet: recodData,
         after: function(){
             //加载ueditor
             $("iframe").attr('src','/admin/arc/ueditor');
 
             $("iframe").load(function(){
-                
                 UE.frame = $("iframe").eq(0);
                 //读取UE内容
                 UE.contents = function(){
@@ -425,10 +425,10 @@
                 $('button[type="submit"]').mouseover(function(){
                     $("#ue-contents").val(UE.contents());
                 });
-
+                
                 var wt = setInterval(function(){
                     (typeof UE.time == 'number') ?  UE.time ++ : UE.time = 0;
-                    if(UE.time > 1) {
+                    if(UE.time > 4) {
                         app.notice({
                             error: 1,
                             message: 'UEditor 加载超时！'
@@ -438,7 +438,7 @@
                     if(!UE.frame[0].contentWindow.ue.body) return;
                     clearInterval(wt);
                     var field = UE.uediterFields[0];
-                    UE.frame[0].contentWindow.ue.setContent(data.data[field]); //将字段对应的值展示到ueditor中
+                    UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 
                 initNestable();
@@ -461,7 +461,10 @@
     $(".auto-checkbox").find('input').each(function(index,item){
         var keys = $(item).attr('data-key') ? $(item).attr('data-key').split('-'): [];
         var val = $(item).val();
-        if(keys.indexOf(val) + 1) $(item).parent().addClass('active');
+        if(keys.indexOf(val) + 1) {
+            $(item).prop("checked",true);
+            $(item).parent().addClass('active');
+        }
     });
 
     function save(res){
