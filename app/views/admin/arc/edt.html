@@ -457,7 +457,13 @@
     effect.setCheckbox(".auto-checkbox");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
-    
+    //补充效果
+    $(".auto-checkbox").find('input').each(function(index,item){
+        var keys = $(item).attr('data-key') ? $(item).attr('data-key').split('-'): [];
+        var val = $(item).val();
+        if(keys.indexOf(val) + 1) $(item).parent().addClass('active');
+    });
+
     function save(res){
         app.notice(res);
     }

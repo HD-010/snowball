@@ -519,7 +519,7 @@ var effect = {
             var temCode = '';
             for(var i=0; i < key.length; i ++){
                 var curCode = $(htmlCode);
-                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='checkbox']").prop('checked',true);
+                if(defVal.indexOf(key[i]) +1) curCode.find("input[type='checkbox']").parent().addClass('active');//.prop('checked',true);
                 curCode.find("input[type='checkbox']").val(key[i]);
                 curCode.find("input[type='checkbox']").after(val[i]);
                 
