@@ -19655,6 +19655,7 @@ UE.ui = baidu.editor.ui = {};
                     document.documentElement.style.overflow = this._bakHtmlOverflow;
                     document.body.style.overflow = this._bakBodyOverflow;
                     editor.iframe.parentNode.style.width = this._bakEditorContaninerWidth + 'px';
+
                     window.scrollTo(0, this._bakScrollTop);
                 }
                 if (browser.gecko && editor.body.contentEditable === 'true') {
@@ -19958,8 +19959,10 @@ UE.ui = baidu.editor.ui = {};
                         var styleWidth = holder.style.width;
                         if(/%$/.test(styleWidth)) {
                             opt.initialFrameWidth = styleWidth;
+                            opt.initialFrameHeight = 470;
+                           
                         }
-                    }
+                    } 
                     if (opt.initialFrameHeight) {
                         opt.minFrameHeight = opt.initialFrameHeight;
                     } else {

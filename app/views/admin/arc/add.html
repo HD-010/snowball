@@ -72,10 +72,10 @@
         uediter: function(index){
             return '<tr>' +
                     '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
-                    '<td>' +
-                        '<div class="col-sm-12 col-xs-12 ueditor-box">' +
+                    '<td style="margin: 0px;padding:0px;">' +
+                        '<div class="col-sm-12 col-xs-12 ueditor-box" style="padding: 0px;">' +
                             '<input type="hidden" id="ue-contents" name="uecontent" value="" />'+
-                            '<iframe src="/admin/arc/ueditor" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
+                            '<iframe src="/admin/arc/ueditor" id="iframeSon" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -503,6 +503,9 @@
             j.length --;
         })
     } 
+
+
+    
     //效果初始化
     setEffect();
 </script>
