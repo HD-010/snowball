@@ -108,7 +108,8 @@
     content: "\f067";
 }
 .replaceImg-label{
-    border:1px solid silver;
+    border:0;
+    width: 90%;
     padding: 0;
     margin : 0;
     display: inline-table;
@@ -127,15 +128,20 @@
     float: left;
 }
 .replaceImg-label .fa-size{
-    font-size:40px;
-    padding:45px ;
-    padding-top:39px;
+    font-size: 45px;
     position: absolute;
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    left: 0;
+    margin-left:15px;
+    text-align: center;
+    line-height: 130px;
     background: rgba(0,0,0,0.5);
-    color:#fff;
-    visibility:hidden;
+    color: #fff;
+    visibility: hidden;
 }
-.fa-size :hover{
+.replaceImg-label .fa-size :hover{
     visibility:visible;
 }
 </style>
@@ -356,6 +362,9 @@
         </div>
     </div>
 </div>
+<!-- 输出视图组件 -->
+<%- cropperView %>
+
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
     var error = <%- error; %>;
@@ -458,6 +467,8 @@
     }
 </script>
 
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
 <script>
     /**
      * 图片上传处理器
@@ -500,17 +511,17 @@
             var arr = dataImg.split('-');
             var index = arr[arr.length - 1];
             delete j[index];
-            j.length --;
+            if(j.length) j.length --;
+            setEffect()
         })
+
+        //控制添加按钮显示与隐藏
+        $(".replaceImg-label").children().hide();
+        $(".replaceImg-label").children().eq(0).show();
     } 
-
-
     
     //效果初始化
     setEffect();
 </script>
 
-<!-- 输出视图组件 -->
-<%- cropperView %>
-<!-- 输出视逻辑代码 -->
-<%- cropperAsync %>
+
