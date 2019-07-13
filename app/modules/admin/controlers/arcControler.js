@@ -140,6 +140,7 @@ function arcControler(){
                     return that.renderJson(res);
                 }
                 params.fieldset = res.results[0].fieldset;
+                params.listfields = res.results[0].listfields;
                 params.addtable = res.results[0].addtable;
                 arc.saveAddon(params,function(res){
                     that.renderJson(res)

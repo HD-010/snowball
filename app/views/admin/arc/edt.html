@@ -285,7 +285,7 @@
                                     <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
-                                <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="uris"  value="' + data[0].litpic + '" />' : '' %>
+                                <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="litpic"  value="' + data[0].litpic + '" />' : '' %>
                             </td>              
                         </tr>
                     </tbody>
@@ -498,7 +498,7 @@
             </div>`;
             
         $("#img-add").before($(addObj));
-        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="/'+ data.url +'" />'));
+        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="litpic"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
         imgIndex ++;

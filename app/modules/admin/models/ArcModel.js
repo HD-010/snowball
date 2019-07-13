@@ -68,7 +68,7 @@ function ArcModel(){
     this.saveAddon = function(params,callback){
         var utility = require('utility');
         var noVAlid = ['body'];     //定义的字段会被base64编码
-        var listfields = queryresultKeyValue(params.fieldset,'field');
+        var listfields = params.listfields.split(',');
         
         var conditions = {
             table: params.addtable,
@@ -76,27 +76,25 @@ function ArcModel(){
             where : []
         }
         var record = {};
+        var safeField;    //是还安全字段
+
         for(var i in listfields){
             var field = "";
-            var saveField = false;      //是还安全字段
             field = listfields[i];
-            saveField = noVAlid.indexOf(field) + 1;
-            if(saveField) field =  '!' + listfields[i];
-            field = this.POST(field) || "";
-            if(saveField) field = utility.base64encode(field);
+            safeField = noVAlid.indexOf(field) + 1;
+            field = safeField ? this.POST('!' + field) : this.POST(field);
+            field = field || array2value(params.fieldset, 'field', field, 'default');
+            if(safeField) field = utility.base64encode(field);
             if(typeof field == 'object') field = field.join('-');
             record[listfields[i]] = field ? field : 
             array2value(params.fieldset,'field',listfields[i],'default');
         }
+
         record.aid = params.aid;
-        var uris = this.POST('uris');
-        uris = (typeof uris == 'object') ? uris[0] : uris;
-        record.litpic = uris || "";
         record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);
         var aid = this.POST('id');
         if(aid) conditions.where.push('aid=' + aid);
-        
         this.DB().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
