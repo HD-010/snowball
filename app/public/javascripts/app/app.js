@@ -222,10 +222,12 @@ var app = {
             $("#" + notice).remove();
             if(typeof callback === 'function') return callback();
             if(obj.go) history.go(obj.go);
-            obj.uri += (obj.uri && (obj.uri.indexOf('?')+1)) ? 
-            "?" + app.serializeParams() : 
-            "&" + app.serializeParams();
-            if(obj.uri) location.href = obj.uri;
+            if(obj.uri){
+                obj.uri += !(obj.uri.indexOf('?')+1) ? 
+                "?" + app.serializeParams() : 
+                "&" + app.serializeParams();
+                location.href = obj.uri;
+            }
             if(!obj.uri && ('uri' in obj)) location.reload();
         }, 2000);
     },

@@ -322,7 +322,8 @@
         </div>
     </div>
 </div>
-
+<!-- 输出视图组件 -->
+<%- cropperView %>
 
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
@@ -474,6 +475,7 @@
 
 <script>
     alert($(window).width());
+    alert($(".tailoring-content").outerWidth())
     /**
      * 图片上传处理器
      * */
@@ -522,7 +524,6 @@
     setEffect();
 </script>
 
-<!-- 输出视图组件 -->
-<%- cropperView %>
+
 <!-- 输出视逻辑代码 -->
 <%- cropperAsync %>
