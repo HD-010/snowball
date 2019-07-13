@@ -80,7 +80,7 @@
                             </td> 
                             <td>{{id}}</td>   
                             <td><img src="{{litpic}}"/>{{title}}</td>
-                            <td>{{- return array2value(type,'id',typeid,'typename'); }}</td>   
+                            <td>{{- return array2value(typePage,'id',typeid,'typename'); }}</td>   
                             <td>{{writer}}</td> 
                             <td>{{senddate}}</td>                           
                             <td class="project-actions">
@@ -107,7 +107,7 @@
         </div>        
     </div>
 </div>
-<script>var type = <%- JSON.stringify(type) %></script>
+<script>var typePage = <%- JSON.stringify(type) %></script>
 <script>
     DL({
         dev: 'on',
@@ -146,7 +146,6 @@
     })
      
 </script>
-
 
 
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>

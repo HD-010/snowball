@@ -222,7 +222,7 @@ var app = {
             $("#" + notice).remove();
             if(typeof callback === 'function') return callback();
             if(obj.go) history.go(obj.go);
-            obj.uri += (obj.uri.indexOf('?') === -1) ? 
+            obj.uri += (obj.uri && (obj.uri.indexOf('?')+1)) ? 
             "?" + app.serializeParams() : 
             "&" + app.serializeParams();
             if(obj.uri) location.href = obj.uri;

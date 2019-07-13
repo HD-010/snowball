@@ -54,9 +54,7 @@ function ArcModel(){
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-
         this.DB().set(conditions,function(error,results,fields){
-            
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);

@@ -130,14 +130,14 @@ function arcControler(){
         arc.saveHives({},function(res){
             if(res.error) {
                 res.message = "数据写入失败，请稍后重试";
-                return that.render(res);
+                return that.renderJson(res);
             }
             params.aid = res.results.insertId;
             //查询附加表字段信息
             addonTable.list(params,function(res){
                 if(res.error) {
                     res.message = "查询表信息失败，请稍后重试";
-                    return that.render(res);
+                    return that.renderJson(res);
                 }
                 params.fieldset = res.results[0].fieldset;
                 params.addtable = res.results[0].addtable;
