@@ -1,25 +1,17 @@
 <%
     var formCode = {
         get: function(index){
-            var type = array2value(addInfo,'field',addlist[i],'type');
-            var codeType = {
-                _text: 'input',
-                _int: 'input',
-                _datetime: 'input',
-                _checkbox: 'inputCheckbox',
-                _stepselect: 'select',
-                _htmltext: 'uediter',
-            };
-            if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
-            return "formCode中不存在" + codeType['_'+type] + "组件";
+            var type = addoninfos[index].inputtype;
+            if(type in formCode) return formCode[type](index);
+            return "formCode中不存在" + type + "组件";
         },
 
         input: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -28,13 +20,13 @@
             return str;
         },
 
-        inputCheckbox: function(index){
+        checkbox: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -42,13 +34,13 @@
             return str;
         },
 
-        inputRadio: function(index){
+        radio: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="radio" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -58,10 +50,10 @@
 
         select: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
-                            '<select class="form-control" name="' + addlist[i] + '" '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value=" "></select>' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ this.defNull(addoninfos[index].attr) + ' value=" "></select>' +
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -71,10 +63,10 @@
 
         uediter: function(index){
             return '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td style="margin: 0px;padding:0px;">' +
                         '<div class="col-sm-12 col-xs-12 ueditor-box" style="padding: 0px;">' +
-                            '<input type="hidden" id="ue-contents" name="uecontent" value="" />'+
+                            '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
                             '<iframe src="/admin/arc/ueditor" id="iframeSon" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
                         '</div>' +
                     '</td>' +           
@@ -288,8 +280,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <% //log("======addInfo======-0:",addInfo) %>
-                <% //log("======addList======-0:",addlist) %>
                 <!-- tab-1的表单由系统生成 -->
                 <table class="table hidden" id="tab-2">
                     <thead>
@@ -299,7 +289,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(var i in addlist){ %>
+                        <% 
+                        for(var i in addoninfos){ 
+                            if(!addoninfos[i].fieldget) continue;
+                        %>
                             <%- formCode.get(i); %>
                         <% } %>
 

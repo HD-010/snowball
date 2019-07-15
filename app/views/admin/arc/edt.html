@@ -4,26 +4,17 @@
         uediterFields: [],
 
         get: function(index){
-            var type = array2value(addInfo,'field',addlist[i],'type');
-            var codeType = {
-                _text: 'input',
-                _int: 'input',
-                _datetime: 'input',
-                _checkbox: 'inputCheckbox',
-                _stepselect: 'select',
-                _htmltext: 'uediter',
-            };
-            if('_'+type === '_htmltext') formCode.uediterFields.push(addlist[i]);
-            if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
-            return "formCode中不存在" + codeType['_'+type] + "组件";
+            var type = addoninfos[index].inputtype;
+            if(type in formCode) return formCode[type](index);
+            return "formCode中不存在" + type + "组件";
         },
 
         input: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -32,13 +23,13 @@
             return str;
         },
 
-        inputCheckbox: function(index){
+        checkbox: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value="{{' + addlist[i] + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value="{{' + addoninfos[index].field + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -46,13 +37,13 @@
             return str;
         },
 
-        inputRadio: function(index){
+        radio: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="radio" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -62,10 +53,10 @@
 
         select: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
-                            '<select class="form-control" name="' + addlist[i] + '" '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"></select>' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ this.defNull(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"></select>' +
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -74,12 +65,13 @@
         },
 
         uediter: function(index){
+            formCode.uediterFields.push(addoninfos[index].field);
             return '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-12 col-xs-12 ueditor-box">' +
-                            '<input type="hidden" id="ue-contents" name="' + addlist[i] + '" value="" />'+
-                            '<iframe src="" name="iframe-' + addlist[i] + '" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
+                            '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
+                            '<iframe src="" name="iframe-' + addoninfos[index].field + '" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -308,7 +300,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(var i in addlist){ %>
+                        <% 
+                        for(var i in addoninfos){ 
+                            if(!addoninfos[i].fieldget) continue;
+                        %>
                             <%- formCode.get(i); %>
                         <% } %>
                         <script> var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
@@ -413,6 +408,7 @@
 
             $("iframe").load(function(){
                 UE.frame = $("iframe").eq(0);
+                console.log("==================:UE::",UE);
                 //读取UE内容
                 UE.contents = function(){
                     var ue = UE.frame[0].contentWindow.ue;
@@ -445,6 +441,7 @@
                     if(!UE.frame[0].contentWindow.ue.body) return;
                     clearInterval(wt);
                     var field = UE.uediterFields[0];
+                    console.log("===========================field",UE);
                     UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 

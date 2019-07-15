@@ -3,7 +3,7 @@ function ArcModel(){
      * 查询（文章）列表
      */
     this.lists = function(params,callback){
-        var noVAlid = ['body'];     //定义的字段会被base64编码
+        var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['youbang_archives'],
             fields: ['youbang_archives.*', params.addonTab + '.*'],
@@ -67,29 +67,24 @@ function ArcModel(){
      */
     this.saveAddon = function(params,callback){
         var utility = require('utility');
-        var noVAlid = ['body'];     //定义的字段会被base64编码
-        var listfields = params.listfields.split(',');
-        
+        var addoninfos =  params.addoninfos;
         var conditions = {
             table: params.addtable,
             fields: [],
             where : []
         }
         var record = {};
-        var safeField;    //是还安全字段
-
-        for(var i in listfields){
+        for(var i in addoninfos){
+            if(!addoninfos[i].fieldset) continue;
             var field = "";
-            field = listfields[i];
-            safeField = noVAlid.indexOf(field) + 1;
-            field = safeField ? this.POST('!' + field) : this.POST(field);
-            field = field || array2value(params.fieldset, 'field', field, 'default');
-            if(safeField) field = utility.base64encode(field);
-            if(typeof field == 'object') field = field.join('-');
-            record[listfields[i]] = field ? field : 
-            array2value(params.fieldset,'field',listfields[i],'default');
+            field = addoninfos[i].field;
+            field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
+            field = field || array2value(addoninfos, 'field', field, 'default');
+            if(addoninfos[i].novaild) field = utility.base64encode(field);
+            if(field.constructor.name == 'Array') field = field.join('-');
+            record[addoninfos[i].field] = field ? field : 
+            array2value(addoninfos,'field',addoninfos[i].field,'default');
         }
-
         record.aid = params.aid;
         record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);

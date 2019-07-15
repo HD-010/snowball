@@ -45,11 +45,9 @@ function arcControler(){
                 return that.testRender(res,ps);
             }
             
-            data.addInfo = res.results[0].fieldset;  //附加表字段信息
-            data.addlist = res.results[0].listfields.split(',');
-
-             // 获取前端逻辑处理代码
-             data.cropperView = that.plug('Uploads',{
+            data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
+            // 获取前端逻辑处理代码
+            data.cropperView = that.plug('Uploads',{
                 accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
                 cropper_css    : '/stylesheets/lib/cropper.min.css',
                 imgCropping_css: '/stylesheets/lib/ImgCropping.css',
@@ -139,8 +137,7 @@ function arcControler(){
                     res.message = "查询表信息失败，请稍后重试";
                     return that.renderJson(res);
                 }
-                params.fieldset = res.results[0].fieldset;
-                params.listfields = res.results[0].listfields;
+                params.addoninfos = res.results[0].addoninfos;
                 params.addtable = res.results[0].addtable;
                 arc.saveAddon(params,function(res){
                     that.renderJson(res)
@@ -244,8 +241,9 @@ function arcControler(){
                 res.message = "参数错误，请稍后重试";
                 return that.render(res);
             }
-            data.addInfo = res.results[0].fieldset;  //附加表字段信息
-            data.addlist = res.results[0].listfields.split(',');
+
+            data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
+            params.addoninfos = res.results[0].addoninfos;
             arc.lists(params,(res)=>{
                 if(res.error) {
                     res.message = "查询数据失败，请稍后重试";
