@@ -408,7 +408,6 @@
 
             $("iframe").load(function(){
                 UE.frame = $("iframe").eq(0);
-                console.log("==================:UE::",UE);
                 //读取UE内容
                 UE.contents = function(){
                     var ue = UE.frame[0].contentWindow.ue;
@@ -441,7 +440,6 @@
                     if(!UE.frame[0].contentWindow.ue.body) return;
                     clearInterval(wt);
                     var field = UE.uediterFields[0];
-                    console.log("===========================field",UE);
                     UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 
