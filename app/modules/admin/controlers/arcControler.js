@@ -21,7 +21,7 @@ function arcControler(){
         type.list(params,function(res){
             if(res.error){
                 res.message = "查询栏目信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res,'/err404');
             }
             data.types = treeStrcut(res.data); 
             ps = that.testRender(data,ps);
@@ -34,17 +34,20 @@ function arcControler(){
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
+            if(res.error){
+                res.message = "查询分类信息失败，请稍后重试";
+                return that.render(res,'/err404');
+            }
             data = mergeObj([data,res]);
             ps = that.testRender(data,ps);
         });
-
+        
         //查询附加表字段信息
         addonTable.list(params,function(res){
             if(res.error) {
                 res.message = "查询表信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res,'/err404');
             }
-            
             data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
             // 获取前端逻辑处理代码
             data.cropperView = that.plug('Uploads',{
