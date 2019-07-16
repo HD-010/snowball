@@ -257,14 +257,13 @@
 
                         <tr>
                             <td>缩略图：</td>
-                            <td id="uris">
+                            <td class="pic-box">
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">
-                                        <label class="col-sm-2 control-label" id="img-add" for="replaceImg">
+                                        <label class="col-sm-2 control-label img-add" for="replaceImg">
                                             <img src="/img/plus.png" />
                                         </label>
                                     </div>
-                                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
@@ -351,6 +350,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
             </form>
         </div>
     </div>
@@ -467,23 +467,33 @@
     /**
      * 图片上传处理器
      * */
-    var imgIndex = 0;
+     var uploader = {
+        index: 0,
+        picBox: ''
+    }
+    
+    //定位picBox
+    $("label.img-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent();
+    });
+
+    //图片上传回调处理
     function upProcess(data){
         var info = {
             error : 1,
             message : "上传失败，请重新上传！"
         };
         if(data.state != 1) return app.notice(info);
-        var addObj =   `<div class="img-handl" data-img="img-add-`+ imgIndex +`">
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
             <span class="fa fa-close fa-size"></span>
             <img src="/` + data.url + `" />
             </div>`;
             
-        $("#img-add").before($(addObj));
-        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="litpic"  value="/'+ data.url +'" />'));
+        $(uploader.picBox).find(".img-add").before($(addObj));
+        $(uploader.picBox).append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="litpic"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
-        imgIndex ++;
+        uploader.index ++;
     
         setEffect();
     }
