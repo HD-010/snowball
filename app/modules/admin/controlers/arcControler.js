@@ -14,7 +14,8 @@ function arcControler(){
         var params = {};
         var process = this.model("DataProcess");
         var addonTable = this.model('Component');
-
+        data.ctag = ctag;
+        
         //获取当前组件的栏目列表
         params.nid = ctag;
         var type = this.model('Type');

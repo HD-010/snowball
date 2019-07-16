@@ -51,7 +51,7 @@ function ClassifyModel(){
             if(!error){
                 data.error = 0;
                 data.message = '操作成功，正在刷新';
-                data.uri = '/admin/classify/index/ctag/infos';
+                data.uri = '/admin/classify/index/ctag/' + params.nid;
             }
             data.results = results;
             callback(data);

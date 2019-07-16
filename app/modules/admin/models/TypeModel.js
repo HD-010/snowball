@@ -14,11 +14,11 @@ function TypeModel(){
         if(params.id) conditions.where.push("id=" + params.id);
         if(params.nid) conditions.where.push("componentid=(select id from youbang_components where nid='" + params.nid + "')");    //查看组件id
         
-        this.DB().get(conditions,function(error,res){
+        this.DB().log().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
             if(params.addTop) res.push({id: 0,typename: '项级栏目'});
             data.data = res;
-
+            
             return callback(data);
         });
     }
@@ -32,8 +32,10 @@ function TypeModel(){
             error: 1,
             message:"参数错误"
         };
-        if(((param.tag === 'edt') && (param.atid)) &&
-        (param.tag === 'add')) return callback(data);
+        if(((param.tag == 'edt') && (!param.atid)) ||
+        (param.tag != 'add')) return callback(data);
+        var componentid = this.POST('cmid');
+        if(!componentid) return callback(data);
 
        var conditions = {
             table:'youbang_arctype',
@@ -54,6 +56,7 @@ function TypeModel(){
         upData.description = this.POST('description') || '';
         upData.sitepath = this.POST('sitepath') || '';
         upData.siteurl = this.POST('siteurl') || '';
+        upData.componentid = componentid;
         conditions.fields.push(upData);
         
         this.DB().set(conditions,function(error,results,fields){

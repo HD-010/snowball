@@ -159,7 +159,7 @@
             </div>
         </div>
         <div class="row form tab-content">
-            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
@@ -371,7 +371,7 @@
         $("#oper-classify-nes").fadeToggle();
     })
 
-    var results = <%- error ? false : results %>;
+    var results = <%- results.length ? results : false %> || [];
     //初始化nestable数据结构
     effect.nestable(results,error,'#oper-classify-nes');
     
@@ -452,8 +452,9 @@
     effect.setCheckbox(".auto-checkbox");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
+    
     function save(res){
-        if(!res.error) res.uri = '/admin/arc/show/ctag/infos' 
+        if(!res.error) res.uri = '/admin/arc/show/ctag/<%= ctag %>';
         app.notice(res,function(){
             go(res.uri);
         });

@@ -21,20 +21,23 @@ function typeControler(){
         var params = {};
         params.atid = that.GET('atid');
         params.addTop = true;
-        params.nid = this.param("ctag");
-        var type = that.model('Type');
-        //所有栏目信息或当前组件下的栏目信息
-        type.list(params,(res)=>{
-            data.error = res.error;
-            data.allType = res.data;
-            end(data);
-        })
-        
-        function end(data){
-            ps--;
-            if(data.error) return that.render(data,'/notice');
-            if(!ps) return that.render(data);
-        }
+        params.nid = params.ctag = this.param("ctag");
+        //获取组件id
+        var component = that.model('Component');
+        component.list(params,(res)=>{
+            if(res.error || !res.results.length) {
+                res.error = 1;
+                return that.render(res, '/notice');
+            }
+            data.componentId = res.results[0].id;
+            var type = that.model('Type');
+            //所有栏目信息或当前组件下的栏目信息
+            type.list(params,(res)=>{
+                data.error = res.error;
+                data.allType = res.data;
+                that.render(data);
+            })
+        });
     }
 
     /**

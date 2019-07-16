@@ -94,7 +94,7 @@ function ArcModel(){
             var data = {};
             data.error = error ? 1 : 0;
             data.message = "保存成功！";
-            data.results = results
+            data.results = results;
             callback(data);
         });
     }
