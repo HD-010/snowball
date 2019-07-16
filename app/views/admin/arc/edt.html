@@ -77,7 +77,23 @@
                 '</tr>';
         },
 
-
+        uploader: function(index){
+            return '<tr>' + 
+                    '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
+                    '<td class="pic-box">' + 
+                        '<div class="form-group col-xs-8">' + 
+                            '<div class="replaceImg-label">' + 
+                                '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="" /></div>' + 
+                                '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
+                                    '<img src="/img/plus.png" />' + 
+                                '</label>' + 
+                            '</div>' + 
+                        '</div>' + 
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
+                        '<input type="hidden" data-img="img-add-0" name="' + addoninfos[index].field + '"  value="" />' +
+                    '</td>' +            
+                '</tr>';
+        },
 
         defNull: function(d){
             return d || '';
