@@ -326,6 +326,20 @@ youbang_addoncommodities 表字自动填充字段配置信息:
     "attr": "data-comment=标题长度最多15个字符" 
   },
   {
+    "field": "litpic",			
+    "itemname": "缩略图",			
+    "type": "text",					
+	"maxlength": 0,				
+    "isnull": true,					
+	"islist": 0,					
+	"default": '',					
+	"fieldget": 0,					
+	"fieldset": 1,					
+	"novaild": 1,					
+	"inputtype":"input",			
+    "attr": "data-comment=缩略图，限1张" 
+  },
+  {
     "field": "mainpic",			
     "itemname": "商品主图",			
     "type": "text",					

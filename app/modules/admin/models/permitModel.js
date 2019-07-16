@@ -199,7 +199,7 @@ function permitModel(){
         var groupId = data.base64[0].groupId;
         var userId = data.base64[0].userId;
         var sql  = "delete from youbang_sys_permit where userId = "+userId+" and groupId = "+groupId;
-        that.DB().log().query(sql,function(error,res){
+        that.DB().query(sql,function(error,res){
             var condition = {
                 table:["youbang_sys_permit"],                                 //查询的表名
                 fields:data.base64           //被查询的字段名称（别名在此指定）                       

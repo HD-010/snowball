@@ -59,7 +59,7 @@ function SysModel(){
          
         };
         if(data.id) condition.where.push(" id = "+data.id);
-        that.DB().log().set(condition,function(error,results){
+        that.DB().set(condition,function(error,results){
             if(results.insertId){
                if(data.id){
                     var obj={
@@ -151,7 +151,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"上传设置修改成功!",
@@ -172,7 +172,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"缓存修改成功!",
@@ -193,7 +193,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"地图修改成功!",
@@ -214,7 +214,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"logo修改成功!",
@@ -236,7 +236,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"验证码修改成功!",
@@ -258,7 +258,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"验证码修改成功!",
@@ -279,7 +279,7 @@ function SysModel(){
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
         var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
-        that.DB().log().query(sql,function(error,results){
+        that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
                     message:"基本设置修改成功!",

@@ -203,7 +203,7 @@ function arcControler(){
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
         var ps = 3;         
-        var data = {}
+        var data = {ctag: ctag};
         var params = {};
         var arc = this.model("Arc");
         var process = this.model("DataProcess");

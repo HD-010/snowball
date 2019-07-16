@@ -165,7 +165,7 @@
             </div>
         </div>
         <div class="row form tab-content">
-            <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/infos" method="post" novalidate="novalidate">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='id' value="{{id}}" />
                 <input type="hidden" name='parenttypeid2' value="" />
