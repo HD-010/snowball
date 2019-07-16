@@ -4,11 +4,14 @@ function typeControler(){
     //展示所有栏目
     this.index = function(){
         var params = {};
-        params.nid = this.param("ctag");
+        var ctag = this.param("ctag");
+        var data = {ctag: ctag};
+        params.nid = ctag
         var type = that.model("Type");
         //获取栏目列表
         type.list(params,(res)=>{
-            that.render(res)
+            data = mergeObj([data,res]);
+            that.render(data)
         });
     }
 
