@@ -31,7 +31,7 @@ function ArcModel(){
         var data = {error: 1, message: '请填完整必填项！'};
         var classify = this.POST('classify');
         if(!classify) return callback(data);
-        var uris = this.POST('uris');
+        var litpic = this.POST('litpic');
         uris = (typeof uris == 'object') ? uris[0] : uris;
         var conditions = {
             table:'youbang_archives',
@@ -50,7 +50,7 @@ function ArcModel(){
         record.keywords = this.POST('keywords') || '';
         record.description = this.POST('description') || '';
         record.weight = this.POST('weight') || 0;
-        record.litpic = uris || '';
+        record.litpic = litpic || '';
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);

@@ -519,7 +519,7 @@
     
     //定位picBox
     $("label.img-add").unbind('click').on('click',function(){
-        uploader.picBox = $(this).parentsUntil('.pic-box').parent();
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
     });
 
     //图片上传回调处理
