@@ -9,8 +9,9 @@
 	"default": 0,					//字段默认值
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
+	"limit": 4,						//限制图片上传的张数
 	"novaild": 1,					//如果为true，对字段不需要特殊字符过滤
-	"inputtype":"input",			//输入框类型 input|inputCheckbox|inputRadio|select|textarea|uediter
+	"inputtype":"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader
     "attr": " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
   },
 
@@ -335,7 +336,7 @@ youbang_addoncommodities 表字自动填充字段配置信息:
 	"default": '',					
 	"fieldget": 0,					
 	"fieldset": 1,					
-	"novaild": 1,					
+	"novaild": 0,					
 	"inputtype":"input",			
     "attr": "data-comment=缩略图，限1张" 
   },
@@ -350,8 +351,19 @@ youbang_addoncommodities 表字自动填充字段配置信息:
 	"fieldget": 1,					
 	"fieldset": 1,					
 	"novaild": 0,					
-	"inputtype":"uploder",			
+	"inputtype":"uploader",	
+	"limit": 5,
     "attr": "data-comment=端口主图，最多5张" 
+  },
+  {
+    "field": "spec",			
+    "itemname": "商品规格",			
+    "maxlength": 0,				
+    "fieldget": 1,					
+	"fieldset": 0,					
+	"novaild": 0,					
+	"inputtype":"spec",	
+	"attr": "data-comment=填写商品分类" 
   },
   {
     "field": "body",			
@@ -366,5 +378,5 @@ youbang_addoncommodities 表字自动填充字段配置信息:
 	"novaild": 1,					
 	"inputtype":"uediter",			
     "attr": "data-comment=端口详情内容" 
-  },
+  }
 ]

@@ -630,7 +630,7 @@ var effect = {
      * results object 代结构的数据
      * error 0 | 1  是results的状态标识 0表示结构数据合法，1表示不合法
      * appendid id选择器，指定输入的视图追加在appendid的容器内
-     * 
+     * initElem 初始化的nestable id 如：nestable-spec， 可为空
      * results数据结构如：
      * [
             {
@@ -683,9 +683,12 @@ var effect = {
                 $("#oper-classify-nes").fadeToggle();
             });
      */
-    nestable: function(results,error,appendid){
-        var nesId = $(".dd").eq(0).attr('id');
-        nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
+    nestable: function(results,error,appendid,initElem){
+        var nesId = initElem;
+        if(!initElem){
+            nesId = $(".dd").eq(0).attr('id');
+            nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
+        }
         var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
         var nesBox = `<style>
                         .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
