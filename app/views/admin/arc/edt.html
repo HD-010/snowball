@@ -77,20 +77,26 @@
                 '</tr>';
         },
 
+        /**
+        *   参数说明：
+        *   data-limit: 限制图片上传的张数
+        **/
         uploader: function(index){
+            var picboxCode = '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="" /></div>';
+            var inputCode = '<input type="hidden" data-img="img-add-0" name="' + addoninfos[index].field + '"  value="" />' ;
             return '<tr>' + 
                     '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
-                    '<td class="pic-box">' + 
+                    '<td class="pic-box" data-limit="5">' + 
                         '<div class="form-group col-xs-8">' + 
                             '<div class="replaceImg-label">' + 
-                                '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="" /></div>' + 
+                                 + 
                                 '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
                                     '<img src="/img/plus.png" />' + 
                                 '</label>' + 
                             '</div>' + 
                         '</div>' + 
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
-                        '<input type="hidden" data-img="img-add-0" name="' + addoninfos[index].field + '"  value="" />' +
+                        +
                     '</td>' +            
                 '</tr>';
         },
@@ -551,8 +557,11 @@
             setEffect()
         })
         //控制添加按钮显示与隐藏
-        $(".replaceImg-label").children().hide();
-        $(".replaceImg-label").children().eq(0).show();
+        if(uploader.picBox){
+            var limit = uploader.picBox.attr('data-limit');//设置显示张数
+            uploader.picBox.find(".replaceImg-label").children().hide();
+            uploader.picBox.find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        }
 
     } 
     //效果初始化
