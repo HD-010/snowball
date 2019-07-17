@@ -92,20 +92,20 @@
                 inputs += '<input type="hidden" data-img="'+ imgTag +'" name="' + addoninfos[index].field + '"  value="'+ mainpic[i] +'" />' ;
             }
             return '<tr>' + 
-                    '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
-                    '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
-                        '<div class="form-group col-xs-8">' + 
-                            '<div class="replaceImg-label">' + 
-                                pics + 
-                                '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
-                                    '<img src="/img/plus.png" />' + 
-                                '</label>' + 
-                            '</div>' + 
+                '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
+                '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
+                    '<div class="form-group col-xs-8">' + 
+                        '<div class="replaceImg-label">' + 
+                            pics + 
+                            '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
+                                '<img src="/img/plus.png" />' + 
+                            '</label>' + 
                         '</div>' + 
-                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
-                        inputs +
-                    '</td>' +            
-                '</tr>';
+                    '</div>' + 
+                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
+                    inputs +
+                '</td>' +            
+            '</tr>';
         },
 
         defNull: function(d){
@@ -306,7 +306,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
                                 <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="litpic"  value="' + data[0].litpic + '" />' : '' %>
                             </td>              
                         </tr>
