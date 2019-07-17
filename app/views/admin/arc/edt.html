@@ -80,23 +80,30 @@
         /**
         *   参数说明：
         *   data-limit: 限制图片上传的张数
+        *   data-field: 字段名称，input的name值
         **/
         uploader: function(index){
-            var picboxCode = '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="" /></div>';
-            var inputCode = '<input type="hidden" data-img="img-add-0" name="' + addoninfos[index].field + '"  value="" />' ;
+            var mainpic = data[0][addoninfos[index].field];
+            mainpic = mainpic ? mainpic.split('-') : [];
+            var pics = inputs = imgTag = '';
+            for(var i = 0; i < mainpic.length; i ++){
+                imgTag = 'data-img-' + addoninfos[index].field + '-' + i;
+                pics += '<div class="img-handl" data-img="'+ imgTag +'"><span class="fa fa-close fa-size"></span><img src="'+ mainpic[i] +'" /></div>';
+                inputs += '<input type="hidden" data-img="'+ imgTag +'" name="' + addoninfos[index].field + '"  value="'+ mainpic[i] +'" />' ;
+            }
             return '<tr>' + 
                     '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
-                    '<td class="pic-box" data-limit="5">' + 
+                    '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
                         '<div class="form-group col-xs-8">' + 
                             '<div class="replaceImg-label">' + 
-                                 + 
+                                pics + 
                                 '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
                                     '<img src="/img/plus.png" />' + 
                                 '</label>' + 
                             '</div>' + 
                         '</div>' + 
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
-                        +
+                        inputs +
                     '</td>' +            
                 '</tr>';
         },
@@ -289,7 +296,7 @@
 
                         <tr>
                             <td>缩略图：</td>
-                            <td class="pic-box">
+                            <td class="pic-box" data-limit="1" data-field='litpic'>
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">
                                         <%- data[0].litpic ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="' + data[0].litpic + '" /></div> ' : ''; %>
@@ -528,7 +535,7 @@
             </div>`;
             
         uploader.picBox.find(".img-add").before($(addObj));
-        uploader.picBox.append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="litpic"  value="/'+ data.url +'" />'));
+        uploader.picBox.append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
         uploader.index ++;
@@ -557,11 +564,12 @@
             setEffect()
         })
         //控制添加按钮显示与隐藏
-        if(uploader.picBox){
-            var limit = uploader.picBox.attr('data-limit');//设置显示张数
-            uploader.picBox.find(".replaceImg-label").children().hide();
-            uploader.picBox.find(".replaceImg-label").children(":lt(" + limit + ")").show();
-        }
+        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+        $(picBox).each(function(index,item){
+            var limit = $(item).attr('data-limit');//设置显示张数
+            $(item).find(".replaceImg-label").children().hide();
+            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        });
 
     } 
     //效果初始化
