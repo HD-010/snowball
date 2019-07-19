@@ -32,7 +32,6 @@ function ArcModel(){
         var classify = this.POST('classify');
         if(!classify) return callback(data);
         var litpic = this.POST('litpic');
-        uris = (typeof uris == 'object') ? uris[0] : uris;
         var conditions = {
             table:'youbang_archives',
             where:[],

@@ -726,6 +726,7 @@ var effect = {
             res.forEach(function(item,index){
                 var code = $(initCode);
                 code.attr('data-val',item.val);
+                code.attr('data-name',item.name);
                 code.find('.dd-val').html(item.name);
                 code = code[0].outerHTML;
                 (!farther) ?

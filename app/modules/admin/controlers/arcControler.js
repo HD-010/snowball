@@ -127,6 +127,9 @@ function arcControler(){
         var arc = this.model("Arc");
         var addonTable = this.model('Component');
         var params = {};
+        var data = {error: 1, message: '参数错误'};
+        var ps = 1;
+        var utility = require('utility');
         params.ctag = ctag;
         //保存数据到主表
         arc.saveHives({},function(res){
@@ -144,8 +147,23 @@ function arcControler(){
                 params.addoninfos = res.results[0].addoninfos;
                 params.addtable = res.results[0].addtable;
                 arc.saveAddon(params,function(res){
-                    that.renderJson(res)
+                    data = mergeObj([data,res]);
+                    ps = that.testRenderJson(data,ps)
                 });
+
+                //当usespec参数为真，表示需要保存商品规格数据
+                if(that.POST('usespec')){
+                    params.specname = JSON.parse(decodeURI(utility.base64decode(that.POST('specname'))));
+                    params.specitem = JSON.parse(decodeURI(utility.base64decode(that.POST('specitem'))));
+                    params.specoption = JSON.parse(decodeURI(utility.base64decode(that.POST('specoption'))));
+                    if(!params.specname || !params.specitem || !params.specoption) return that.renderJson(data,ps);
+                    ps ++;
+                    var commodity = that.model("Commodity");
+                    commodity.specSave(params,(res)=>{
+                        ps = that.testRenderJson(res,ps)
+                    });
+                }
+
             });
 
         });
