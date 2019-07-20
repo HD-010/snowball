@@ -684,6 +684,8 @@ var effect = {
             });
      */
     nestable: function(results,error,appendid,initElem){
+        var append = $(appendid);
+        if(!append.length) return;
         var nesId = initElem;
         if(!initElem){
             nesId = $(".dd").eq(0).attr('id');
@@ -713,8 +715,8 @@ var effect = {
                         </li>`;
         $("#nesTemCode").html('');
         $('body').append(nesPreBox);
-        $(appendid).find('#' + nesId).remove();
-        $(appendid).append(nesBox);
+        append.find('#' + nesId).remove();
+        append.append(nesBox);
         if(error) return $("#" + nesId + " ol").html(initCode);
         loadItem();
         $("#" + nesId + " ol").html($("#nesTemCode").html());

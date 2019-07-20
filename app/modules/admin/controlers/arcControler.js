@@ -233,7 +233,7 @@ function arcControler(){
         type.list(params,function(res){
             if(res.error){
                 res.message = "查询栏目信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res);
             }
             data.types = treeStrcut(res.data); 
             ps = that.testRender(data,ps);
@@ -273,7 +273,26 @@ function arcControler(){
                 }
                 data.error = res.error;
                 data.data = res.results;
-                // 获取前端逻辑处理代码
+                
+                if(data.data[0].usespec){       //启用无极规格属性
+                    ps +=2;
+                    params.commodityId = data.data[0].id;
+                    var commodity = that.model("Commodity");
+                    //获取规格名称
+                    commodity.spec(params,(res)=>{
+                        data = mergeObj([data,res]);
+                        if(res.error) return that.render(data);
+                        ps = that.testRender(data,ps)
+                    });
+                    //获取规格项
+                    commodity.specoption(params,(res)=>{
+                        data = mergeObj([data,res]);
+                        if(res.error) return that.render(data);
+                        ps = that.testRender(data,ps)
+                    })
+                }
+
+                // 上传插件获取前端逻辑处理代码
                 data.cropperView = that.plug('Uploads',{
                     accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
                     cropper_css    : '/stylesheets/lib/cropper.min.css',
@@ -302,7 +321,7 @@ function arcControler(){
                     },
                     url: '/admin/upload/img?oid='+oid,   //上传图片的服务地址
                 }).cropperAsync;
-                ps = that.testRender(data);
+                ps = that.testRender(data,ps);
             });
         });
     }

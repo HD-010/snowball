@@ -156,10 +156,11 @@
 .replaceImg-label img{
     width: 130px;
     height: 130px;
+    border:0;
     overflow:hidden;
     padding:0;
-    margin-top: 6px;
-    margin : 0;
+    margin: 0;
+    margin-right: 10px;
     float: left;
 }
 .replaceImg-label .fa-size{
@@ -168,8 +169,8 @@
     display: inline-block;
     width: 130px;
     height: 130px;
-    left: 0;
-    margin-left:15px;
+    /* left: 0;
+    margin-left:15px; */
     text-align: center;
     line-height: 130px;
     background: rgba(0,0,0,0.5);
@@ -461,9 +462,6 @@
     /**
      * 规格项相关
      */
-    $("#oper-spec").click(function(){
-        $("#oper-spec-nes").fadeToggle();
-    })
     var specData = [{name:'规格名称',val:'spec-' + (new Date()).valueOf()}];
     var spec = {
         stat: 0,            //接收到的服务端数据状态
@@ -650,9 +648,9 @@
 
         //创建表
         createTab : function(cols,rows) {
-            var addonTd = `<td><input class="spec_option" data-option="" type='number' name='spec_marketprice' value=''></td>
-                            <td><input class="spec_option" data-option="" type='number' name='spec_stock' value=''></td>
-                            <td><input class="spec_option" data-option="" type='number' name='spec_weight' value=''></td>`;
+            var addonTd = `<td><input class="spec_option text-center" data-option="" type='number' name='spec_marketprice' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='number' name='spec_stock' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='text' name='spec_remark' value=''></td>`;
             var str = "<tr onfocusout='spec.serializeTable()'>";
             var etr = "</tr>";
             var tr = '';
@@ -781,14 +779,14 @@
     $("#nestable-spec handel-nestable-spec").remove();
     //处理规格项操作相关的值
     (function(){
+        $("#oper-spec").click(function(){
+            $("#oper-spec-nes").fadeToggle();
+            $("#spec-table").fadeToggle();
+        })
         $("#" +spec.id).nestable({group: 1}).on('change',function(e){
             spec.data = updateOutput(e);
             spec.readData();
         });
-        $("#usespec").change(function(e){
-            ($(this).prop('checked')) ? spec.specOn() : spec.specOff();
-        });
-            
         spec.reset();
     })()
 

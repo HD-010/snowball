@@ -1,5 +1,89 @@
 function CommodityModel(){
     var that = this;
+    
+
+    /**
+     * 构造规格项树型结构
+     * @param {*} results 
+     */
+    function specTree(results){
+        var specTree = [];
+        var pid = '';
+        if(!results.length) return specTree;
+        for(var i = 0; i < results.length; i ++){
+            if(!pid || (pid != results[i].specid)) {
+                pid = results[i].specid;
+                specTree.push({
+                    val: results[i].specid,
+                    name: results[i].spectitle,
+                    specid: results[i].specid,
+                    commodityid: results[i].commodityid,
+                    spectitle: results[i].spectitle,
+                    children:[]
+                });
+            }
+            specTree[specTree.length - 1].children.push({
+                val: results[i].itemid,
+                name: results[i].itemtitle,
+                itemid: results[i].itemid,
+                commodityid: results[i].commodityid,
+                itemid: results[i].itemid
+            });
+        }
+        return specTree;
+    }
+
+    /**
+     * params {} 必须属性commodityId
+     */
+    this.spec = function(params, callback){
+        var data = {error: 1, message: '参数错误'}
+        if(!params.commodityId) return callback(data);
+        var sql = `SELECT
+                m.id AS specid,
+                m.commodityid,
+                m.title AS spectitle,
+                i.id AS itemid,
+                i.title AS itemtitle 
+            FROM
+                youbang_commidity_spec AS m
+                LEFT JOIN youbang_commidity_specitem AS i ON i.specid = m.id 
+            WHERE
+                m.commodityid = `+ params.commodityId +` 
+                AND i.SHOW = '1' 
+            order by m.id asc, i.id asc`;
+
+        this.DB().select(sql,function(error,results){
+            data.error = error ? 1 : 0;
+            data.message = "";
+            data.spec = results;
+            data.specTree = specTree(results);
+            //log("@@@@@@@@@@@@@@@@@@@@@@@@@::",data);
+            return callback(data);
+        })
+    }
+
+    /**
+     * params {} 必须属性commodityId
+     */
+    this.specoption = function(params, callback){
+        var data = {error: 1, message: '参数错误'}
+        if(!params.commodityId) return callback(data);
+        var conditions = {
+            table: ['youbang_commidity_specoption'],
+            where: ['commodityid = '+ params.commodityId],
+            orderBy: ['id asc']
+        }
+
+        this.DB().get(conditions,function(error,results){
+            data.error = error ? 1 : 0;
+            data.message = "";
+            data.specoption = results;
+            //log("@@@@@@@@@@@@@@@@@@@@@@@@@::",data);
+            return callback(data);
+        })
+    }
+
     /**
      * 保存商品规格
      * @param {*} params  必须属性 aid(商品id)
@@ -17,7 +101,7 @@ function CommodityModel(){
 
             for(var i = 0; i < params.specname.length; i++){
                 conditions.fields.push({
-                    goodsid: params.aid,
+                    commodityid: params.aid,
                     title: params.specname[i]
                 });
             }
@@ -59,7 +143,7 @@ function CommodityModel(){
                             specs.push(parseInt(params.items.indexOf(title[k])) + params.itemsId)
                         }
                         conditions.fields.push({
-                            goodsid: params.aid,
+                            commodityid: params.aid,
                             title: title.join('_'),
                             specs: specs.join('_')
                         });
@@ -92,9 +176,9 @@ function CommodityModel(){
             where:[]
         }
         if(!params.aid) return callback(data);
-        conditions.where.push("id=" + params.aid);
+        conditions.where.push("commodityid=" + params.aid);
 
-        that.DB().del(conditions, (error,results,fields)=>{
+        that.DB().log().del(conditions, (error,results,fields)=>{
             data.error = error;
             data.results = results;
             callback(data);
