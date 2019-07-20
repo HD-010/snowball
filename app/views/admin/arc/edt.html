@@ -460,8 +460,8 @@
     /**
      * 规格项相关
      */
-    var specData = <%- specTree.length ? JSON.stringify(specTree): false %> || [{name:'规格名称',val:'spec-' + (new Date()).valueOf()}];
-    var specoption = <%- specoption.length ? JSON.stringify(specoption): false %> || [];
+    var specData = <%- locals.specTree ? JSON.stringify(specTree): false %> || [{name:'规格名称',val:'spec-' + (new Date()).valueOf()}];
+    var specoption = <%- locals.specoption ? JSON.stringify(specoption): false %> || [];
     var spec = {
         stat: 0,            //接收到的服务端数据状态
         id: 'nestable-spec',//规格容器id
@@ -800,7 +800,7 @@
             error: <%- error %>,
             data: <%- JSON.stringify(data[0]); %>
         }
-        console.log(recodData);
+        
     DL({
         dev: 'on',
         id: "#add-infor",
