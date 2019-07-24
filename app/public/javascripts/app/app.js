@@ -878,7 +878,7 @@ function dateFormate(formate,time){
  */
 function limitPrint(str,len){
     if(str.length > len){
-        str=str.substring(0,len-2)+"......";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
+        str=str.substring(0,len-2)+"...";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
     }
     return str;
 }
