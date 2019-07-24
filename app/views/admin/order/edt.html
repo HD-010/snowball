@@ -29,7 +29,7 @@
                         <abbr title="Phone">总机：</abbr> <%= seller.mtel %>
                     </address>
                     <p>
-                        <span><strong>日期：</strong> <%= buyer.addtime %></span>
+                        <span><strong>日期：</strong> <%= dateFormate('%Y-%m-%d %H:%M',buyer.addtime) %></span>
                     </p>
                 </div>
             </div>
@@ -43,7 +43,6 @@
                             <th>规格</th>
                             <th>状态</th>
                             <th>单价</th>
-                            
                         </tr>
                     </thead>
                     <tbody id="order-list">
@@ -52,7 +51,7 @@
                                 <div><strong>{{title}}</strong>
                                 </div>
                             </td>
-                            <td>{{number}}</td>
+                            <td contenteditable="true" data-content="commodities_orders-id-{{id}}-number">{{number}}</td>
                             <td>{{spectitle}}</td>
                             <td>{{- return enumtagName[state]; }}&nbsp;&nbsp;<i class="fa fa-edit"></i></td>
                             <td>&yen;{{- return price.toFixed(2); }}</td>
@@ -69,17 +68,17 @@
                     <tr>
                         <td><strong>总价：</strong>
                         </td>
-                        <td>&yen;<%= count.totalprice.toFixed(2) %></td>
+                        <td>&yen;<span contenteditable="true" data-content="commodities_orders-sn-<%= buyer.sn %>-totalprice"><%= count.totalprice.toFixed(2) %></span></td>
                     </tr>
                     <tr>
                         <td><strong>配送：</strong>
                             </td>
-                            <td>&yen;<%= count.trancefree.toFixed(2) %></td>
+                            <td>&yen;<span contenteditable="true" data-content="commodities_orders-sn-<%= buyer.sn %>-trancefree"><%= count.trancefree.toFixed(2) %></span></td>
                         </tr>
                     <tr>
                         <td><strong>总计</strong>
                         </td>
-                        <td>&yen;<%= (count.totalprice + count.trancefree).toFixed(2) %></td>
+                        <td>&yen;<span><%= (count.totalprice + count.trancefree).toFixed(2) %></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -100,7 +99,15 @@ DL({
     packet: {
         error: <%- error? 1: 0 %>,
         data: <%- order.length ? JSON.stringify(order) : false %> || [],
+        clearCode: true
     }
+});
+
+$("[contenteditable='true']").focusout(function(){
+    var data = $(this).attr('data-content');
+    var val = $(this).html()
+
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&::::",data);
 });
 
 </script>
