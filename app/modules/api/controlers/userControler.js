@@ -1,10 +1,12 @@
 function userControler() {
     this.reg = function(){
+        console.log("1234645");
         let self = this;
         //act=开放平台(wxkf),微信小程序(wxxcx),微信公众号(wxgzh),无授权数据(cnn)
         let prm = ["act","phone","pwd","code"];
         let obj = self.checkParm(prm);
         if (obj.errcode == 1) {
+            console.log(obj);
             self.sendJson(1, obj.errlist);
             return;
         }
