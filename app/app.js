@@ -1,6 +1,6 @@
 var createError = require('http-errors');
 var express      = require('express');
-var cors         = require('cors');                           //跨域访问控制模块
+var cors         = require('cors'); //跨域访问控制模块
 var path         = require('path');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');

@@ -6,8 +6,10 @@
 
 var app = require('../app');
 var wsApp = require('../e/ws');
+
 var debug = require('debug')('app:server');
 var WebSocketServer = require('websocket').server;
+
 var http = require('http');
 
 /**
