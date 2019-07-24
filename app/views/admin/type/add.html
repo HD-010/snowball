@@ -15,6 +15,7 @@
     <div class="row form">
         <form id="type-add" data-form-async='json' action="/admin/type/save" method="post" >
             <input type="hidden" name='tag' value="add" />
+            <input type="hidden" name='cmid' value="<%= componentId; %>" />
             <table class="table">
                 <thead>
                     <tr>
@@ -36,7 +37,7 @@
                         <td>所属栏目：</td>
                         <td>
                             <div class="form-group col-xs-4 auto-type-name">
-                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" placeholder="当前栏目是顶级栏目" value=" "></select>
+                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" placeholder="当前栏目是顶级栏目"></select>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：选择栏目名称</span>
                         </td> 

@@ -4,26 +4,17 @@
         uediterFields: [],
 
         get: function(index){
-            var type = array2value(addInfo,'field',addlist[i],'type');
-            var codeType = {
-                _text: 'input',
-                _int: 'input',
-                _datetime: 'input',
-                _checkbox: 'inputCheckbox',
-                _stepselect: 'select',
-                _htmltext: 'uediter',
-            };
-            if('_'+type === '_htmltext') formCode.uediterFields.push(addlist[i]);
-            if(codeType['_'+type] in formCode) return formCode[codeType['_'+type]](index);
-            return "formCode中不存在" + codeType['_'+type] + "组件";
+            var type = addoninfos[index].inputtype;
+            if(type in formCode) return formCode[type](index);
+            return "formCode中不存在" + type + "组件";
         },
 
         input: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -32,13 +23,13 @@
             return str;
         },
 
-        inputCheckbox: function(index){
+        checkbox: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(array2value(addInfo,'field',addlist[i],'itemname')) + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value="{{' + addlist[i] + '}}"> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value="{{' + addoninfos[index].field + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -46,13 +37,13 @@
             return str;
         },
 
-        inputRadio: function(index){
+        radio: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="radio" name="' + addlist[i] + '"  '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' data-stat="{{' + addlist[i] + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -62,10 +53,10 @@
 
         select: function(index){
             var str = '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
-                            '<select class="form-control" name="' + addlist[i] + '" '+ this.defNull(array2value(addInfo,'field',addlist[i],'attr')) + ' value="{{' + addlist[i] + '}}"></select>' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ this.defNull(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"></select>' +
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -74,15 +65,70 @@
         },
 
         uediter: function(index){
+            formCode.uediterFields.push(addoninfos[index].field);
             return '<tr>' +
-                    '<td>' + array2value(addInfo,'field',addlist[i],'itemname') + '：</td>' +
+                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-12 col-xs-12 ueditor-box">' +
-                            '<input type="hidden" id="ue-contents" name="' + addlist[i] + '" value="" />'+
-                            '<iframe src="" name="iframe-' + addlist[i] + '" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
+                            '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
+                            '<iframe src="" name="iframe-' + addoninfos[index].field + '" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
                         '</div>' +
                     '</td>' +           
                 '</tr>';
+        },
+
+        /**
+        *   参数说明：
+        *   data-limit: 限制图片上传的张数
+        *   data-field: 字段名称，input的name值
+        **/
+        uploader: function(index){
+            var mainpic = data[0][addoninfos[index].field];
+            mainpic = mainpic ? mainpic.split('-') : [];
+            var pics = inputs = imgTag = '';
+            for(var i = 0; i < mainpic.length; i ++){
+                imgTag = 'data-img-' + addoninfos[index].field + '-' + i;
+                pics += '<div class="img-handl" data-img="'+ imgTag +'"><span class="fa fa-close fa-size"></span><img src="'+ mainpic[i] +'" /></div>';
+                inputs += '<input type="hidden" data-img="'+ imgTag +'" name="' + addoninfos[index].field + '"  value="'+ mainpic[i] +'" />' ;
+            }
+            return '<tr>' + 
+                '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
+                '<td class="pic-box" data-limit="'+ addoninfos[index].limit +'" data-field='+ addoninfos[index].field +'>' + 
+                    '<div class="form-group col-xs-8">' + 
+                        '<div class="replaceImg-label">' + 
+                            pics + 
+                            '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
+                                '<img src="/img/plus.png" />' + 
+                            '</label>' + 
+                        '</div>' + 
+                    '</div>' + 
+                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
+                    inputs +
+                '</td>' +            
+            '</tr>';
+        },
+
+        /**
+        *   规格项参数说明：
+        **/
+        spec: function(index){
+            var usespec = (data[0].usespec == 1) ? "checked" : "";
+            var showspec = (data[0].usespec == 1) ? "block" : "none";
+            var str = `<tr>
+                <td>商品规格：</td>
+                <td>
+                    <label class="col-xs-8">
+                        <input type="checkbox" id="oper-spec" style="width:20px;height:20px;vertical-align:bottom;" name="usespec" ` + usespec + ` value="1" />启用分类
+                    </label>
+                    <div class="col-xs-8" id="oper-spec-nes" style="border:0;display:` + showspec + `;"></div>
+                    <table class="col-xs-12" id="spec-table" style="display:` + showspec + `;"> </table>
+                </td>
+                <input type="hidden" name="specname" value="">         
+                <input type="hidden" name="specitem" value="">         
+                <input type="hidden" name="specoption" value="">         
+            </tr>`;
+
+            return str;
         },
 
         defNull: function(d){
@@ -102,47 +148,52 @@
     left: 0;
     top: 0;
 }
-#nestable3 .dd-item>button {
+#nestable-type .dd-item>button {
     font-family: FontAwesome;
     height: 34px;
     width: 33px;
     color: #c1c1c1;
 }
-#nestable3 .dd-item>button:before {
-    content: "\f067";
-}
+#nestable-type .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-type .dd-item>button:before {content: "\f067";}
+#nestable-type .dd-handle{line-height:28px;}
+#nestable-spec .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-spec .dd-item>button:before {content: "\f067";}
+#nestable-spec .dd-handle{line-height:28px;}
 .replaceImg-label{
-    border:1px solid silver;
+    border:0;
+    width: 90%;
     padding: 0;
     margin : 0;
     display: inline-table;
     float: none;
 }
-.replaceImg-label label{
-    margin-top: -5px;
-}
+.replaceImg-label label{margin-top: -5px;}
 .replaceImg-label img{
     width: 130px;
     height: 130px;
+    border:0;
     overflow:hidden;
     padding:0;
-    margin-top: 6px;
-    margin : 0;
+    margin: 0;
+    margin-right: 10px;
     float: left;
 }
 .replaceImg-label .fa-size{
-    font-size:40px;
-    padding:45px ;
-    padding-top:39px;
+    font-size: 45px;
     position: absolute;
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    /*left: 0;*/
+    /* margin-left:15px; */
+    text-align: center;
+    line-height: 130px;
     background: rgba(0,0,0,0.5);
-    color:#fff;
-    visibility:hidden;
+    color: #fff;
+    visibility: hidden;
 }
-.fa-size :hover{
-    visibility:visible;
-}
-
+.replaceImg-label .fa-size :hover{visibility:visible;}
 </style>
 
 <div class="container-fluid base">
@@ -167,7 +218,7 @@
             </div>
         </div>
         <div class="row form tab-content">
-            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='id' value="{{id}}" />
                 <input type="hidden" name='parenttypeid2' value="" />
@@ -267,19 +318,18 @@
 
                         <tr>
                             <td>缩略图：</td>
-                            <td id="uris">
+                            <td class="pic-box" data-limit="1" data-field='litpic'>
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">
                                         <%- data[0].litpic ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="' + data[0].litpic + '" /></div> ' : ''; %>
                                         
-                                        <label class="col-sm-2 control-label" id="img-add" for="replaceImg">
+                                        <label class="col-sm-2 control-label img-add" for="replaceImg">
                                             <img src="/img/plus.png" />
                                         </label>
                                     </div>
-                                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
-                                <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="uris"  value="' + data[0].litpic + '" />' : '' %>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+                                <%- data[0].litpic ? '<input type="hidden" data-img="img-add-0" name="litpic"  value="' + data[0].litpic + '" />' : '' %>
                             </td>              
                         </tr>
                     </tbody>
@@ -302,7 +352,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(var i in addlist){ %>
+                        <% 
+                        for(var i in addoninfos){ 
+                            if(!addoninfos[i].fieldget) continue;
+                        %>
                             <%- formCode.get(i); %>
                         <% } %>
                         <script> var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
@@ -317,12 +370,15 @@
                             </td>
                         </tr>
                     </tfoot>
+                    <!-- 图片上传必要 -->
+                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
                 </table>
             </form>
         </div>
     </div>
 </div>
-
+<!-- 输出视图组件 -->
+<%- cropperView %>
 
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
@@ -346,10 +402,10 @@
         
         // activate Nestable for list 2
         $('#nestable2').nestable({group: 1}).on('change', updateOutput);
-        $('.dd').nestable('collapseAll');    
+        $('#nestable2 .dd').nestable('collapseAll');    
         //隐藏编辑按钮
-        $('.dd-edit').hide();
-        $(".dd-addon-handel").removeClass('hidden')
+        $('#nestable2 .dd-edit').hide();
+        $("#nestable2 .dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
         $('.handel-nestable2').unbind('click').on('click',function(e){
@@ -364,22 +420,371 @@
         })
         var types = <%- error ? false : JSON.stringify(types) %>;
         //初始化nestable数据结构
-        effect.nestable(types,error,'#oper-types-nes');
+        effect.nestable(types,error,'#oper-types-nes', 'nestable-type');
     
         // activate Nestable for list 2
-        $('#nestable3').nestable({group: 1}).on('change', updateOutput);
-        $('.dd').nestable('collapseAll');    
+        $('#nestable-type').nestable({group: 1}).on('change', updateOutput);
+        $('#nestable-type .dd').nestable('collapseAll');    
         //隐藏编辑按钮
-        $('.dd-edit').hide();
-        $(".dd-addon-handel").removeClass('hidden')
+        $('#nestable-type .dd-edit').hide();
+        $("#nestable-type .dd-addon-handel").removeClass('hidden')
     
         //设置被选择的值及效果
-        $('.handel-nestable3').unbind('click').on('click',function(e){
+        $('.handel-nestable-type').unbind('click').on('click',function(e){
             $("#oper-types").text($(this).parent().find(".dd-val").html());
             $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
             $("#oper-types-nes").fadeToggle();
         });
+
+        //规格相关
+        //初始化nestable数据结构
+        effect.nestable(specData,spec.stat,'#oper-spec-nes',spec.id);
+        //初始化数据到规格项明细表
+        if(specData.length) spec.initData(specoption);
+        $('#nestable-spec').nestable({group: 1}).on('change', updateOutput);
+        $('#nestable-spec .dd').nestable('collapseAll');
+        $("#nestable-spec handel-nestable-spec").remove();
+        //处理规格项操作相关的值
+        (function(){
+            $("#oper-spec").click(function(){
+                $("#oper-spec-nes").fadeToggle();
+                $("#spec-table").fadeToggle();
+            })
+            $("#" +spec.id).nestable({group: 1}).on('change',function(e){
+                spec.data = updateOutput(e);
+                spec.readData();
+            });
+            spec.reset();
+        })()
     } 
+    /**
+     * 规格项相关
+     */
+    var specData = <%- locals.specTree ? JSON.stringify(specTree): false %> || [{name:'规格名称',val:'spec-' + (new Date()).valueOf()}];
+    var specoption = <%- locals.specoption ? JSON.stringify(specoption): false %> || [];
+    var spec = {
+        stat: 0,            //接收到的服务端数据状态
+        id: 'nestable-spec',//规格容器id
+        data:[],            //项数据
+        reset: function(){
+            this.dataSync();
+            this.edit();
+            this.plus();
+            this.minus();
+            
+            return this;
+        },
+
+        //添加项操作
+        plus : function(){
+            $('.plus').unbind('click').on('click',function(e){
+                var curEl = $(this).parent().parent();
+                var html = $(curEl[0].outerHTML);
+                if(html.find('ol').length){
+                    html = html.find('ol').remove();
+                }
+                curEl.after($(html).attr('data-val','spec-' + (new Date()).valueOf()));
+                spec.reset();
+                $("#" +spec.id).nestable({group: 1}).change();
+            });
+        },
+
+        //编辑项操作
+        edit: function(){
+            $("#" +this.id + " .dd-list>li .dd-edit .fa-edit").unbind('click').on("click",function(e){
+                var initVal = $(this).parent().prev().find('.dd-val').html();
+                var input = $(this).siblings('input')
+                input.removeClass("hidden").val(initVal).fadeIn().focus();
+            });
+        },
+        //删除项操作
+        minus : function(){
+            $('.minus').unbind('click').on('click',function (e) {
+                var that = this;
+                swal({
+                    title: "您确定要删除这项规格吗",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "删除",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false
+                }, function () {
+                    var li = $(that).parent().parent();
+                    var ol = li.parent();
+                    if(!li.siblings().length && (ol.parent().attr('id') == "nestable-spec")){
+                        return swal("删除失败！", "这已经是根节点，不能删除！", "success");
+                    }
+                    li .remove();
+                    swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                    $("#" +spec.id).nestable({group: 1}).change();
+                });
+            });
+        },
+        
+        //数据同步
+        dataSync : function(){
+            $(".dd-list>li .dd-edit input").unbind('keyup').on('keyup',function(e){
+                //同步列表名称
+                $(this).parent().prev().find('.dd-val').html($(this).val());
+                //同步列表数据
+                $(this).parent().parent().attr('data-name',$(this).val());
+            })
+            //隐藏input框
+            $(".dd-list>li .dd-edit input").unbind('blur').on('blur',function(e){
+                $(this).removeClass("hidden").fadeToggle();
+                $("#" +spec.id).nestable({group: 1}).change();
+            })
+        },
+
+        //序列化规格表数据
+        serializeTable: function(){
+            //向表单写入商品规格数据
+            $('input[name="specname"]').val(btoa(encodeURI(JSON.stringify(spec.specName()))));
+            $('input[name="specitem"]').val(btoa(encodeURI(JSON.stringify(spec.specItem()))));
+            $('input[name="specoption"]').val(btoa(encodeURI(JSON.stringify(spec.outSpec()))));
+        },
+
+        //关于规格表项
+        initData: function(specoption){
+            this.readData(); //读取规格项数据到表
+            console.log("==============================================",specoption)
+            for(var i = 0; i < specoption.length; i++){
+                var title = specoption[i].title.replace(/_/g,',');
+                var marketprice = specoption[i].marketprice;
+                var stock = specoption[i].stock;
+                var remark = specoption[i].remark;
+                $("#spec-table").find('input[data-option="'+title+'"][name="spec_marketprice"]').val(marketprice);
+                $("#spec-table").find('input[data-option="'+title+'"][name="spec_stock"]').val(stock);
+                $("#spec-table").find('input[data-option="'+title+'"][name="spec_remark"]').val(remark);
+            }
+        },
+
+        //读取规格项数据到表
+        readData : function(){
+            var specView = $("#spec-table");
+            
+            var sTr = '<tr>';
+            var eTr = '</tr>';
+            var addonTh = `<th>价格(元) &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>
+            <th>库存 &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>
+            <th>备注 &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>`;
+            
+            //添加表头
+            var addItem = $("#" + spec.id + ">.dd-list").children('.dd-item');
+            addItem.each(function(i,val){
+                sTr += '<th>' + $(val).attr('data-name') + '</th>';
+            });
+            specView.html(sTr + addonTh + eTr);
+            
+            
+            //添加行
+            var tbody = $("#spec-table").find('tbody');
+            var th = tbody.find('th');
+            //绘表
+            var thTotal = th.length;
+            //总列数
+            var cols = thTotal - 3;     //减去附加单元格数量
+            //总行数
+            var rows = 1;
+            for(var i = 0; i < cols; i ++){
+                rows = rows * spec.childLists(i).length;
+            }
+            
+            //创建表
+            var table = spec.createTab(cols,rows);
+            var itemVal = '';
+            tbody.append(table);
+            
+            //设置表单元格信息
+            for(var c = cols-1; c >= 0; c --){
+                var items = spec.childLists(c);
+                var childItems = (c == cols-1) ? [''] : spec.childLists(c+1);
+                
+                //将一个组的信息载入一列
+                if(c == cols-1){
+                    for(var g = 0; g < rows; g += items.length){
+                        for(var ge = 0; ge < items.length; ge ++){
+                            itemVal = items[ge];
+                            tbody.children().eq(g+ge+1).children().eq(c).html(itemVal).attr('spec_option',itemVal);
+                        }
+                    }
+                }else{
+                    var times = 0;
+                    var size = spec.getSize(c+1,cols);
+                    for(var g = 0; g < rows; g += size){
+                        itemVal = items[times];
+                        tbody.children().eq(g+1).children().eq(c).html(itemVal).attr('spec_option',itemVal);
+                        //补充被跳过单元格的属性
+                        for(var gs = 1; gs < size; gs++){
+                            tbody.children().eq(g + 1 + gs).children().eq(c).attr('spec_option',itemVal);
+                        }
+                        times ++;
+                        if(times == (items.length)) times = 0;
+                    }
+                }
+            }
+
+            //将spec_option值映射到每行中赋值单元格的属性
+            this.item2options();
+            //设置表样式
+            this.setCss();
+            this.setColspan();
+        },
+
+        //获取父项步长
+        //col 当前所在的列
+        getSize : function(col,cols){
+            var items = [];
+            var size = 1;
+            for(var c = col; c <= cols; c ++){
+                items = spec.childLists(c);
+                size = size * (items.length || 1);
+            }
+            return size;
+        },
+
+        //获取子规格项
+        childLists : function(i){
+            var addItem = $("#"+spec.id+">.dd-list").children('.dd-item');
+            var ddList = addItem.eq(i).children(".dd-list");
+            var td = [];
+            ddList.each(function(i1,v){
+                $(v).children('li').each(function(i2,v){
+                    var val = $(v).attr('data-name');
+                    td.push(val);
+                });
+            });
+            return td;
+        },
+
+        //创建表
+        createTab : function(cols,rows) {
+            var addonTd = `<td><input class="spec_option text-center" data-option="" type='number' name='spec_marketprice' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='number' name='spec_stock' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='text' name='spec_remark' value=''></td>`;
+            var str = "<tr onfocusout='spec.serializeTable()'>";
+            var etr = "</tr>";
+            var tr = '';
+            var tem = '';
+            for(var i = 0; i < cols; i ++){
+                str += "<td class='spec_item'>init</td>";
+            }
+            tr = str + addonTd + etr;
+            for(var j = 0; j < rows; j ++){
+                tem += tr;
+            }
+            
+            return tem;
+        },
+
+        //将spec_option值映射到每行中赋值单元格的属性
+        item2options : function(){
+            var trOpts = $("#spec-table").find('tbody').children();
+            
+            trOpts.each(function(i, v){
+                var option = [];
+                $(v).children('.spec_item').each(function(i0,v0){
+                    option.push($(v0).attr('spec_option'));
+                });
+                option = option.join(',');
+                $(v).find('.spec_option').attr('data-option',option);
+            });
+            
+        },
+
+        //设置表样式
+        setCss : function(){
+            var table = $("#spec-table");
+            table.find('tr').css({
+                height:'2em',
+            });
+            table.find("th").addClass('col-md-1');
+            table.find("th").css({
+                border:'1px solid #dee5e7',
+                'text-align':'center'
+            });
+            table.find("td").css({
+                border:'1px solid #dee5e7',
+                'text-align':'center'
+            });
+            table.find('input').css({
+                display:"inline-block",
+                width:'100%',
+                height:'100%',
+                border:0
+            });
+        },
+
+        //设置跨行
+        setColspan : function(){
+            //预设20列遍历对象
+            var cols = 5;
+            var tbody = $("#spec-table").find('tbody');
+            var checkObj;
+            //找到值为init的单元格
+            for(var i = cols-1; i >= 0; i--){
+                var rowspan0 = '';
+                var rowspan1 = [];
+                tbody.children().each(function(i0,val0){
+                    checkObj = $(val0).children().eq(i)
+                    
+                    if((i0 == tbody.children().length-1) && (checkObj.html() == 'init')) rowspan1.push(checkObj);
+                    if(((checkObj.html() != 'init') || (i0 == tbody.children().length-1)) && rowspan1.length){
+                        var rowNum = rowspan1.length + 1;
+                        for(var j = 0; j < rowspan1.length; j ++){
+                            rowspan1[j].remove();
+                        }
+                        rowspan0.attr('rowspan',rowNum);
+                        rowspan1 = [];
+                    }
+                    (checkObj.html() == 'init') ? rowspan1.push(checkObj) : (rowspan0 = checkObj);
+                });
+            }
+        },
+
+        //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
+        specName: function(){
+            var specName = [];
+            $("#" + this.id + ">.dd-list").children('.dd-item').each(function(i,val){
+                specName.push($(val).attr('data-name'));
+            });
+            return specName;
+        },
+
+        //获取规格item名称（用于表单提交时,与commidity_specitem中的title对应）
+        specItem : function(){
+            var specItme = [];
+            for(var i = 0; i < spec.specName().length; i ++){
+                specItme.push(spec.childLists(i));
+            }
+            return specItme;
+        },
+
+        //输出表中商品规格数据(用于表单提交时,与commidity_option中的title对应)
+        outSpec : function(){
+            var trOpts = $("#spec-table").find('tbody').children();
+            var specOtions = [];
+            trOpts.each(function(i,v){  //每一行
+                if(i === 0) return;
+                specOtions.push({
+                    title : '',
+                    options : []
+                });
+
+                $(v).find('.spec_option').each(function(i0,v0){
+                    specOtions[i-1].title = $(v0).attr('data-option');
+                    specOtions[i-1].options.push({
+                        name : $(v0).attr('name'),
+                        value : $(v0).val()
+                    });
+                });
+            });
+            
+            return specOtions;
+        }
+    }
 
 </script>
 
@@ -391,20 +796,21 @@
     });
 
     //初始化表单的值
-    var data = {
+    var recodData = {
             error: <%- error %>,
             data: <%- JSON.stringify(data[0]); %>
         }
+        
     DL({
         dev: 'on',
         id: "#add-infor",
-        packet: data,
+        packet: recodData,
+        clearCode: true,
         after: function(){
             //加载ueditor
             $("iframe").attr('src','/admin/arc/ueditor');
 
             $("iframe").load(function(){
-                
                 UE.frame = $("iframe").eq(0);
                 //读取UE内容
                 UE.contents = function(){
@@ -425,10 +831,10 @@
                 $('button[type="submit"]').mouseover(function(){
                     $("#ue-contents").val(UE.contents());
                 });
-
+                
                 var wt = setInterval(function(){
                     (typeof UE.time == 'number') ?  UE.time ++ : UE.time = 0;
-                    if(UE.time > 1) {
+                    if(UE.time > 4) {
                         app.notice({
                             error: 1,
                             message: 'UEditor 加载超时！'
@@ -438,7 +844,7 @@
                     if(!UE.frame[0].contentWindow.ue.body) return;
                     clearInterval(wt);
                     var field = UE.uediterFields[0];
-                    UE.frame[0].contentWindow.ue.setContent(data.data[field]); //将字段对应的值展示到ueditor中
+                    UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 
                 initNestable();
@@ -461,7 +867,10 @@
     $(".auto-checkbox").find('input').each(function(index,item){
         var keys = $(item).attr('data-key') ? $(item).attr('data-key').split('-'): [];
         var val = $(item).val();
-        if(keys.indexOf(val) + 1) $(item).parent().addClass('active');
+        if(keys.indexOf(val) + 1) {
+            $(item).prop("checked",true);
+            $(item).parent().addClass('active');
+        }
     });
 
     function save(res){
@@ -469,27 +878,39 @@
     }
 </script>
 
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
 <script>
     /**
      * 图片上传处理器
      * */
-    var imgIndex = 0;
+    var uploader = {
+        index: 0,
+        picBox: ''
+    }
+    
+    //定位picBox
+    $("label.img-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+    });
+
+    //图片上传回调处理
     function upProcess(data){
         var info = {
             error : 1,
             message : "上传失败，请重新上传！"
         };
         if(data.state != 1) return app.notice(info);
-        var addObj =   `<div class="img-handl" data-img="img-add-`+ imgIndex +`">
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
             <span class="fa fa-close fa-size"></span>
             <img src="/` + data.url + `" />
             </div>`;
             
-        $("#img-add").before($(addObj));
-        $("#uris").append($('<input type="hidden" data-img="img-add-'+ imgIndex +'" name="uris"  value="/'+ data.url +'" />'));
+        uploader.picBox.find(".img-add").before($(addObj));
+        uploader.picBox.append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
-        imgIndex ++;
+        uploader.index ++;
 
         setEffect();
     }
@@ -511,14 +932,21 @@
             var arr = dataImg.split('-');
             var index = arr[arr.length - 1];
             delete j[index];
-            j.length --;
+            if(j.length) j.length --;
+            setEffect()
         })
+        //控制添加按钮显示与隐藏
+        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+        $(picBox).each(function(index,item){
+            var limit = $(item).attr('data-limit');//设置显示张数
+            $(item).find(".replaceImg-label").children().hide();
+            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        });
+
     } 
     //效果初始化
     setEffect();
 </script>
 
-<!-- 输出视图组件 -->
-<%- cropperView %>
-<!-- 输出视逻辑代码 -->
-<%- cropperAsync %>
+
+

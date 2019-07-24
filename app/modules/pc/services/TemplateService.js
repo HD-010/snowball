@@ -12,7 +12,7 @@ function TemplateService(){
         sqlStruct.where() + 
         sqlStruct.limit();
         
-        this.DB().log().select(sql,function(error,results,fields){
+        this.DB().select(sql,function(error,results,fields){
             callback(error,results,fields);
         });
     }

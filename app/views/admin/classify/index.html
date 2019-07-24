@@ -26,7 +26,7 @@
             </div>
         </div>  
         <div class="row form classify-add-Form">
-            <form  role="form" method="post" data-form-async="json" action="/admin/classify/save/ctag/infos" novalidate="novalidate">
+            <form  role="form" method="post" data-form-async="json" action="/admin/classify/save/ctag/<%= ctag %>" novalidate="novalidate">
                 <!-- 商品添加操作的标识 -->
                 <input type="hidden" name="classify" value="">
                 <input type="hidden" name="macid" value="<%= macid; %>">
@@ -79,7 +79,7 @@
 
 <script>
         jQuery(function($){
-            var results = <%- error ? false : results %>;
+            var results = <%- results.length ? results : false %> || [{name: '添加分类',val:'nesinit'}];
             var error = <%- error; %>;
             //初始化nestable
             effect.nestable(results,error,'#nes');

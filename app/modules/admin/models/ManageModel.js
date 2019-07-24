@@ -67,7 +67,7 @@ function ManageModel(){
         data.id = data.id.split("_");
         if(data){
            var sql  = "delete from youbang_sys_acount where id in ("+data.id+")"; 
-            that.DB().log().query(sql,function(error,results){
+            that.DB().query(sql,function(error,results){
                 if(results.affectedRows){
                     var obj={
                         message:"管理者删除成功!",
@@ -110,7 +110,7 @@ function ManageModel(){
         data.tel = this.POST('tel');
         if(data){
             var sql = "update youbang_sys_acount set userName = '"+data.userName+"',tel = "+data.tel+",groupId = "+data.groupId+" where id = "+data.id;          
-            that.DB().log().query(sql,function(error,results){
+            that.DB().query(sql,function(error,results){
                 if(results.affectedRows){
                     var obj={
                         message:"用户修改加成功!",

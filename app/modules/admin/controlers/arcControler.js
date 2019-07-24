@@ -14,6 +14,7 @@ function arcControler(){
         var params = {};
         var process = this.model("DataProcess");
         var addonTable = this.model('Component');
+        data.ctag = ctag;
 
         //获取当前组件的栏目列表
         params.nid = ctag;
@@ -21,7 +22,7 @@ function arcControler(){
         type.list(params,function(res){
             if(res.error){
                 res.message = "查询栏目信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res,'/err404');
             }
             data.types = treeStrcut(res.data); 
             ps = that.testRender(data,ps);
@@ -34,22 +35,23 @@ function arcControler(){
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
+            if(res.error){
+                res.message = "查询分类信息失败，请稍后重试";
+                return that.render(res,'/err404');
+            }
             data = mergeObj([data,res]);
             ps = that.testRender(data,ps);
         });
-
+        
         //查询附加表字段信息
         addonTable.list(params,function(res){
             if(res.error) {
                 res.message = "查询表信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res,'/err404');
             }
-            
-            data.addInfo = res.results[0].fieldset;  //附加表字段信息
-            data.addlist = res.results[0].listfields.split(',');
-
-             // 获取前端逻辑处理代码
-             data.cropperView = that.plug('Uploads',{
+            data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
+            // 获取前端逻辑处理代码
+            data.cropperView = that.plug('Uploads',{
                 accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
                 cropper_css    : '/stylesheets/lib/cropper.min.css',
                 imgCropping_css: '/stylesheets/lib/ImgCropping.css',
@@ -89,7 +91,7 @@ function arcControler(){
         var params = {ctag: ctag};
         var arc = this.model('Arc');
         var ps = 2;
-        var data = {};
+        var data = {ctag: ctag};
         //查询栏目列表
         var type = this.model('Type');
         type.list(params,function(res){
@@ -125,25 +127,43 @@ function arcControler(){
         var arc = this.model("Arc");
         var addonTable = this.model('Component');
         var params = {};
+        var data = {error: 1, message: '参数错误'};
+        var ps = 1;
+        var utility = require('utility');
         params.ctag = ctag;
         //保存数据到主表
         arc.saveHives({},function(res){
             if(res.error) {
                 res.message = "数据写入失败，请稍后重试";
-                return that.render(res);
+                return that.renderJson(res);
             }
             params.aid = res.results.insertId;
             //查询附加表字段信息
             addonTable.list(params,function(res){
                 if(res.error) {
                     res.message = "查询表信息失败，请稍后重试";
-                    return that.render(res);
+                    return that.renderJson(res);
                 }
-                params.fieldset = res.results[0].fieldset;
+                params.addoninfos = res.results[0].addoninfos;
                 params.addtable = res.results[0].addtable;
                 arc.saveAddon(params,function(res){
-                    that.renderJson(res)
+                    data = mergeObj([data,res]);
+                    ps = that.testRenderJson(data,ps)
                 });
+
+                //当usespec参数为真，表示需要保存商品规格数据
+                if(that.POST('usespec')){
+                    params.specname = JSON.parse(decodeURI(utility.base64decode(that.POST('specname'))));
+                    params.specitem = JSON.parse(decodeURI(utility.base64decode(that.POST('specitem'))));
+                    params.specoption = JSON.parse(decodeURI(utility.base64decode(that.POST('specoption'))));
+                    if(!params.specname || !params.specitem || !params.specoption) return that.renderJson(data,ps);
+                    ps ++;
+                    var commodity = that.model("Commodity");
+                    commodity.specSave(params,(res)=>{
+                        ps = that.testRenderJson(res,ps)
+                    });
+                }
+
             });
 
         });
@@ -201,7 +221,7 @@ function arcControler(){
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
         var ps = 3;         
-        var data = {}
+        var data = {ctag: ctag};
         var params = {};
         var arc = this.model("Arc");
         var process = this.model("DataProcess");
@@ -213,7 +233,7 @@ function arcControler(){
         type.list(params,function(res){
             if(res.error){
                 res.message = "查询栏目信息失败，请稍后重试";
-                return that.testRender(res,ps);
+                return that.render(res);
             }
             data.types = treeStrcut(res.data); 
             ps = that.testRender(data,ps);
@@ -243,8 +263,9 @@ function arcControler(){
                 res.message = "参数错误，请稍后重试";
                 return that.render(res);
             }
-            data.addInfo = res.results[0].fieldset;  //附加表字段信息
-            data.addlist = res.results[0].listfields.split(',');
+
+            data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
+            params.addoninfos = res.results[0].addoninfos;
             arc.lists(params,(res)=>{
                 if(res.error) {
                     res.message = "查询数据失败，请稍后重试";
@@ -252,7 +273,26 @@ function arcControler(){
                 }
                 data.error = res.error;
                 data.data = res.results;
-                // 获取前端逻辑处理代码
+                
+                if(data.data[0].usespec){       //启用无极规格属性
+                    ps +=2;
+                    params.commodityId = data.data[0].id;
+                    var commodity = that.model("Commodity");
+                    //获取规格名称
+                    commodity.spec(params,(res)=>{
+                        data = mergeObj([data,res]);
+                        if(res.error) return that.render(data);
+                        ps = that.testRender(data,ps)
+                    });
+                    //获取规格项
+                    commodity.specoption(params,(res)=>{
+                        data = mergeObj([data,res]);
+                        if(res.error) return that.render(data);
+                        ps = that.testRender(data,ps)
+                    })
+                }
+
+                // 上传插件获取前端逻辑处理代码
                 data.cropperView = that.plug('Uploads',{
                     accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
                     cropper_css    : '/stylesheets/lib/cropper.min.css',
@@ -281,7 +321,7 @@ function arcControler(){
                     },
                     url: '/admin/upload/img?oid='+oid,   //上传图片的服务地址
                 }).cropperAsync;
-                ps = that.testRender(data);
+                ps = that.testRender(data,ps);
             });
         });
     }

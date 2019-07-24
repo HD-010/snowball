@@ -115,12 +115,12 @@
      * 登录处理方法
      */
     function _in(results){
+        console.log(results);
         if(results.error === 0){
             setItem("UIF",results.infors);
             setItem("UID",results.infors.id);
             setItem('OID',results.openID);
             setItem('PERMIT',results.permit);
-            app.addonParams = {oid: getItem("OID")};
             app.notice(results);
         }else{
             results.error = 1;
@@ -128,9 +128,10 @@
             app.notice(results);
         }
     }
-
+    
     jQuery(function($){
         app.load();
+        //app.addonParams = {oid: getItem("OID")};
     })
     
     </script>

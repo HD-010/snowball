@@ -3,7 +3,7 @@ function ArcModel(){
      * 查询（文章）列表
      */
     this.lists = function(params,callback){
-        var noVAlid = ['body'];     //定义的字段会被base64编码
+        var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['youbang_archives'],
             fields: ['youbang_archives.*', params.addonTab + '.*'],
@@ -31,8 +31,7 @@ function ArcModel(){
         var data = {error: 1, message: '请填完整必填项！'};
         var classify = this.POST('classify');
         if(!classify) return callback(data);
-        var uris = this.POST('uris');
-        uris = (typeof uris == 'object') ? uris[0] : uris;
+        var litpic = this.POST('litpic');
         var conditions = {
             table:'youbang_archives',
             where:[],
@@ -50,13 +49,11 @@ function ArcModel(){
         record.keywords = this.POST('keywords') || '';
         record.description = this.POST('description') || '';
         record.weight = this.POST('weight') || 0;
-        record.litpic = uris || '';
+        record.litpic = litpic || '';
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-
         this.DB().set(conditions,function(error,results,fields){
-            
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);
@@ -69,41 +66,34 @@ function ArcModel(){
      */
     this.saveAddon = function(params,callback){
         var utility = require('utility');
-        var noVAlid = ['body'];     //定义的字段会被base64编码
-        var listfields = queryresultKeyValue(params.fieldset,'field');
-        
+        var addoninfos =  params.addoninfos;
         var conditions = {
             table: params.addtable,
             fields: [],
             where : []
         }
         var record = {};
-        for(var i in listfields){
+        for(var i in addoninfos){
+            if(!addoninfos[i].fieldset) continue;
             var field = "";
-            var saveField = false;      //是还安全字段
-            field = listfields[i];
-            saveField = noVAlid.indexOf(field) + 1;
-            if(saveField) field =  '!' + listfields[i];
-            field = this.POST(field) || "";
-            if(saveField) field = utility.base64encode(field);
-            if(typeof field == 'object') field = field.join('-');
-            record[listfields[i]] = field ? field : 
-            array2value(params.fieldset,'field',listfields[i],'default');
+            field = addoninfos[i].field;
+            field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
+            field = field || array2value(addoninfos, 'field', field, 'default');
+            if(addoninfos[i].novaild) field = utility.base64encode(field);
+            if(field.constructor.name == 'Array') field = field.join('-');
+            record[addoninfos[i].field] = field ? field : 
+            array2value(addoninfos,'field',addoninfos[i].field,'default');
         }
         record.aid = params.aid;
-        var uris = this.POST('uris');
-        uris = (typeof uris == 'object') ? uris[0] : uris;
-        record.litpic = uris || "";
         record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);
         var aid = this.POST('id');
         if(aid) conditions.where.push('aid=' + aid);
-        
         this.DB().set(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.message = "保存成功！";
-            data.results = results
+            data.results = results;
             callback(data);
         });
     }

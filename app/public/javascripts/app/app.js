@@ -222,10 +222,12 @@ var app = {
             $("#" + notice).remove();
             if(typeof callback === 'function') return callback();
             if(obj.go) history.go(obj.go);
-            obj.uri += (obj.uri.indexOf('?') === -1) ? 
-            "?" + app.serializeParams() : 
-            "&" + app.serializeParams();
-            if(obj.uri) location.href = obj.uri;
+            if(obj.uri){
+                obj.uri += !(obj.uri.indexOf('?')+1) ? 
+                "?" + app.serializeParams() : 
+                "&" + app.serializeParams();
+                location.href = obj.uri;
+            }
             if(!obj.uri && ('uri' in obj)) location.reload();
         }, 2000);
     },
@@ -628,7 +630,7 @@ var effect = {
      * results object 代结构的数据
      * error 0 | 1  是results的状态标识 0表示结构数据合法，1表示不合法
      * appendid id选择器，指定输入的视图追加在appendid的容器内
-     * 
+     * initElem 初始化的nestable id 如：nestable-spec， 可为空
      * results数据结构如：
      * [
             {
@@ -681,9 +683,14 @@ var effect = {
                 $("#oper-classify-nes").fadeToggle();
             });
      */
-    nestable: function(results,error,appendid){
-        var nesId = $(".dd").eq(0).attr('id');
-        nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
+    nestable: function(results,error,appendid,initElem){
+        var append = $(appendid);
+        if(!append.length) return;
+        var nesId = initElem;
+        if(!initElem){
+            nesId = $(".dd").eq(0).attr('id');
+            nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
+        }
         var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
         var nesBox = `<style>
                         .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
@@ -708,8 +715,8 @@ var effect = {
                         </li>`;
         $("#nesTemCode").html('');
         $('body').append(nesPreBox);
-        $(appendid).find('#' + nesId).remove();
-        $(appendid).append(nesBox);
+        append.find('#' + nesId).remove();
+        append.append(nesBox);
         if(error) return $("#" + nesId + " ol").html(initCode);
         loadItem();
         $("#" + nesId + " ol").html($("#nesTemCode").html());
@@ -721,6 +728,7 @@ var effect = {
             res.forEach(function(item,index){
                 var code = $(initCode);
                 code.attr('data-val',item.val);
+                code.attr('data-name',item.name);
                 code.find('.dd-val').html(item.name);
                 code = code[0].outerHTML;
                 (!farther) ?

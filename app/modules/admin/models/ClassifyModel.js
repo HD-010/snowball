@@ -12,7 +12,8 @@ function ClassifyModel(){
 
         this.DB().get(conditions,function(error,results){
             var data = {};
-            data.error =  (error || !results.length) ? 1 : 0;
+            //data.error =  (error || !results.length) ? 1 : 0;
+            data.error =  error ? 1 : 0;
             data.results = (!results.length) ? [] :
             decodeURI(recodeBase64decode(results,'classify')[0].classify);
             data.macid = params.macid;
@@ -50,7 +51,7 @@ function ClassifyModel(){
             if(!error){
                 data.error = 0;
                 data.message = '操作成功，正在刷新';
-                data.uri = '/admin/classify/index/ctag/infos';
+                data.uri = '/admin/classify/index/ctag/' + params.nid;
             }
             data.results = results;
             callback(data);

@@ -35,7 +35,7 @@ function PermitModel(){
         };
         condition.where.push("id=" + params.id);
 
-        this.DB().log().get(condition,function(error,results){
+        this.DB().get(condition,function(error,results){
             if(error) data.error = 1;
             data.data = results;
             return callback(data);

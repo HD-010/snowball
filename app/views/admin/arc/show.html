@@ -80,12 +80,12 @@
                             </td> 
                             <td>{{id}}</td>   
                             <td><img src="{{litpic}}"/>{{title}}</td>
-                            <td>{{- return array2value(type,'id',typeid,'typename'); }}</td>   
+                            <td>{{- return array2value(typePage,'id',typeid,'typename'); }}</td>   
                             <td>{{writer}}</td> 
                             <td>{{senddate}}</td>                           
                             <td class="project-actions">
-                                <a href="javascript:go('/admin/arc/edt/ctag/infos?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
-                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/infos?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                <a href="javascript:go('/admin/arc/edt/ctag/<%-ctag%>?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/<%-ctag%>?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
                         </tr>
                     </tbody>
@@ -93,7 +93,7 @@
                         <tr>
                             <td colspan="7">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
-                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/infos?id=' id='del-records'>删除</button>
+                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
@@ -107,11 +107,12 @@
         </div>        
     </div>
 </div>
-<script>var type = <%- JSON.stringify(type) %></script>
+<script>var typePage = <%- JSON.stringify(type) %></script>
 <script>
     DL({
         dev: 'on',
         listId: "#arc-lists",
+        clearCode: true,
         packet: {
             error: <%= error; %>,
             data: <%- JSON.stringify(results); %>
@@ -146,7 +147,6 @@
     })
      
 </script>
-
 
 
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>

@@ -17,7 +17,7 @@ function ComponentModel(){
             var data = {};
             data.error = error ? 1 : 0;
             data.uri = "";
-            data.results = recodeJsonParse(results,'fieldset');
+            data.results = recodeJsonParse(results,'addoninfos');
             return callback(data);
         });
     }

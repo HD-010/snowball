@@ -152,8 +152,10 @@ function ViewData(params){
     this.results = params.packet || [];
     //当没有数据时的提示,html代码
     this.nullData = params.nullData || '<div class="text-center">还没有数据...</div>';
-    //是否缓存数据
+    //是否使用暂存的数据
     this.cached = params.cached || false;
+    //是否清除暂存的逻辑代码（设置为true, 渲染时采用dome中新的代码）
+    this.clearCode = params.clearCode || false;
     this.result = {};
     
 
@@ -258,6 +260,8 @@ function ViewData(params){
 
     //设置逻辑代码
     this.setLogicCode = function(){
+        //清除暂存的逻辑代码
+        if(this.clearCode) this.clearLogicCode();
         //如果没有设置listTag 和 selector，则不解释
         if(this.listTag){
             if(!$(this.listTag).length) return;
@@ -269,6 +273,12 @@ function ViewData(params){
             if($(LogicCode).find(this.selector).length > 0) return;
             $(LogicCode).append($(this.selector)[0].outerHTML);
         }
+    }
+
+    //消除逻辑代码
+    this.clearLogicCode = function(){
+        $(LogicCode).find(this.listTag).remove();
+        $(LogicCode).find(this.selector).remove();
     }
     
     //渲染数据
@@ -413,12 +423,20 @@ function ViewData(params){
 }
 
 
-//暂存接口返回的数据
+/**
+ * 暂存接口返回的数据
+ * @param {*} key selecter | querystring
+ * @param {*} data 
+ */
 function setDLData(key,data){
     if(!window.DLData) window.DLData = [];
     window.DLData[btoa(key)] = data;
 }
-//获取暂存的接口数据
+/**
+ * 获取暂存的接口数据
+ * @param {*} key selecter | querystring
+ * @param {*} data 
+ */
 function getDLData(key){
     if(!window.DLData) window.DLData = [];
     return window.DLData[btoa(key)];
