@@ -58,7 +58,7 @@ function orderControler(){
         
         commodity.aOrder(params,function(res){
             data = mergeObj([data,res]);
-            data.buyer = list(data.order[0],['buyer','buyerid','sn','address','buytel','addtime']);
+            data.buyer = list(data.order[0],['buyer','buyerid','sn','address','buytel','addtime','state']);
             data.seller = list(data.order[0],['merchan','merchantid','maddress','mtel']);
             data.count = list(data.order[0],['totalprice','trancefree']);
             ps = that.testRender(data, ps);

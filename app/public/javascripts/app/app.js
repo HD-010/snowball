@@ -739,6 +739,49 @@ var effect = {
         }
     },
 
+    /**
+     * 模态框
+     * @param {*} params 
+     */
+    modal: function(params){
+        params = params || {};
+        var modal = {
+            type: params.type || 'normal',              //模态框样式，暂提供 
+            title: params.title || '请选择相关操作',
+            detail: params.title || '',
+            normalType: `<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated bounceInRight">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="normalModal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                            </button>
+                            <i class="fa fa-laptop modal-icon"></i>
+                            <h4 class="modal-title">`+ this.title +`</h4>
+                            <small class="font-bold">`+ this.detail +`</small>
+                        </div>
+                        <div class="modal-body">
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="normalModal">关闭</button>
+                            <button type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`,
+        }
+        
+        if(!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
+        $('body #freeMode').html(modal[modal.type + 'Type']);
+        $("button[data-dismiss]").unbind("click").on("click",function(){
+            var modalId = $(this).attr('data-dismiss');
+            $("#" + modalId).toggle();
+        });
+        $("#"+modal.Type+"Modal").toggle();
+
+        //return $("#freeMode").children();
+    }
+
 
 }
 

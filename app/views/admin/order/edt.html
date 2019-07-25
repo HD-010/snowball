@@ -41,7 +41,6 @@
                             <th>清单</th>
                             <th>数量</th>
                             <th>规格</th>
-                            <th>状态</th>
                             <th>单价</th>
                         </tr>
                     </thead>
@@ -53,7 +52,6 @@
                             </td>
                             <td contenteditable="true" data-content="commodities_orders-id-{{id}}-number">{{number}}</td>
                             <td>{{spectitle}}</td>
-                            <td>{{- return enumtagName[state]; }}&nbsp;&nbsp;<i class="fa fa-edit"></i></td>
                             <td>&yen;{{- return price.toFixed(2); }}</td>
                         </tr>
                         
@@ -61,6 +59,15 @@
                     </tbody>
                 </table>
             </div>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td style="width:100px"><strong>订单状态：</strong></td>
+                        <td><span contenteditable="true" data-freemodal="state" data-content="commodities_orders-sn-<%= enumtagName[buyer.state] %>-totalprice">待付款</span></td>
+                    </tr>
+                </tbody>
+            </table>
             <!-- /table-responsive -->
 
             <table class="table invoice-total">
@@ -106,8 +113,10 @@ DL({
 $("[contenteditable='true']").focusout(function(){
     var data = $(this).attr('data-content');
     var val = $(this).html()
+});
 
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&::::",data);
+$("[data-freemodal]").click(function(){
+    console.log(effect.modal())
 });
 
 </script>
