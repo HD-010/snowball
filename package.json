@@ -10,6 +10,7 @@
     "express": "^4.16.4",
     "express-generator": "^4.16.0",
     "express-session": "^1.15.6",
+    "file-stream-rotator": "^0.4.1",
     "iconv-lite": "^0.4.24",
     "jshint": "^2.9.6",
     "morgan": "^1.9.1",

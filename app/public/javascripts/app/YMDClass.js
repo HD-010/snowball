@@ -1,7 +1,7 @@
 /*
   年月日联动下拉选择JS封装类 Ver 1.0 版
-  制作时间:2013-3-12
-　更新时间:2013-3-12
+  制作时间:2019-3-12
+　更新时间:2019-3-12
   应用说明:页面包含<script type="text/javascript" src="YMDClass.js" charset="utf-8"></script>
   <select name="year1"></select>
   <select name="month1"></select>

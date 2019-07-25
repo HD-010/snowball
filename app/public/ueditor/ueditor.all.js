@@ -19925,12 +19925,8 @@ UE.ui = baidu.editor.ui = {};
                             if (/textarea/i.test(holder.tagName)) {
                                 editor.textarea = holder;
                                 editor.textarea.style.display = 'none';
-
-
                             } else {
                                 holder.parentNode.removeChild(holder);
-
-
                             }
                             if(holder.id){
                                 newDiv.id = holder.id;
@@ -19959,8 +19955,7 @@ UE.ui = baidu.editor.ui = {};
                         var styleWidth = holder.style.width;
                         if(/%$/.test(styleWidth)) {
                             opt.initialFrameWidth = styleWidth;
-                            opt.initialFrameHeight = 470;
-                           
+                            opt.initialFrameHeight = 470;                           
                         }
                     } 
                     if (opt.initialFrameHeight) {
