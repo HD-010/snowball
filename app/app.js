@@ -35,7 +35,6 @@ app.use(cors());
 //记录每次访问的日志开始
 //定义日志记录文件
 var logDirectory = path.join(__dirname+'\\modules\\api\\', 'log');
-console.log(logDirectory);
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);//日志目录不存在就创建一个log目录
 //把日志写入到文件中
 var accessLogStream = FileStreamRotator.getStream({
@@ -55,7 +54,7 @@ logger.token('localDate',function getDate(req) {
 logger.format('combined', ':remote-addr - :remote-user [:localDate]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"');
 
 app.use("/api",logger('combined', {stream: accessLogStream}));
-//记录每次访问的日志开始
+//记录每次访问的日志结束
 
 app.use(logger('dev'));
 app.use(express.json());

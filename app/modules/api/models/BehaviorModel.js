@@ -13,7 +13,8 @@ function BehaviorModel() {
     h5_shop.push('validUser');
 
     this.ruler = {
-        '/api/*' : ['parseTemplate'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/api/*' : ['frequentReq','parseTemplate'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        
     }
     
 
@@ -25,12 +26,38 @@ function BehaviorModel() {
     }
 
     /**
+     * 解决同一ip频繁请求一接口问题
+     * 方案：同一1p 同一接口调间隔时间为2秒
+     */
+    this.frequentReq = function(params, callback){
+        let that = this;
+        let rou = this.req.ip+this.req.url
+       this.DB('Redis').get(rou,function(err,data){
+            if(data){
+                if((Date.parse(new Date())/1000-data) > 2 ){
+                    that.DB('Redis').set(rou,Date.parse(new Date())/1000);
+                    callback({error:0})
+                }else{                   
+                    //暂停两秒后在给数据
+                    setTimeout(function(){
+                        callback({error:0})
+                    },2000);
+                  
+                }
+            }else{//没有当前缓存数据 存入缓存
+                that.DB('Redis').set(rou,Date.parse(new Date())/1000);
+                callback({error:0})
+            }
+       })
+       
+    }
+    /**
      * 解析店铺
      * 访问地址如：http://127.0.0.1:3005/h5/shop/parse?rid=2
      * 
      */
     this.parseTemplate = function(params, callback){
-        console.log("===============",this.POST());
+        console.log("===============POST参数",this.POST());
         callback({error:0})
         // var that = this;
         // var process, template,currTime;
