@@ -13,7 +13,8 @@ function BehaviorModel() {
     h5_shop.push('validUser');
 
     this.ruler = {
-        '/api/*' : ['frequentReq','parseTemplate'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/api/*' : ['frequentReq'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
+        '/api/user/reg':['parseTemplate']
         
     }
     
@@ -30,6 +31,7 @@ function BehaviorModel() {
      * 方案：同一1p 同一接口调间隔时间为2秒
      */
     this.frequentReq = function(params, callback){
+        console.log("")
         let that = this;
         let rou = this.req.ip+this.req.url
        this.DB('Redis').get(rou,function(err,data){
@@ -57,8 +59,22 @@ function BehaviorModel() {
      * 
      */
     this.parseTemplate = function(params, callback){
-        console.log("===============POST参数",this.POST());
-        callback({error:0})
+        let that = this;
+        //验证api接口token的合法性
+        let token  = this.POST("token");
+        let uid = this.POST("uid");
+        //依据用户id到redis取出token与当前参数带来的token做一次合法校验
+        this.DB("Redis").get(uid,function(error,data){
+            if(token == data){
+                console.log("===============POST参数",this.POST());
+                callback({error:0})
+            }else{
+                that.req.res.send({error:"接口请求错误 This is not a valid user"});
+            }
+        })
+
+      
+    
         // var that = this;
         // var process, template,currTime;
         // var templateId = 1;
