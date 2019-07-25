@@ -169,7 +169,7 @@ function CommodityModel(){
      * @param {*} callback 
      */
     this.specDel = function(params,callback){
-        var data = {error: 1, message: '参数错误'}
+        var data = {error: 1, message: 'params error!'}
         //删除commodityId对应的值
         var conditions = {
             table:'youbang_commidity_spec',
@@ -178,10 +178,63 @@ function CommodityModel(){
         if(!params.aid) return callback(data);
         conditions.where.push("commodityid=" + params.aid);
 
-        that.DB().log().del(conditions, (error,results,fields)=>{
+        that.DB().del(conditions, (error,results,fields)=>{
             data.error = error;
             data.results = results;
             callback(data);
+        });
+    }
+
+    /**
+     * 获取订单列表
+     */
+    this.order = function(params,callback){
+        var data = {error: 1, message: 'params error!'}
+        params.SEDate = this.POST('SEDate',{default:this.GET('SEDate')}) || params.SEDate;
+        if(typeof params.SEDate != 'object') callback({error: 1, message: '时间参数错误!'});
+        var orderSate = this.POST('ost') || params.state;
+        if(typeof orderSate != 'object') orderSate = [orderSate];
+        var sky = this.POST('sky');
+        if(!params.SEDate) return callback(data);
+        var conditions = {
+            table: ['youbang_commodities_orders'],
+            where: [],
+            orderBy:['addtime asc']
+        }
+        
+        typeof params.SEDate[1] == 'number' ?
+        conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and "' + params.SEDate[0] + '"'):
+        conditions.where.push('addtime between "' + params.SEDate[0] + '" and "' + params.SEDate[1] + '"');
+        if(params.merchantid) conditions.where.push(' merchantid="' + params.merchantid + '"');
+        if(sky) conditions.where.push("(merchantid='" + sky + "' or sn='" + sky + "' or merchan like '%" + sky + "%' or title like '%" + sky + "%')");
+        if(orderSate) conditions.where.push("state in ('" + orderSate.join("','") + "')");
+        
+        that.DB().get(conditions, (error,results,fields)=>{
+            data.error = error || !results.length ? 1 : 0;
+            data.orders = results;
+            callback(data);
+        });
+    }
+
+    /**
+     * 查询一个订单信息
+     */
+    this.aOrder = function(params,callback){
+        var commodityId = parseInt(this.GET('cmid'));
+        
+        if(typeof commodityId != 'number') return callback({error: 1,message: 'message error'});
+        var conditions = {
+            table: ['youbang_commodities_orders as a '],
+            fields:['b.*'],
+            joinOn:'left join youbang_commodities_orders as b on a.merchantid=b.merchantid and a.sn=b.sn ',
+            where: ['a.id = ' + commodityId]
+        }
+        
+        this.DB().get(conditions,function(error,results,fields){
+            callback({
+                error: error ? 1 : 0,
+                order: results,
+            });
         });
     }
 }

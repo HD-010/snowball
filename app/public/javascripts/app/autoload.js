@@ -27,7 +27,7 @@ Array.prototype.remove = function(val) {
     使用案例：1
     <div id data-uri="/api/goods/home"></div>
     <script>
-        new ViewData({
+        new DL({
             dev: 'on',                     //on表示为开发者模式，输了接口请求返回的数据
             id:'#myCarousel',              //被填充数据元素的id
             childId:'#myCarousel-img',     //被填充数据列表项的id,如果没有列表，则不需要
@@ -52,7 +52,7 @@ Array.prototype.remove = function(val) {
             after:function(){
                 $("#myCarousel-img").children().first().addClass('active');
             }
-        }).init();
+        });
     </script>
 
     使用案例：2
@@ -64,7 +64,7 @@ Array.prototype.remove = function(val) {
         </li>
     </ul>
     <script>
-        new ViewData({
+        new DL({
                 listId: '#ksdfskdgjsdsdg-0',
                 packet:{
                     error:0,        //当大于0时，驱动会取消
@@ -80,8 +80,8 @@ Array.prototype.remove = function(val) {
                     ]
                 }
                 
-        }).init();
-        new ViewData({
+        });
+        new DL({
             id: '#ksdfskdgjsdsdg',
             packet:{
                 error:0,
@@ -91,7 +91,7 @@ Array.prototype.remove = function(val) {
                 },
             }
                 
-        }).init();
+        });
     </script>
         
     使用案例：3(选中默认的项，用data-selected属性值表示)
@@ -99,7 +99,7 @@ Array.prototype.remove = function(val) {
         <option  value="{{- return val; }}">{{- return name; }}</option>
     </select>
     <script>
-        new ViewData({
+        new DL({
             listId:'#select-t0',     //被填充数据列表项的id,如果没有列表，则不需要
             packet:{
                 error: 0,
@@ -109,7 +109,7 @@ Array.prototype.remove = function(val) {
                     {name:"王二",val:"we"},
                 ]
             },
-        }).init();
+        });
     </script>
  *   
  */
@@ -286,19 +286,19 @@ function ViewData(params){
         var that = this;
         var results = that.tempData || that.results;
         var list;
+        //将逻辑代码暂存在起来
+        that.setLogicCode();
+
         if(results.error > 0 || results.errcode > 0) {
             if(that.deleteInitList) return;
             $(that.selector).html(this.nullData);
-            $(that.listTag).remove();
+            $(that.listTag).html(''); //.remove();
             return;
         }
         if(!results.data) {
             console.error("渲染数据不存在！");
             return;
         }
-        //将逻辑代码暂存在起来
-        that.setLogicCode();
-        
         if(results.data.constructor.name === 'Array'){
             var length = results.data.length;
             var lists = $(LogicCode).find(that.listTag).children();

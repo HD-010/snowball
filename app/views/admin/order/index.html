@@ -1,0 +1,189 @@
+<link rel="stylesheet" href="/bootstrap/css/v3.css"/>
+<style>
+    .panel-collapse{
+        overflow:auto;
+    }
+    
+    .arcinfo{
+        margin: 1em;
+        background-color: white;
+        min-height:50px;
+        margin-top: 0px;
+    }
+    .arcinfo .memberinfo{
+        border:1px solid #E6E6E6;
+        height: 35px;
+        background-color:#F0F6FB;
+    }
+    .arcinfo .memberinfo h4{
+        line-height: 25px;
+    }
+    .btn-white {
+        color: inherit;
+        background: white;
+        border: 1px solid #e7eaec;
+    }
+    .footable-odd{
+        background-color: white;
+    }
+    #arcinfo img{
+        width: 66px;
+        height: 66px;
+    }
+
+    .arcinfo tbody img{
+        width: 42px;
+        height: 42px;
+        border: 0;
+        display: inline-block;
+        position: absolute;
+        margin-left: -46px;
+        margin-top: -12px;
+    }
+    .arcinfo tbody .title{
+        padding-left: 46px;
+        height: 60px;
+    }
+</style>
+<%
+
+//订单列表
+console.log(orders);
+//枚举数据列表
+console.log(enumtag);
+%>
+<div class="container-fluid base order-infos">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-店铺管理-管理订单</span>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" style="background-color:#fff">
+        <li class="active"><a data-toggle="tab"><i class="fa fa-user"></i>昨天订单</a></li>
+        <li class=""><a data-toggle="tab" ><i class="fa fa-briefcase"></i>前天订单</a></li>
+        <li class=""><a data-toggle="tab"><i class="fa fa-briefcase"></i>本周订单</a></li>
+        <li class=""><a data-toggle="tab"><i class="fa fa-briefcase"></i>本月订单</a></li>
+    </ul>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+            </div>
+        </div>
+    </div>
+    <form class="row arcinfo" method="post"  data-form-async='json' action="/admin/order/search">
+        <div class="col-xs-12" style="margin-top:10px;">
+            <input type="text" class="input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)" name="sky" value=""/>
+            开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value=""/>
+            结束：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value=""/>
+            <input type="submit" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)"  value="搜索">
+        </div>
+        <div class="col-xs-12">
+            <span>订单状态：</span>
+            <div class="btn-group checkbox-order-state" data-toggle="buttons" style="margin-left:10px;">
+                <label class="btn btn-outline btn-success dim codeSwitch">
+                    <input type="checkbox" data-key="<%= enumtagVal.join('-') %>" data-val="<%= enumtagName.join('-') %>" name="ost"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                </label>
+            </div>
+        </div>
+    </form>
+
+    <div class="row arcinfo"  style="margin-top:-10px;">
+        <div class="col-xs-12">              
+            <div class="ibox-content">
+                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="20" data-filter=#filter>
+                    <thead>
+                        <tr>    
+                            <th data-sort-ignore="true" style="width:15px;">
+                                <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /></label>
+                            </th>
+                            <th class="col-xs-1">序号</th>
+                            <th data-sort-ignore="false">商品名称</th>
+                            <th data-sort-ignore="false">交易流水</th>
+                            <th data-sort-ignore="false">商户名称</th>
+                            <th data-sort-ignore="false">客户名称</th>
+                            <th data-sort-ignore="false">订单金额</th>
+                            <th data-sort-ignore="false">下单时间</th>
+                            <th data-sort-ignore="true">操作</th>                                           
+                        </tr>
+                    </thead>
+                    <tbody id="DL-order-list">
+                        <tr>
+                            <td data-sort-ignore="true">
+                                <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="" /></label>
+                            </td> 
+                            <td>{{id}}</td>
+                            <td class="title"><img src="/" />{{title}}</td>
+                            <td>{{sn}}</td>
+                            <td>{{merchan}}</td>
+                            <td>{{buyer}}</td>
+                            <td>¥:{{- return price.toFixed(2); }}</td>
+                            <td>{{- return dateFormate(' %Y-%m-%d %H:%M:%S',addtime); }}</td>
+                            <td class="project-actions">
+                                <a href="javascript:go('/admin/order/detail?cmid={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 详情 </a>
+                                <a href="javascript:go('/admin/order/edt?cmid={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 修改 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/order/del?cmid={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>     
+                        <tr>
+                            <td colspan="9">
+                                <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del' id='del-records'>删除</button>
+                            </td>
+                        </tr>                  
+                        <tr>                           
+                            <td colspan="9">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>    
+            </div>     
+        </div> 
+    </div>
+</div>
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+
+<script>
+    app.addonParams = {oid: getItem('OID')}
+    
+    DL({
+        //dev: 'on',
+        listId: "#DL-order-list",
+        deleteInitList: 0,
+        packet:{
+            error: <%- error? 1: 0; %>,
+            data: <%- JSON.stringify(orders) %> || [],
+        },
+        after:function(){
+            effect.unionSelect();
+            effect.setCheckbox('.checkbox-order-state');
+            $(".checkbox-order-state").children("");
+            app.load(".order-infos");
+        }
+    });
+
+    $(document).ready(function() {
+        $('.footable').footable();
+    });
+    
+    function search(res){
+        $("#DL-order-list").html("");
+        DL({
+            dev: 'on',
+            listId: "#DL-order-list",
+            deleteInitList: 1,
+            packet:{
+                error: res.error,
+                data: res.orders,
+            },
+            after:function(){
+                effect.unionSelect();
+                app.load(".order-infos");
+            }   
+        });
+    }
+</script>
