@@ -413,6 +413,7 @@ var app = {
                 try{eval((app['action'] + '(res);'));}catch(err){app.notice(res);}
             });
         });
+        $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>')
     },
 
 };
