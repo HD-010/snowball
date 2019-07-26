@@ -10,6 +10,7 @@ function EnumModel(){
 
         var conditions = {
             table: ['youbang_enum'],
+            fields:['*', 'value as val'],
             where: []
         }
         conditions.where.push('enumtag="' + params.enumtag + '"');
