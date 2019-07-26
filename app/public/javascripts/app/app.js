@@ -967,8 +967,8 @@ function getStandardDate(date,defaultVal) {
 function dateFormate(formate,time){
 	var date = new Date(time);
 	var Y = date.getFullYear();
-	var m = date.getMonth() > 9 ? date.getMonth() : date.getMonth() + 1;
-	var d = date.getDate();
+	var m = date.getMonth() > 9 ? date.getMonth()+1 : '0' + (date.getMonth() + 1);
+	var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
 	var H = date.getHours();
 	var M = date.getMinutes();
 	var S = date.getSeconds();

@@ -217,17 +217,17 @@ function CommodityModel(){
     }
 
     /**
-     * 查询一个订单信息
+     * 根据订单id查询一组订单的信息
      */
     this.aOrder = function(params,callback){
-        var commodityId = parseInt(this.GET('cmid'));
+        var orderId = parseInt(this.GET('cmid'));
         
-        if(typeof commodityId != 'number') return callback({error: 1,message: 'message error'});
+        if(typeof orderId != 'number') return callback({error: 1,message: 'message error'});
         var conditions = {
             table: ['youbang_commodities_orders as a '],
             fields:['b.*'],
             joinOn:'left join youbang_commodities_orders as b on a.merchantid=b.merchantid and a.sn=b.sn ',
-            where: ['a.id = ' + commodityId]
+            where: ['a.id = ' + orderId]
         }
         
         this.DB().get(conditions,function(error,results,fields){
