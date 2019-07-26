@@ -42,7 +42,7 @@ function orderControler(){
     /**
      * 修改订单
      */
-    this.edt = function(){
+    this.detail = this.edt = function(){
         var ps = 2;
         var params = {};
         var data = {error: 1};
