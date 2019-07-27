@@ -9,7 +9,7 @@ function arcControler(){
      */
     this.add = function(){
         var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
-        var ps = 3;         
+        var ps = 4;         
         var data = {};
         var params = {};
         var process = this.model("DataProcess");
@@ -39,6 +39,13 @@ function arcControler(){
                 res.message = "查询分类信息失败，请稍后重试";
                 return that.render(res,'/err404');
             }
+            data = mergeObj([data,res]);
+            ps = that.testRender(data,ps);
+        });
+
+        //添加内容的状态列表
+        params.enumtag = ctag + '_state';
+        this.model('Enum').list(params, function(res){
             data = mergeObj([data,res]);
             ps = that.testRender(data,ps);
         });
