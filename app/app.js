@@ -55,7 +55,6 @@ app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), myUeditor.init));
 
 //使用上传文件模块时需要加载
 app.use(multer({ dest: '/temp/' }).array('image'));
-
 app.use('/*', appRouter);
 
 // catch 404 and forward to error handler

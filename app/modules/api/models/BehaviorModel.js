@@ -14,7 +14,7 @@ function BehaviorModel() {
 
     this.ruler = {
         '/api/*' : ['frequentReq'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
-        '/api/user/reg':['parseTemplate']
+       
         
     }
     
@@ -31,8 +31,13 @@ function BehaviorModel() {
      * 方案：同一1p 同一接口调间隔时间为2秒
      */
     this.frequentReq = function(params, callback){
-        console.log("")
         let that = this;
+        if(this.req.method=="GET"){
+             that.req.res.send({error:'非法接口请求'});
+             that.req.res.end();
+             return;
+        }
+        
         let rou = this.req.ip+this.req.url
        this.DB('Redis').get(rou,function(err,data){
             if(data){
@@ -66,10 +71,12 @@ function BehaviorModel() {
         //依据用户id到redis取出token与当前参数带来的token做一次合法校验
         this.DB("Redis").get(uid,function(error,data){
             if(token == data){
-                console.log("===============POST参数",this.POST());
+                console.log("===============POST参数",that.POST());
                 callback({error:0})
             }else{
-                that.req.res.send({error:"接口请求错误 This is not a valid user"});
+                that.req.res.send({error:'接口请求错误 This is not a valid user'});
+                that.req.res.end();
+                return;
             }
         })
 

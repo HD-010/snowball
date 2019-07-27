@@ -1,5 +1,0 @@
-::ffff:127.0.0.1 - - [2019-7-24 15:30:17]] "POST /api/user/reg HTTP/1.1" 200 48 "-" "Go-http-client/1.1"
-::ffff:127.0.0.1 - - [2019-7-24 15:30:34]] "GET /api/sign/_in HTTP/1.1" 200 13 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-::ffff:127.0.0.1 - - [2019-7-24 15:32:01]] "POST /api/user/reg HTTP/1.1" 200 48 "-" "Go-http-client/1.1"
-::ffff:127.0.0.1 - - [2019-7-24 17:30:15]] "POST /api/user/reg HTTP/1.1" 200 48 "-" "Go-http-client/1.1"
-::ffff:127.0.0.1 - - [2019-7-24 17:30:21]] "GET /api/user/reg HTTP/1.1" 200 13 "-" "Go-http-client/1.1"
