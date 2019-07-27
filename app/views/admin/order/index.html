@@ -58,12 +58,14 @@ console.log(enumtag);
             <span>系统管理-店铺管理-管理订单</span>
         </div>
     </div>
-    <ul class="nav nav-tabs" style="background-color:#fff">
-        <li class="active"><a data-toggle="tab"><i class="fa fa-user"></i>昨天订单</a></li>
-        <li class=""><a data-toggle="tab" ><i class="fa fa-briefcase"></i>前天订单</a></li>
-        <li class=""><a data-toggle="tab"><i class="fa fa-briefcase"></i>本周订单</a></li>
-        <li class=""><a data-toggle="tab"><i class="fa fa-briefcase"></i>本月订单</a></li>
+    <ul class="nav nav-tabs tiem-axis" style="background-color:#fff">
+        <li class="active" data-val=0><a data-toggle="tab"><i class="fa fa-user"></i>今天订单</a></li>
+        <li class="" data-val=1><a data-toggle="tab"><i class="fa fa-user"></i>昨天订单</a></li>
+        <li class="" data-val=2><a data-toggle="tab" ><i class="fa fa-briefcase"></i>前天订单</a></li>
+        <li class="" data-val='w'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本周订单</a></li>
+        <li class="" data-val='m'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本月订单</a></li>
     </ul>
+    
     <div class="row tips">
         <div class="col-xs-12">
             <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
@@ -75,8 +77,8 @@ console.log(enumtag);
     <form class="row arcinfo" method="post"  data-form-async='json' action="/admin/order/search">
         <div class="col-xs-12" style="margin-top:10px;">
             <input type="text" class="input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)" name="sky" value=""/>
-            开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value=""/>
-            结束：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value=""/>
+            开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="<%- dateFormate('%Y-%m-%d',(new Date()).valueOf() - 3600*24*1000) %>"/>
+            结束：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="<%- dateFormate('%Y-%m-%d',new Date()) %>"/>
             <input type="submit" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)"  value="搜索">
         </div>
         <div class="col-xs-12">
@@ -88,7 +90,6 @@ console.log(enumtag);
             </div>
         </div>
     </form>
-
     <div class="row arcinfo"  style="margin-top:-10px;">
         <div class="col-xs-12">              
             <div class="ibox-content">
@@ -186,4 +187,29 @@ console.log(enumtag);
             }   
         });
     }
+</script>
+
+<script>
+    $(".tiem-axis").children('li').on("click",function(){
+        var date = (new Date()).valueOf();
+        var dataVal,eDate;
+        if(typeof parseInt($(this).attr('data-val')) == 'number'){
+            dataVal = $(this).attr('data-val') * 3600*24*1000;
+            eDate = dateFormate('%Y-%m-%d',date - dataVal);
+        }
+        //本周
+        if($(this).attr('data-val') == 'w'){
+            dataVal = ((new Date()).getDay() - 1) * 3600*24*1000;
+            eDate = dateFormate('%Y-%m-%d',date);
+        }
+        //本月
+        if($(this).attr('data-val') == 'm'){
+            dataVal = ((new Date()).getDate() - 1) * 3600*24*1000;
+            eDate = dateFormate('%Y-%m-%d',date);
+        }
+        var sDate = dateFormate('%Y-%m-%d',date - dataVal - 24*3600*1000);
+        var dateForm = $('input[name="SEDate"]');
+        dateForm.eq(0).val(sDate);
+        dateForm.eq(1).val(eDate);
+    })
 </script>

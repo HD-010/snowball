@@ -42,7 +42,7 @@ function orderControler(){
     /**
      * 修改订单
      */
-    this.edt = function(){
+    this.detail = this.edt = function(){
         var ps = 2;
         var params = {};
         var data = {error: 1};
@@ -58,9 +58,9 @@ function orderControler(){
         
         commodity.aOrder(params,function(res){
             data = mergeObj([data,res]);
-            data.buyer = list(data.order[0],['buyer','buyerid','sn','address','buytel','addtime']);
+            data.buyer = list(data.order[0],['buyer','buyerid','sn','address','buytel','addtime','state']);
             data.seller = list(data.order[0],['merchan','merchantid','maddress','mtel']);
-            data.count = list(data.order[0],['totalprice','trancefree']);
+            data.count = list(data.order[0],['totalprice','trancefree','coupon']);
             ps = that.testRender(data, ps);
         });
     }

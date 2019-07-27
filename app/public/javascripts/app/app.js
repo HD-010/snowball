@@ -187,6 +187,36 @@ var app = {
     },
 
     /**
+     * 数据传输助手
+     * 使用说明：
+     * 与某（个）节点进行初始化，被初始化的节点需要增加以下属性：
+     * 1、data-signle-async="feature" 特征码，与TranceConfsModel.js中的
+     * 2、data-uri="uri"    指定统一数据传输地址
+     * 数据承载元素需要添加 data-reference属性，其值与update 中where条件对应。如：
+     * data-reference="id-4-sn-33-state",表示要更新id=4 and sn='33' 的值。
+     * 值采集来源：data-val 属性 、value属性、元素的text、元素的innerHTML,优先级逐渐降低。
+     * 如果个别字段属性其他表，则在数据承载元素添加data-feature="feature"属性
+     * attr {feature} 被传输数据的特征
+     * attr {val}     被传输的值
+     */
+    dataTransfer: function(event,obj,callback){
+        if(!app.signleUri) return;
+        this.initAction(app.signleUri);
+        var uri = app.host + app.signleUri;
+        if(!app.feature) return;
+        var dataReference = $(obj).attr('data-reference');    //参考照数据
+        var data = 'feature='+app.feature+'&refrerence='+ dataReference + '&val='+ app.tranceValue+ "&" +app.serializeParams();
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@:传输数据::",data);
+        $.ajax({
+            url : uri,
+            type : "post",
+            data : data,
+            dataType : 'JSON',
+            success : app.notice
+        });
+    },
+
+    /**
      * 初始化请求附加参数
      * @param {*} obj 
      * @param {*} callback 
@@ -250,6 +280,14 @@ var app = {
      * 使用方法：
      * 使用该方法不需要作任何处理，也不需要调用。它会表求监视表单提交。
      * 在恢复显示时需要作唯一的处理就是，当value没有值时，将其设置为' '。注意这是一个空格
+     * 调用案例：
+     * <div class="order-detail">
+        <div data-signle-async="SDFGDFGDFGDFG" data-uri="/admin/trance/set">
+            <span contenteditable="true" data-reference="sn-34234-state" data-val="1">待付款</span>
+        </div>
+       </div>
+        <!-- 初始化：-->
+        <script>app.load(".order-detail");</script>
      */
     memory: function(){
         app.formMemory.submit(function(){
@@ -358,6 +396,24 @@ var app = {
                 }
             });
         });
+
+        //form(非form)表单单个元素提交不跳转 【事件监听组】
+        $(el).find('[data-signle-async]').find("input,select,textarea,[contenteditable='true']").unbind('focus').on('focus',function(event) {
+            app.tranceValue = $(this).attr('data-val') || $(this).val() || $(this).text() || $(this).html(); //传输的数据
+        }),
+        $(el).find('[data-signle-async]').find("input,select,textarea,[contenteditable='true']").unbind('focusout').on('focusout',function(event) {
+            var dataValue = $(this).attr('data-val') || $(this).val() || $(this).text() || $(this).html(); //传输的数据
+            if(dataValue == app.tranceValue) return;
+            app.tranceValue = dataValue;
+            var single = $(this).parentsUntil('[data-signle-async]').parent(); 
+            if(!app.signleUri) app.signleUri = single.attr('data-uri');
+            app.feature = $(this).attr('data-feature') || single.attr('data-signle-async');
+            app.dataTransfer(event, this, function(res) {
+                //调用用户义的与操作名称同名的回调函数
+                try{eval((app['action'] + '(res);'));}catch(err){app.notice(res);}
+            });
+        });
+        $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>')
     },
 
 };
@@ -739,6 +795,59 @@ var effect = {
         }
     },
 
+    /**
+     * 模态框
+     * @param {*} params 
+     */
+    modal: function(params){
+        params = params || {};
+        var attr = {
+            type: params.type || 'normal',  //模态框样式，暂提供 normalType
+            title: params.title || '请选择相关操作',       //副标题
+            detail: params.detail || '',                  //副标题
+            confirm: params.confirm || function(){},     //成功时回调处理  
+            close: params.close || function(){},       //关闭时回调处理  
+        }
+        
+        var model = {
+            normal_type: `<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated bounceInRight">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="normalModal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                            </button>
+                            <i class="fa fa-laptop modal-icon"></i>
+                            <h4 class="modal-title">`+ attr.title +`</h4>
+                            <small class="font-bold">`+ attr.detail +`</small>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="normalModal">关闭</button>
+                            <button type="button" class="btn btn-primary" data-confirm="normalModal" >确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`,
+        }
+        
+        if(!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
+        $('body #freeMode').html(model[attr.type + '_type']);
+        $("button[data-dismiss]").unbind("click").on("click",function(){
+            var modalId = $(this).attr('data-dismiss');
+            attr['close']($("#" + modalId));
+            $("#" + modalId).toggle();
+        });
+        $("button[data-confirm]").unbind("click").on("click",function(){
+            var modalId = $(this).attr('data-confirm');
+            attr['confirm']($("#" + modalId));
+            $("#" + modalId).toggle();
+        });
+        $("#" + attr.type + "Modal").toggle();
+
+    }
+
 
 }
 
@@ -858,8 +967,8 @@ function getStandardDate(date,defaultVal) {
 function dateFormate(formate,time){
 	var date = new Date(time);
 	var Y = date.getFullYear();
-	var m = date.getMonth() > 9 ? date.getMonth() : date.getMonth() + 1;
-	var d = date.getDate();
+	var m = date.getMonth() > 9 ? date.getMonth()+1 : '0' + (date.getMonth() + 1);
+	var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
 	var H = date.getHours();
 	var M = date.getMinutes();
 	var S = date.getSeconds();

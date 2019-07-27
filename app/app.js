@@ -1,12 +1,11 @@
 var createError = require('http-errors');
 var express      = require('express');
-var cors         = require('cors'); //跨域访问控制模块
+var cors         = require('cors');                           //跨域访问控制模块
 var path         = require('path');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 var RedisStore   = require('connect-redis')(session);
 var logger       = require('morgan');
-var fs           = require('fs');
 var ejs          = require('ejs');
 var bodyParser   = require('body-parser');
 var multer       = require('multer');
