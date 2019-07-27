@@ -7,9 +7,11 @@ function advControler() {
     /**
      * 查询轮播广告
      * advId 有就根据ID查询、没有查询全部
+     * advtype 广告类型
+     * flag 广告位子
      */
     that.adv = function(){
-        let prm = ["typeId"];//必填字段
+        let prm = ["advtype","flag"];//必填字段
         let obj = that.checkParm(prm);
         if (obj.errcode == 1) {
             that.sendJson(1, obj.errlist);
