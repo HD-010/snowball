@@ -90,7 +90,7 @@ function arcControler(){
         var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
         var params = {ctag: ctag};
         var arc = this.model('Arc');
-        var ps = 2;
+        var ps = 3;
         var data = {ctag: ctag};
         //查询栏目列表
         var type = this.model('Type');
@@ -112,9 +112,42 @@ function arcControler(){
                 return that.testRender(res);
             }
             params.addonTab = res.results[0].addtable;
+            params.SEDate = [dateFormate('%Y-%m-%d'),1];
             arc.lists(params, (res)=>{
                 data = mergeObj([data,res]);
                 ps = that.testRender(data,ps);
+            });
+        });
+
+        //添加内容的状态列表
+        params.enumtag = ctag + '_state';
+        this.model('Enum').list(params, function(res){
+            data = mergeObj([data,res]);
+            ps = that.testRender(data,ps);
+        });
+    }
+
+    /**
+     * 搜索内容列表
+     */
+    this.search = function(){
+        var ctag = this.param('ctag')   // || 'infos';   //这是组件标识，由客户端传来
+        var params = {ctag: ctag};
+        var arc = this.model('Arc');
+        var ps = 1;
+        var data = {ctag: ctag};
+        params.SEDate = [dateFormate('%Y-%m-%d'),1];
+        //查询附加表的信息
+        var addonTable = this.model('Component');
+        addonTable.list(params,function(res){
+            if(res.error || !res.results.length) {
+                res.message = "查询表信息失败，请稍后重试";
+                return that.testRenderJson(res);
+            }
+            params.addonTab = res.results[0].addtable;
+            arc.lists(params, (res)=>{
+                data = mergeObj([data,res]);
+                ps = that.testRenderJson(data,ps);
             });
         });
     }

@@ -185,12 +185,7 @@
             <span>系统管理-栏目管理-编辑栏目</span>
         </div>
     </div>
-    <ul class="nav nav-tabs" style="background-color:#fff">
-        <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
-        </li>
-        <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
-        </li>
-    </ul>
+    
     <div class="add-infor">
         <div class="row tips">
             <div class="col-xs-12">
@@ -200,6 +195,12 @@
                </div>
             </div>
         </div>
+        <ul class="nav nav-tabs" style="background-color:#fff;margin-left:13px;margin-right:13px;">
+            <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
+            </li>
+            <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
+            </li>
+        </ul>
         <div class="row form tab-content">
             <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
                 <input type="hidden" name='tag' value="add" />

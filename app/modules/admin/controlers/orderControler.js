@@ -4,14 +4,13 @@ function orderControler(){
         var ps = 2;
         var params = {};
         var data = {error: 1, message: 'query faild! please try again'};
-        var auto = this.POST('auto') ? true : false;
         //获取订单状态列表
         var em = this.model("Enum");
         params.enumtag = 'order_state';
         params.state = '1';
         em.list(params,function(res){
             data = mergeObj([data,res]);
-            ps = that.testRender(data, ps, auto);
+            ps = that.testRender(data, ps);
         });
        
         //获取订单列表
@@ -19,7 +18,7 @@ function orderControler(){
         params.SEDate = [dateFormate('%Y-%m-%d'),1];
         commodity.order(params,function(res){
             data = mergeObj([data,res]);
-            ps = that.testRender(data, ps, auto);
+            ps = that.testRender(data, ps);
         });
     }
 

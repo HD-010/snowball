@@ -3,6 +3,9 @@ function ArcModel(){
      * 查询（文章）列表
      */
     this.lists = function(params,callback){
+        params.SEDate = this.POST('SEDate',{default:this.GET('SEDate')}) || params.SEDate || [];
+        if(typeof params.SEDate != 'object') callback({error: 1, message: '时间参数错误!'});
+        var sky = this.POST('sky');
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['youbang_archives'],
@@ -15,8 +18,18 @@ function ArcModel(){
             conditions.where.push('youbang_archives.id=' + params.id);
             conditions.limit.push(1);
         }
+        if(params.SEDate.length){
+            typeof params.SEDate[1] == 'number' ?
+            conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and "' + params.SEDate[0] + '"'):
+            conditions.where.push('addtime between "' + params.SEDate[0] + '" and "' + params.SEDate[1] + '"');
+        }
+        if(sky) conditions.where.push("( youbang_archives.title like '%" + sky + 
+        "%' or youbang_archives.shorttitle like '%" + sky + 
+        "%' or youbang_archives.description like '%" + sky + 
+        "%' or youbang_archives.writer like '%" + sky + 
+        "%' or youbang_archives.keywords like '%" + sky + "%')");
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().get(conditions,(error,results)=>{
+        this.DB().log().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);
