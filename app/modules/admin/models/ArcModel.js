@@ -1,4 +1,6 @@
 function ArcModel(){
+    var that = this;
+
     /**
      * 查询（文章）列表
      */
@@ -41,6 +43,7 @@ function ArcModel(){
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){
+        
         var data = {error: 1, message: '请填完整必填项！'};
         var classify = this.POST('classify');
         if(!classify) return callback(data);
@@ -64,11 +67,13 @@ function ArcModel(){
         record.weight = this.POST('weight') || 0;
         record.state = this.POST('state') || 0;
         record.litpic = litpic || '';
+        record.addtime = this.POST('!addtime') || 'now()';
+        record.mid = that.model("DataProcess").uid();
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
         log("***************************conditions::",conditions);
-        this.DB().set(conditions,function(error,results,fields){
+        this.DB().log().set(conditions,function(error,results,fields){
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);

@@ -97,6 +97,7 @@
                             <th data-sort-ignore="false">名称</th>
                             <th data-sort-ignore="false">栏目</th>
                             <th data-sort-ignore="false">发布人</th>
+                            <th data-sort-ignore="false">创建时间</th>
                             <th data-sort-ignore="false">发布时间</th>
                             
                             <th data-sort-ignore="true">操作</th>
@@ -111,7 +112,8 @@
                             <td><img src="{{litpic}}"/>{{title}}</td>
                             <td>{{- return array2value(typePage,'id',typeid,'typename'); }}</td>   
                             <td>{{writer}}</td> 
-                            <td>{{senddate}}</td>                           
+                            <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}</td> 
+                            <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',senddate) }}</td>                           
                             <td class="project-actions">
                                 <a href="javascript:go('/admin/arc/edt/ctag/{{- return ctag; }}?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
                                 <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/{{- return ctag; }}?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
@@ -120,13 +122,13 @@
                     </tbody>
                     <tfoot>     
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
                                 <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/{{- return ctag; }}?id=' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
-                            <td colspan="7">
+                            <td colspan="8">
                                 <ul class="pagination pull-right"></ul>
                             </td>
                         </tr>

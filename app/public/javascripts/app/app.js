@@ -48,14 +48,16 @@ var app = {
     /**
      * 按钮--异步请求
      * 使用场景：
-     * 当点击铵钮来异步删除数据时。操作成功或失败，显示提示信息页面不跳转时使用。
+     * 当点击铵钮来异步删除数据时。操作成功或失败，显示操作提示信息，但页面不跳转时使用。
      * 请求方式：post | get
      * 示列 <a href="#" class="" data-async="post" data-uri="/admin/manager/del">删除管理员</a>
      * @attr {data-async} 必填属性 @param get或post 请求
      * @attr {data-uri}  必填属性 @param url 请求的方法或渲染页面的方法
      * @param {event} 事件监听 
      * @param {obj} 对象本身 
-     * @param {callback} 回调函数 
+     * @param {callback} 这里的callback不是实际用于处理返回结果的函数。
+     * 用于处理返回结果的函数是与 action 路由的最后一段同名的函数。如：
+     * function del(res){}
      */
     asyncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
@@ -134,9 +136,11 @@ var app = {
      * @attr {method} @param {post} 必填属性及参数
      * @attr {data-form-async}必写属性 @param {html/json} 必填参数 希望返回的格式是html还是json
      * @attr {action}必写属性 @param {url} 必填参数 请求的方法路劲
-     * @param {event} 事件监听 
-     * @param {obj} 对象本身 
-     * @param {callback} 回调函数 
+     * @param {event} 当前事件 
+     * @param {obj} form表单json对象 
+     * @param {callback} 回调函数，这里的callback不是实际用于处理返回结果的函数。
+     * 用于处理返回结果的函数是与 action 路由的最后一段同名的函数。如：
+     * function form(res){}
      * 用户可以自定义操作回调，与action对应的操作名称相同（多用于请求接口后的非统一回调）
      * 作为统一回调，不需要定义操作。函数会根据返回的json对象状态码在界面跳出提示信息
      * 返回对象格式如：
@@ -189,15 +193,28 @@ var app = {
     /**
      * 数据传输助手
      * 使用说明：
-     * 与某（个）节点进行初始化，被初始化的节点需要增加以下属性：
-     * 1、data-signle-async="feature" 特征码，与TranceConfsModel.js中的
+     * 使用场景：
+     * 需要 单独修改某个字段的数据时，免提交form表单。可使用该方法。
+     * 该方法的使用需要配合models 中的TranceConfsModel.js，调用统一单字段信息修改接口tranceControler:set() 进行修改。
+     * 关于视图：
+     * <div class="selecter">...
+     *      <div class="ibox-content p-xl" data-signle-async="SDFGDFGDFGDFG" data-uri="/admin/trance/set">...
+     *      <td contenteditable="true" data-reference="id-{{id}}-number">{{number}}</td>...
+     *      </div> ...
+     * </div>
+     * 事件监听元素，具有属性[data-signle-async]的元素下 input,select,textarea 和包含属性[contenteditable='true']的元素
+     * 对某（个）节点进行初始化，被初始化的节点需要增加以下属性：
+     * 1、data-signle-async="feature" 特征码，与TranceConfsModel.js中confs对象中某个属性名称同。如：‘SDFGDFGDFGDFG’
      * 2、data-uri="uri"    指定统一数据传输地址
      * 数据承载元素需要添加 data-reference属性，其值与update 中where条件对应。如：
-     * data-reference="id-4-sn-33-state",表示要更新id=4 and sn='33' 的值。
-     * 值采集来源：data-val 属性 、value属性、元素的text、元素的innerHTML,优先级逐渐降低。
-     * 如果个别字段属性其他表，则在数据承载元素添加data-feature="feature"属性
+     * <td contenteditable="true" data-reference="id-{{id}}-number">{{number}}</td>
+     * data-reference="id-4-sn-33-state",表示要更新id=4 and sn='33' state字段的值。
+     * 值采集来源：data-val 属性 、value属性、元素的text、元素的innerHTML,优先级依次降低。
+     * 如果个别字段属于其他表，则在数据承载元素添加data-feature="feature"属性
      * attr {feature} 被传输数据的特征
      * attr {val}     被传输的值
+     * 
+     * 调用方法：app.load(selecter);
      */
     dataTransfer: function(event,obj,callback){
         if(!app.signleUri) return;
@@ -206,7 +223,7 @@ var app = {
         if(!app.feature) return;
         var dataReference = $(obj).attr('data-reference');    //参考照数据
         var data = 'feature='+app.feature+'&refrerence='+ dataReference + '&val='+ app.tranceValue+ "&" +app.serializeParams();
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@:传输数据::",data);
+        console.log("----------dataTransfer-----------:传输数据::",data);
         $.ajax({
             url : uri,
             type : "post",
@@ -397,7 +414,7 @@ var app = {
             });
         });
 
-        //form(非form)表单单个元素提交不跳转 【事件监听组】
+        //dataTransfer统一数据传输接口 form(非form)表单单个元素提交不跳转 【事件监听组】
         $(el).find('[data-signle-async]').find("input,select,textarea,[contenteditable='true']").unbind('focus').on('focus',function(event) {
             app.tranceValue = $(this).attr('data-val') || $(this).val() || $(this).text() || $(this).html(); //传输的数据
         }),
@@ -413,7 +430,7 @@ var app = {
                 try{eval((app['action'] + '(res);'));}catch(err){app.notice(res);}
             });
         });
-        $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>')
+        $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>');    //添加编辑标识
     },
 
 };
