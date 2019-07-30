@@ -72,5 +72,22 @@ function infosControler(){
             }           
         })
     }
+
+    /**
+     * 筛选获取分类信息
+     */
+    that.getInfosAll = function(){
+        let Infos = that.model("Infos");
+        Infos.getInfosAll((errocode,obj)=>{
+            if(errocode) return that.sendJson(errocode,obj);
+            //要返回的字段
+            let fieldarr = ["id","addtime","title","areaname","classify","litpic","click"];
+            //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
+            obj = getNewData(obj,fieldarr);
+            if(obj){
+                return that.sendJson(errocode,obj)
+            }                
+        })
+    }
 }
 module.exports = infosControler;
