@@ -1,8 +1,13 @@
 function ArcModel(){
+    var that = this;
+
     /**
      * 查询（文章）列表
      */
     this.lists = function(params,callback){
+        params.SEDate = this.POST('SEDate',{default:this.GET('SEDate')}) || params.SEDate || [];
+        if(typeof params.SEDate != 'object') callback({error: 1, message: '时间参数错误!'});
+        var sky = this.POST('sky');
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['youbang_archives'],
@@ -15,8 +20,18 @@ function ArcModel(){
             conditions.where.push('youbang_archives.id=' + params.id);
             conditions.limit.push(1);
         }
+        if(params.SEDate.length){
+            typeof params.SEDate[1] == 'number' ?
+            conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and "' + params.SEDate[0] + '"'):
+            conditions.where.push('addtime between "' + params.SEDate[0] + '" and "' + params.SEDate[1] + '"');
+        }
+        if(sky) conditions.where.push("( youbang_archives.title like '%" + sky + 
+        "%' or youbang_archives.shorttitle like '%" + sky + 
+        "%' or youbang_archives.description like '%" + sky + 
+        "%' or youbang_archives.writer like '%" + sky + 
+        "%' or youbang_archives.keywords like '%" + sky + "%')");
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().get(conditions,(error,results)=>{
+        this.DB().log().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);
@@ -28,6 +43,7 @@ function ArcModel(){
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){
+        
         var data = {error: 1, message: '请填完整必填项！'};
         var classify = this.POST('classify');
         if(!classify) return callback(data);
@@ -49,11 +65,15 @@ function ArcModel(){
         record.keywords = this.POST('keywords') || '';
         record.description = this.POST('description') || '';
         record.weight = this.POST('weight') || 0;
+        record.state = this.POST('state') || 0;
         record.litpic = litpic || '';
+        record.addtime = this.POST('!addtime') || 'now()';
+        record.mid = that.model("DataProcess").uid();
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-        this.DB().set(conditions,function(error,results,fields){
+        log("***************************conditions::",conditions);
+        this.DB().log().set(conditions,function(error,results,fields){
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);

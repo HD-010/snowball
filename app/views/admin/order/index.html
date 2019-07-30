@@ -58,13 +58,7 @@ console.log(enumtag);
             <span>系统管理-店铺管理-管理订单</span>
         </div>
     </div>
-    <ul class="nav nav-tabs tiem-axis" style="background-color:#fff">
-        <li class="active" data-val=0><a data-toggle="tab"><i class="fa fa-user"></i>今天订单</a></li>
-        <li class="" data-val=1><a data-toggle="tab"><i class="fa fa-user"></i>昨天订单</a></li>
-        <li class="" data-val=2><a data-toggle="tab" ><i class="fa fa-briefcase"></i>前天订单</a></li>
-        <li class="" data-val='w'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本周订单</a></li>
-        <li class="" data-val='m'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本月订单</a></li>
-    </ul>
+    
     
     <div class="row tips">
         <div class="col-xs-12">
@@ -75,6 +69,13 @@ console.log(enumtag);
         </div>
     </div>
     <form class="row arcinfo" method="post"  data-form-async='json' action="/admin/order/search">
+        <ul class="nav nav-tabs tiem-axis" style="background-color:#fff">
+            <li class="active" data-val=0><a data-toggle="tab"><i class="fa fa-user"></i>今天订单</a></li>
+            <li class="" data-val=1><a data-toggle="tab"><i class="fa fa-user"></i>昨天订单</a></li>
+            <li class="" data-val=2><a data-toggle="tab" ><i class="fa fa-briefcase"></i>前天订单</a></li>
+            <li class="" data-val='w'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本周订单</a></li>
+            <li class="" data-val='m'><a data-toggle="tab"><i class="fa fa-briefcase"></i>本月订单</a></li>
+        </ul>
         <div class="col-xs-12" style="margin-top:10px;">
             <input type="text" class="input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)" name="sky" value=""/>
             开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="<%- dateFormate('%Y-%m-%d',(new Date()).valueOf() - 3600*24*1000) %>"/>

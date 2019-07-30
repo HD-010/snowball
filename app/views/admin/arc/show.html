@@ -32,7 +32,20 @@
 }
 </style>
 
-<div class="container-fluid base">
+
+<%- //JSON.stringify(enumtag); %>
+<%- //JSON.stringify(enumtagVal) %>
+<%- //JSON.stringify(enumtagName) %>
+
+<script>
+    var error = <%= error; %>;
+    var ctag = "<%= ctag %>";
+    var enumtag = <%- locals.enumtag?JSON.stringify(enumtag):false  %> || [];
+    var enumtagVal = <%- locals.enumtagVal?JSON.stringify(enumtagVal):false %> || [];
+    var enumtagName = <%- locals.enumtagName?JSON.stringify(enumtagName):false %> || [];
+    var typePage = <%- JSON.stringify(type) %>;
+</script>
+<div class="container-fluid base content-lists">
     <div class="row head">
         <div class="col-xs-12">
             <span>项目管理-工程信息-查看信息</span>
@@ -46,14 +59,30 @@
             </div>
         </div>
     </div>
-    <div class="row" style="margin-left: 0px;">
+    <!-- <div class="row" style="margin-left: 0px;">
         <div class="col-xs-6">
                 <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
         </div>
-    </div>
+    </div> -->
+    <form class="row arcinfo" method="post"  data-form-async='json' action="/admin/arc/search/ctag/<%= ctag%>">
+        <div class="col-xs-12" style="margin-top:10px;">
+            <input type="text" class="input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)" name="sky" value=""/>
+            开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="<%- dateFormate('%Y-%m-%d',(new Date()).valueOf() - 3600*24*1000) %>"/>
+            结束：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="<%- dateFormate('%Y-%m-%d',new Date()) %>"/>
+            <input type="submit" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)"  value="搜索">
+        </div>
+        <div class="col-xs-12" id="content-state">
+            <span>状态：</span>
+            <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
+                <label class="btn btn-outline btn-success dim codeSwitch">
+                    <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                </label>
+            </div>
+        </div>
+    </form>
     <div class="row arcinfo">               
         <div class="col-xs-12 memberinfo">
-            <h4>权限组信息<button type="button" class="btn btn-default" style="border:1px solid#EC5051;padding: 4px 8px;margin-left: 10px;" onclick="go('/admin/arc/add/ctag/infos')"><span style="color:#EC5051;"> + 发布信息</span></button></h4>
+            <h4>列表信息<button type="button" class="btn btn-default" style="border:1px solid#EC5051;padding: 4px 8px;margin-left: 10px;" onclick="go('/admin/arc/add/ctag/infos')"><span style="color:#EC5051;"> + 新发布</span></button></h4>
             
         </div>
         <div class="col-xs-12">              
@@ -68,6 +97,7 @@
                             <th data-sort-ignore="false">名称</th>
                             <th data-sort-ignore="false">栏目</th>
                             <th data-sort-ignore="false">发布人</th>
+                            <th data-sort-ignore="false">创建时间</th>
                             <th data-sort-ignore="false">发布时间</th>
                             
                             <th data-sort-ignore="true">操作</th>
@@ -82,22 +112,23 @@
                             <td><img src="{{litpic}}"/>{{title}}</td>
                             <td>{{- return array2value(typePage,'id',typeid,'typename'); }}</td>   
                             <td>{{writer}}</td> 
-                            <td>{{senddate}}</td>                           
+                            <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}</td> 
+                            <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',senddate) }}</td>                           
                             <td class="project-actions">
-                                <a href="javascript:go('/admin/arc/edt/ctag/<%-ctag%>?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
-                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/<%-ctag%>?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                <a href="javascript:go('/admin/arc/edt/ctag/{{- return ctag; }}?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/{{- return ctag; }}?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>     
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
-                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
+                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/{{- return ctag; }}?id=' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
-                            <td colspan="7">
+                            <td colspan="8">
                                 <ul class="pagination pull-right"></ul>
                             </td>
                         </tr>
@@ -107,14 +138,16 @@
         </div>        
     </div>
 </div>
-<script>var typePage = <%- JSON.stringify(type) %></script>
 <script>
+    app.addonParams = {oid: getItem('OID')}
+    effect.setCheckbox(".checkbox-content-state");
+    app.load(".content-lists");
     DL({
         dev: 'on',
         listId: "#arc-lists",
         clearCode: true,
         packet: {
-            error: <%= error; %>,
+            error: error,
             data: <%- JSON.stringify(results); %>
         },
         after: function(){
@@ -122,6 +155,8 @@
             effect.unionSelect();
         }
     });
+    
+    
 
     /**
      * 删除回调
@@ -145,6 +180,21 @@
         dataUri += '?id=' + values.join('_');
         $(this).attr('data-uri',dataUri);
     })
+
+    /**
+     * 加载搜索列表
+     */
+    function search(res){
+        $("#arc-lists").html('');
+        DL({
+            listId: "#arc-lists",
+            deleteInitList: 1,
+            packet: {
+                error: res.error,
+                data: res.results
+            },
+        });
+    }
      
 </script>
 

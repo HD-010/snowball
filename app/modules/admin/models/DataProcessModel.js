@@ -203,6 +203,14 @@ function DataProcessModel() {
         }
         return axis;
     }
+
+    /**
+     * 当前登录的用户id
+     */
+    this.uid = function(){
+        var openID = this.POST('oid') || this.GET('oid') || "";
+        return parseInt(parseOpenID(openID).id)
+    }
 }
 
 module.exports = DataProcessModel;

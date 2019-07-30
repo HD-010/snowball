@@ -35,6 +35,7 @@ ost: 订单状态
 cmid: 商品id
 mchid: 商户id
 
+
 系统参数见数据表：
 youbang_sys_upload、
 youbang_sys_cached、

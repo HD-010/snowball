@@ -223,6 +223,7 @@
                 <input type="hidden" name='id' value="{{id}}" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
+                <input type="hidden" name='addtime' value="{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}" />
                 
                 <!-- tab-1的表单是固定的 -->
                 <table class="table" id="tab-1">
@@ -293,6 +294,17 @@
                                     <input type="text" class="form-control" name="keywords" placeholder="关键字" value="{{keywords}}"/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+                        
+                        <tr>
+                            <td>状态：</td>
+                            <td>
+                                <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
+                                    <label class="btn btn-outline btn-success dim codeSwitch">
+                                        <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst" data-def={{state}}><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                    </label>
+                                </div>
                             </td>              
                         </tr>
 
@@ -861,6 +873,8 @@
     effect.setDefVal(".add-infor");     //设置页面默认值
     effect.setComments(".add-infor");
     effect.setCheckbox(".auto-checkbox");
+    effect.setCheckbox(".checkbox-content-state");
+    effect.setDefVal(".checkbox-content-state");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
     //补充效果

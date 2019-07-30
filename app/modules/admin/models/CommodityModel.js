@@ -227,7 +227,8 @@ function CommodityModel(){
             table: ['youbang_commodities_orders as a '],
             fields:['b.*'],
             joinOn:'left join youbang_commodities_orders as b on a.merchantid=b.merchantid and a.sn=b.sn ',
-            where: ['a.id = ' + orderId]
+            where: ['a.id = ' + orderId],
+            limit:[1]
         }
         
         this.DB().get(conditions,function(error,results,fields){
