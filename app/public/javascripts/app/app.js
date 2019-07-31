@@ -946,6 +946,75 @@ function array2value (array,key1,value,key2) {
 	return '';
 }
 
+/*
+*merge([objA,objB,objC]);
+*结果为：
+Object {a: "oh", b: "hello", c: "ds", f: "你好", fd: "world"}
+ */
+function mergeObj(objs){
+	if(objs.constructor !== Array){
+		console.log({
+			error  : 1,
+			message: '传的参数必须是多个对象的数组'
+		});
+		return false;
+	}
+	for(var i = 1; i < objs.length; i++){
+		if(objs[i].constructor !== Object){
+			console.log({
+				error  : 1,
+				message: '传参数的元素必须是对象'
+			});
+			return false;
+		}
+		for(var k in objs[i]){
+			objs[0][k] = objs[i][k];
+		}
+	}
+    return objs[0];
+}
+
+/**
+ * 方法根据key1=>value在array中查找相对的对象，并返回对象(中key2的值),或返回符合条件的所有对象
+ * array array 被查找的多个对象的数组
+ * key1 用于匹配的键
+ * value 用于匹配的键对应的值
+ * key2 string  null | key2  null 返回匹配对象， key2 返回匹配对象中 key2 的值
+ * all boolean true 返回所有匹配的集合，false 返回第一次匹配               
+ */
+function treeValue (array,key1,value,key2,all) {
+	array = array || [];
+	all = all || false;
+    if(!array.length) return '';
+    if(typeof key2 == 'boolean') {
+        all = key2;
+        key2 = undefined;
+    }
+	var temObj = [];
+	for(var i in array){
+		var item = array[i];
+		for(var k in item){
+			if(item[k].constructor.name == 'Array'){
+				var values = treeValue(item[k],key1,value,key2,all);
+				values.constructor.name == 'Array' ?
+				mergeObj([temObj,values]) :
+				temObj = values;
+			}else{
+				if((k == key1) && (item[k] == value) && !all){
+                    console.log(item)
+					temObj = key2 ? item[key2] : item;
+					break;
+				}
+        		if((k == key1) && (item[k] == value) && all){
+					key2 ? temObj.push(item[key2]) : temObj.push(item);
+				} 
+			}
+		}
+	}
+    
+	return temObj;
+}
+
 /**
  * 判断是否是微信浏览器的函数
  */

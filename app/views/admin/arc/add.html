@@ -1,3 +1,10 @@
+addoninfos: <%= JSON.stringify(addoninfos,null,2)%><hr/>
+
+results: <%= JSON.stringify(results,null,2)%><hr/>
+enumtag: <%= JSON.stringify(enumtag,null,2)%><hr/>
+types: <%= JSON.stringify(types,null,2)%><hr/>
+comname: <%= comname %><hr/>
+
 <%
     var formCode = {
         get: function(index){
@@ -236,8 +243,8 @@
                             </td>              
                         </tr>
 
-                        <tr>
-                            <td>栏目：</td>
+                        <!-- <tr>
+                            <td>所属栏目：</td>
                             <td>
                                 <div class="form-group col-xs-4">
                                     <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
@@ -246,10 +253,21 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                                 <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
-                        </tr>
+                        </tr> -->
 
                         <tr>
-                            <td>分类：</td>
+                            <td>所属栏目：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="栏目列表" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" value="" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                            </td>              
+                        </tr>
+
+                        <!-- <tr>
+                            <td>所属分类：</td>
                             <td>
                                 <div class="form-group col-xs-4">
                                     <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
@@ -257,6 +275,17 @@
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                                 <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                            </td>              
+                        </tr> -->
+
+                        <tr>
+                            <td>所属分类：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="工程信息分类" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="classify" value=""/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                             </td>              
                         </tr>
 
@@ -419,55 +448,27 @@
     };
 
     /**
-     * 分类相关
+     * nettable模态框--(栏目列表和分类列表)
      */
-    $("#oper-classify").click(function(){
-        $("#oper-classify-nes").fadeToggle();
-    })
-
-    var results = <%- results.length ? results : false %> || [];
-    //初始化nestable数据结构
-    effect.nestable(results,error,'#oper-classify-nes');
-    
-    // activate Nestable for list 2
-    $('#nestable2').nestable({group: 1}).on('change', updateOutput);
-    $('#nestable2 .dd').nestable('collapseAll');    
-    //隐藏编辑按钮
-    $('#nestable2 .dd-edit').hide();
-    $("#nestable2 .dd-addon-handel").removeClass('hidden')
-
-    //设置被选择的值及效果
-    $('.handel-nestable2').click(function(e){
-        $("#oper-classify").text($(this).parent().find(".dd-val").html());
-        $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
-        $("#oper-classify-nes").fadeToggle();
+    $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(types) %> || [];
+        var classify = <%- results ? results : 0 %> || [];
+        var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
+        effect.nestable(optData, error, '#modal-body');
+        $("#normalModal").find('li .dd-handle').unbind("click").on("click",function(){
+            var parent = $(this).parent();
+            me.html(parent.attr('data-name'));
+            me.attr("data-val",parent.attr('data-val'));
+            me.siblings('input').val(parent.attr('data-val'));
+        });
     });
-    
-    
-    /**
-     * 栏目相关
-     */
-    $("#oper-types").click(function(){
-        $("#oper-types-nes").fadeToggle();
-    })
-    var types = <%- error ? false : JSON.stringify(types) %>;
-    //初始化nestable数据结构
-    effect.nestable(types,error,'#oper-types-nes','nestable-type');
-
-    // activate Nestable for list 2
-    $('#nestable-type').nestable({group: 1}).on('change', updateOutput);
-    $('#nestable-type .dd').nestable('collapseAll');    
-    //隐藏编辑按钮
-    $('#nestable-type .dd-edit').hide();
-    $("#nestable-type .dd-addon-handel").removeClass('hidden')
-
-    //设置被选择的值及效果
-    $('.handel-nestable-type').click(function(e){
-        $("#oper-types").text($(this).parent().find(".dd-val").html());
-        $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
-        $("#oper-types-nes").fadeToggle();
-    });
-
 
     /**
      * 规格项相关
