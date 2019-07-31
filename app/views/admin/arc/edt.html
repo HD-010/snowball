@@ -291,11 +291,15 @@
                         </tr> -->
 
                         <tr>
-                            <td>所属分类：</td>
+                            <% 
+                            var typeName = array2value(addoninfos, 'field', 'classify', 'name') || '所属分类'; 
+                            var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
+                            %>
+                            <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
                                     <% var classify = JSON.parse(results); %>
-                                    <div data-freemodal="state" data-name="工程信息分类" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
+                                    <div data-freemodal="state" data-name="<%= listName %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
                                     <input type="hidden" name="classify" value="<%= data[0].classify %>"/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>

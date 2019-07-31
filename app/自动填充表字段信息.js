@@ -5,7 +5,7 @@
     "type": "int",					//数据表中数据类型
 	"maxlength": "10",				//字段最大长度
     "isnull": true,					//数据表中是否允许为null
-	"islist": 1,					//数据表中值是否为列表
+	"islist": 1,					//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
 	"default": 0,					//字段默认值
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
@@ -19,69 +19,82 @@
 
 //youbang_addoninfos 表字自动填充字段配置信息：
 [
-  {
-    "field": "componentid",			
-    "itemname": "组件id",			
-    "type": "int",					
-	"maxlength": "10",				
-    "isnull": true,				
-	"islist": 1,					
-	"default": 0,					
-	"fieldget": 0,					
-	"fieldset": 1,	
-	"inputtype":"input",	
-    "attr": " disabled data-def=4 data-comment=如：这是注释" 
+ {
+    "field": "classify",
+    "itemname": "所属分类",
+    "type": "text",
+    "maxlength": "1024",
+    "isnull": true,
+    "islist": '工程信息分类',
+    "default": 0,
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
+    "attr": " disabled data-def=4 data-comment=如：这是注释"
   },
   {
-    "field": "title",			
-    "itemname": "标题",			
-    "type": "varchar",					
-	"maxlength": "72",				
-    "isnull": false,				
-	"islist": 0,					
-	"default": '',					
-	"fieldget": 0,					
-	"fieldset": 1,	
-	"inputtype":"input",	
-    "attr": " disabled data-def=4 data-comment=标题长度最多15个字符" 
+    "field": "componentid",
+    "itemname": "组件id",
+    "type": "int",
+    "maxlength": "10",
+    "isnull": true,
+    "islist": 1,
+    "default": 0,
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
+    "attr": " disabled data-def=4 data-comment=如：这是注释"
   },
   {
-    "field": "litpic",			
-    "itemname": "缩略图",			
-    "type": "varchar",					
-	"maxlength": "255",				
-    "isnull": true,				
-	"islist": 0,					
-	"default": '',					
-	"fieldget": 0,					
-	"fieldset": 1,	
-	"inputtype":"input",	
-    "attr": " disabled data-def=4 data-comment=标题长度最多15个字符" 
+    "field": "title",
+    "itemname": "标题",
+    "type": "varchar",
+    "maxlength": "72",
+    "isnull": false,
+    "islist": 0,
+    "default": "",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
+    "attr": " disabled data-def=4 data-comment=标题长度最多15个字符"
+  },
+  {
+    "field": "litpic",
+    "itemname": "缩略图",
+    "type": "varchar",
+    "maxlength": "255",
+    "isnull": true,
+    "islist": 0,
+    "default": "",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
+    "attr": " disabled data-def=4 data-comment=标题长度最多15个字符"
   },
   {
     "field": "arcrank",
     "itemname": "受权浏览",
     "type": "int",
-	"maxlength": "5",
+    "maxlength": "5",
     "isnull": "true",
     "islist": "1",
     "default": "0",
-    "fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"radio",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "radio",
     "attr": "type=number checked disabled"
   },
   {
     "field": "mid",
     "itemname": "会员id",
     "type": "int",
-	"maxlength": "8",
+    "maxlength": "8",
     "isnull": "true",
     "islist": "1",
     "default": "0",
-    "fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=number disabled "
   },
   {
@@ -92,9 +105,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=number disabled "
   },
   {
@@ -105,9 +118,9 @@
     "isnull": "true",
     "islist": "0",
     "default": "0",
-	"fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=text disabled"
   },
   {
@@ -118,10 +131,10 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"input",
-	"attr": "type=datetime"
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
+    "attr": "type=datetime"
   },
   {
     "field": "flag",
@@ -131,9 +144,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"checkbox",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "checkbox",
     "attr": "type=checkbox data-key=hot-home-recomend data-val=热点-首页-推荐"
   },
   {
@@ -144,9 +157,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 0,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 0,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=datetime disabled"
   },
   {
@@ -157,9 +170,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=number disabled"
   },
   {
@@ -170,9 +183,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=number disabled"
   },
   {
@@ -183,9 +196,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=number disabled"
   },
   {
@@ -196,9 +209,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "data-key=area1-area2-area3 data-val=城市1-城市2-城市3"
   },
   {
@@ -209,9 +222,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "0",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"select",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "select",
     "attr": ""
   },
   {
@@ -222,10 +235,10 @@
     "isnull": "true",
     "islist": "0",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"novaild": 1,
-	"inputtype":"uediter",
+    "fieldget": 1,
+    "fieldset": 1,
+    "novaild": 1,
+    "inputtype": "uediter",
     "attr": "type=text"
   },
   {
@@ -236,9 +249,9 @@
     "isnull": "true",
     "islist": "1",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=datetime"
   },
   {
@@ -249,9 +262,9 @@
     "isnull": "true",
     "islist": "0",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=tel"
   },
   {
@@ -262,9 +275,9 @@
     "isnull": "true",
     "islist": "0",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=email"
   },
   {
@@ -275,9 +288,9 @@
     "isnull": "true",
     "islist": "0",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=text"
   },
   {
@@ -288,9 +301,9 @@
     "isnull": "true",
     "islist": "0",
     "default": "",
-	"fieldget": 1,					
-	"fieldset": 1,
-	"inputtype":"input",
+    "fieldget": 1,
+    "fieldset": 1,
+    "inputtype": "input",
     "attr": "type=address"
   }
 ]
