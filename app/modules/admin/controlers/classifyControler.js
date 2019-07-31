@@ -4,7 +4,7 @@ function classifyControler(){
      * 分类列表
      */
     this.index = function(){
-        var params = {};
+        var params = data = {};
         var ctag = this.param('ctag');
         if(!ctag) return that.render('/err404');
 
@@ -12,12 +12,19 @@ function classifyControler(){
         params.ctag = ctag;
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
-        
-        //获取当前商户的分类列表
-        var classify = this.model("Classify");
-        classify.get(params, function(res){
-            res.ctag = ctag;
-            that.render(res);
+        //获取组件表中字段为列表的字段信息
+        this.model('Component').list(params,function(res){
+            if(res.error) return that.render(res);
+            //[ '所属分类', '投标分类' ]
+            data.className = array2value(res.results[0].addoninfos, 'islist', '!','islist',true);
+            //获取当前商户的分类列表
+            var classify = that.model("Classify");
+            classify.get(params, function(res){
+                res.ctag = ctag;
+                data.error = res.error;
+                data.results = classify.struc(JSON.parse(res.results), data.className);
+                that.render(data);
+            });
         });
     }
     

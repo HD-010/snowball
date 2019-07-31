@@ -58,6 +58,20 @@ function ClassifyModel(){
         });
     }
 
+
+    /**
+     * 根据组件中的islist列表初始分类列表结构
+     */
+    this.struc = function(classifies,listName){
+        var tem = [];
+        var temObj;
+        for(var i = 0; i < listName.length; i ++){
+            temObj = array2value(classifies, 'name', listName[i]);
+            if(!temObj) temObj = {name: listName[i], val: "classify_" + (new Date()).valueOf() + i};
+            tem.push(temObj);
+        }
+        return tem;
+    }
 }
 
 module.exports = ClassifyModel;

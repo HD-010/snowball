@@ -79,7 +79,7 @@
 
 <script>
         jQuery(function($){
-            var results = <%- results.length ? results : false %> || [{name: '添加分类',val:'nesinit'}];
+            var results = <%- results.length ? JSON.stringify(results) : false %> || [{name: '添加分类',val:'nesinit'}];
             var error = <%- error; %>;
             //初始化nestable
             effect.nestable(results,error,'#nes');

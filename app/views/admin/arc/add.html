@@ -1,9 +1,10 @@
-addoninfos: <%= JSON.stringify(addoninfos,null,2)%><hr/>
+<%- //print_r(addoninfos) %>
 
-results: <%= JSON.stringify(results,null,2)%><hr/>
-enumtag: <%= JSON.stringify(enumtag,null,2)%><hr/>
-types: <%= JSON.stringify(types,null,2)%><hr/>
-comname: <%= comname %><hr/>
+<%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
+<%- //'results:' + JSON.stringify(results,null,2)%>
+<%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
+<%- //'types:' + JSON.stringify(types,null,2)%>
+<%- //'comname:' + comname %>
 
 <%
     var formCode = {
