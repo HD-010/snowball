@@ -1,23 +1,31 @@
 字段设置案例：
 {
-    "field": "componentid",			//字段标识
-    "itemname": "组件id",			//字段名称
-    "type": "int",					//数据表中数据类型
+	"field": "componentid",			//字段标识
+	"itemname": "组件id",			//字段名称
+	"type": "int",					//数据表中数据类型
 	"maxlength": "10",				//字段最大长度
-    "isnull": true,					//数据表中是否允许为null
+	"isnull": true,					//数据表中是否允许为null
 	"islist": 1,					//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
 	"default": 0,					//字段默认值
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
 	"limit": 4,						//限制图片上传的张数
 	"novaild": 1,					//如果为true，对字段不需要特殊字符过滤
-	"inputtype":"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader
-    "attr": " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
-  },
+	"inputtype":"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader|nesmodal
+	"attr": " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
+}
+关于 输入框类型的说明：
+ input：
+ checkbox: 
+ radio:
+ select:
+ textarea:
+ uediter:
+ uploader:
+ nesmodal: 是modal(模态框)与nestable 结相结和的输入对话框
 
 
-
-//youbang_addoninfos 表字自动填充字段配置信息：
+//youbang_addoninfos 表字自动填充字段配置信息：(当前与表一致)
 [
  {
     "field": "classify",
@@ -28,8 +36,21 @@
     "islist": '工程信息分类',
     "default": 0,
     "fieldget": 0,
-    "fieldset": 1,
-    "inputtype": "input",
+    "fieldset": 0,
+    "inputtype": "nesmodal",
+    "attr": " disabled data-def=4 data-comment=如：这是注释"
+  },
+  {
+    "field": "ewe",
+    "itemname": "投标分类",
+    "type": "text",
+    "maxlength": "1024",
+    "isnull": true,
+    "islist": '投标信息分类',
+    "default": 0,
+    "fieldget": 1,
+    "fieldset": 0,
+    "inputtype": "nesmodal",
     "attr": " disabled data-def=4 data-comment=如：这是注释"
   },
   {

@@ -952,7 +952,7 @@ function array2value (array,key1,value,key2) {
 Object {a: "oh", b: "hello", c: "ds", f: "你好", fd: "world"}
  */
 function mergeObj(objs){
-	if(objs.constructor !== Array){
+	if(objs.constructor.name !== 'Array'){
 		console.log({
 			error  : 1,
 			message: '传的参数必须是多个对象的数组'
@@ -960,16 +960,11 @@ function mergeObj(objs){
 		return false;
 	}
 	for(var i = 1; i < objs.length; i++){
-		if(objs[i].constructor !== Object){
-			console.log({
-				error  : 1,
-				message: '传参数的元素必须是对象'
-			});
-			return false;
-		}
-		for(var k in objs[i]){
-			objs[0][k] = objs[i][k];
-		}
+        if(objs[i].constructor.name == 'Object'){
+            for(var k in objs[i]){
+                objs[0][k] = objs[i][k];
+            }
+        }
 	}
     return objs[0];
 }

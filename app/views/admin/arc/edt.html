@@ -1,3 +1,4 @@
+data:<%- JSON.stringify(data); %>
 <%
     var formCode = {
         //uediter选项
@@ -128,6 +129,27 @@
                 <input type="hidden" name="specoption" value="">         
             </tr>`;
 
+            return str;
+        },
+
+        /**
+        *   nesmodal树型结构列表输入
+        **/
+        nesmodal: function(index){
+            var fieldName = addoninfos[index].field;
+            var typeName = array2value(addoninfos, 'field', fieldName, 'itemname') || '所属分类'; 
+            var listName = array2value(addoninfos, 'field', fieldName, 'islist') || '所属分类'; 
+            var str = `<tr>
+                <td>` + typeName + `：</td>
+                <td>
+                    <div class="form-group col-xs-4">
+                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                        <input type="hidden" name="`+ fieldName +`" value="` +data[0][fieldName] + `"/>
+                    </div>
+                    <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
+                </td>              
+            </tr>`;
+            
             return str;
         },
 
@@ -292,7 +314,7 @@
 
                         <tr>
                             <% 
-                            var typeName = array2value(addoninfos, 'field', 'classify', 'name') || '所属分类'; 
+                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
                             var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
                             %>
                             <td><%= typeName; %>：</td>

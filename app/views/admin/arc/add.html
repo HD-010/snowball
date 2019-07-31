@@ -96,7 +96,7 @@ comname: <%= comname %><hr/>
                             '</label>' + 
                         '</div>' + 
                     '</div>' + 
-                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
+                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>' + 
                 '</td>' +            
             '</tr>';
         },
@@ -117,6 +117,27 @@ comname: <%= comname %><hr/>
                 <input type="hidden" name="specname" value="">         
                 <input type="hidden" name="specitem" value="">         
                 <input type="hidden" name="specoption" value="">         
+            </tr>`;
+
+            return str;
+        },
+
+        /**
+        *   nesmodal树型结构列表输入
+        **/
+        nesmodal: function(index){
+            var fieldName = addoninfos[index].field;
+            var typeName = array2value(addoninfos, 'field', fieldName, 'itemname') || '所属分类'; 
+            var listName = array2value(addoninfos, 'field', fieldName, 'islist') || '所属分类'; 
+            var str = `<tr>
+                <td>` + typeName + `：</td>
+                <td>
+                    <div class="form-group col-xs-4">
+                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                        <input type="hidden" name="`+ fieldName +`" value=""/>
+                    </div>
+                    <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
+                </td>              
             </tr>`;
 
             return str;
@@ -280,7 +301,7 @@ comname: <%= comname %><hr/>
 
                         <tr>
                             <% 
-                            var typeName = array2value(addoninfos, 'field', 'classify', 'name') || '所属分类'; 
+                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
                             var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
                             %>
                             <td><%= typeName; %>：</td>
