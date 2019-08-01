@@ -615,7 +615,7 @@ var effect = {
     },
 
     /**
-     * 
+     * 状态：预留
      * @param {*} selecter 
      */
     setRadio: function(selecter){

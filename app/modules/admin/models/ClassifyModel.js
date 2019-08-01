@@ -13,7 +13,7 @@ function ClassifyModel(){
         conditions.where.push("macid='" + params.macid + "'");
         conditions.where.push("enable='" + params.enable + "'");  //按分类是否启用为条件查找
 
-        this.DB().get(conditions,function(error,results){
+        this.DB().log().get(conditions,function(error,results){
             var data = {};
             //data.error =  (error || !results.length) ? 1 : 0;
             data.error =  error ? 1 : 0;
@@ -49,7 +49,7 @@ function ClassifyModel(){
         conditions.fields.push(data);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-
+log("&&&&&&&&&&&&&&&&&&&::",conditions);
         this.DB().set(conditions,function(error,results){
             var data = {};
             data.error = 1;
