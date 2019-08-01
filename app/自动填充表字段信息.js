@@ -1,7 +1,7 @@
 字段设置案例：
 {
 	"field": "componentid",			//字段标识
-	"itemname": "组件id",			//字段名称
+	"itemname": "组件id",			//字段名称(显示有页面)
 	"type": "int",					//数据表中数据类型
 	"maxlength": "10",				//字段最大长度
 	"isnull": true,					//数据表中是否允许为null
@@ -20,9 +20,11 @@
  radio:
  select:
  textarea:
- uediter:
- uploader:
+ uediter:	
+ uploader: 上传图片控件
  nesmodal: 是modal(模态框)与nestable 结相结和的输入对话框
+ 
+ 
 
 
 //youbang_addoninfos 表字自动填充字段配置信息：(当前与表一致)
@@ -36,19 +38,6 @@
     "islist": '工程信息分类',
     "default": 0,
     "fieldget": 0,
-    "fieldset": 0,
-    "inputtype": "nesmodal",
-    "attr": " disabled data-def=4 data-comment=如：这是注释"
-  },
-  {
-    "field": "ewe",
-    "itemname": "投标分类",
-    "type": "text",
-    "maxlength": "1024",
-    "isnull": true,
-    "islist": '投标信息分类',
-    "default": 0,
-    "fieldget": 1,
     "fieldset": 0,
     "inputtype": "nesmodal",
     "attr": " disabled data-def=4 data-comment=如：这是注释"
@@ -326,7 +315,22 @@
     "fieldset": 1,
     "inputtype": "input",
     "attr": "type=address"
+  },
+  {
+    "field": "uptest",
+    "itemname": "图片上传测试",
+    "type": "text",
+    "maxlength": "1024",
+    "isnull": true,
+    "islist": '',
+    "default": 0,
+    "fieldget": 1,
+    "fieldset": 1,
+	"limit": 3,
+    "inputtype": "uploader",
+    "attr": ""
   }
+  
 ]
 
 
@@ -398,19 +402,5 @@ youbang_addoncommodities 表字自动填充字段配置信息:
 	"novaild": 0,					
 	"inputtype":"spec",	
 	"attr": "data-comment=填写商品分类" 
-  },
-  {
-    "field": "body",			
-    "itemname": "详情内容",			
-    "type": "text",					
-	"maxlength": 0,				
-    "isnull": true,					
-	"islist": 0,					
-	"default": '',					
-	"fieldget": 1,					
-	"fieldset": 1,					
-	"novaild": 1,					
-	"inputtype":"uediter",			
-    "attr": "data-comment=端口详情内容" 
   }
 ]

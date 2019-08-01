@@ -449,7 +449,7 @@
         };
 
         /**
-         * nettable模态框--(栏目列表和分类列表)
+         * nestable模态框--(栏目列表和分类列表)
          */
         $("[data-freemodal]").click(function(){
             var me = $(this);
@@ -940,8 +940,8 @@
         };
         if(data.state != 1) return app.notice(info);
         var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
-            <span class="fa fa-close fa-size"></span>
-            <img src="/` + data.url + `" />
+                <span class="fa fa-close fa-size"></span>
+                <img src="/` + data.url + `" />
             </div>`;
             
         uploader.picBox.find(".img-add").before($(addObj));
