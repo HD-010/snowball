@@ -16,10 +16,10 @@
 
         input: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -30,11 +30,11 @@
 
         checkbox: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -44,11 +44,11 @@
 
         radio: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -58,10 +58,10 @@
 
         select: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
-                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ this.defNull(addoninfos[index].attr) + ' value=" "></select>' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ echo(addoninfos[index].attr) + ' value=" "></select>' +
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -71,7 +71,7 @@
 
         uediter: function(index){
             return '<tr>' +
-                '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                 '<td style="margin: 0px;padding:0px;">' +
                     '<div class="col-sm-12 col-xs-12 ueditor-box" style="padding: 0px;">' +
                         '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
@@ -88,7 +88,7 @@
         **/
         uploader: function(index){
             return '<tr>' + 
-                '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
+                '<td>'+ echo(addoninfos[index].itemname) + '：</td>' + 
                 '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
                     '<div class="form-group col-xs-8">' + 
                         '<div class="replaceImg-label">' + 
@@ -142,10 +142,6 @@
             </tr>`;
 
             return str;
-        },
-
-        defNull: function(d){
-            return d || '';
         }
     }
 %>

@@ -1,6 +1,9 @@
 function ClassifyModel(){
     var that = this;
 
+    /**
+     * 获取分类列表
+     */
     this.get = function(params,callback){
         var conditions = {
             table: ['youbang_arcclass'],
@@ -25,6 +28,9 @@ function ClassifyModel(){
         })
     }
 
+    /**
+     * 保存分类数据
+     */
     this.save = function(params,callback){
         var conditions = {
             table: 'youbang_arcclass',
@@ -60,7 +66,7 @@ function ClassifyModel(){
 
 
     /**
-     * 根据组件中的islist列表初始分类列表结构
+     * 根据组件中的islist列表数据初始化分类列表结构
      */
     this.struc = function(classifies,listName){
         var tem = [];
