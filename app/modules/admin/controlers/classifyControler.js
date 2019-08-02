@@ -16,7 +16,7 @@ function classifyControler(){
         this.model('Component').list(params,function(res){
             if(res.error) return that.render(res);
             //[ '所属分类', '投标分类' ]
-            data.className = array2value(res.results[0].addoninfos, 'islist', '!','islist',true);
+            data.className = array2value(res.results[0].addoninfos, 'islist', '!=','islist',true);
             //获取当前商户的分类列表
             var classify = that.model("Classify");
             classify.get(params, function(res){

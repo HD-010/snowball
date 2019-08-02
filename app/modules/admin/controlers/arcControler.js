@@ -266,7 +266,7 @@ function arcControler(){
      */
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
-        var ps = 3;         
+        var ps = 4;         
         var data = {ctag: ctag};
         var params = {};
         var arc = this.model("Arc");
@@ -296,6 +296,13 @@ function arcControler(){
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
+            data = mergeObj([data,res]);
+            ps = that.testRender(data,ps);
+        });
+
+        //添加内容的状态列表
+        params.enumtag = ctag + '_state';
+        this.model('Enum').list(params, function(res){
             data = mergeObj([data,res]);
             ps = that.testRender(data,ps);
         });
