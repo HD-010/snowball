@@ -463,11 +463,19 @@
             var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
             var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
             effect.nestable(optData, error, '#modal-body');
-            $("#normalModal").find('li .dd-handle').unbind("click").on("click",function(){
-                var parent = $(this).parent();
-                me.html(parent.attr('data-name'));
-                me.attr("data-val",parent.attr('data-val'));
-                me.siblings('input').val(parent.attr('data-val'));
+            $("#normalModal").find(".dd").nestable('collapseAll');
+            $("#normalModal").find('[data-action="collapse"]').click();
+            $('#modal-body').find('li .dd-edit').hide();
+            $('.modal-footer').children('.cancle').hide();
+            $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+            $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+                var li = $(this).parent();
+                $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+                $(this).siblings('.dd-handle').addClass("dd-addon-click");
+                me.html(li.attr('data-name'));
+                me.attr("data-val",li.attr('data-val'));
+                me.siblings('input').val(li.attr('data-val'));
+                //$("#normalModal").toggle();
             });
         });
 

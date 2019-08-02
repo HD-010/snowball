@@ -759,15 +759,18 @@ var effect = {
     nestable: function(results,error,appendid,initElem){
         var append = $(appendid);
         if(!append.length) return;
-        var nesId = initElem;
-        if(!initElem){
-            nesId = $(".dd").eq(0).attr('id');
-            nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
-        }
+        var nesId = initElem || 'nestable2';
+        // if(!initElem){
+        //     nesId = $(".dd").eq(0).attr('id');
+        //     var index = parseInt(nesId.replace(/[^0-9]/ig,''));
+        //     index = index == NaN ? 1 : index + 1;
+        //     nesId = nesId ? 'nestable' + index : 'nestable2';
+        // }
         var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
         var nesBox = `<style>
                         .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
-                        .dd-list>li .dd-addon-handel{position:absolute;right:0;top:0.6em;height:2em;border:0;left:5em;}
+                        .dd-list>li .dd-addon-handel {top:0;position: absolute;right: 0;height: 3em;border: 0;left: 3em;border:0;}
+                        .dd-addon-click{background-color:#3CA2D7 !important}
                         .dd-list>li .dd-edit span{margin-right:0.5em;}
                     </style>
                     <div class="dd" id="`+ nesId +`">
@@ -841,8 +844,8 @@ var effect = {
                             
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="normalModal">关闭</button>
-                            <button type="button" class="btn btn-primary" data-confirm="normalModal" >确定</button>
+                            <button type="button" class="btn btn-white cancle" data-dismiss="normalModal">关闭</button>
+                            <button type="button" class="btn btn-primary submit" data-confirm="normalModal" >确定</button>
                         </div>
                     </div>
                 </div>

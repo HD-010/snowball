@@ -49,7 +49,6 @@ function ClassifyModel(){
         conditions.fields.push(data);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-log("&&&&&&&&&&&&&&&&&&&::",conditions);
         this.DB().set(conditions,function(error,results){
             var data = {};
             data.error = 1;
