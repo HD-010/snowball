@@ -373,6 +373,19 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
                             </td>              
                         </tr>
+
+                        <tr>
+                            <td>地址:</td>
+                            <td>
+                                <div class="form-group col-xs-12 address-group">
+                                    <input type="hidden" name="address" value="">
+                                    <select class="form-control address" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
+                                    <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=" "></select>
+                                    <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=" "></select>
+                                    <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+                                </div>
+                            </td>              
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -462,6 +475,7 @@
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
+    app.addonParams = {oid: getItem('OID')}
     var error = <%- error; %>;
     var updateOutput = function (e) {
         var list = e.length ? e : $(e.target),
@@ -954,4 +968,91 @@
     setEffect();
 </script>
 
+<!-- 地址输入框控制部分 -->
+<script>
+var addressPice = {
+    env: "",       //"loadEdit"
+}
+$('.address-group .address').mouseover(function(){
+    var me = $(this);
+    if(me.attr('data-val')) return;
+    var data  = {oid: getItem('OID')};
+    DL({
+        dev: 'on',
+        uri: '/admin/address/names',
+        data: {oid: getItem("OID")},
+        befor: function(that){
+            var res = that.results;
+            if(res.error) app.notice(res);
+            me.attr('data-val', res.name.join('-'));
+            me.attr('data-key', res.id.join('-'));
+            me.next().val('');
+            effect.setSelect('.address-group');
+            //$(me).trigger("mousedown");
+            that.dev = 'exit';
+        }
+    });
+});
+
+$('.address-group .address').change(function(){
+    var me = $(this);
+    var reid = me.val();
+    me.attr('data-def',reid);
+    var city = me.next();
+    me.nextAll("select").removeAttr('dtat-val');
+    me.nextAll("select").removeAttr('dtat-key');
+    if(addressPice.env === "loadEdit") me.nextAll("select").removeAttr('dtat-def');
+    if(!me.next("select").length) return;
+
+    DL({
+        dev: 'on',
+        uri: '/admin/address/names',
+        data: {oid: getItem("OID"),reid: reid},
+        cached: 1,
+        befor: function(that){
+            var res = that.results;
+            if(res.error) app.notice(res);
+            city.attr('data-val', res.name.join('-'));
+            city.attr('data-key', res.id.join('-'));
+            city.removeClass("hidden");
+            effect.setSelect('.address-group');
+            that.dev = 'exit';
+        }
+    });
+});
+
+$(".address-group").focusout(function(){
+    var me = $(this);
+    var address = [];
+    $(this).find("[name^='addr_']").each(function(i,opt){
+        if($(opt).val()) address.push($(opt).val());
+    });
+    console.log("######################address.length######",address.length);
+    if(address.length < 4) return;
+    var url = "/admin/address/save";
+    var curVal = me.find('input[name="address"]').val();
+    var data = {
+        'oid': getItem("OID"),
+        'addr': address.join('-'),
+        'type': '<%= ctag %>',
+    }
+    
+    if(curVal) {
+        data.edt = 1;
+        data.id = curVal;
+    }
+    $.post(url,data,function(res){
+        if(res.error) app.notice(res);
+        me.find('input[name="address"]').val(res.newId);
+    });
+});
+
+$(".address-group .address").each(function(i, opt){
+    if(!$(opt).attr('data-def')) return;
+    addressPice.env = "loadEdit";
+    if(i === 0) $(opt).mouseover();
+    $(opt).change();
+});
+
+</script>
 

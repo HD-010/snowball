@@ -650,12 +650,12 @@ var effect = {
      */
     setSelect: function(selecter){
         if(!selecter) return;
-        $(selecter).each(function(index,item){
-            var itemAttr = $(item).find("select");
-            var dataKey = itemAttr.attr('data-key');
+        $(selecter).find("select").each(function(index,item){
+            //var itemAttr = $(item).find("select");
+            var dataKey = $(item).attr('data-key');
             var key = dataKey ? dataKey.split('-') : [];
-            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
-            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var val = dataKey ? $(item).attr('data-val').split('-') : [];
+            var defVal = $(item).attr('data-def') ? $(item).attr('data-def').split('-') : [];
             var htmlCode = item.outerHTML;
             var optHtml = '';
             var stlected;
@@ -663,7 +663,7 @@ var effect = {
                 stlected = (defVal.indexOf(key[i]) + 1) ? 'selected' : '';
                 optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
             }
-            $(item).find("select").html(optHtml);
+            $(item).html(optHtml);
         });
     },
 
