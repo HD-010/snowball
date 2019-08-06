@@ -38,8 +38,8 @@ function UserInforModel() {
                 callback(data);
                 return;
             }
-            data = (error || (Object.keys(results[0]).length === 0)) ?
-            {error  : 1,uri: '/admin/sign/_in', message: "帐号或者用户名错误"} : 
+            data = (error || !results.length) ?
+            {error  : 1,uri: '/admin/sign/_in',data:[], message: "帐号或者用户名错误"} : 
             {error: 0,data : results};
             
             return callback(data);

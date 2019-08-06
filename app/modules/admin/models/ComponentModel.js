@@ -12,6 +12,7 @@ function ComponentModel(){
         if(params.limit) conditions.limit.push(params.limit);
         if(params.id) conditions.where.push("id=" + params.id);
         if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
+        if(params.id || params.ctag) conditions.limit.push(1);
         
         this.DB().get(conditions,function(error,results,fields){
             var data = {};

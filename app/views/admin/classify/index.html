@@ -79,7 +79,7 @@
 
 <script>
         jQuery(function($){
-            var results = <%- results.length ? results : false %> || [{name: '添加分类',val:'nesinit'}];
+            var results = <%- results.length ? JSON.stringify(results) : false %> || [{name: '添加分类',val:'nesinit'}];
             var error = <%- error; %>;
             //初始化nestable
             effect.nestable(results,error,'#nes');
@@ -105,7 +105,7 @@
                     output = list.data('output');
                     if(!output) return;
                     spce.data = list.nestable('serialize');
-                    //output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+                    output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
                 },
     
                 //同步数据和绑定事件
@@ -164,8 +164,8 @@
                         if(html.find('ol').length){
                             html = html.find('ol').remove();
                         }
-                        
-                        curEl.after($(html).attr('data-val','classify_' + (new Date()).valueOf()));
+                        var sn = "" + Math.ceil((new Date()).valueOf()/1000) + Math.ceil(Math.random() * 1000);
+                        curEl.after($(html).attr('data-val','classify_' + sn ));
                         spce.reset();
                         $('#nestable2').nestable({group: 0}).change();
                     });
@@ -203,7 +203,7 @@
     
                     $(".dd-list>li .dd-edit input").unbind('blur').on('blur',function(e){
                         $(this).removeClass("hidden").fadeToggle();
-                        $('#nestable2').nestable({group: 2}).change();
+                        $('#nestable2').nestable({group: 0}).change();
                     })
                     
                 },
@@ -265,6 +265,7 @@
     
                 //读取
                 $('.ev-submit').mouseover(function(){
+                    console.log("保存的分类信息：：",spce.readSpec() );
                     var val = encodeURI(JSON.stringify(spce.readSpec()));
                     $("input[name='classify']").val(window.btoa(val));
                 });

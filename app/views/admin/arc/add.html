@@ -1,3 +1,11 @@
+<%- //print_r(addoninfos) %>
+
+<%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
+<%- //'results:' + JSON.stringify(results,null,2)%>
+<%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
+<%- //'types:' + JSON.stringify(types,null,2)%>
+<%- //'comname:' + comname %>
+
 <%
     var formCode = {
         get: function(index){
@@ -8,10 +16,10 @@
 
         input: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -22,11 +30,11 @@
 
         checkbox: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -36,11 +44,11 @@
 
         radio: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
                             '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ this.defNull(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -50,10 +58,10 @@
 
         select: function(index){
             var str = '<tr>' +
-                    '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
-                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ this.defNull(addoninfos[index].attr) + ' value=" "></select>' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ echo(addoninfos[index].attr) + ' value=" "></select>' +
                         '</div>' +
                     '</td>' +           
                 '</tr>';
@@ -63,7 +71,7 @@
 
         uediter: function(index){
             return '<tr>' +
-                '<td>' + this.defNull(addoninfos[index].itemname) + '：</td>' +
+                '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                 '<td style="margin: 0px;padding:0px;">' +
                     '<div class="col-sm-12 col-xs-12 ueditor-box" style="padding: 0px;">' +
                         '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
@@ -80,7 +88,7 @@
         **/
         uploader: function(index){
             return '<tr>' + 
-                '<td>'+ this.defNull(addoninfos[index].itemname) + '：</td>' + 
+                '<td>'+ echo(addoninfos[index].itemname) + '：</td>' + 
                 '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
                     '<div class="form-group col-xs-8">' + 
                         '<div class="replaceImg-label">' + 
@@ -89,7 +97,7 @@
                             '</label>' + 
                         '</div>' + 
                     '</div>' + 
-                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>' + 
+                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>' + 
                 '</td>' +            
             '</tr>';
         },
@@ -115,8 +123,43 @@
             return str;
         },
 
-        defNull: function(d){
-            return d || '';
+        /**
+        *   nesmodal树型结构列表输入
+        **/
+        nesmodal: function(index){
+            var fieldName = addoninfos[index].field;
+            var typeName = array2value(addoninfos, 'field', fieldName, 'itemname') || '所属分类'; 
+            var listName = array2value(addoninfos, 'field', fieldName, 'islist') || '所属分类'; 
+            var str = `<tr>
+                <td>` + typeName + `：</td>
+                <td>
+                    <div class="form-group col-xs-4">
+                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                        <input type="hidden" name="`+ fieldName +`" value=""/>
+                    </div>
+                    <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
+                </td>              
+            </tr>`;
+
+            return str;
+        },
+
+        /**
+        *   联动地址输入控件
+        **/
+        address: function(index){
+            return  `<tr>
+                <td>地址:</td>
+                <td>
+                    <div class="form-group col-xs-12 address-group">
+                        <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="">
+                        <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
+                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+                    </div>
+                </td>              
+            </tr>`;
         }
     }
 %>
@@ -236,8 +279,8 @@
                             </td>              
                         </tr>
 
-                        <tr>
-                            <td>栏目：</td>
+                        <!-- <tr>
+                            <td>所属栏目：</td>
                             <td>
                                 <div class="form-group col-xs-4">
                                     <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
@@ -246,10 +289,21 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                                 <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
                             </td>              
-                        </tr>
+                        </tr> -->
 
                         <tr>
-                            <td>分类：</td>
+                            <td>所属栏目：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="栏目列表" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" value="" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                            </td>              
+                        </tr>
+
+                        <!-- <tr>
+                            <td>所属分类：</td>
                             <td>
                                 <div class="form-group col-xs-4">
                                     <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
@@ -257,6 +311,21 @@
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                                 <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                            </td>              
+                        </tr> -->
+
+                        <tr>
+                            <% 
+                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
+                            var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
+                            %>
+                            <td><%= typeName; %>：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="<%= listName %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="classify" value=""/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                             </td>              
                         </tr>
 
@@ -322,6 +391,8 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
                             </td>              
                         </tr>
+
+                        
                     </tbody>
                     <tfoot>
                         <tr>
@@ -408,9 +479,11 @@
 </div>
 <!-- 输出视图组件 -->
 <%- cropperView %>
+<%- print_r(types) %>
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
+    app.addonParams = {oid: getItem('OID')}
     var error = <%- error; %>;
     var updateOutput = function (e) {
         var list = e.length ? e : $(e.target),
@@ -419,55 +492,35 @@
     };
 
     /**
-     * 分类相关
+     * nettable模态框--(栏目列表和分类列表)
      */
-    $("#oper-classify").click(function(){
-        $("#oper-classify-nes").fadeToggle();
-    })
-
-    var results = <%- results.length ? results : false %> || [];
-    //初始化nestable数据结构
-    effect.nestable(results,error,'#oper-classify-nes');
-    
-    // activate Nestable for list 2
-    $('#nestable2').nestable({group: 1}).on('change', updateOutput);
-    $('#nestable2 .dd').nestable('collapseAll');    
-    //隐藏编辑按钮
-    $('#nestable2 .dd-edit').hide();
-    $("#nestable2 .dd-addon-handel").removeClass('hidden')
-
-    //设置被选择的值及效果
-    $('.handel-nestable2').click(function(e){
-        $("#oper-classify").text($(this).parent().find(".dd-val").html());
-        $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
-        $("#oper-classify-nes").fadeToggle();
+    $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(types) %> || [];
+        var classify = <%- results ? results : 0 %> || [];
+        var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
+        effect.nestable(optData, error, '#modal-body');
+        $("#normalModal").find(".dd").nestable('collapseAll');
+        $("#normalModal").find('[data-action="collapse"]').click();
+        $('#modal-body').find('li .dd-edit').hide();
+        $('.modal-footer').children('.cancle').hide();
+        $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+        $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+            var li = $(this).parent();
+            $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+            $(this).siblings('.dd-handle').addClass("dd-addon-click");
+            me.html(li.attr('data-name'));
+            me.attr("data-val",li.attr('data-val'));
+            me.siblings('input').val(li.attr('data-val'));
+            //$("#normalModal").toggle();
+        });
     });
-    
-    
-    /**
-     * 栏目相关
-     */
-    $("#oper-types").click(function(){
-        $("#oper-types-nes").fadeToggle();
-    })
-    var types = <%- error ? false : JSON.stringify(types) %>;
-    //初始化nestable数据结构
-    effect.nestable(types,error,'#oper-types-nes','nestable-type');
-
-    // activate Nestable for list 2
-    $('#nestable-type').nestable({group: 1}).on('change', updateOutput);
-    $('#nestable-type .dd').nestable('collapseAll');    
-    //隐藏编辑按钮
-    $('#nestable-type .dd-edit').hide();
-    $("#nestable-type .dd-addon-handel").removeClass('hidden')
-
-    //设置被选择的值及效果
-    $('.handel-nestable-type').click(function(e){
-        $("#oper-types").text($(this).parent().find(".dd-val").html());
-        $("#oper-types").siblings('input[ name="typeid"]').val($(this).parent().attr('data-val'));
-        $("#oper-types-nes").fadeToggle();
-    });
-
 
     /**
      * 规格项相关
@@ -922,5 +975,12 @@
     //效果初始化
     setEffect();
 </script>
+
+<!-- 地址输入框控制部分 -->
+<script>
+addressPice.params = {type: '<%= ctag %>'};
+addressPice.load();
+</script>
+    
 
 

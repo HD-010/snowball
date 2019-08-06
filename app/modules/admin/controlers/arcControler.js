@@ -24,7 +24,11 @@ function arcControler(){
                 res.message = "查询栏目信息失败，请稍后重试";
                 return that.render(res,'/err404');
             }
-            data.types = treeStrcut(res.data); 
+            data.types = [{
+                val: "type_3w4532456345",
+                name: "栏目列表",
+                children:treeStrcut(res.data)
+            }]; 
             ps = that.testRender(data,ps);
         });
         
@@ -33,8 +37,9 @@ function arcControler(){
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
-        params.enable = '0';
+        params.enable = '1';
         classify.get(params, function(res){
+            log("@@@@@@@@@@@@@@@@@@@@分类信息:",res);
             if(res.error){
                 res.message = "查询分类信息失败，请稍后重试";
                 return that.render(res,'/err404');
@@ -56,7 +61,9 @@ function arcControler(){
                 res.message = "查询表信息失败，请稍后重试";
                 return that.render(res,'/err404');
             }
+
             data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
+            data.comname = res.results[0].comname;              //附加表字段信息
             // 获取前端逻辑处理代码
             data.cropperView = that.plug('Uploads',{
                 accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
@@ -260,7 +267,7 @@ function arcControler(){
      */
     this.edt = function(){
         var ctag = this.param('ctag')   // || 'infos';          //这是组件标识，由客户端传来
-        var ps = 3;         
+        var ps = 4;         
         var data = {ctag: ctag};
         var params = {};
         var arc = this.model("Arc");
@@ -275,7 +282,11 @@ function arcControler(){
                 res.message = "查询栏目信息失败，请稍后重试";
                 return that.render(res);
             }
-            data.types = treeStrcut(res.data); 
+            data.types = [{
+                val: "type_3w4532456345",
+                name: "栏目列表",
+                children:treeStrcut(res.data)
+            }]; 
             ps = that.testRender(data,ps);
         });
         
@@ -286,6 +297,13 @@ function arcControler(){
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
+            data = mergeObj([data,res]);
+            ps = that.testRender(data,ps);
+        });
+
+        //添加内容的状态列表
+        params.enumtag = ctag + '_state';
+        this.model('Enum').list(params, function(res){
             data = mergeObj([data,res]);
             ps = that.testRender(data,ps);
         });

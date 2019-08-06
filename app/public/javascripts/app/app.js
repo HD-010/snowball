@@ -504,6 +504,108 @@ var app = {
     }
 /** ===========================scrool事件监听 end====================== */
 
+/** ==============================联动地址插件============================= */
+/**
+ * 要求：
+ * html 代码
+ * <div class="form-group col-xs-12 address-group">
+ *      <!-- 向后台传输数据的输出框 -->
+        <input type="hidden" name="address" value=""> 
+        <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=" "></select>
+        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+    </div>
+ */
+var addressPice = {
+    env: "",       //"loadEdit"
+    uri: "",
+    url: this.uri|| "/admin/address/names",
+    saveUrl: this.saveUrl|| "/admin/address/save",
+    params:{},
+    loadData: function(item, params){
+        params = params || {};
+        var me = $(item);
+        var data  = {oid: getItem('OID')};
+        data = mergeObj([data,params]);
+        DL({
+            dev: 'on',
+            uri: addressPice.url,
+            data: data,
+            befor: function(that){
+                var res = that.results;
+                if(res.error) app.notice(res);
+                me.attr('data-val', res.name.join('-'));
+                me.attr('data-key', res.id.join('-'));
+                me.attr('data-def', res.id[0]);         //默认值
+                effect.setSelect('.address-group');
+                that.dev = 'exit';
+            }
+        });
+    },
+    load: function(){
+        if(this.params.initId){
+            
+        }else{
+            //加载初始数据（省级）
+            addressPice.loadData($('.address-group .address-province'));
+        }
+        
+        //触发change事件
+        $('.address-group .address').click(function(){$(this).change()});
+
+        //读取下级数据
+        $('.address-group .address').change(function(){
+            var me = $(this);
+            var reid = me.val();
+            me.attr('data-def',reid);
+            var city = me.next();
+            if(!me.nextAll("select").length) return;
+            me.nextAll("select").each(function(i, opt){
+                $(opt).removeAttr('data-val').removeAttr('data-key');
+                if(addressPice.env === "loadEdit") opt.removeAttr('data-def');
+            });
+            effect.setSelect('.address-group');
+            var params = {reid: reid};
+            addressPice.loadData(city, params);
+            city.removeClass("hidden");
+        });
+
+        //失去焦点时保存数据
+        $(".address-group").focusout(function(){
+            var me = $(this);
+            var address = [];
+            $(this).find("[name^='addr_']").each(function(i,opt){
+                if($(opt).val()) address.push($(opt).val());
+            });
+            if(address.length < 4) return;
+            var curVal = me.find('input[data-name="address"]').val();
+            var data = {
+                'oid': getItem("OID"),
+                'addr': address.join('-'),
+            }
+            data = mergeObj([data,addressPice.params]);
+            if(curVal) {
+                data.edt = 1;
+                data.id = curVal;
+            }
+            $.post(addressPice.saveUrl,data,function(res){
+                if(res.error) app.notice(res);
+                me.find('input[data-name="address"]').val(res.newId);
+            });
+        });
+
+        //开启数据保存变量
+        $(".address-group .address").each(function(i, opt){
+            if(!$(opt).attr('data-def')) return;
+            addressPice.env = "loadEdit";
+            if(i === 0) $(opt).mouseover();
+            $(opt).change();
+        });
+    }
+}
+/** ===========================联动地址插件 end====================== */
+
 /** ==============================效果插件============================= */
 var effect = {
     /**
@@ -615,7 +717,7 @@ var effect = {
     },
 
     /**
-     * 
+     * 状态：预留
      * @param {*} selecter 
      */
     setRadio: function(selecter){
@@ -650,12 +752,12 @@ var effect = {
      */
     setSelect: function(selecter){
         if(!selecter) return;
-        $(selecter).each(function(index,item){
-            var itemAttr = $(item).find("select");
-            var dataKey = itemAttr.attr('data-key');
+        $(selecter).find("select").each(function(index,item){
+            //var itemAttr = $(item).find("select");
+            var dataKey = $(item).attr('data-key');
             var key = dataKey ? dataKey.split('-') : [];
-            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
-            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var val = dataKey ? $(item).attr('data-val').split('-') : [];
+            var defVal = $(item).attr('data-def') ? $(item).attr('data-def').split('-') : [];
             var htmlCode = item.outerHTML;
             var optHtml = '';
             var stlected;
@@ -663,7 +765,7 @@ var effect = {
                 stlected = (defVal.indexOf(key[i]) + 1) ? 'selected' : '';
                 optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
             }
-            $(item).find("select").html(optHtml);
+            $(item).html(optHtml);
         });
     },
 
@@ -759,15 +861,18 @@ var effect = {
     nestable: function(results,error,appendid,initElem){
         var append = $(appendid);
         if(!append.length) return;
-        var nesId = initElem;
-        if(!initElem){
-            nesId = $(".dd").eq(0).attr('id');
-            nesId = nesId ? 'nestable' + (parseInt(nesId.replace(/[^0-9]/ig,'')) + 1) : 'nestable2';
-        }
+        var nesId = initElem || 'nestable2';
+        // if(!initElem){
+        //     nesId = $(".dd").eq(0).attr('id');
+        //     var index = parseInt(nesId.replace(/[^0-9]/ig,''));
+        //     index = index == NaN ? 1 : index + 1;
+        //     nesId = nesId ? 'nestable' + index : 'nestable2';
+        // }
         var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
         var nesBox = `<style>
                         .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
-                        .dd-list>li .dd-addon-handel{position:absolute;right:0;top:0.6em;height:2em;border:0;left:5em;}
+                        .dd-list>li .dd-addon-handel {top:0;position: absolute;right: 0;height: 3em;border: 0;left: 3em;border:0;}
+                        .dd-addon-click{background-color:#3CA2D7 !important}
                         .dd-list>li .dd-edit span{margin-right:0.5em;}
                     </style>
                     <div class="dd" id="`+ nesId +`">
@@ -841,8 +946,8 @@ var effect = {
                             
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="normalModal">关闭</button>
-                            <button type="button" class="btn btn-primary" data-confirm="normalModal" >确定</button>
+                            <button type="button" class="btn btn-white cancle" data-dismiss="normalModal">关闭</button>
+                            <button type="button" class="btn btn-primary submit" data-confirm="normalModal" >确定</button>
                         </div>
                     </div>
                 </div>
@@ -944,6 +1049,70 @@ function array2value (array,key1,value,key2) {
         }
 	}
 	return '';
+}
+
+/*
+*merge([objA,objB,objC]);
+*结果为：
+Object {a: "oh", b: "hello", c: "ds", f: "你好", fd: "world"}
+ */
+function mergeObj(objs){
+	if(objs.constructor.name !== 'Array'){
+		console.log({
+			error  : 1,
+			message: '传的参数必须是多个对象的数组'
+		});
+		return false;
+	}
+	for(var i = 1; i < objs.length; i++){
+        if(objs[i].constructor.name == 'Object'){
+            for(var k in objs[i]){
+                objs[0][k] = objs[i][k];
+            }
+        }
+	}
+    return objs[0];
+}
+
+/**
+ * 方法根据key1=>value在array中查找相对的对象，并返回对象(中key2的值),或返回符合条件的所有对象
+ * array array 被查找的多个对象的数组
+ * key1 用于匹配的键
+ * value 用于匹配的键对应的值
+ * key2 string  null | key2  null 返回匹配对象， key2 返回匹配对象中 key2 的值
+ * all boolean true 返回所有匹配的集合，false 返回第一次匹配               
+ */
+function treeValue (array,key1,value,key2,all) {
+	array = array || [];
+	all = all || false;
+    if(!array.length) return '';
+    if(typeof key2 == 'boolean') {
+        all = key2;
+        key2 = undefined;
+    }
+	var temObj = [];
+	for(var i in array){
+		var item = array[i];
+		for(var k in item){
+			if(item[k].constructor.name == 'Array'){
+				var values = treeValue(item[k],key1,value,key2,all);
+				values.constructor.name == 'Array' ?
+				mergeObj([temObj,values]) :
+				temObj = values;
+			}else{
+				if((k == key1) && (item[k] == value) && !all){
+                    console.log(item)
+					temObj = key2 ? item[key2] : item;
+					break;
+				}
+        		if((k == key1) && (item[k] == value) && all){
+					key2 ? temObj.push(item[key2]) : temObj.push(item);
+				} 
+			}
+		}
+	}
+    
+	return temObj;
 }
 
 /**

@@ -1,6 +1,9 @@
 function ClassifyModel(){
     var that = this;
 
+    /**
+     * 获取分类列表
+     */
     this.get = function(params,callback){
         var conditions = {
             table: ['youbang_arcclass'],
@@ -10,7 +13,7 @@ function ClassifyModel(){
         conditions.where.push("macid='" + params.macid + "'");
         conditions.where.push("enable='" + params.enable + "'");  //按分类是否启用为条件查找
 
-        this.DB().get(conditions,function(error,results){
+        this.DB().log().get(conditions,function(error,results){
             var data = {};
             //data.error =  (error || !results.length) ? 1 : 0;
             data.error =  error ? 1 : 0;
@@ -25,6 +28,9 @@ function ClassifyModel(){
         })
     }
 
+    /**
+     * 保存分类数据
+     */
     this.save = function(params,callback){
         var conditions = {
             table: 'youbang_arcclass',
@@ -43,7 +49,6 @@ function ClassifyModel(){
         conditions.fields.push(data);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-
         this.DB().set(conditions,function(error,results){
             var data = {};
             data.error = 1;
@@ -58,6 +63,20 @@ function ClassifyModel(){
         });
     }
 
+
+    /**
+     * 根据组件中的islist列表数据初始化分类列表结构
+     */
+    this.struc = function(classifies,listName){
+        var tem = [];
+        var temObj;
+        for(var i = 0; i < listName.length; i ++){
+            temObj = array2value(classifies, 'name', listName[i]);
+            if(!temObj) temObj = {name: listName[i], val: "classify_" + (new Date()).valueOf() + i};
+            tem.push(temObj);
+        }
+        return tem;
+    }
 }
 
 module.exports = ClassifyModel;
