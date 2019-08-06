@@ -13,7 +13,7 @@ function AddressModel(){
         }
         conditions.where.push("reid='"+ reid +"'");
 
-        that.DB().log().get(conditions,function(error,results){
+        that.DB().get(conditions,function(error,results){
             data.error = (error || !results.length) ? 1 : 0;
             data.names = results;
             data.name = queryresultKeyValue(results,'name'),
@@ -40,7 +40,7 @@ function AddressModel(){
         typeof addIds == 'object' ? 
         conditions.where.push('id in (' + addIds + ')') :
         conditions.where.push('id=' + id, 'type="' + type + '"');
-        this.DB().log().get(conditions,(error, results, fields)=>{
+        this.DB().get(conditions,(error, results, fields)=>{
             data.error = (error || results.length) ? 1 : 0;
             if(!error) data.message = "ok";
             data.addr = results;
@@ -76,7 +76,7 @@ function AddressModel(){
         if(edt) conditions.where.push('id=' + id);
         conditions.fields.push(recod);
 
-        this.DB().log().set(conditions, function(error, results){
+        this.DB().set(conditions, function(error, results){
             data.error = error ? 1 : 0;
             if(error){
                 data.error = 1;

@@ -31,7 +31,7 @@ function ArcModel(){
         "%' or youbang_archives.writer like '%" + sky + 
         "%' or youbang_archives.keywords like '%" + sky + "%')");
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().log().get(conditions,(error,results)=>{
+        this.DB().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);

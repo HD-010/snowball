@@ -14,8 +14,11 @@ function BehaviorModel() {
 
     this.ruler = {
         '/api/*' : ['frequentReq'],     //所有路由的请求，都在执行请求的操作前执行数组中的方法组
-       
-        
+        '/api/user/addaddress':['parseTemplate'],
+        '/api/user/address':['parseTemplate'],
+        '/api/user/addressbyid':['parseTemplate'],
+        '/api/user/uptadeaddress':['parseTemplate'],
+        '/api/user/deladdress':['parseTemplate'],
     }
     
 
@@ -31,6 +34,7 @@ function BehaviorModel() {
      * 方案：同一1p 同一接口调间隔时间为2秒
      */
     this.frequentReq = function(params, callback){
+        
         let that = this;
         if(this.req.method=="GET"){
              that.req.res.send({error:'非法接口请求'});
@@ -65,50 +69,19 @@ function BehaviorModel() {
      */
     this.parseTemplate = function(params, callback){
         let that = this;
+        let userid = this.POST("userid");
+        if(!userid) return that.req.res.send({errorcode:1,msg:"userid"});
+        if(isNaN(userid)) return that.req.res.send({errorcode:1,msg:"userid非法"});
         //验证api接口token的合法性
         let token  = this.POST("token");
-        let uid = this.POST("uid");
+        if(!token) return that.req.res.send({errorcode:1,msg:"token"});
         //依据用户id到redis取出token与当前参数带来的token做一次合法校验
-        this.DB("Redis").get(uid,function(error,data){
-            if(token == data){
-                console.log("===============POST参数",that.POST());
-                callback({error:0})
-            }else{
-                that.req.res.send({error:'接口请求错误 This is not a valid user'});
-                that.req.res.end();
-                return;
-            }
-        })
-
-      
-    
-        // var that = this;
-        // var process, template,currTime;
-        // var templateId = 1;
-        // var data = {
-        //     error: 1,
-        //     uri: '/pc/err/_404'
-        // }
-        // let router = this.app.router.string;
-        // if(this.notMatch.parseTemplate.indexOf(router) !== -1 )  return callback({ error: 0 });
-
-        // //获取用户当前使用的模板
-        // //如果用户没有自己的模板，则使用系统默认的模板(id为1)
-        // //将模板信息保存到缓存，供后继使用
-        // process = this.model('DataProcess');
-        // template = this.model("Template");
-
-        // //如果用户模板信息已有，则校验成功
-        // if(process.getUserInfo('TP_' + that.GET('us',{default:1}),true)) return callback({error: 0});
-        // //如果用户模板信息没有，则查询以校验
-        // template.userTemplate({},function(error,results,fields){
-        //     if(error) return callback(data);
-        //     process.setUserInfo(that.GET('us',{default:1}), 'TPU');
-        //     process.setUserInfo(results,'TP_' + that.GET('us', {default:1}), true);
-        //     return callback({error: 0});
-        // });
+        this.DB("Redis").get(userid+"_user",function(error,data){
+            if(!data) return that.req.res.send({errorcode:1,msg:"登录已过期或未登录"});
+            if(token == data) return  callback({error:0});            
+            return that.req.res.send({errorcode:1,msg:"登录已过期或未登录"}); 
+        })  
     }
-
 }
 
 module.exports = BehaviorModel;
