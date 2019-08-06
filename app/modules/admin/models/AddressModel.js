@@ -29,6 +29,7 @@ function AddressModel(){
         var data = {error: 1,message:"参数错误"}
         var type = this.POST('type');
         var id =  this.POST('id');
+        var addrId = this.POST('addrid');
         if(!id || !type) return callback(data);
         var conditions = {
             table: ['youbang_addresslist'],

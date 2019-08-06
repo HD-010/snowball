@@ -401,7 +401,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
     "isnull": true,					
 	"islist": "",					
 	"default": 0,					
-	"fieldget": 1,					
+	"fieldget": 0,					
 	"fieldset": 1,					
 	"novaild": 1,					
 	"inputtype":"input",			
@@ -423,7 +423,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
   },
   {
     "field": "litpic",			
-    "itemname": "缩略图",			
+    "itemname": "头像",			
     "type": "text",					
 	"maxlength": 0,				
     "isnull": true,					
@@ -434,11 +434,11 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"novaild": 0,					
 	"inputtype":"input",
 	"limit":1,
-    "attr": "data-comment=缩略图，限1张" 
+    "attr": "data-comment=上传头像" 
   },
   {
 	"field": "uname",			
-	"itemname": "求职者",			
+	"itemname": "姓名",			
 	"type": "text",					
 	"maxlength": "20",				
 	"isnull": false,					
@@ -449,7 +449,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"limit": 4,						
 	"novaild": 0,					
 	"inputtype":"input",			
-	"attr": " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
+	"attr": " data-comment=如：这是注释" //视图中输入框属性
    },
    {
 	"field": "litpic",			
@@ -536,7 +536,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"fieldset": 1,					
 	"novaild": 0,					
 	"inputtype":"nesmodal",			
-	"attr": " type=number data-comment=如：这是注释" //视图中输入框属性
+	"attr": " type=text data-comment=如：这是注释" //视图中输入框属性
    },
    {
 	"field": "job_salary",			
@@ -553,6 +553,34 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"attr": " type=number data-comment=如：这是注释" //视图中输入框属性
    },
    {
+	"field": "job_industry",			
+	"itemname": "从事行业",			
+	"type": "varchar",					
+	"maxlength": "128",				
+	"isnull": false,					
+	"islist": "从事行业",					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " type=text data-comment=如：这是注释" //视图中输入框属性
+   },
+   {
+	"field": "job_Nature",			
+	"itemname": "工作性质",			
+	"type": "varchar",					
+	"maxlength": "128",				
+	"isnull": false,					
+	"islist": "工作性质",					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " type=text data-comment=如：这是注释" //视图中输入框属性
+   },
+   {
 	"field": "phone",			
 	"itemname": "联系电话",			
 	"type": "int",					
@@ -563,7 +591,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"fieldget": 1,					
 	"fieldset": 1,					
 	"novaild": 0,					
-	"inputtype":"nesmodal",			
+	"inputtype":"input",			
 	"attr": " type=tell data-comment=如：这是注释" //视图中输入框属性
    }
 ]
