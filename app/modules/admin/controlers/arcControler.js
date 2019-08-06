@@ -39,6 +39,7 @@ function arcControler(){
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
+            log("@@@@@@@@@@@@@@@@@@@@分类信息:",res);
             if(res.error){
                 res.message = "查询分类信息失败，请稍后重试";
                 return that.render(res,'/err404');

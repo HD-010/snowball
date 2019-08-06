@@ -23,7 +23,7 @@ function classifyControler(){
                 data.ctag = ctag;
                 data.error = res.error;
                 data.id = res.id;
-                data.results = classify.struc(JSON.parse(res.results), data.className);
+                 data.results = res.results.length ? classify.struc(JSON.parse(res.results), data.className): [];
                 
                 that.render(data);
             });

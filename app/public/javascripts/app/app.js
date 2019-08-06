@@ -504,6 +504,108 @@ var app = {
     }
 /** ===========================scrool事件监听 end====================== */
 
+/** ==============================联动地址插件============================= */
+/**
+ * 要求：
+ * html 代码
+ * <div class="form-group col-xs-12 address-group">
+ *      <!-- 向后台传输数据的输出框 -->
+        <input type="hidden" name="address" value=""> 
+        <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=" "></select>
+        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+    </div>
+ */
+var addressPice = {
+    env: "",       //"loadEdit"
+    uri: "",
+    url: this.uri|| "/admin/address/names",
+    saveUrl: this.saveUrl|| "/admin/address/save",
+    params:{},
+    loadData: function(item, params){
+        params = params || {};
+        var me = $(item);
+        var data  = {oid: getItem('OID')};
+        data = mergeObj([data,params]);
+        DL({
+            dev: 'on',
+            uri: addressPice.url,
+            data: data,
+            befor: function(that){
+                var res = that.results;
+                if(res.error) app.notice(res);
+                me.attr('data-val', res.name.join('-'));
+                me.attr('data-key', res.id.join('-'));
+                me.attr('data-def', res.id[0]);         //默认值
+                effect.setSelect('.address-group');
+                that.dev = 'exit';
+            }
+        });
+    },
+    load: function(){
+        if(this.params.initId){
+            
+        }else{
+            //加载初始数据（省级）
+            addressPice.loadData($('.address-group .address-province'));
+        }
+        
+        //触发change事件
+        $('.address-group .address').click(function(){$(this).change()});
+
+        //读取下级数据
+        $('.address-group .address').change(function(){
+            var me = $(this);
+            var reid = me.val();
+            me.attr('data-def',reid);
+            var city = me.next();
+            if(!me.nextAll("select").length) return;
+            me.nextAll("select").each(function(i, opt){
+                $(opt).removeAttr('data-val').removeAttr('data-key');
+                if(addressPice.env === "loadEdit") opt.removeAttr('data-def');
+            });
+            effect.setSelect('.address-group');
+            var params = {reid: reid};
+            addressPice.loadData(city, params);
+            city.removeClass("hidden");
+        });
+
+        //失去焦点时保存数据
+        $(".address-group").focusout(function(){
+            var me = $(this);
+            var address = [];
+            $(this).find("[name^='addr_']").each(function(i,opt){
+                if($(opt).val()) address.push($(opt).val());
+            });
+            if(address.length < 4) return;
+            var curVal = me.find('input[data-name="address"]').val();
+            var data = {
+                'oid': getItem("OID"),
+                'addr': address.join('-'),
+            }
+            data = mergeObj([data,addressPice.params]);
+            if(curVal) {
+                data.edt = 1;
+                data.id = curVal;
+            }
+            $.post(addressPice.saveUrl,data,function(res){
+                if(res.error) app.notice(res);
+                me.find('input[data-name="address"]').val(res.newId);
+            });
+        });
+
+        //开启数据保存变量
+        $(".address-group .address").each(function(i, opt){
+            if(!$(opt).attr('data-def')) return;
+            addressPice.env = "loadEdit";
+            if(i === 0) $(opt).mouseover();
+            $(opt).change();
+        });
+    }
+}
+/** ===========================联动地址插件 end====================== */
+
 /** ==============================效果插件============================= */
 var effect = {
     /**

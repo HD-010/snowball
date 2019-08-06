@@ -33,8 +33,11 @@ function TypeModel(){
             message:"参数错误"
         };
         if(((param.tag == 'edt') && (!param.atid)) ||
-        (param.tag != 'add')) return callback(data);
+        ((param.tag != 'edt') && (param.tag != 'add'))) {
+            return callback(data);
+        }
         var componentid = this.POST('cmid');
+        log("编辑分类数据：", componentid);
         if(!componentid) return callback(data);
 
        var conditions = {
@@ -58,7 +61,7 @@ function TypeModel(){
         upData.siteurl = this.POST('siteurl') || '';
         upData.componentid = componentid;
         conditions.fields.push(upData);
-        
+        log("编辑分类数据：", conditions);
         this.DB().set(conditions,function(error,results,fields){
             data.error = error?1:0;
             data.data = results;

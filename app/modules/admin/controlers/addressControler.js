@@ -14,6 +14,15 @@ function addressControler(){
     };
 
     /**
+     * 查看地址
+     */
+    this.show = function(){
+        this.model("Address").show({},(res)=>{
+            that.renderJson(res);
+        });
+    }
+
+    /**
      * 保存地址
      */
     this.save = function(){
@@ -21,6 +30,7 @@ function addressControler(){
             that.renderJson(res);
         });
     }
+
 }
 
 module.exports = addressControler;
