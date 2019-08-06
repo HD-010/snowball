@@ -162,8 +162,8 @@
                     <div class="form-group col-xs-12 address-group">
                         <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="{{` + addoninfos[index].field + `}}">
                         <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
-                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
-                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                        <select class="form-control address address-city hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                        <select class="form-control address address-country hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
                         <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
                     </div>
                 </td>              
@@ -913,7 +913,6 @@
                 //初始化地址输入框控制部分
                 $('.address-group').each(function(i, item){
                     var id = $(item).find('input[data-name="address"]').val();
-                    alert(id);
                     //$.post('/admin/address/show');
                 });
                 $.post('/admin/address/show',
@@ -924,9 +923,22 @@
                     },
                     function(res){
                         var address = res.addr[0];
-                        console.log("@@@@@@@@9090::",res);
+                        console.log("@@@@@@@@9090::",address);
                         // 地址输入框控制部分
-                        
+                        if(address){
+                            $(".address-group .address-province").attr('data-def', address.provinceid);
+                            $(".address-group .address-city").attr('data-def', address.cityid);
+                            $(".address-group .address-country").attr('data-def', address.countyid);
+                            $(".address-group input[name='addr_detail']").val(address.detail);
+                            $.post('/admin/address/show',
+                                {
+                                    oid: getItem('OID'),
+                                    type: '<%= ctag %>',
+                                    addrid: address.provinceid + '-' + address.cityid + '-' + address.countyid,
+                                },
+                            );
+
+                        }
                         
                         addressPice.params = {
                             type: '<%= ctag %>',
