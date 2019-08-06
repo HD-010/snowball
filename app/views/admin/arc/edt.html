@@ -1,3 +1,4 @@
+<%- print_r(data[0]) %>
 <%
     var formCode = {
         //uediter选项
@@ -610,7 +611,6 @@
         //关于规格表项
         initData: function(specoption){
             this.readData(); //读取规格项数据到表
-            console.log("==============================================",specoption)
             for(var i = 0; i < specoption.length; i++){
                 var title = specoption[i].title.replace(/_/g,',');
                 var marketprice = specoption[i].marketprice;
@@ -923,23 +923,7 @@
                     },
                     function(res){
                         var address = res.addr[0];
-                        console.log("@@@@@@@@9090::",address);
                         // 地址输入框控制部分
-                        if(address){
-                            $(".address-group .address-province").attr('data-def', address.provinceid);
-                            $(".address-group .address-city").attr('data-def', address.cityid);
-                            $(".address-group .address-country").attr('data-def', address.countyid);
-                            $(".address-group input[name='addr_detail']").val(address.detail);
-                            $.post('/admin/address/show',
-                                {
-                                    oid: getItem('OID'),
-                                    type: '<%= ctag %>',
-                                    addrid: address.provinceid + '-' + address.cityid + '-' + address.countyid,
-                                },
-                            );
-
-                        }
-                        
                         addressPice.params = {
                             type: '<%= ctag %>',
                             initId:'<%= data[0].address %>',
