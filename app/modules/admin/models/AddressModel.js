@@ -29,19 +29,15 @@ function AddressModel(){
         var data = {error: 1,message:"参数错误"}
         var type = this.POST('type');
         var id =  this.POST('id');
-        var addIds = this.POST('addids');
-        if(addIds) addIds = addIds.split('-');
-        if(!id || !type) return callback(data);
+        
+        if(!id || !type)return callback(data);
         var conditions = {
             table: ['youbang_addresslist'],
             where: []
         }
-
-        typeof addIds == 'object' ? 
-        conditions.where.push('id in (' + addIds + ')') :
         conditions.where.push('id=' + id, 'type="' + type + '"');
         this.DB().get(conditions,(error, results, fields)=>{
-            data.error = (error || results.length) ? 1 : 0;
+            data.error = (error || !results.length) ? 1 : 0;
             if(!error) data.message = "ok";
             data.addr = results;
             return callback(data);

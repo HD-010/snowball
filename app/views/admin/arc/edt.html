@@ -1,4 +1,4 @@
-<%- print_r(data[0]) %>
+<%- //print_r(data[0]) %>
 <%
     var formCode = {
         //uediter选项
@@ -157,15 +157,17 @@
         *   联动地址输入控件
         **/
         address: function(index){
+            var addrId = data[0][addoninfos[index].field];
+            var ishidden = data[0][addoninfos[index].field] ? '' : 'hidden';
             return  `<tr>
                 <td>地址:</td>
                 <td>
-                    <div class="form-group col-xs-12 address-group">
-                        <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="{{` + addoninfos[index].field + `}}">
+                    <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + `>
+                        <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="` + echo(addrId) + `">
                         <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
-                        <select class="form-control address address-city hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
-                        <select class="form-control address address-country hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
-                        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+                        <select class="form-control address address-city `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                        <select class="form-control address address-country `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                        <input class="form-control address-detail" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
                     </div>
                 </td>              
             </tr>`;
@@ -910,34 +912,11 @@
 
                 initNestable();
                 
-                //初始化地址输入框控制部分
-                $('.address-group').each(function(i, item){
-                    var id = $(item).find('input[data-name="address"]').val();
-                    //$.post('/admin/address/show');
-                });
-                $.post('/admin/address/show',
-                    {
-                        oid: getItem('OID'),
-                        type: '<%= ctag %>',
-                        id: '<%= data[0].address %>',
-                    },
-                    function(res){
-                        var address = res.addr[0];
-                        // 地址输入框控制部分
-                        addressPice.params = {
-                            type: '<%= ctag %>',
-                            initId:'<%= data[0].address %>',
-                        };
-                        addressPice.load();
-                    }
-
-                )
-                // 地址输入框控制部分
-                // addressPice.params = {
-                //     type: '<%= ctag %>',
-                //     initId:'<%= data[0].address %>',
-                // };
-                // addressPice.load();
+                /**
+                 * 初始化地址输入框控制部分
+                 */
+                addressPice.params.type = '<%= ctag %>';
+                addressPice.initAddr();
             });
         }
     });
