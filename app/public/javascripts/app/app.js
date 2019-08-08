@@ -519,6 +519,7 @@ var app = {
     </div>`;
     须要的属性:
     data-type: 对应 youbang_addresslist 表中的 type 字段
+    调用： addressPice.load();
     2、编辑已经存在的地址
     `<tr>
         <td>地址:</td>
@@ -536,8 +537,7 @@ var app = {
     须要的属性:
     1、data-type: 对应 youbang_addresslist 表中的 type 字段
     2、初始值必填 
-
-    
+    调用： addressPice.initAddr();
 
  */
 var addressPice = {
