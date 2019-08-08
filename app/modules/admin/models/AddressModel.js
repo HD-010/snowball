@@ -9,11 +9,12 @@ function AddressModel(){
         var reid = this.POST('reid') || 0;
         var conditions = {
             table: ['youbang_sys_area'],
+            fields: ['id', 'concat(`name`, `extra`, `suffix`) as name', 'code', 'reid', '`order`'],
             where: []
         }
         conditions.where.push("reid='"+ reid +"'");
 
-        that.DB().get(conditions,function(error,results){
+        that.DB().log().get(conditions,function(error,results){
             data.error = (error || !results.length) ? 1 : 0;
             data.names = results;
             data.name = queryresultKeyValue(results,'name'),
