@@ -509,7 +509,7 @@ var app = {
  * 要求：
  * html 代码
  * 1、添加新地址
- * `<div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + `>
+ * `<div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
  *      <!-- 向后台传输数据的输出框 -->
         <input type="hidden" name="address" value=""> 
         <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
@@ -524,7 +524,7 @@ var app = {
     `<tr>
         <td>地址:</td>
         <td>
-            <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + `>
+            <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
                 <!-- 设置初始值 -->
                 <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="` + echo(addrId) + `">
                 <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
@@ -539,6 +539,7 @@ var app = {
     2、初始值必填 
     调用： addressPice.initAddr();
 
+    通用属性： data-level ：地址层级数
  */
 var addressPice = {
     env: "",       //"loadEdit"
@@ -546,6 +547,7 @@ var addressPice = {
     iUrl: this.initUrl || "/admin/address/show", //查询多级id的字符串
     url: this.uri|| "/admin/address/names",         //查询reid对应的地址列表
     sUrl: this.saveUrl|| "/admin/address/save",  //保存组合后的地列表的id
+    level: 4,                                    //地址层级数
     params:{},
     loadData: function(item, params){
         params = params || {};
@@ -573,12 +575,14 @@ var addressPice = {
         $(".address-group").each(function(i, item){
             var rq = 3;     //等待进程数
             var addrId = $(item).children('input').val();
+            addressPice.level = $(item).attr('data-level') || 4;
             data = {
                 oid: getItem("OID"),
                 id: addrId,
                 type: $(item).attr('data-type')
             },
-            $.post(addressPice.iUrl, data, function(res){
+            $.post(addressPice.iUrl, data, function(res)
+                {
                     if(res.error) return;
                     var addr = res.addr[0];
                     delete data.id;
@@ -624,6 +628,7 @@ var addressPice = {
 
     load: function(){
         addressPice.params.type = $('.address-group').attr('data-type');
+        addressPice.level = $('.address-group').attr('data-level') || 4;
         //加载初始数据（省级）
         if(!this.params.initId) addressPice.loadData($('.address-group .address-province'));
         //触发change事件
@@ -668,7 +673,7 @@ var addressPice = {
             $(this).find("[name^='addr_']").each(function(i,opt){
                 if($(opt).val()) address.push($(opt).val());
             });
-            if(address.length < 4) return;
+            if(address.length < addressPice.level) return;
             var curVal = me.find('input[data-name="address"]').val();
             var data = {
                 'oid': getItem("OID"),
