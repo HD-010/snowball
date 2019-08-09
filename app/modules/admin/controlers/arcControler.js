@@ -235,7 +235,7 @@ function arcControler(){
         addonTable.list(params,function(res){
             if(res.error || !res.results.length) {
                 res.message = "查询表信息失败，请稍后重试";
-                return that.render(res);
+                return that.renderJson(res);
             }
             params.addtable = res.results[0].addtable;
             

@@ -9,11 +9,12 @@ function AddressModel(){
         var reid = this.POST('reid') || 0;
         var conditions = {
             table: ['youbang_sys_area'],
+            fields: ['id', 'concat(`name`, `extra`, `suffix`) as name', 'code', 'reid', '`order`'],
             where: []
         }
         conditions.where.push("reid='"+ reid +"'");
 
-        that.DB().get(conditions,function(error,results){
+        that.DB().log().get(conditions,function(error,results){
             data.error = (error || !results.length) ? 1 : 0;
             data.names = results;
             data.name = queryresultKeyValue(results,'name'),
@@ -29,16 +30,15 @@ function AddressModel(){
         var data = {error: 1,message:"参数错误"}
         var type = this.POST('type');
         var id =  this.POST('id');
-        var addrId = this.POST('addrid');
-        if(!id || !type) return callback(data);
+        
+        if(!id || !type)return callback(data);
         var conditions = {
             table: ['youbang_addresslist'],
             where: []
         }
-
         conditions.where.push('id=' + id, 'type="' + type + '"');
         this.DB().get(conditions,(error, results, fields)=>{
-            data.error = (error || results.length) ? 1 : 0;
+            data.error = (error || !results.length) ? 1 : 0;
             if(!error) data.message = "ok";
             data.addr = results;
             return callback(data);

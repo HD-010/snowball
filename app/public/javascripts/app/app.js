@@ -508,20 +508,46 @@ var app = {
 /**
  * 要求：
  * html 代码
- * <div class="form-group col-xs-12 address-group">
+ * 1、添加新地址
+ * `<div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
  *      <!-- 向后台传输数据的输出框 -->
         <input type="hidden" name="address" value=""> 
         <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
         <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=" "></select>
         <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=" "></select>
         <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
-    </div>
+    </div>`;
+    须要的属性:
+    data-type: 对应 youbang_addresslist 表中的 type 字段
+    调用： addressPice.load();
+    2、编辑已经存在的地址
+    `<tr>
+        <td>地址:</td>
+        <td>
+            <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
+                <!-- 设置初始值 -->
+                <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="` + echo(addrId) + `">
+                <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
+                <select class="form-control address address-city `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                <select class="form-control address address-country `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                <input class="form-control address-detail" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+            </div>
+        </td>              
+    </tr>`;
+    须要的属性:
+    1、data-type: 对应 youbang_addresslist 表中的 type 字段
+    2、初始值必填 
+    调用： addressPice.initAddr();
+
+    通用属性： data-level ：地址层级数
  */
 var addressPice = {
     env: "",       //"loadEdit"
     uri: "",
-    url: this.uri|| "/admin/address/names",
-    saveUrl: this.saveUrl|| "/admin/address/save",
+    iUrl: this.initUrl || "/admin/address/show", //查询多级id的字符串
+    url: this.uri|| "/admin/address/names",         //查询reid对应的地址列表
+    sUrl: this.saveUrl|| "/admin/address/save",  //保存组合后的地列表的id
+    level: 4,                                    //地址层级数
     params:{},
     loadData: function(item, params){
         params = params || {};
@@ -543,18 +569,85 @@ var addressPice = {
             }
         });
     },
+
+    //初始化原数据（场景：编辑内容的页面）
+    initAddr: function(){
+        $(".address-group").each(function(i, item){
+            var rq = 3;     //等待进程数
+            var addrId = $(item).children('input').val();
+            addressPice.level = $(item).attr('data-level') || 4;
+            data = {
+                oid: getItem("OID"),
+                id: addrId,
+                type: $(item).attr('data-type')
+            },
+            $.post(addressPice.iUrl, data, function(res)
+                {
+                    if(res.error) return;
+                    var addr = res.addr[0];
+                    delete data.id;
+                    $(item).children(".address-province").attr('data-def',addr.provinceid);
+                    //初始化省名称数据
+                    data.reid = 0;
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-province").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    
+                    data.reid = addr.provinceid;
+                    //初始化市名称数据
+                    $(item).children(".address-city").attr('data-def',addr.cityid);
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-city").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    
+                    $(item).children(".address-country").attr('data-def',addr.countyid);
+                    //初始化县名称数据
+                    data.reid = addr.cityid
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-country").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    $(item).children(".address-detail").val(addr.detail);
+                }
+                
+            );
+
+            function lisEven(){
+                rq --;
+                if(rq) return;
+                addressPice.setNextDate();
+                addressPice.focusout2save();
+            }
+        });
+    },
+
     load: function(){
-        if(this.params.initId){
-            
-        }else{
-            //加载初始数据（省级）
-            addressPice.loadData($('.address-group .address-province'));
-        }
-        
+        addressPice.params.type = $('.address-group').attr('data-type');
+        addressPice.level = $('.address-group').attr('data-level') || 4;
+        //加载初始数据（省级）
+        if(!this.params.initId) addressPice.loadData($('.address-group .address-province'));
         //触发change事件
         $('.address-group .address').click(function(){$(this).change()});
-
         //读取下级数据
+        addressPice.setNextDate();
+        //失去焦点时保存数据
+        addressPice.focusout2save();
+        //开启数据保存变量
+        $(".address-group .address").each(function(i, opt){
+            if(!$(opt).attr('data-def')) return;
+            addressPice.env = "loadEdit";
+            if(i === 0) $(opt).mouseover();
+            $(opt).change();
+        });
+    },
+
+    //读取下级数据
+    setNextDate: function(){
         $('.address-group .address').change(function(){
             var me = $(this);
             var reid = me.val();
@@ -563,22 +656,24 @@ var addressPice = {
             if(!me.nextAll("select").length) return;
             me.nextAll("select").each(function(i, opt){
                 $(opt).removeAttr('data-val').removeAttr('data-key');
-                if(addressPice.env === "loadEdit") opt.removeAttr('data-def');
+                if(addressPice.env === "loadEdit") $(opt).removeAttr('data-def');
             });
             effect.setSelect('.address-group');
             var params = {reid: reid};
             addressPice.loadData(city, params);
             city.removeClass("hidden");
         });
+    },
 
-        //失去焦点时保存数据
+    //失去焦点时保存数据
+    focusout2save: function(){
         $(".address-group").focusout(function(){
             var me = $(this);
             var address = [];
             $(this).find("[name^='addr_']").each(function(i,opt){
                 if($(opt).val()) address.push($(opt).val());
             });
-            if(address.length < 4) return;
+            if(address.length < addressPice.level) return;
             var curVal = me.find('input[data-name="address"]').val();
             var data = {
                 'oid': getItem("OID"),
@@ -589,18 +684,11 @@ var addressPice = {
                 data.edt = 1;
                 data.id = curVal;
             }
-            $.post(addressPice.saveUrl,data,function(res){
+            console.log("保存的地址信息：",data);
+            $.post(addressPice.sUrl,data,function(res){
                 if(res.error) app.notice(res);
                 me.find('input[data-name="address"]').val(res.newId);
             });
-        });
-
-        //开启数据保存变量
-        $(".address-group .address").each(function(i, opt){
-            if(!$(opt).attr('data-def')) return;
-            addressPice.env = "loadEdit";
-            if(i === 0) $(opt).mouseover();
-            $(opt).change();
         });
     }
 }
@@ -653,6 +741,10 @@ var effect = {
         $(selecter).find('input').each(function(index,item){
             var defVal = $(item).attr('data-def'); 
             if(typeof defVal != 'undefined') $(item).val(defVal);
+        });
+        $(selecter).find('select').each(function(index,item){
+            var defVal = $(item).attr('data-def'); 
+            if(typeof defVal != 'undefined') $(item).find("option[value='"+defVal+"']").prop('selected', true);
         });
     },
 
