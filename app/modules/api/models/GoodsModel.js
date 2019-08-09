@@ -99,7 +99,6 @@ function GoodsModel(){
                 return callback(0,results);
             })
         });
-        
     }
     /**
      * 根据id获取商品规格
