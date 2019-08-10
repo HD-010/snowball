@@ -5,7 +5,6 @@ function toolsControler(){
     this.request = function(){
         console.log("this is request");
         //this.renderJson({id:'kd',e23:"dkfk"});
-        log(global)
         return this.render({});
     }
 

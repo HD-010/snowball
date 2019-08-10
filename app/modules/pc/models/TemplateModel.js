@@ -72,7 +72,7 @@ function TemplateModel(){
         //模板所属的用户id
         var templateUserId = process.getUserInfo('TPU'); 
         var modelInfos = process.getUserInfo('TP_' + templateUserId, true);
-        if(modelInfos) {
+        if(modelInfos && modelInfos[0]) {
             modelInfos = JSON.parse(modelInfos[0]['tModels']);
             var modelPaths = modelInfos[model];
             var style =  modelInfos['style'];

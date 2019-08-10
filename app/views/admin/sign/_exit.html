@@ -1,0 +1,35 @@
+<script>
+    swal({
+        title: "您确定要退出系统吗!",
+        text: "退出后将不能使用系统，请谨慎操作！",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "是的，我要退出！",
+        cancelButtonText: "还不想退出…",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+    function (isConfirm) {
+        if (isConfirm) {
+            var uid = getItem("UIF").id;
+            go('/passport/sign/_exit?uid='+ uid +'&backuri=/admin/sign/_in',function(res){
+                res = JSON.parse(res);
+                setItem('OID',null);
+                setItem('UIF',null);
+                setItem('PERMIT',null);
+                console.log("退出成功：",getItem('OID'),'||:',getItem('UIF'));
+                if(!res.error){
+                    swal({
+                        title : "退出成功！",
+                        text : "您已经安全退出系统，并删除了用户数据。"
+                    },function(isConfirm){
+                        if(isConfirm) go(res.uri,'top')
+                    });
+                }
+            })
+        } else {
+            swal("已取消", "您取消了退出操作！", "error");
+        }
+    });
+</script>

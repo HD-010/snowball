@@ -14,22 +14,23 @@ function signControler(){
     this._in = function(){
         //查询用户信息
         var dataProcess = this.model("DataProcess");
-        
-        this.model('UserInfor').infors({}, function(res) {
-            if (res.error) return that.render(res.data,true);
-            var infors = res.data[0];
-            
+        var userInfor = this.model('UserInfor');
+        userInfor.infors({}, function(res) {
+            if (res.error) return that.render(res,true);
             //校验密码
-            if (res.data.length === 0) {
-                return that.render({
-                    error: 1,
-                    message: "登录的帐户不存在！"
-                });
-            }
+            var infors = res.data[0];
             res = dataProcess.loginValid(res.data);
+            if(res.error) return that.renderJson(res);
+            delete infors.password;
             res.infors = infors;
+            //获取openID
+            res.openID = createOpenID(that.req,infors);
+            //读取用户权限列表
+            userInfor.getPermit({uid:infors.id},function(res1){
+                var results = mergeObj([res,res1]);
+                return that.render(results,true);
+            });
 
-            return that.render(res,true);
         });
     }
 
@@ -83,6 +84,14 @@ function signControler(){
         });
     }
 
+    /**
+     * 根据用户id获取用户信息
+     */
+    this.getUserById = function(){
+        this.model("UserInfor").getUserById({},function(results,fields) {
+            return (results) ? that.renderJson(results) : [];
+        });
+    }
 
 }
 

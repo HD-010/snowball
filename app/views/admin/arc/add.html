@@ -1,0 +1,984 @@
+<%- //print_r(addoninfos) %>
+
+<%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
+<%- //'results:' + JSON.stringify(results,null,2)%>
+<%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
+<%- //'types:' + JSON.stringify(types,null,2)%>
+<%- //'comname:' + comname %>
+
+<%
+    var formCode = {
+        get: function(index){
+            var type = addoninfos[index].inputtype;
+            if(type in formCode) return formCode[type](index);
+            return "formCode中不存在" + type + "组件";
+        },
+
+        input: function(index){
+            var str = '<tr>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-4">' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "/>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        checkbox: function(index){
+            var str = '<tr>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
+        radio: function(index){
+            var str = '<tr>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' + 
+                        '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
+                            '<label class="btn btn-outline btn-success dim">'+
+                                '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '</label>'+
+                        '</div>'+
+                    '</td></tr>';     
+                
+            return str;
+        },
+
+        select: function(index){
+            var str = '<tr>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' +
+                        '<div class="col-sm-4 col-xs-4 auto-select">' +
+                            '<select class="form-control" name="' + addoninfos[index].field + '" '+ echo(addoninfos[index].attr) + ' value=" "></select>' +
+                        '</div>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        uediter: function(index){
+            return '<tr>' +
+                '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                '<td style="margin: 0px;padding:0px;">' +
+                    '<div class="col-sm-12 col-xs-12 ueditor-box" style="padding: 0px;">' +
+                        '<input type="hidden" id="ue-contents" name="' + addoninfos[index].field + '" value="" />'+
+                        '<iframe src="/admin/arc/ueditor" id="iframeSon" style="width:100%;height:100%;min-height:520px;border: 0;overflow: hidden;"></iframe>' + 
+                    '</div>' +
+                '</td>' +           
+            '</tr>';
+        },
+
+        /**
+        *   图片上传控件参数说明：
+        *   data-limit: 限制图片上传的张数
+        *   data-field: 字段名称，input的name值
+        **/
+        uploader: function(index){
+            return '<tr>' + 
+                '<td>'+ echo(addoninfos[index].itemname) + '：</td>' + 
+                '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
+                    '<div class="form-group col-xs-8">' + 
+                        '<div class="replaceImg-label">' + 
+                            '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
+                                '<img src="/img/plus.png" />' + 
+                            '</label>' + 
+                        '</div>' + 
+                    '</div>' + 
+                    '<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>' + 
+                '</td>' +            
+            '</tr>';
+        },
+
+        /**
+        *   规格项参数说明：
+        **/
+        spec: function(index){
+            var str = `<tr>
+                <td>商品规格：</td>
+                <td>
+                    <label class="col-xs-8">
+                        <input type="checkbox" id="oper-spec" style="width:20px;height:20px;vertical-align:bottom;" name="usespec" value="1" />启用分类
+                    </label>
+                    <div class="col-xs-8" id="oper-spec-nes" style="border:0;display:none;"></div>
+                    <table border='1' class="col-xs-12" id="spec-table"> </table>
+                </td>
+                <input type="hidden" name="specname" value="">         
+                <input type="hidden" name="specitem" value="">         
+                <input type="hidden" name="specoption" value="">         
+            </tr>`;
+
+            return str;
+        },
+
+        /**
+        *   nesmodal树型结构列表输入
+        **/
+        nesmodal: function(index){
+            var fieldName = addoninfos[index].field;
+            var typeName = array2value(addoninfos, 'field', fieldName, 'itemname') || '所属分类'; 
+            var listName = array2value(addoninfos, 'field', fieldName, 'islist') || '所属分类'; 
+            var str = `<tr>
+                <td>` + typeName + `：</td>
+                <td>
+                    <div class="form-group col-xs-4">
+                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                        <input type="hidden" name="`+ fieldName +`" value=""/>
+                    </div>
+                    <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
+                </td>              
+            </tr>`;
+
+            return str;
+        },
+
+        /**
+        *   联动地址输入控件
+        **/
+        address: function(index){
+            return  `<tr>
+                <td>地址:</td>
+                <td>
+                    <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + `>
+                        <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="">
+                        <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
+                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+                    </div>
+                </td>              
+            </tr>`;
+        }
+    }
+%>
+
+<style>
+.add-infor .active{background-color:#FFF;}
+.table .active{background-color:#23AD44;}
+.full-screen{
+    position: fixed;
+    z-index: 99999999999;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+#nestable-type .dd-item>button {
+    font-family: FontAwesome;
+    height: 34px;
+    width: 33px;
+    color: #c1c1c1;
+}
+#nestable-type .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-type .dd-item>button:before {content: "\f067";}
+#nestable-type .dd-handle{line-height:28px;}
+#nestable-spec .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-spec .dd-item>button:before {content: "\f067";}
+#nestable-spec .dd-handle{line-height:28px;}
+.replaceImg-label{
+    border:0;
+    width: 90%;
+    padding: 0;
+    margin : 0;
+    display: inline-table;
+    float: none;
+}
+.replaceImg-label label{margin-top: -5px;}
+.replaceImg-label img{
+    width: 130px;
+    height: 130px;
+    border:0;
+    overflow:hidden;
+    padding:0;
+    margin: 0;
+    margin-right: 10px;
+    float: left;
+}
+.replaceImg-label .fa-size{
+    font-size: 45px;
+    position: absolute;
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    /* left: 0;
+    margin-left:15px; */
+    text-align: center;
+    line-height: 130px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    visibility: hidden;
+}
+.replaceImg-label .fa-size :hover{visibility:visible;}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理-编辑栏目</span>
+        </div>
+    </div>
+    
+    <div class="add-infor">
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+               </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" style="background-color:#fff;margin-left:13px;margin-right:13px;">
+            <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
+            </li>
+            <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
+            </li>
+        </ul>
+        <div class="row form tab-content">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
+                <input type="hidden" name='tag' value="add" />
+                <input type="hidden" name='parenttypeid2' value="" />
+                <input type="hidden" name='componentid' value="-8" />
+                
+                <!-- tab-1的表单是固定的 -->
+                <table class="table" id="tab-1">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="title" placeholder="标题" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>短标题：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写短标题，长度限制25字</span>
+                            </td>              
+                        </tr>
+
+                        <!-- <tr>
+                            <td>所属栏目：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" value="" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                                <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                            </td>              
+                        </tr> -->
+
+                        <tr>
+                            <td>所属栏目：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="栏目列表" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" value="" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                            </td>              
+                        </tr>
+
+                        <!-- <tr>
+                            <td>所属分类：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="classify" value=""/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
+                                <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
+                            </td>              
+                        </tr> -->
+
+                        <tr>
+                            <% 
+                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
+                            var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
+                            %>
+                            <td><%= typeName; %>：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <div data-freemodal="state" data-name="<%= listName %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="classify" value=""/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>推荐：</td>
+                            <td style="padding-left:26px;">
+                                <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="" value="" /><em></em></label>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
+                            </td>    
+                        </tr>
+
+                        <tr>
+                            <td>关键字：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="keywords" placeholder="关键字" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+                        
+                        <tr>
+                            <td>状态：</td>
+                            <td>
+                                <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
+                                    <label class="btn btn-outline btn-success dim codeSwitch">
+                                        <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                    </label>
+                                </div>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>描述：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="description" placeholder="描述" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>权重：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="number" class="form-control" name="weight" placeholder="权重" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>缩略图：</td>
+                            <td class="pic-box" data-limit="1" data-field='litpic'>
+                                <div class="form-group col-xs-8">
+                                    <div class="replaceImg-label">
+                                        <label class="col-sm-2 control-label img-add" for="replaceImg">
+                                            <img src="/img/plus.png" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+                            </td>              
+                        </tr>
+
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <!-- tab-1的表单由系统生成 -->
+                <table class="table hidden" id="tab-2">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                        for(var i in addoninfos){ 
+                            if(!addoninfos[i].fieldget) continue;
+                        %>
+                            <%- formCode.get(i); %>
+                        <% } %>
+                        <!--<tr>
+                            <td>联系电话：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="tel" class="form-control" name="tel" placeholder="联系电话" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;联系电话</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>email:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="email" class="form-control" name="email" placeholder="email" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;email</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <td>地址:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="address" placeholder="地址" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;地址</span>
+                            </td>              
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td>内容详情:</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control" name="body" placeholder="内容详情" value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;内容详情</span>
+                            </td>              
+                        </tr> -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a id="test">测试</a>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+               
+                <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 输出视图组件 -->
+<%- cropperView %>
+
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script>
+    app.addonParams = {oid: getItem('OID')}
+    var error = <%- error; %>;
+    var updateOutput = function (e) {
+        var list = e.length ? e : $(e.target),
+        output = list.data('output');
+        return list.nestable('serialize');
+    };
+
+    /**
+     * nettable模态框--(栏目列表和分类列表)
+     */
+    $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(types) %> || [];
+        var classify = <%- results ? results : 0 %> || [];
+        var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
+        effect.nestable(optData, error, '#modal-body');
+        $("#normalModal").find(".dd").nestable('collapseAll');
+        $("#normalModal").find('[data-action="collapse"]').click();
+        $('#modal-body').find('li .dd-edit').hide();
+        $('.modal-footer').children('.cancle').hide();
+        $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+        $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+            var li = $(this).parent();
+            $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+            $(this).siblings('.dd-handle').addClass("dd-addon-click");
+            me.html(li.attr('data-name'));
+            me.attr("data-val",li.attr('data-val'));
+            me.siblings('input').val(li.attr('data-val'));
+            //$("#normalModal").toggle();
+        });
+    });
+
+    /**
+     * 规格项相关
+     */
+    var specData = [{name:'规格名称',val:'spec-' + (new Date()).valueOf()}];
+    var spec = {
+        stat: 0,            //接收到的服务端数据状态
+        id: 'nestable-spec',//规格容器id
+        data:[],            //项数据
+        reset: function(){
+            this.dataSync();
+            this.edit();
+            this.plus();
+            this.minus();
+            
+            return this;
+        },
+
+        //添加项操作
+        plus : function(){
+            $('.plus').unbind('click').on('click',function(e){
+                var curEl = $(this).parent().parent();
+                var html = $(curEl[0].outerHTML);
+                if(html.find('ol').length){
+                    html = html.find('ol').remove();
+                }
+                curEl.after($(html).attr('data-val','spec-' + (new Date()).valueOf()));
+                spec.reset();
+                $("#" +spec.id).nestable({group: 1}).change();
+            });
+        },
+
+        //编辑项操作
+        edit: function(){
+            $("#" +this.id + " .dd-list>li .dd-edit .fa-edit").unbind('click').on("click",function(e){
+                var initVal = $(this).parent().prev().find('.dd-val').html();
+                var input = $(this).siblings('input')
+                input.removeClass("hidden").val(initVal).fadeIn().focus();
+            });
+        },
+        //删除项操作
+        minus : function(){
+            $('.minus').unbind('click').on('click',function (e) {
+                var that = this;
+                swal({
+                    title: "您确定要删除这项规格吗",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "删除",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false
+                }, function () {
+                    var li = $(that).parent().parent();
+                    var ol = li.parent();
+                    if(!li.siblings().length && (ol.parent().attr('id') == "nestable-spec")){
+                        return swal("删除失败！", "这已经是根节点，不能删除！", "success");
+                    }
+                    li .remove();
+                    swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                    $("#" +spec.id).nestable({group: 1}).change();
+                });
+            });
+        },
+        
+        //数据同步
+        dataSync : function(){
+            $(".dd-list>li .dd-edit input").unbind('keyup').on('keyup',function(e){
+                //同步列表名称
+                $(this).parent().prev().find('.dd-val').html($(this).val());
+                //同步列表数据
+                $(this).parent().parent().attr('data-name',$(this).val());
+            })
+            //隐藏input框
+            $(".dd-list>li .dd-edit input").unbind('blur').on('blur',function(e){
+                $(this).removeClass("hidden").fadeToggle();
+                $("#" +spec.id).nestable({group: 1}).change();
+            })
+        },
+
+        //序列化规格表数据
+        serializeTable: function(){
+            //向表单写入商品规格数据
+            $('input[name="specname"]').val(btoa(encodeURI(JSON.stringify(spec.specName()))));
+            $('input[name="specitem"]').val(btoa(encodeURI(JSON.stringify(spec.specItem()))));
+            $('input[name="specoption"]').val(btoa(encodeURI(JSON.stringify(spec.outSpec()))));
+        },
+
+        //关于规格表项
+        //读取规格项数据到表
+        readData : function(){
+            var specView = $("#spec-table");
+            
+            var sTr = '<tr>';
+            var eTr = '</tr>';
+            var addonTh = `<th>价格(元) &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>
+            <th>库存 &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>
+            <th>备注 &nbsp;&nbsp;<span class="fa fa-paint-brush auto-fill" style="color:#DEE5E7"></span></th>`;
+            
+            //添加表头
+            var addItem = $("#" + spec.id + ">.dd-list").children('.dd-item');
+            addItem.each(function(i,val){
+                sTr += '<th>' + $(val).attr('data-name') + '</th>';
+            });
+            specView.html(sTr + addonTh + eTr);
+            
+            
+            //添加行
+            var tbody = $("#spec-table").find('tbody');
+            var th = tbody.find('th');
+            //绘表
+            var thTotal = th.length;
+            //总列数
+            var cols = thTotal - 3;     //减去附加单元格数量
+            //总行数
+            var rows = 1;
+            for(var i = 0; i < cols; i ++){
+                rows = rows * spec.childLists(i).length;
+            }
+            
+            //创建表
+            var table = spec.createTab(cols,rows);
+            var itemVal = '';
+            tbody.append(table);
+            
+            //设置表单元格信息
+            for(var c = cols-1; c >= 0; c --){
+                var items = spec.childLists(c);
+                var childItems = (c == cols-1) ? [''] : spec.childLists(c+1);
+                
+                //将一个组的信息载入一列
+                if(c == cols-1){
+                    for(var g = 0; g < rows; g += items.length){
+                        for(var ge = 0; ge < items.length; ge ++){
+                            itemVal = items[ge];
+                            tbody.children().eq(g+ge+1).children().eq(c).html(itemVal).attr('spec_option',itemVal);
+                        }
+                    }
+                }else{
+                    var times = 0;
+                    var size = spec.getSize(c+1,cols);
+                    for(var g = 0; g < rows; g += size){
+                        itemVal = items[times];
+                        tbody.children().eq(g+1).children().eq(c).html(itemVal).attr('spec_option',itemVal);
+                        //补充被跳过单元格的属性
+                        for(var gs = 1; gs < size; gs++){
+                            tbody.children().eq(g + 1 + gs).children().eq(c).attr('spec_option',itemVal);
+                        }
+                        times ++;
+                        if(times == (items.length)) times = 0;
+                    }
+                }
+            }
+
+            //将spec_option值映射到每行中赋值单元格的属性
+            this.item2options();
+            //设置表样式
+            this.setCss();
+            this.setColspan();
+        },
+
+        //获取父项步长
+        //col 当前所在的列
+        getSize : function(col,cols){
+            var items = [];
+            var size = 1;
+            for(var c = col; c <= cols; c ++){
+                items = spec.childLists(c);
+                size = size * (items.length || 1);
+            }
+            return size;
+        },
+
+        //获取子规格项
+        childLists : function(i){
+            var addItem = $("#"+spec.id+">.dd-list").children('.dd-item');
+            var ddList = addItem.eq(i).children(".dd-list");
+            var td = [];
+            ddList.each(function(i1,v){
+                $(v).children('li').each(function(i2,v){
+                    var val = $(v).attr('data-name');
+                    td.push(val);
+                });
+            });
+            return td;
+        },
+
+        //创建表
+        createTab : function(cols,rows) {
+            var addonTd = `<td><input class="spec_option text-center" data-option="" type='number' name='spec_marketprice' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='number' name='spec_stock' value=''></td>
+                            <td><input class="spec_option text-center" data-option="" type='text' name='spec_remark' value=''></td>`;
+            var str = "<tr onfocusout='spec.serializeTable()'>";
+            var etr = "</tr>";
+            var tr = '';
+            var tem = '';
+            for(var i = 0; i < cols; i ++){
+                str += "<td class='spec_item'>init</td>";
+            }
+            tr = str + addonTd + etr;
+            for(var j = 0; j < rows; j ++){
+                tem += tr;
+            }
+            
+            return tem;
+        },
+
+        //将spec_option值映射到每行中赋值单元格的属性
+        item2options : function(){
+            var trOpts = $("#spec-table").find('tbody').children();
+            
+            trOpts.each(function(i, v){
+                var option = [];
+                $(v).children('.spec_item').each(function(i0,v0){
+                    option.push($(v0).attr('spec_option'));
+                });
+                option = option.join(',');
+                $(v).find('.spec_option').attr('data-option',option);
+            });
+            
+        },
+
+        //设置表样式
+        setCss : function(){
+            var table = $("#spec-table");
+            table.find('tr').css({
+                height:'2em',
+            });
+            table.find("th").addClass('col-md-1');
+            table.find("th").css({
+                border:'1px solid #dee5e7',
+                'text-align':'center'
+            });
+            table.find("td").css({
+                border:'1px solid #dee5e7',
+                'text-align':'center'
+            });
+            table.find('input').css({
+                display:"inline-block",
+                width:'100%',
+                height:'100%',
+                border:0
+            });
+        },
+
+        //设置跨行
+        setColspan : function(){
+            //预设20列遍历对象
+            var cols = 5;
+            var tbody = $("#spec-table").find('tbody');
+            var checkObj;
+            //找到值为init的单元格
+            for(var i = cols-1; i >= 0; i--){
+                var rowspan0 = '';
+                var rowspan1 = [];
+                tbody.children().each(function(i0,val0){
+                    checkObj = $(val0).children().eq(i)
+                    
+                    if((i0 == tbody.children().length-1) && (checkObj.html() == 'init')) rowspan1.push(checkObj);
+                    if(((checkObj.html() != 'init') || (i0 == tbody.children().length-1)) && rowspan1.length){
+                        var rowNum = rowspan1.length + 1;
+                        for(var j = 0; j < rowspan1.length; j ++){
+                            rowspan1[j].remove();
+                        }
+                        rowspan0.attr('rowspan',rowNum);
+                        rowspan1 = [];
+                    }
+                    (checkObj.html() == 'init') ? rowspan1.push(checkObj) : (rowspan0 = checkObj);
+                });
+            }
+        },
+
+        //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
+        specName: function(){
+            var specName = [];
+            $("#" + this.id + ">.dd-list").children('.dd-item').each(function(i,val){
+                specName.push($(val).attr('data-name'));
+            });
+            return specName;
+        },
+
+        //获取规格item名称（用于表单提交时,与commidity_specitem中的title对应）
+        specItem : function(){
+            var specItme = [];
+            for(var i = 0; i < spec.specName().length; i ++){
+                specItme.push(spec.childLists(i));
+            }
+            return specItme;
+        },
+
+        //输出表中商品规格数据(用于表单提交时,与commidity_option中的title对应)
+        outSpec : function(){
+            var trOpts = $("#spec-table").find('tbody').children();
+            var specOtions = [];
+            trOpts.each(function(i,v){  //每一行
+                if(i === 0) return;
+                specOtions.push({
+                    title : '',
+                    options : []
+                });
+
+                $(v).find('.spec_option').each(function(i0,v0){
+                    specOtions[i-1].title = $(v0).attr('data-option');
+                    specOtions[i-1].options.push({
+                        name : $(v0).attr('name'),
+                        value : $(v0).val()
+                    });
+                });
+            });
+            
+            return specOtions;
+        }
+    }  
+    //初始化nestable数据结构
+    effect.nestable(specData,spec.stat,'#oper-spec-nes',spec.id);
+    $('#nestable-spec').nestable({group: 1}).on('change', updateOutput);
+    $('#nestable-spec .dd').nestable('collapseAll');
+    $("#nestable-spec handel-nestable-spec").remove();
+    //处理规格项操作相关的值
+    (function(){
+        $("#oper-spec").click(function(){
+            $("#oper-spec-nes").fadeToggle();
+            $("#spec-table").fadeToggle();
+        })
+        $("#" +spec.id).nestable({group: 1}).on('change',function(e){
+            spec.data = updateOutput(e);
+            spec.readData();
+        });
+        spec.reset();
+    })()
+
+    
+</script>
+    
+<script>
+    //ueditor相关
+    var UE = {
+        frame: $("iframe").eq(0),
+        contents: function(){
+            var ue = this.frame[0].contentWindow.ue;
+            return ue.getContent();
+        },
+        full: false,
+    }
+
+    $("iframe").load(function(){
+        UE.frame.contents().find("#edui3_body").click(function(){
+            UE.full ? $(".ueditor-box").removeClass('full-screen'):
+            $(".ueditor-box").addClass('full-screen');
+            UE.full = UE.full ? false : true;
+        });
+    });
+
+    $('button[type="submit"]').mouseover(function(){
+        $("#ue-contents").val(UE.contents());
+        console.log(UE.contents());
+    });
+
+    //选项卡相关
+    $("a[data-toggle='tab']").click(function(){
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+</script>
+
+<script>
+    app.load(".add-infor");
+    effect.switch(".mui-switch",'是','否');
+    effect.setDefVal(".add-infor");     //设置页面默认值
+    effect.setComments(".add-infor");
+    effect.setCheckbox(".auto-checkbox");
+    effect.setCheckbox(".checkbox-content-state");
+    effect.setRadio(".auto-radio");
+    effect.setSelect(".auto-select");
+    
+    function save(res){
+        if(!res.error) res.uri = '/admin/arc/show/ctag/<%= ctag %>';
+        app.notice(res,function(){
+            go(res.uri);
+        });
+    }
+</script>
+
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
+<script>
+    /**
+     * 图片上传处理器
+     * */
+     var uploader = {
+        index: 0,
+        picBox: ''
+    }
+    
+    //定位picBox
+    $("label.img-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+    });
+
+    //图片上传回调处理
+    function upProcess(data){
+        var info = {
+            error : 1,
+            message : "上传失败，请重新上传！"
+        };
+        if(data.state != 1) return app.notice(info);
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
+            <span class="fa fa-close fa-size"></span>
+            <img src="/` + data.url + `" />
+            </div>`;
+            
+        $(uploader.picBox).find(".img-add").before($(addObj));
+        $(uploader.picBox).append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
+        info.message = "恭喜您上传成功！";
+        app.notice(info);
+        uploader.index ++;
+    
+        setEffect();
+    }
+    function setEffect(){
+        $(".img-handl").unbind('mouseover').on("mouseover",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'visible'
+            });
+        })
+        $(".img-handl").unbind('mouseout').on("mouseout",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'hidden'
+            });
+        })
+        //删除上传的图片
+        $(".img-handl").unbind('click').on("click",function(e){
+            var dataImg = $(this).attr('data-img');
+            $('[data-img='+ dataImg +']').remove();
+            var arr = dataImg.split('-');
+            var index = arr[arr.length - 1];
+            delete j[index];
+            if(j.length) j.length --;
+            setEffect()
+        })
+
+        //控制添加按钮显示与隐藏
+        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+        $(picBox).each(function(index,item){
+            var limit = $(item).attr('data-limit');//设置显示张数
+            $(item).find(".replaceImg-label").children().hide();
+            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        });
+    } 
+    
+    //效果初始化
+    setEffect();
+</script>
+
+<!-- 地址输入框控制部分 -->
+<script>
+addressPice.load();
+</script>
+    
+
+

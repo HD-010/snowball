@@ -1,0 +1,96 @@
+
+<div class="container-fluid base base_list">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-用户组管理-管理用户组</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">管理员类型列表：是管理员添加某个网站管理员、分站和CRM用户组后显示在“管理员类型”列表中。</p>              
+           </div>
+        </div>
+    </div>
+    <div class="row" style="margin: 20px auto">
+        <div class="col-xs-1" >            
+            <a class="btn btn-success btn-sm"  href="javascript:go('/admin/group/addGroup')"><i class="fa fa-plus"></i> 添加用户组</a>           
+        </div>
+        <div class="col-xs-6">
+                <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
+        </div>
+    </div>
+    <div class="row form">
+        <div class="col-md-12" style="margin: 20px auto">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title" style="background-color: #5DB4E0;color:white;">
+                    <h5>用户组列表信息</h5> 
+                </div>
+                <div class="ibox-content">        
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6" data-filter=#filter>
+                            <thead>
+                                <tr>                                              
+                                    <th data-sort-ignore="true">角色ID</th>                                                  
+                                    <th data-sort-ignore="true">角色</th>
+                                    <th data-sort-ignore="true">状态</th>
+                                    <th data-sort-ignore="true">创建时间</th>
+                                    
+                                    <th data-sort-ignore="true">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i in list){%> 
+                                <tr>
+                                    <td><%=list[i].id%></td>                           
+                                    <td><%=list[i].groupName%></td>
+                                    <td>
+                                        <%
+                                            var st = ['禁用','启用'];
+                                            var stcolor = ['btn-danger','btn-info'];
+                                        %>
+                                        <button type="button" class="btn <%=stcolor[list[i].status]%>" style="padding: 2px 4px;"><%=st[list[i].status]%></button>
+                                    </td> 
+                                    <td><%=getStandardDate(list[i].addTime)%></td>                           
+                                    <td class="project-actions">
+                                        <a href="#" class="btn btn-white btn-sm" onclick="go('/admin/group/editGroup?id=<%=list[i].id%>')"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
+                                        <a href="#" class="btn btn-white btn-sm" data-async="post" data-uri='/admin/group/delGroup?id=<%=list[i].id%>'><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                    </td>
+                                </tr>
+                                <% } %>                       
+                                                
+                            </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- 全局js -->
+ <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+ <script>
+     $(document).ready(function() {
+         $('.footable').footable();
+     });
+
+ </script>
+ <script language="javascript">
+    app.load(".base_list");
+    app.addonParams = {oid: getItem('OID')};
+
+    function delGroup(results){
+        console.log(results)
+        app.notice(results,function(){
+          
+            go(results.uri);
+        });
+    }
+</script>

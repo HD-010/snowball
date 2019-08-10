@@ -1,0 +1,98 @@
+
+<% var data = results[0] || {} %>
+<% log(data.fieldset) %>
+<% log(data.listfields) %>
+<style>
+.component-edit .active{background-color:#FFF;}
+.table .active{background-color:#23AD44;}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-应用编辑</span>
+        </div>
+    </div>
+    <!-- <ul class="nav nav-tabs" style="background-color:#fff">
+        <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 组件信息 </a>
+        </li>
+        <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i> 字段设置 </a>
+        </li>
+    </ul> -->
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+           </div>
+        </div>
+    </div>
+    
+    <div class="row form component-edit">
+        <form action="" method="">
+            <table class="table" id="tab-1">
+               <thead>
+                   <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                   </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>组件名称：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" id="comname" name="comname" disabled placeholder="网站名称" value="<%= data.comname %>"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
+                        </td>              
+                    </tr>
+
+                    <tr>
+                        <td>系统内置：</td>
+                        <td style="padding-left: 26px">
+                            <label><input class="mui-switch mui-switch-anim" disabled type="checkbox" checked><em></em></label>  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>组件图标：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <img src="<%= data.icon %>" />
+                            </div>       
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>组件数据表：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" id="comname" name="addtable" disabled placeholder="" value="<%= data.addtable %>"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
+                        </td>              
+                    </tr>
+                </tbody>
+                <tfoot>
+                   <tr>
+                       <td></td>
+                       <td>
+                             <button type="submit" disabled class="btn">确定</button>
+                             <button type="reset" disabled class="btn">重置</button>
+                       </td>
+                   </tr>
+                </tfoot>
+            </table>
+         </form>
+     </div>
+</div>
+
+<script>
+    effect.switch('.mui-switch','是','否');
+    $("a[data-toggle='tab']").click(function(){
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+</script>
+ 
+    

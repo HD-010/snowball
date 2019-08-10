@@ -1,2 +1,44 @@
-客户端sessionStorage、cookieStorage对象键名
-'UIF' : 登录成功时暂存的用户信息
+客户端sessionStorage、cookieStorage对象键名参数统一参考
+
+sessionStorage{
+    'UIF' : 登录成功时暂存的用户信息
+    'UID' : 登录成功时暂存的用户ID
+    'OID' : 当前系统openID
+    'PERMIT' : 权限数据
+}
+
+cookieStorage{
+    '':''
+}
+
+redis{
+    'MENU' : 暂存的所有菜单
+    'PERMIT' : 权限数据
+    'PPER' : 页面权限数据，在controler、model、service能过DataProcess.getUserInfo('PPER',this.uid)读取
+    'SYS_OPTIONS' : 系统参数  (于BehaviorModel.loadSysOption() 写入)
+}
+
+session{
+    "UIF" : '当前用户的所有信息'
+    "UID" : '请求验证成功时暂存的用户ID'
+}
+
+post、get参数参考：
+tid : 栏目id
+atid : 指定栏目id
+uid : 用户id
+oid : 当前系统openID
+cid : 组件id
+ctag : 组件标识
+SEDate: 开始时间和结束时间
+ost: 订单状态
+cmid: 商品id
+mchid: 商户id
+
+
+系统参数见数据表：
+youbang_sys_upload、
+youbang_sys_cached、
+youbang_sys_logo、
+youbang_sys_map、
+youbang_sys_option、

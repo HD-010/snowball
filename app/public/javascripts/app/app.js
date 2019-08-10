@@ -10,6 +10,8 @@ var app = {
     //表单项记忆对象
     formMemory: $(document).find('form'),
     action:'',
+    //请求附加参数（在发起请求时自动加入）
+    addonParams : {},
     host: (window.Hosts) ? Hosts[0] : '',
 
     /**
@@ -27,12 +29,16 @@ var app = {
     syncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
         var uri = $(obj).attr('data-uri');
+        if(!uri.length) return;
         if(uri.indexOf("?") !== -1){
+            uri += '&'+app.serializeParams();
             var data = uri.substr(uri.indexOf("?") + 1);
             data = this.parseQuery(data);
             var query_params = uri.substr(0,uri.indexOf("?"));
             var query_params = $.md5(query_params);
             sessionStorage.setItem(query_params,JSON.stringify(data));
+        }else{
+            uri += '?'+ app.serializeParams();
         }
         //return; 
         console.log("=====数据请求地址：",uri);
@@ -42,43 +48,45 @@ var app = {
     /**
      * 按钮--异步请求
      * 使用场景：
-     * 当点击铵钮来异步删除数据时。操作成功或失败，显示提示信息页面不跳转时使用。
+     * 当点击铵钮来异步删除数据时。操作成功或失败，显示操作提示信息，但页面不跳转时使用。
      * 请求方式：post | get
      * 示列 <a href="#" class="" data-async="post" data-uri="/admin/manager/del">删除管理员</a>
      * @attr {data-async} 必填属性 @param get或post 请求
      * @attr {data-uri}  必填属性 @param url 请求的方法或渲染页面的方法
      * @param {event} 事件监听 
      * @param {obj} 对象本身 
-     * @param {callback} 回调函数 
+     * @param {callback} 这里的callback不是实际用于处理返回结果的函数。
+     * 用于处理返回结果的函数是与 action 路由的最后一段同名的函数。如：
+     * function del(res){}
      */
     asyncProcess: function(event, obj, callback) {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
-        var uri = app.host + $(obj).attr('data-uri');
+        var dataUri = $(obj).attr('data-uri');
+        this.initAction(dataUri);
+        var uri = app.host + dataUri;
+        var type = $(obj).attr('data-type') || 'json';
+        if(!uri.length) return false;
+        uri += (uri.indexOf("?") != -1) ? "&" + app.serializeParams() : "?" + app.serializeParams();
         var vars = (uri.substr(uri.indexOf("?")+1)).split('&');
         var obj = {};
         for(var i=0;i<vars.length;i++){
             obj[vars[i].split("=")[0]]= vars[i].split("=")[1];
         }
 
-        if (!uri) {
-            alert('请写入url');
-            return false;
-        }
-        var point = uri.indexOf('?');
-        var start = uri.lastIndexOf('/')+1;
-        app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
+        // var point = uri.indexOf('?');
+        // var start = uri.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
-        if (meched == 'post') {
-            console.log("=====数据请求地址：",uri);
-            $.ajax({
-                url : uri,
-                type : meched,
-                dat : obj,
-                dataType : 'json',
-                success : callback
-            });
-        }
+        console.log("=====数据请求地址：",uri);
+        console.log("=====数据请求参数：",obj);
+        $.ajax({
+            url : uri,
+            type : meched,
+            data : obj,
+            dataType : type,
+            success : callback,
+        });
     },
 
     /**
@@ -128,9 +136,11 @@ var app = {
      * @attr {method} @param {post} 必填属性及参数
      * @attr {data-form-async}必写属性 @param {html/json} 必填参数 希望返回的格式是html还是json
      * @attr {action}必写属性 @param {url} 必填参数 请求的方法路劲
-     * @param {event} 事件监听 
-     * @param {obj} 对象本身 
-     * @param {callback} 回调函数 
+     * @param {event} 当前事件 
+     * @param {obj} form表单json对象 
+     * @param {callback} 回调函数，这里的callback不是实际用于处理返回结果的函数。
+     * 用于处理返回结果的函数是与 action 路由的最后一段同名的函数。如：
+     * function form(res){}
      * 用户可以自定义操作回调，与action对应的操作名称相同（多用于请求接口后的非统一回调）
      * 作为统一回调，不需要定义操作。函数会根据返回的json对象状态码在界面跳出提示信息
      * 返回对象格式如：
@@ -160,13 +170,13 @@ var app = {
             alert('请填写data-form-async属性的正确值');
             return false;
         }
-        var point = action.indexOf('?');
-        var start = action.lastIndexOf('/')+1;
-        app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
+        this.initAction(action);
+        // var point = action.indexOf('?');
+        // var start = action.lastIndexOf('/')+1;
+        // app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
         
         //获取对象的值
-        console.log($(obj)[0])
-        var formData = $(obj).serialize();
+        var formData = $(obj).serialize() + "&" + app.serializeParams();
         
         //console.log(formData)
         console.log("=====数据请求地址：",url);
@@ -181,7 +191,63 @@ var app = {
     },
 
     /**
+     * 数据传输助手
+     * 使用说明：
+     * 使用场景：
+     * 需要 单独修改某个字段的数据时，免提交form表单。可使用该方法。
+     * 该方法的使用需要配合models 中的TranceConfsModel.js，调用统一单字段信息修改接口tranceControler:set() 进行修改。
+     * 关于视图：
+     * <div class="selecter">...
+     *      <div class="ibox-content p-xl" data-signle-async="SDFGDFGDFGDFG" data-uri="/admin/trance/set">...
+     *      <td contenteditable="true" data-reference="id-{{id}}-number">{{number}}</td>...
+     *      </div> ...
+     * </div>
+     * 事件监听元素，具有属性[data-signle-async]的元素下 input,select,textarea 和包含属性[contenteditable='true']的元素
+     * 对某（个）节点进行初始化，被初始化的节点需要增加以下属性：
+     * 1、data-signle-async="feature" 特征码，与TranceConfsModel.js中confs对象中某个属性名称同。如：‘SDFGDFGDFGDFG’
+     * 2、data-uri="uri"    指定统一数据传输地址
+     * 数据承载元素需要添加 data-reference属性，其值与update 中where条件对应。如：
+     * <td contenteditable="true" data-reference="id-{{id}}-number">{{number}}</td>
+     * data-reference="id-4-sn-33-state",表示要更新id=4 and sn='33' state字段的值。
+     * 值采集来源：data-val 属性 、value属性、元素的text、元素的innerHTML,优先级依次降低。
+     * 如果个别字段属于其他表，则在数据承载元素添加data-feature="feature"属性
+     * attr {feature} 被传输数据的特征
+     * attr {val}     被传输的值
+     * 
+     * 调用方法：app.load(selecter);
+     */
+    dataTransfer: function(event,obj,callback){
+        if(!app.signleUri) return;
+        this.initAction(app.signleUri);
+        var uri = app.host + app.signleUri;
+        if(!app.feature) return;
+        var dataReference = $(obj).attr('data-reference');    //参考照数据
+        var data = 'feature='+app.feature+'&refrerence='+ dataReference + '&val='+ app.tranceValue+ "&" +app.serializeParams();
+        console.log("----------dataTransfer-----------:传输数据::",data);
+        $.ajax({
+            url : uri,
+            type : "post",
+            data : data,
+            dataType : 'JSON',
+            success : app.notice
+        });
+    },
+
+    /**
+     * 初始化请求附加参数
+     * @param {*} obj 
+     * @param {*} callback 
+     */
+    serializeParams: function(){
+        return $.param(app.addonParams);
+    },
+
+    /**
      * 顶部提示信息
+     * obj.message 提示消息
+     * obj.uri 跳转的url
+     * obj.error 显示对应提示的信息样式 错误编号notice_0 notice_1 notice_2 notice_3
+     * function callback 
      */
     notice: function(obj, callback) {
         var box = {
@@ -197,14 +263,19 @@ var app = {
             'text-align': 'center',
             'position'  : 'fixed',
             'width'     : '100%',
-            'z-index'   : 999999,
+            'z-index'   : 999999999999,
         }));
         setTimeout(function() {
             $("#" + notice).remove();
+            if(typeof callback === 'function') return callback();
             if(obj.go) history.go(obj.go);
-            if(obj.uri) location.href = obj.uri;
+            if(obj.uri){
+                obj.uri += !(obj.uri.indexOf('?')+1) ? 
+                "?" + app.serializeParams() : 
+                "&" + app.serializeParams();
+                location.href = obj.uri;
+            }
             if(!obj.uri && ('uri' in obj)) location.reload();
-            if(typeof callback === 'function') callback();
         }, 2000);
     },
 
@@ -226,6 +297,14 @@ var app = {
      * 使用方法：
      * 使用该方法不需要作任何处理，也不需要调用。它会表求监视表单提交。
      * 在恢复显示时需要作唯一的处理就是，当value没有值时，将其设置为' '。注意这是一个空格
+     * 调用案例：
+     * <div class="order-detail">
+        <div data-signle-async="SDFGDFGDFGDFG" data-uri="/admin/trance/set">
+            <span contenteditable="true" data-reference="sn-34234-state" data-val="1">待付款</span>
+        </div>
+       </div>
+        <!-- 初始化：-->
+        <script>app.load(".order-detail");</script>
      */
     memory: function(){
         app.formMemory.submit(function(){
@@ -261,6 +340,21 @@ var app = {
     },
 
     /**
+     * 初始化action名称
+     */
+    initAction: function(dataUri){
+        var firstLine,firstQ,router;
+        var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
+        dataUri = (lastPoint == -1) ? dataUri : dataUri.substr(lastPoint);
+        firstLine = dataUri.indexOf('/');
+        firstQ = dataUri.indexOf('?');
+        if(firstQ == -1) firstQ = dataUri.length;
+        dataUri = dataUri.substr(firstLine + 1, firstQ - firstLine - 1);
+        router = dataUri.split('/');
+        this.action = (router.length % 2) ? router[2] : router[1];
+    },
+
+    /**
      * 调用：
         parseQuery("userID=JeoOrCXxyiOFxbYaGL40kw==&userPwd=sdFo2ziUw8HyLRKd4i6GAQ==&userName=高聪")
         返回:{}
@@ -286,15 +380,16 @@ var app = {
     /**
      * 绑定相关事件
      */
-    load : function(){
+    load : function(el){
+        el = (typeof el === 'string') ? el : document;
         // 记忆表单项
         app.memory();
             
         // 恢复表单项记忆
         app.remember();
-
         //异步请求
-        $(document).find('[data-async]').unbind('click').click(function(event) {
+        
+        $(el).find('[data-async]').unbind('click').on('click',function(event) {
             app.asyncProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
                 try{eval((app['action'] + '(res);'));}catch(err){
@@ -304,12 +399,12 @@ var app = {
         });
 
         //同步请求
-        $(document).find('[data-sync]').unbind('click').click(function(event) {
+        $(el).find('[data-sync]').unbind('click').on('click',function(event) {
             app.syncProcess(event, this, function(res) {});
         });
 
         //form表单提交不跳转
-        $(document).find('[data-form-async]').submit(function(event) {
+        $(el).find('[data-form-async]').unbind('submit').on('submit',function(event) {
             event.preventDefault();
             app.formProcess(event, this, function(res) {
                 //调用用户义的与操作名称同名的回调函数
@@ -318,6 +413,24 @@ var app = {
                 }
             });
         });
+
+        //dataTransfer统一数据传输接口 form(非form)表单单个元素提交不跳转 【事件监听组】
+        $(el).find('[data-signle-async]').find("input,select,textarea,[contenteditable='true']").unbind('focus').on('focus',function(event) {
+            app.tranceValue = $(this).attr('data-val') || $(this).val() || $(this).text() || $(this).html(); //传输的数据
+        }),
+        $(el).find('[data-signle-async]').find("input,select,textarea,[contenteditable='true']").unbind('focusout').on('focusout',function(event) {
+            var dataValue = $(this).attr('data-val') || $(this).val() || $(this).text() || $(this).html(); //传输的数据
+            if(dataValue == app.tranceValue) return;
+            app.tranceValue = dataValue;
+            var single = $(this).parentsUntil('[data-signle-async]').parent(); 
+            if(!app.signleUri) app.signleUri = single.attr('data-uri');
+            app.feature = $(this).attr('data-feature') || single.attr('data-signle-async');
+            app.dataTransfer(event, this, function(res) {
+                //调用用户义的与操作名称同名的回调函数
+                try{eval((app['action'] + '(res);'));}catch(err){app.notice(res);}
+            });
+        });
+        $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>');    //添加编辑标识
     },
 
 };
@@ -391,6 +504,568 @@ var app = {
     }
 /** ===========================scrool事件监听 end====================== */
 
+/** ==============================联动地址插件============================= */
+/**
+ * 要求：
+ * html 代码
+ * 1、添加新地址
+ * `<div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
+ *      <!-- 向后台传输数据的输出框 -->
+        <input type="hidden" name="address" value=""> 
+        <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=" "></select>
+        <select class="form-control address hidden" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=" "></select>
+        <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+    </div>`;
+    须要的属性:
+    data-type: 对应 youbang_addresslist 表中的 type 字段
+    调用： addressPice.load();
+    2、编辑已经存在的地址
+    `<tr>
+        <td>地址:</td>
+        <td>
+            <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + ` data-level="4">
+                <!-- 设置初始值 -->
+                <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="` + echo(addrId) + `">
+                <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
+                <select class="form-control address address-city `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
+                <select class="form-control address address-country `+ echo(ishidden) +`" style="width:25%;float:left" name="addr_country" placeholder="--县--" value=""></select>
+                <input class="form-control address-detail" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
+            </div>
+        </td>              
+    </tr>`;
+    须要的属性:
+    1、data-type: 对应 youbang_addresslist 表中的 type 字段
+    2、初始值必填 
+    调用： addressPice.initAddr();
+
+    通用属性： data-level ：地址层级数
+ */
+var addressPice = {
+    env: "",       //"loadEdit"
+    uri: "",
+    iUrl: this.initUrl || "/admin/address/show", //查询多级id的字符串
+    url: this.uri|| "/admin/address/names",         //查询reid对应的地址列表
+    sUrl: this.saveUrl|| "/admin/address/save",  //保存组合后的地列表的id
+    level: 4,                                    //地址层级数
+    params:{},
+    loadData: function(item, params){
+        params = params || {};
+        var me = $(item);
+        var data  = {oid: getItem('OID')};
+        data = mergeObj([data,params]);
+        DL({
+            dev: 'on',
+            uri: addressPice.url,
+            data: data,
+            befor: function(that){
+                var res = that.results;
+                if(res.error) app.notice(res);
+                me.attr('data-val', res.name.join('-'));
+                me.attr('data-key', res.id.join('-'));
+                me.attr('data-def', res.id[0]);         //默认值
+                effect.setSelect('.address-group');
+                that.dev = 'exit';
+            }
+        });
+    },
+
+    //初始化原数据（场景：编辑内容的页面）
+    initAddr: function(){
+        $(".address-group").each(function(i, item){
+            var rq = 3;     //等待进程数
+            var addrId = $(item).children('input').val();
+            addressPice.level = $(item).attr('data-level') || 4;
+            data = {
+                oid: getItem("OID"),
+                id: addrId,
+                type: $(item).attr('data-type')
+            },
+            $.post(addressPice.iUrl, data, function(res)
+                {
+                    if(res.error) return;
+                    var addr = res.addr[0];
+                    delete data.id;
+                    $(item).children(".address-province").attr('data-def',addr.provinceid);
+                    //初始化省名称数据
+                    data.reid = 0;
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-province").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    
+                    data.reid = addr.provinceid;
+                    //初始化市名称数据
+                    $(item).children(".address-city").attr('data-def',addr.cityid);
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-city").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    
+                    $(item).children(".address-country").attr('data-def',addr.countyid);
+                    //初始化县名称数据
+                    data.reid = addr.cityid
+                    $.post(addressPice.url, data, function(res){
+                        $(".address-group .address-country").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
+                        effect.setSelect(".address-group");
+                        lisEven();
+                    });
+                    $(item).children(".address-detail").val(addr.detail);
+                }
+                
+            );
+
+            function lisEven(){
+                rq --;
+                if(rq) return;
+                addressPice.setNextDate();
+                addressPice.focusout2save();
+            }
+        });
+    },
+
+    load: function(){
+        addressPice.params.type = $('.address-group').attr('data-type');
+        addressPice.level = $('.address-group').attr('data-level') || 4;
+        //加载初始数据（省级）
+        if(!this.params.initId) addressPice.loadData($('.address-group .address-province'));
+        //触发change事件
+        $('.address-group .address').click(function(){$(this).change()});
+        //读取下级数据
+        addressPice.setNextDate();
+        //失去焦点时保存数据
+        addressPice.focusout2save();
+        //开启数据保存变量
+        $(".address-group .address").each(function(i, opt){
+            if(!$(opt).attr('data-def')) return;
+            addressPice.env = "loadEdit";
+            if(i === 0) $(opt).mouseover();
+            $(opt).change();
+        });
+    },
+
+    //读取下级数据
+    setNextDate: function(){
+        $('.address-group .address').change(function(){
+            var me = $(this);
+            var reid = me.val();
+            me.attr('data-def',reid);
+            var city = me.next();
+            if(!me.nextAll("select").length) return;
+            me.nextAll("select").each(function(i, opt){
+                $(opt).removeAttr('data-val').removeAttr('data-key');
+                if(addressPice.env === "loadEdit") $(opt).removeAttr('data-def');
+            });
+            effect.setSelect('.address-group');
+            var params = {reid: reid};
+            addressPice.loadData(city, params);
+            city.removeClass("hidden");
+        });
+    },
+
+    //失去焦点时保存数据
+    focusout2save: function(){
+        $(".address-group").focusout(function(){
+            var me = $(this);
+            var address = [];
+            $(this).find("[name^='addr_']").each(function(i,opt){
+                if($(opt).val()) address.push($(opt).val());
+            });
+            if(address.length < addressPice.level) return;
+            var curVal = me.find('input[data-name="address"]').val();
+            var data = {
+                'oid': getItem("OID"),
+                'addr': address.join('-'),
+            }
+            data = mergeObj([data,addressPice.params]);
+            if(curVal) {
+                data.edt = 1;
+                data.id = curVal;
+            }
+            console.log("保存的地址信息：",data);
+            $.post(addressPice.sUrl,data,function(res){
+                if(res.error) app.notice(res);
+                me.find('input[data-name="address"]').val(res.newId);
+            });
+        });
+    }
+}
+/** ===========================联动地址插件 end====================== */
+
+/** ==============================效果插件============================= */
+var effect = {
+    /**
+     * 开关效果
+     * html 代码 ：<label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label> 
+     * 属性 checked 表示默认打开状态
+     * @param {*} selecter 事件监听的元素
+     * @param {*} on 打开状态显示的字样
+     * @param {*} off 关闭状态显示的字样
+     */
+    switch: function(selecter,onVal,offVal){
+        var cl  = $(selecter);
+        for(var i=0;i<cl.length;i++){
+            if(cl[i].checked){
+                cl[i].nextSibling.innerText = onVal;
+                cl[i].nextSibling.style.color = "#FFFFFF";
+                cl[i].nextSibling.style.marginLeft = '0px';
+            }else{
+                cl[i].nextSibling.innerText = offVal;
+                cl[i].nextSibling.style.color="#D2D2D2";
+                cl[i].nextSibling.style.marginLeft='16px';
+            }
+        }
+        cl.unbind('click').on('click',function(){
+            if(this.checked){
+                this.nextSibling.innerText = onVal;
+                this.nextSibling.style.color = "#FFFFFF";
+                this.nextSibling.style.marginLeft = '0px';
+            }else{
+                this.nextSibling.innerText = offVal;
+                this.nextSibling.style.color = "#D2D2D2";
+                this.nextSibling.style.marginLeft='16px';                
+            }
+        })
+    },
+
+    /**
+     * 显示默认值
+     * html代码结构：
+        <input type="text" class="form-control" name="title" data-def="默认值" placeholder="标题" value=" "/>
+     * 
+     */
+    setDefVal: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var defVal = $(item).attr('data-def'); 
+            if(typeof defVal != 'undefined') $(item).val(defVal);
+        });
+        $(selecter).find('select').each(function(index,item){
+            var defVal = $(item).attr('data-def'); 
+            if(typeof defVal != 'undefined') $(item).find("option[value='"+defVal+"']").prop('selected', true);
+        });
+    },
+
+    /**
+     * 设置注释
+     * html代码结构：
+     *  <parent>
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" name="title" data-comments="注释内容" placeholder="标题" value=" "/>
+            </div>
+            <span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+        </parent>
+     * 
+     */
+    setComments: function(selecter){
+        selecter = selecter || document;
+        $(selecter).find('input').each(function(index,item){
+            var comment = $(item).attr('data-comment'); 
+            if(typeof comment != 'undefined') $(item).parent().siblings().find('.comment').after(comment);
+        });
+    },
+
+    /**
+     * 设置checkbox选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="btn-group 监听的选择器" data-toggle="buttons">
+            <label class="btn btn-outline btn-success dim">
+                <input type="checkbox" data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' > 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+            </label>                                   
+        </div>
+     */
+    setCheckbox: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='checkbox']");
+            var key = itemAttr.attr('data-key').split('-');
+            var val = itemAttr.attr('data-val').split('-');
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) +1) curCode.find("input[type='checkbox']").parent().addClass('active');//.prop('checked',true);
+                curCode.find("input[type='checkbox']").val(key[i]);
+                curCode.find("input[type='checkbox']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+            loadEvent();
+        });
+        function loadEvent(){
+            $('[data-toggle="buttons"] .btn').unbind('click').on('click',function(e){
+                var curCheckbox = $(this).find('[type="checkbox"]');
+                curCheckbox.click();
+                (curCheckbox.prop('checked')) ?
+                $(this).addClass('active'):
+                $(this).removeClass('active');
+            });
+        }
+    },
+
+    /**
+     * 状态：预留
+     * @param {*} selecter 
+     */
+    setRadio: function(selecter){
+        if(!selecter) return;
+        $(selecter).each(function(index,item){
+            var itemAttr = $(item).find("input[type='radio']");
+            var dataKey = itemAttr.attr('data-key');
+            var key = dataKey ? dataKey.split('-') :[];
+            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
+            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var temCode = '';
+            for(var i=0; i < key.length; i ++){
+                var curCode = $(htmlCode);
+                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='radio']").prop('selected',true);
+                curCode.find("input[type='radio']").val(key[i]);
+                curCode.find("input[type='radio']").after(val[i]);
+                
+                temCode += curCode[0].outerHTML;
+            }
+            $(item).replaceWith(temCode);
+        });
+    },
+
+    /**
+     * 设置select选项
+     * @param {*} selecter 
+     * html代码结构：
+     *  <div class="col-sm-4 col-xs-4 监听的选择器">
+            <select data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' data-def='被tf'></select>
+        </div>
+     */
+    setSelect: function(selecter){
+        if(!selecter) return;
+        $(selecter).find("select").each(function(index,item){
+            //var itemAttr = $(item).find("select");
+            var dataKey = $(item).attr('data-key');
+            var key = dataKey ? dataKey.split('-') : [];
+            var val = dataKey ? $(item).attr('data-val').split('-') : [];
+            var defVal = $(item).attr('data-def') ? $(item).attr('data-def').split('-') : [];
+            var htmlCode = item.outerHTML;
+            var optHtml = '';
+            var stlected;
+            for(var i=0; i < key.length; i ++){
+                stlected = (defVal.indexOf(key[i]) + 1) ? 'selected' : '';
+                optHtml += '<option value="' + key[i] + '" ' + stlected + '>' + val[i] + '</option>';
+            }
+            $(item).html(optHtml);
+        });
+    },
+
+    /**
+     * 全选选项关联事件
+     * html代码：
+     * 项目选框(注: class="union-child" data-union="union-top" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="{{id}}" /></label>
+     * 全选框（注：class="union-top" data-union="union-child" 必须)
+     * <label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+     * */
+    unionSelect: function(){
+        $("input[data-union]").on('change',function(){
+            var me = $(this);
+            var tab = me.parentsUntil('table').parent();
+            var val = me.prop('checked');
+            var unionTag = me.attr('data-union');
+            var all = true; 
+            
+            if(unionTag == 'union-top'){
+                tab.find('.union-child').each(function(index,item){
+                    if(!$(item).prop('checked')) all = false;
+                });
+            }
+            if(unionTag == 'union-child'){
+                all = val;
+                tab.find("." + unionTag).prop('checked',val);
+            }
+            tab.find('.union-top').prop('checked',all);
+        });
+    },
+
+    /**
+     * nestable结构输出
+     * 环境：jquery2 bootstrap3
+     * 需要在页面引入：<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+     * results object 代结构的数据
+     * error 0 | 1  是results的状态标识 0表示结构数据合法，1表示不合法
+     * appendid id选择器，指定输入的视图追加在appendid的容器内
+     * initElem 初始化的nestable id 如：nestable-spec， 可为空
+     * results数据结构如：
+     * [
+            {
+                "val":"classify_init",
+                "name":"分类名称",
+                "children":[
+                    {"val":"classify_1562384668706","name":"分类名称"},
+                    {"val":"classify_1562384668490","name":"分类名称"}
+                ]
+            },
+            {
+                "val":"classify_1562384668258",
+                "name":"分类名称"
+            },
+            {
+                "val":"classify_1562384672690",
+                "name":"分类名称"
+            }
+        ]
+
+        完整案例：
+            var error = <%- error; %>;
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            };
+
+            //分类相关
+            $("#oper-classify").click(function(){
+                $("#oper-classify-nes").fadeToggle();
+            })
+
+            var results = <%- error ? false : results %>;
+            //初始化nestable数据结构
+            effect.nestable(results,error,'#oper-classify-nes');
+            
+            // activate Nestable for list 2
+            $('#nestable2').nestable({group: 1}).on('change', updateOutput);
+            $('.dd').nestable('collapseAll');   
+        
+            //以下为动作事件
+            //隐藏编辑按钮
+            $('.dd-edit').hide();
+            $(".dd-addon-handel").removeClass('hidden')
+
+            //设置被选择的值及效果
+            $('.handel-nestable2').click(function(e){
+                $("#oper-classify").text($(this).parent().find(".dd-val").html());
+                $("#oper-classify").siblings('input[ name="classify"]').val($(this).parent().attr('data-val'));
+                $("#oper-classify-nes").fadeToggle();
+            });
+     */
+    nestable: function(results,error,appendid,initElem){
+        var append = $(appendid);
+        if(!append.length) return;
+        var nesId = initElem || 'nestable2';
+        // if(!initElem){
+        //     nesId = $(".dd").eq(0).attr('id');
+        //     var index = parseInt(nesId.replace(/[^0-9]/ig,''));
+        //     index = index == NaN ? 1 : index + 1;
+        //     nesId = nesId ? 'nestable' + index : 'nestable2';
+        // }
+        var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
+        var nesBox = `<style>
+                        .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
+                        .dd-list>li .dd-addon-handel {top:0;position: absolute;right: 0;height: 3em;border: 0;left: 3em;border:0;}
+                        .dd-addon-click{background-color:#3CA2D7 !important}
+                        .dd-list>li .dd-edit span{margin-right:0.5em;}
+                    </style>
+                    <div class="dd" id="`+ nesId +`">
+                        <ol class="dd-list"></ol>
+                    </div>`;
+        var initCode =  `<li class="dd-item" data-val="classify_init">
+                            <div class="dd-handle">
+                                <span class="label label-info"><i class="fa fa-cog"></i></span> 
+                                <span class="dd-val" style="font-weight:100;">分类名称</span>
+                            </div>
+                            <div class="dd-edit">
+                                <input class="hidden" type="text" name="spec" value="规格名称" />
+                                <span class="fa fa-edit"></span>
+                                <span class="fa fa-minus-square-o minus"></span>
+                                <span class="fa fa-plus-square-o plus"></span>
+                            </div>
+                            <div class="dd-addon-handel handel-`+ nesId +` hidden"></div>
+                        </li>`;
+        $("#nesTemCode").html('');
+        $('body').append(nesPreBox);
+        append.find('#' + nesId).remove();
+        append.append(nesBox);
+        if(error) return $("#" + nesId + " ol").html(initCode);
+        loadItem();
+        $("#" + nesId + " ol").html($("#nesTemCode").html());
+        /**
+         * 组织项目结构
+         **/
+        function loadItem(res,farther){
+            res = res || results;
+            res.forEach(function(item,index){
+                var code = $(initCode);
+                code.attr('data-val',item.val);
+                code.attr('data-name',item.name);
+                code.find('.dd-val').html(item.name);
+                code = code[0].outerHTML;
+                (!farther) ?
+                $("#nesTemCode").append(code) :
+                $("#nesTemCode").find('li[data-val="' + farther + '"]').append('<ol class="dd-list">' + code + '</ol>');
+                if(item.children) loadItem(item.children, item.val)
+            });
+        }
+    },
+
+    /**
+     * 模态框
+     * @param {*} params 
+     */
+    modal: function(params){
+        params = params || {};
+        var attr = {
+            type: params.type || 'normal',  //模态框样式，暂提供 normalType
+            title: params.title || '请选择相关操作',       //副标题
+            detail: params.detail || '',                  //副标题
+            confirm: params.confirm || function(){},     //成功时回调处理  
+            close: params.close || function(){},       //关闭时回调处理  
+        }
+        
+        var model = {
+            normal_type: `<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated bounceInRight">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="normalModal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                            </button>
+                            <i class="fa fa-laptop modal-icon"></i>
+                            <h4 class="modal-title">`+ attr.title +`</h4>
+                            <small class="font-bold">`+ attr.detail +`</small>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white cancle" data-dismiss="normalModal">关闭</button>
+                            <button type="button" class="btn btn-primary submit" data-confirm="normalModal" >确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`,
+        }
+        
+        if(!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
+        $('body #freeMode').html(model[attr.type + '_type']);
+        $("button[data-dismiss]").unbind("click").on("click",function(){
+            var modalId = $(this).attr('data-dismiss');
+            attr['close']($("#" + modalId));
+            $("#" + modalId).toggle();
+        });
+        $("button[data-confirm]").unbind("click").on("click",function(){
+            var modalId = $(this).attr('data-confirm');
+            attr['confirm']($("#" + modalId));
+            $("#" + modalId).toggle();
+        });
+        $("#" + attr.type + "Modal").toggle();
+
+    }
+
+
+}
+
+/** ============================效果插件 end=========================== */
 /** ===============================tools============================== */
 /**
  * 返回请求时暂存的参数，如果参数不存在则返回null
@@ -468,6 +1143,70 @@ function array2value (array,key1,value,key2) {
 	return '';
 }
 
+/*
+*merge([objA,objB,objC]);
+*结果为：
+Object {a: "oh", b: "hello", c: "ds", f: "你好", fd: "world"}
+ */
+function mergeObj(objs){
+	if(objs.constructor.name !== 'Array'){
+		console.log({
+			error  : 1,
+			message: '传的参数必须是多个对象的数组'
+		});
+		return false;
+	}
+	for(var i = 1; i < objs.length; i++){
+        if(objs[i].constructor.name == 'Object'){
+            for(var k in objs[i]){
+                objs[0][k] = objs[i][k];
+            }
+        }
+	}
+    return objs[0];
+}
+
+/**
+ * 方法根据key1=>value在array中查找相对的对象，并返回对象(中key2的值),或返回符合条件的所有对象
+ * array array 被查找的多个对象的数组
+ * key1 用于匹配的键
+ * value 用于匹配的键对应的值
+ * key2 string  null | key2  null 返回匹配对象， key2 返回匹配对象中 key2 的值
+ * all boolean true 返回所有匹配的集合，false 返回第一次匹配               
+ */
+function treeValue (array,key1,value,key2,all) {
+	array = array || [];
+	all = all || false;
+    if(!array.length) return '';
+    if(typeof key2 == 'boolean') {
+        all = key2;
+        key2 = undefined;
+    }
+	var temObj = [];
+	for(var i in array){
+		var item = array[i];
+		for(var k in item){
+			if(item[k].constructor.name == 'Array'){
+				var values = treeValue(item[k],key1,value,key2,all);
+				values.constructor.name == 'Array' ?
+				mergeObj([temObj,values]) :
+				temObj = values;
+			}else{
+				if((k == key1) && (item[k] == value) && !all){
+                    console.log(item)
+					temObj = key2 ? item[key2] : item;
+					break;
+				}
+        		if((k == key1) && (item[k] == value) && all){
+					key2 ? temObj.push(item[key2]) : temObj.push(item);
+				} 
+			}
+		}
+	}
+    
+	return temObj;
+}
+
 /**
  * 判断是否是微信浏览器的函数
  */
@@ -506,8 +1245,8 @@ function getStandardDate(date,defaultVal) {
 function dateFormate(formate,time){
 	var date = new Date(time);
 	var Y = date.getFullYear();
-	var m = date.getMonth() > 9 ? date.getMonth() : date.getMonth() + 1;
-	var d = date.getDate();
+	var m = date.getMonth() > 9 ? date.getMonth()+1 : '0' + (date.getMonth() + 1);
+	var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
 	var H = date.getHours();
 	var M = date.getMinutes();
 	var S = date.getSeconds();
@@ -526,10 +1265,26 @@ function dateFormate(formate,time){
  */
 function limitPrint(str,len){
     if(str.length > len){
-        str=str.substring(0,len)+"......";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
+        str=str.substring(0,len-2)+"...";  //使用字符串截取，获取前30个字符，多余的字符使用“......”代替
     }
     return str;
 }
+
+/**
+ * 数组去重
+ * @param {*} arr 
+ */
+function unique(arr){
+    var res = [];
+    for(var i=0; i<arr.length; i++){
+        if( !res.includes(arr[i]) ){ // 如果res新数组包含当前循环item
+            res.push(arr[i]);
+        }
+    }
+    return res;
+}
+
+
 
 
 /** ===============================tools end============================== */
@@ -748,5 +1503,25 @@ function limitPrint(str,len){
 			}
 		});
     })(jQuery);
-    
+
     /** ===============================md5 end============================== */
+
+    
+
+/**
+ * 扩展Array方法, 去除数组中空白数据
+ * 调用方法
+    var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
+    var b = a.notempty();
+    输出b    [1, 2, 4, 5, 7, 0, 8]
+ */
+function arrNotempty(array){
+    var arr = [];
+    array.map(function(val, index) {
+        //过滤规则为，不为空串、不为null、不为undefined，也可自行修改
+        if (val !== "" && val != undefined) {
+            arr.push(val);
+        }
+    });
+    return arr;
+}

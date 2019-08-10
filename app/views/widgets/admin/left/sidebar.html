@@ -1,0 +1,159 @@
+<!-- admin/left/left_sidebar_0.html -->
+<!-- 视图加载 -->
+    <!-- 左则导航-样式 -->
+  
+    <style>
+        #wrapper {
+            min-width:190px;
+            max-width:250px;
+            width:15%;
+            position: fixed;
+            border: 1px solid #E5E5E6;
+            height: 100%;
+            /* overflow: scroll; */
+        }
+        #wrapper {
+            /* background-color: #2f4050; */
+            background-color:#fff;
+        }
+        #wrapper .nav-header {
+            /* background: #1c2b36; */
+            background-color:#fff;
+            border-bottom:1px solid #E4E4E5;
+        }
+        #wrapper .black-bg {
+            /* background-color: #262626; */
+            background-color:#fff;
+        }
+        #wrapper .line {
+            /* background-color: #131e26; */
+            background-color:#fff;
+        }
+
+        #wrapper .navbar-default .nav>li>a:focus {
+            /* background-color: #131e26; */
+            background-color:#fff;
+        }
+
+        #wrapper .navbar-default {
+            /* border-color: #2f4050; */
+            background-color:#fff;
+        }
+        #wrapper .gohome a {
+            /* background: #2f4050; */
+            background-color:#fff;
+        }
+        #wrapper .nav li>a{
+            border-bottom:1px solid #E4E4E5;
+        }
+        #wrapper .nav>li.active {
+            /* background: #131e26; */
+            background-color:#F7F7F8;
+        }
+        #wrapper .navbar-default .nav>li>a:hover, .navbar-default .nav>li>a:focus {
+            /* background-color: #131e26; */
+            background-color: #fff;
+            color: #A5ADB6;
+        }
+        #wrapper .nav>li.active>a {
+            color: #A5ADB6;
+        }
+        #wrapper .nav .user-infor>img{
+            border:0;
+            width:6em;
+            height:6em;
+            border-radius:3em;
+            display: block;
+            margin:auto;
+        }
+        #wrapper .nav .user-infor>div{
+            font-size:16px;
+            color:#595959;
+            display:blcok;
+            margin:auto;
+            margin-top:1em;
+            border:0;
+        }
+        #wrapper .nav .user-infor>div>strong{
+            display:block;
+        }
+    </style>
+    <!--左侧导航开始-->
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-collapse" style="width: auto; height: 100%;">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="user-infor">
+                            <img src="/img/sys/shop/pay.png" />
+                            <div class="dropdown profile-element">
+                                <strong class="text-center">昵称:山大王 </strong>
+                                <strong class="text-center">职务:一把手</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-list">
+                        <a href="javascript:void(0)" data-async="post" data-type="text" data-uri="{{- return url?url+'?tid='+id:''; }}" target="left-space">
+                            <i class="fa fa fa-bar-chart-o"></i>
+                            <span class="nav-label">{{name}}</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
+                            <li class="menu-list">
+                                <a class="J_menuItem" href="?" data-async="post" data-type="text" data-uri="{{url_1}}?tid={{id_1}}" target="left-space">{{name_1}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 465.324px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div></div>
+        </nav>
+        <!--左侧导航结束-->
+    </div>
+    <script src="/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/bootstrap/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script>
+        //重置列表
+        function reset(){
+            $("#side-menu").children().eq(1).nextAll().remove();
+        }
+
+        function bindevent(){
+            $(".menu-list a").unbind('click').on("click",function(e){
+                var curlist = $(this).siblings(".list-child");
+                curlist.toggle();
+                if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
+                loadChildList(curlist);
+                var tartget = $(this).attr('target')
+                app.asyncProcess(e, this, function(res) {
+                    //调用用户义的与操作名称同名的回调函数
+                    try{eval((res))}catch(e){
+                        $("#" + tartget).html(res);
+                    }
+                });
+            });
+        }
+
+        function loadChildList(o){
+            var curlist = $(o);
+            var listIndex = curlist.attr("data-index");
+            var listId = curlist.attr("id");
+            var sideMenu = getDLData("#side-menu").data[listIndex];
+            var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
+            data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
+            DL({
+                dev : "on",
+                listId : '#'+listId,
+                cached : 1,
+                data: {uid:getItem("UID")},
+                packet : {
+                    error : data.length ? 0 : 1, 
+                    data: data
+                },
+                after : bindevent
+            });
+        }
+    </script>
+    

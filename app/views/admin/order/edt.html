@@ -1,0 +1,140 @@
+<%- //JSON.stringify(order) %>
+<%- //JSON.stringify(buyer) %>
+<%- //JSON.stringify(seller) %>
+<%- //JSON.stringify(enumtagVal) %>
+<%- //JSON.stringify(enumtagName) %>
+<%- //JSON.stringify(enumtag) %>
+<script>
+    var enumtagName = <%- JSON.stringify(enumtagName) %>;
+    enumtagName  = enumtagName || [];
+</script>
+
+
+<div class="row">
+    <div class="col-sm-12 order-detail">
+        <div class="ibox-content p-xl" data-signle-async="SDFGDFGDFGDFG" data-uri="/admin/trance/set">
+            <div class="row">
+                <div class="col-sm-6">
+                    <address>
+                        <strong><%= buyer.buyer %></strong><br>
+                        <%= buyer.address %><br>
+                        <abbr title="Phone">总机：</abbr> <%= buyer.buytel %>
+                    </address>
+                </div>
+
+                <div class="col-sm-6 text-right">
+                    <h4>单据编号：</h4>
+                    <h4 class="text-navy"><%= buyer.sn %></h4>
+                    <address>
+                        <strong><%= seller.merchan %></strong><br>
+                        <%= seller.maddress %><br>
+                        <abbr title="Phone">总机：</abbr> <%= seller.mtel %>
+                    </address>
+                    <p>
+                        <span><strong>日期：</strong> <%= dateFormate('%Y-%m-%d %H:%M',buyer.addtime) %></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="table-responsive m-t">
+                <table class="table invoice-table">
+                    <thead>
+                        <tr>
+                            <th>清单</th>
+                            <th>数量</th>
+                            <th>规格</th>
+                            <th>单价</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-list">
+                        <tr>
+                            <td>
+                                <div><strong>{{title}}</strong>
+                                </div>
+                            </td>
+                            <td contenteditable="true" data-reference="id-{{id}}-number">{{number}}</td>
+                            <td>{{spectitle}}</td>
+                            <td>&yen;{{- return price.toFixed(2); }}</td>
+                        </tr>
+                        
+
+                    </tbody>
+                </table>
+            </div>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td style="width:100px"><strong>订单状态：</strong></td>
+                        <td><span contenteditable="true" data-freemodal="state" data-reference="sn-<%= buyer.sn %>-state" data-val="<%= buyer.state %>"><%= enumtagName[buyer.state] %></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- /table-responsive -->
+
+            <table class="table invoice-total">
+                <tbody>
+                    <tr>
+                        <td><strong>总价：</strong>
+                        </td>
+                        <td>&yen;<span contenteditable="true" data-reference="sn-<%= buyer.sn %>-totalprice" ><%= count.totalprice.toFixed(2) %></span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>优惠金额：</strong>
+                        </td>
+                        <td>&yen;<span contenteditable="true" data-reference="sn-<%= buyer.sn %>-coupon" ><%= count.coupon.toFixed(2) %></span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>配送：</strong>
+                            </td>
+                            <td>&yen;<span contenteditable="true" data-reference="sn-<%= buyer.sn %>-trancefree"><%= count.trancefree.toFixed(2) %></span></td>
+                        </tr>
+                    <tr>
+                        <td><strong>总计</strong>
+                        </td>
+                        <td>&yen;<span><%= (count.totalprice + count.trancefree).toFixed(2) %></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-right">
+                <!-- <button class="btn btn-primary"><i class="fa fa-print"></i> 打印</button> -->
+                <button class="btn btn-primary"><i class="fa fa-return"></i> 返回</button>
+            </div>
+
+            <div class="well m-t"><strong>注意：</strong> 请在30日内完成付款，否则订单会自动取消。
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script>
+var error = <%- error? 1: 0 %>;
+DL({
+    listId: "#order-list",
+    packet: {
+        error: error,
+        data: <%- order.length ? JSON.stringify(order) : false %> || [],
+        clearCode: true
+    },
+    after: function(){
+        app.load(".order-detail");
+    }
+});
+
+$("[data-freemodal]").click(function(){
+    var me = $(this);
+    effect.modal({
+        title: '选择订单状态',
+        confirm: function(item){}
+    });
+    var enumtag = <%- enumtag.length ? JSON.stringify(enumtag) : 0 %> || [];
+    
+    effect.nestable(enumtag, error, '#modal-body');
+    $("#normalModal").find('li.dd-item').unbind("click").on("click",function(){
+        me.html($(this).attr('data-name'));
+        me.attr("data-val",$(this).attr('data-val'));
+        me.focusout();
+    });
+});
+
+</script>

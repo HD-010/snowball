@@ -1,0 +1,188 @@
+<style>
+.yun_bth_pic{
+    height: 38px;
+    line-height: 38px;
+    background: #f8f8f8 url(/img/sys/pic_img.png) no-repeat 10px center;
+    border: 1px solid #ddd;
+    position: relative;
+    padding-left: 50px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.layui-upload-file {
+    display: none!important;
+    opacity: .01;
+    filter: Alpha(opacity=1);
+}
+button, input, optgroup, option, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    outline: 0;
+}
+</style>
+<div class="container-fluid base base_saveLogoSet">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-系统设置-LOGO    设置</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+           </div>
+        </div>
+    </div>  
+    <div class="row form">
+        <form id="testForm" data-form-async='json' action="/admin/sys/saveLogoSet" method="POST" onsubmit="return check()">
+            <input type="hidden" name="updateData" value=""/>
+           <table class="table">
+               <thead>
+                   <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                   </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                    <td>整站LOGO：<br/>
+                        300px * 45px</td>
+                    <td style="padding-left:26px;">
+                        <button type="button" class="yun_bth_pic" >上传图片</button>
+                        <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                        <input type="hidden" name="pcImage" value="<%=list[0].key1.pcImage%>"/>  
+                        <img class="imglogo" src="/<%=list[0].key1.pcImage%>" style="max-width:300px;_width:300px">
+                    </td>
+                </tr> 
+
+                <tr>                                                       
+                   <td>个人会员中心LOGO：<br/>
+                    300px X 45px	：</td>
+                    <td style="padding-left:26px;">
+                        <button type="button" class="yun_bth_pic">上传图片</button>
+                        <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                        <input type="hidden" name="menberImage" value="<%=list[0].key1.menberImage%>"/>                     
+                        <img class="imglogo" src="/<%=list[0].key1.menberImage%>" style="max-width:300px;_width:300px">
+                    </td>           
+                </tr>
+
+                <tr>
+                    <td>企业会员中心LOGO：<br>
+                            300px X 45px</td>
+                            <td style="padding-left:26px;">
+                                <button type="button" class="yun_bth_pic">上传图片</button>
+                                <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                                <input type="hidden" name="merchantImage" value="<%=list[0].key1.merchantImage%>"/>                                
+                                <img class="imglogo" src="/<%=list[0].key1.merchantImage%>" style="max-width:300px;_width:300px">
+                            </td>
+                         </td>              
+                    </tr>
+                  
+                     <tr>
+                    <td>手机LOGO：<br>
+                            300px X 45px</td>
+                        <td style="padding-left:26px;">
+                            <button type="button" class="yun_bth_pic">上传图片</button>
+                            <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                            <input type="hidden" name="mobelImage" value="<%=list[0].key1.mobelImage%>"/>                           
+                            <img class="imglogo" src="/<%=list[0].key1.mobelImage%>" style="max-width:300px;_width:300px">
+                        </td>
+                    </tr>
+            
+                     <tr>                                        
+                        <td>WAP二维码：</td>
+                        <td style="padding-left:26px;">
+                            <button type="button" class="yun_bth_pic">上传图片</button>
+                            <input class="layui-upload-file fileInput" type="file" name="image" value=""  size="50"/>
+                            <input type="hidden" name="wapImage" value="<%=list[0].key1.wapImage%>"/>  
+                            <img class="imglogo" src="/<%=list[0].key1.wapImage%>" style="max-width:100px;_width:100px">
+                        </td>
+                    </tr>
+               </tbody>
+               <tfoot>
+                  <tr>
+                      <td></td>
+                      <td>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                      </td>
+                  </tr>
+               </tfoot>
+           </table>
+        </form>
+    </div>
+</div>
+<%- normalAsync %>         
+<script src="/bootstrap/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".imglogo").css({"width":"300px","height":"45px"});
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        //点击按钮上图片
+        $('.yun_bth_pic').click(function(){
+           $(this).siblings('.layui-upload-file').click()
+           $(this).siblings('.layui-upload-file').on('change',function(){
+                var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
+                    fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();//获取文件后缀
+                    src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+                    
+                // 检查是否是图片
+                if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+                    error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
+                    return;  
+                }
+                $(this).siblings('.imglogo').attr('src',src);            
+            })
+        })
+    });
+</script>
+<script language="javascript">
+    var btn_img={};
+    var updateData = {};
+    $("input[name='updateData']").val();
+    //获取当前要上传的图片对象
+    $(function(){
+        $(".yun_bth_pic").click(function(){
+            btn_img = $(this).parent();
+        })
+    })
+
+    //验证问文件类型的正确性
+    function check(){
+        updateData = {
+            pcImage:$("input[name='pcImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            menberImage:$("input[name='menberImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            merchantImage:$("input[name='merchantImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            mobelImage:$("input[name='mobelImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+            wapImage:$("input[name='wapImage']").val() || "files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe",
+        }
+        updateData = JSON.stringify(updateData);
+        $("input[name='updateData']").val(updateData);
+        console.log(updateData)
+        return false;
+    }
+
+    app.load(".base_saveLogoSet");
+    app.addonParams = {oid: getItem('OID')};
+    function saveLogoSet(results){
+        app.notice(results,function(){
+            go(results.uri);
+        });
+    }
+
+    function imgfun(res){
+        if(res.url){        
+            btn_img.find("input[type='hidden']").val(res.url);
+            console.log(btn_img);
+        }
+    }
+
+</script>

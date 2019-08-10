@@ -1,0 +1,238 @@
+<link rel="stylesheet" href="/bootstrap/css/v3.css"/>
+<div class="container-fluid base base_manage">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-系统设置-验证码设置</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12" style="padding-left: 30px;padding-right: 30px;">
+            <div class="col-xs-12 tabs_info">
+                <span>全部管理员用户</span>
+            </div>          
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+           <div class="col-xs-12">
+                <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+           </div>
+        </div>
+    </div>
+    <div class="row tipss">
+        <div class="col-xs-12">
+            <form action="" method="get" name="myform">
+                <ul class="list-inline">
+                    <li>要搜索的内容</li>
+                  
+                    <li>
+                        <div class="form-group">
+                                <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)"/>
+                        </div>
+                    </li>
+                    <!-- <li>
+                        <button type="button" class="btn btn-success">搜索</button>
+                    </li>
+                    <li>
+                        <a data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"><button type="button" class="btn btn-success">高级搜索</button></a>
+                    </li> -->
+                    <li>
+                        <button type="button" class="btn btn-default" style="border:1px solid#EC5051;" onclick="go('/admin/manage/addManage')"><span style="color:#EC5051;"> + 添加管理员</span></button>
+                    </li>
+                </ul>
+            </form>           
+        </div>
+    </div>
+    <!-- 折叠部分 -->
+    <div id="collapseTwo" class="panel-collapse collapse collapseTwo">
+        <div class="panel-body">
+            <div class="admin_screenlist_box" style="display: block;"> 	    
+                <div class="admin_screenlist">
+                    <span class="admin_screenlist_name">会员等级：</span>
+                    <a href="" class="admin_screenlist_cur">全部</a>
+                    <a href="">金牌会员</a> 
+                    <a href="">银牌会员</a> 
+                    <a href="">铜牌会员</a> 
+                    <a href="">免费会员</a> 
+                    <a href="">黄牌会员</a>                     
+                </div>
+                                    
+                <div class="admin_screenlist">
+                    <span class="admin_screenlist_name">到期时间：</span>
+                    <a href="" class="admin_screenlist_cur">全部</a>
+                    <a href="">7天内</a> 
+                    <a href="">一个月内</a> 
+                    <a href="">半年内</a> 
+                    <a href="">一年内</a> 
+                    <a href="">已到期</a>                                
+                </div>
+                                    
+                <div class="admin_screenlist">
+                    <span class="admin_screenlist_name">审核状态：</span>
+                    <a href="" class="admin_screenlist_cur">全部</a>
+                    <a href="">已审核</a> 
+                    <a href="">已锁定</a> 
+                    <a href="">未通过</a> 
+                    <a href="">未审核</a>                                
+                </div>
+                                    
+                <div class="admin_screenlist">
+                    <span class="admin_screenlist_name">数据来源：</span>
+                    <a href="" class="admin_screenlist_cur">全部</a>
+                    <a href="">网页</a> 
+                    <a href="">手机</a> 
+                    <a href="">App</a> 
+                    <a href="">微信</a> 
+                    <a href="">采集</a> 
+                    <a href="">Excel导入</a> 
+                    <a href="">QQ登录</a> 
+                    <a href="">微信扫一扫</a> 
+                    <a href="">微博</a> 
+                    <a href="">PC快速投递</a> 
+                    <a href="">WAP快速投递</a> 
+                    <a href="">微信小程序</a>                                
+                </div> 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row form">
+        <div class="ibox-content">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="5" data-filter=#filter>
+                <caption>管理员列表</caption>
+                <thead>
+                    <tr> 
+                        <th data-sort-ignore="true" style="width:82px;">
+                            <label class="checkbox-inline">
+                                <input class="perm-all perms" data-group="shop" id="perm_shop" type="checkbox"/>                             
+                            </label>
+                           
+                        </th>                      
+                        <th data-toggle="true">用户ID</th>
+                        <th data-sort-ignore="true">用户昵称</th>
+                        <th data-sort-ignore="true">账号</th>                       
+                        <th data-sort-ignore="true">手机</th>
+                        <th data-sort-ignore="true">注册时间</th>
+                        <th data-sort-ignore="true">所具有权限组</th>
+                        <th data-sort-ignore="true">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% for(var i in list){ %>
+                    <tr>
+                        <td>
+                            <label class="checkbox-inline">
+                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="<%=list[i].id%>"/>                                       
+                            </label>
+                        </td>   
+                        <td><%= list[i].id %></td>
+                        <td><%= list[i].userName %></td>
+                        <td><%= list[i].acount %></td>
+                        <td><%= list[i].tel %></td>
+                        <td><%= getStandardDate(list[i].addTime) %></td>
+                        <td><%= list[i].groupName %></td> 
+                        <td class="project-actions">
+                            <button class="btn btn-default " type="button"><i class="fa fa-pencil"  onclick = "go('/admin/manage/editManage?pid=<%=list[i].id%>')">编辑</i></button>
+                            <button class="btn btn-default " type="button"><i class="fa fa-trash" data-async="post" data-uri='/admin/manage/delManage?id=<%=list[i].id%>'>删除</i></button>
+                        </td>
+                    </tr>
+                     <% } %>   
+                    
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            <label class="checkbox-inline">
+                                <input class="perm-all perms" data-group="shop"  type="checkbox"/> 全选                            
+                            </label>
+                        </th>                       
+                        <th colspan="7">
+                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='delall'>删除全部</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        
+                        <td colspan="8">
+                            <ul class="pagination pull-right"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>    
+        </div>        
+    </div>
+</div>
+ <!-- 全局js -->
+ <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+ <script>
+     $(document).ready(function() {
+         $('.footable').footable();
+     });
+
+ </script>
+ <script language="javascript">
+     var listId = [];
+        $(function () {        
+            //父级选中 全部选中
+            $('.perm-all').click(function () { 
+                var checked = $(this).get(0).checked;
+                var group = $(this).data('group');
+                $(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").each(function () {
+                    $(this).get(0).checked = checked;
+                    //获取全部选中的值
+                    if($(this).get(0).checked){
+                        listId.push($(this).get(0).value)
+                    }
+                    $('.perm-all').each(function(){
+                         $(this).get(0).checked = checked;
+                     })
+                })
+                console.log(listId)
+                if(listId.length){
+                    listId = listId.join("_")
+                    $("#delall").attr("data-uri","/admin/manage/delManage?id="+listId)
+                }else{
+                    $("#delall").attr("data-uri","")
+                }
+                listId = [];
+            })
+        
+        
+            //选中它子类选中
+            $('.perm-all-item').click(function(){
+                var check = false;
+                $('.perm-all-item').each(function (index, item) {
+                    if (item.checked) {//只有一为真，.perm-all它就是选择状态
+                        check = true;
+                        listId.push($(this).get(0).value)
+                    }
+                });
+                var group = $(".perm-all-item").eq(0).data('group');
+                $(".perm-all").each(function (index, item) {
+                   item.checked = check
+                });
+                if(listId.length){
+                    listId = listId.join("_")
+                    $("#delall").attr("data-uri","/admin/manage/delManage?id="+listId)
+                }else{
+                    $("#delall").attr("data-uri","")
+                }
+                listId = [];
+            });
+        });        
+       
+</script>
+ <script language="javascript">
+    app.load(".base_manage");
+    app.addonParams = {oid: getItem('OID')};
+
+    function delManage(results){
+        console.log(results)
+        app.notice(results,function(){
+            
+            go(results.uri);
+        });
+    }
+</script>

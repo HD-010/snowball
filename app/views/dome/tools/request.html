@@ -243,8 +243,7 @@
                 }catch(e){
                     data = app.parseQuery(data);
                 }    
-                setData(data)   
-                console.log("@@@:",data);
+                setData(data) 
                 eval((req['action'] + " = function(res){process(res)};"));
             });
 
@@ -261,6 +260,7 @@
             }
 
             function process(res){
+                alert()
                 var str = JSON.stringify(res, null, 4);
                 str = str.replace(/\n/g,'<br>').replace(/\s/g, '&nbsp;');
                 $(".details").html(str);
@@ -314,8 +314,7 @@
     <!-- 全局js -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/javascripts/app/app.js"></script>
-    <script src="/javascripts/app/dataAsync.js"></script>
-
+    <script>app.load()</script>
     
 </body>
 

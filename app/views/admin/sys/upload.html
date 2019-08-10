@@ -1,0 +1,156 @@
+<div class="container-fluid base base_saveUpdateSet">
+        <div class="row head">
+            <div class="col-xs-12">
+                <span>系统管理-系统设置-安全设置</span>
+            </div>
+        </div>
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">安全设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
+               </div>
+            </div>
+        </div>
+        <div class="row form">
+            <form enctype="multipart/form-data" data-form-async='json' action="/admin/sys/saveUpdateSet" method="POST" onsubmit="return check()">
+                <input type="hidden" name="updateData" value="" />
+               <table class="table">
+                   <thead>
+                       <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                     
+                      
+                      <tr>
+                        <td>上传文件大小：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="number" class="form-control"   placeholder="5" name="fileSize" value="<%= list[0].key1.fileSize %>" />
+                            </div><span class="lead">M</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传文件的最大限制，单位为 M，不填则默认5M</span>
+                        </td>              
+                      </tr>
+                      <tr>
+                        <td>上传图片大小：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="number" class="form-control"   placeholder="5" name="imgFileSize" value="<%= list[0].key1.imgFileSize %>" />
+                            </div><span class="lead">M</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传图片的最大限制，单位为 M，不填则默认5M</span>
+                        </td>              
+                      </tr>
+                      <tr>
+                        <td>上传图片类型：</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control"   placeholder="jpg,png,jpeg,bmp,gif" name="imgTtype" value="<%= list[0].key1.imgTtype %>" />
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传图片的类型，多个类型以英文逗号（,）分隔，不填则默认jpg,png,jpeg,bmp,gif</span>
+                        </td>              
+                      </tr>
+                      <tr>
+                            <td>上传文件类型：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="text" class="form-control"   placeholder="rar,zip,doc,docx,xls" name="fileType" value="<%= list[0].key1.fileType %>" />
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;允许上传文件的类型，多个类型以英文逗号（,）分隔，不填则默认rar,zip,doc,docx,xls</span>
+                            </td>              
+                          </tr>
+                      <!-- <tr>
+                        <td>图片安全验证：</td>
+          
+                        <td style="padding-left:26px;">
+                            <label><input class="mui-switch mui-switch-anim" type="checkbox" checked ><em></em></label>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;对图片源码进行扫描，检测是否包含非法代码</span>
+
+                        </td> 
+                            
+                      </tr>
+                      
+                      <tr>
+                        <td>强制压缩图片：</td>
+                        <td style="padding-left:26px;">
+                            <label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;" placeholder="127.0.0.1"></i>&nbsp;根据图片原始比例重新压缩成新图片，彻底去除图片中可能包含的非法代码，但有可能会影响图片清晰度</span>
+                            
+                        </td>              
+                      </tr> -->
+                   </tbody>
+                   <tfoot>
+                      <tr>
+                          <td></td>
+                          <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                          </td>
+                      </tr>
+                   </tfoot>
+               </table>
+            </form>
+        </div>
+    </div>
+    <script src="/bootstrap/js/switch.js"></script>
+    <script language="javascript">
+        //验证问文件类型的正确性
+        function check(){
+            var imgType = ["png","jpg","jpeg","bmp","gif"];
+            var getImgType = $("input[name='imgTtype']").val();
+            var reg = /[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/;
+
+            if(reg.test(getImgType)){
+                alert('图片类型中请不要输入中文标点符号');
+                return false;
+            }
+            getImgType = getImgType.split(",")
+            getImgType = arrNotempty(getImgType);//去除数组空元素
+            for(var i=0;i<getImgType.length;i++){
+              if(imgType.indexOf(getImgType[i])==-1){
+                  alert("不支持该"+getImgType[i]+"图片上传类型");
+                  return false;
+              }
+            }
+            
+            //文件类型的判断
+            var fileType = ["rar","zip","doc","docx","xls","xlsx"];
+            var getFileType = $("input[name='fileType']").val();
+            if(reg.test(getFileType)){
+                alert('文件类型中请不要输入中文标点符号');
+                return false;
+            }
+            getFileType = getFileType.split(",")
+            getFileType = arrNotempty(getFileType);//去除数组空元素
+            for(var i=0;i<getFileType.length;i++){
+              if(fileType.indexOf(getFileType[i])==-1){
+                  alert("不支持该"+getFileType[i]+"文件上传类型");
+                  return false;
+              }
+            }
+
+
+            var updateData = {
+                fileSize:$("input[name='fileSize']").val() || 5,
+                imgFileSize:$("input[name='imgFileSize']").val() || 5,
+                imgTtype:$("input[name='imgTtype']").val() || "png,jpg,jpeg,bmp,gif",
+                fileType:$("input[name='fileType']").val() || "rar,zip,doc,docx,xls,xlsx"
+            }
+            updateData = JSON.stringify(updateData);
+
+            $("input[name='updateData']").val(updateData);
+            console.log(updateData)
+            return true;
+        }
+
+        app.load(".base_saveUpdateSet");
+        app.addonParams = {oid: getItem('OID')};
+        function saveUpdateSet(results){
+            app.notice(results,function(){
+                go(results.uri);
+            });
+        }
+    </script>
+         

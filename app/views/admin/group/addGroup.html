@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="/bootstrap/css/v3.css"/>
+<style>
+.panel-collapse{
+    overflow:auto;
+}
+</style>
+<div class="container-fluid base base_add_group">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-用户组管理-添加用户组</span>
+        </div>
+    </div>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">管理员根据网站运营需求，添加不同类型的管理员！管理员类型分为：“CRM、超级管理员、分站管理员”用户权限组成相关设置，超级管理员可以根据运营需求设置。</p>
+            </div>
+        </div>
+    </div>
+    <div class="row form">
+        
+        <form data-form-async='json' action="/admin/group/saveGroup" class="form-horizontal form-validate" enctype="multipart/form-data" method="post" >
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>添加管理组：</td>
+                        <td>
+                            <div class="page-content">                              
+                                <input name="id" type="hidden" value=""/>
+                                <div class="form-group">
+                                    <label class="col-lg control-label must">
+                                       组名称
+                                    </label>
+                                    <div class="col-sm-4 col-xs-4">
+                                        <input class="form-control" data-rule-required="true" name="groupName" type="text" value="" placeholder="请输入管理组名称" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg control-label">
+                                        状态
+                                    </label>
+                                    <div class="col-sm-9 col-xs-12">
+                                        <label class="radio-inline">
+                                            <input name="status" type="radio" value="1" checked/>
+                                            启用
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input name="status" type="radio" value="0"/>
+                                            禁用
+                                        </label>
+                                        <span class="help-block">
+                                            如果禁用，则当前管理组下的的操作员全部会禁止使用
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg control-label must">
+                                       选择管理员类型
+                                    </label>
+                                    <div class="col-sm-4 col-xs-4">
+                                        <select class="form-control" name="type">                                           
+                                            <% for(var i in results){ %>
+                                            <option value="<%=results[i].typeName %>"><%=results[i].alias %></option>                                            
+                                            <% } %>
+                                        </select>   
+                                    </div>
+                                </div>                                                         
+                            </div>        
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn">提交</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="javascript">
+    app.load(".base_add_group");
+    app.addonParams = {oid: getItem('OID')};
+    function saveGroup(results){
+        app.notice(results,function(){
+            go(results.uri);
+        });
+    }
+</script>

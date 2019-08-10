@@ -27,7 +27,7 @@ Array.prototype.remove = function(val) {
     使用案例：1
     <div id data-uri="/api/goods/home"></div>
     <script>
-        new ViewData({
+        new DL({
             dev: 'on',                     //on表示为开发者模式，输了接口请求返回的数据
             id:'#myCarousel',              //被填充数据元素的id
             childId:'#myCarousel-img',     //被填充数据列表项的id,如果没有列表，则不需要
@@ -52,7 +52,7 @@ Array.prototype.remove = function(val) {
             after:function(){
                 $("#myCarousel-img").children().first().addClass('active');
             }
-        }).init();
+        });
     </script>
 
     使用案例：2
@@ -64,7 +64,7 @@ Array.prototype.remove = function(val) {
         </li>
     </ul>
     <script>
-        new ViewData({
+        new DL({
                 listId: '#ksdfskdgjsdsdg-0',
                 packet:{
                     error:0,        //当大于0时，驱动会取消
@@ -80,8 +80,8 @@ Array.prototype.remove = function(val) {
                     ]
                 }
                 
-        }).init();
-        new ViewData({
+        });
+        new DL({
             id: '#ksdfskdgjsdsdg',
             packet:{
                 error:0,
@@ -91,7 +91,7 @@ Array.prototype.remove = function(val) {
                 },
             }
                 
-        }).init();
+        });
     </script>
         
     使用案例：3(选中默认的项，用data-selected属性值表示)
@@ -99,7 +99,7 @@ Array.prototype.remove = function(val) {
         <option  value="{{- return val; }}">{{- return name; }}</option>
     </select>
     <script>
-        new ViewData({
+        new DL({
             listId:'#select-t0',     //被填充数据列表项的id,如果没有列表，则不需要
             packet:{
                 error: 0,
@@ -109,7 +109,7 @@ Array.prototype.remove = function(val) {
                     {name:"王二",val:"we"},
                 ]
             },
-        }).init();
+        });
     </script>
  *   
  */
@@ -152,6 +152,10 @@ function ViewData(params){
     this.results = params.packet || [];
     //当没有数据时的提示,html代码
     this.nullData = params.nullData || '<div class="text-center">还没有数据...</div>';
+    //是否使用暂存的数据
+    this.cached = params.cached || false;
+    //是否清除暂存的逻辑代码（设置为true, 渲染时采用dome中新的代码）
+    this.clearCode = params.clearCode || false;
     this.result = {};
     
 
@@ -184,7 +188,7 @@ function ViewData(params){
             }
             if(!that.uri) return;
             //y读取本地缓存数据，如果读取成功，则不发起请求
-            var cacheData = getDLData(this.queryStr());
+            var cacheData = that.cached ? getDLData(this.queryStr()) : false;
             if(cacheData){
                 that.results = cacheData;
                 that.run();
@@ -193,12 +197,24 @@ function ViewData(params){
             $.ajax({
                 url:  that.host + that.uri,
                 data: that.data,
-                dataType: "json",
+                dataType: "text",
                 type: "POST",
-                async:true,
+                async: that.async,
                 success: function(results){
-                    that.results = results;
-                    setDLData(that.queryStr(),results)
+                    var json = '';
+                    var text = '';
+                    try{
+                        json = JSON.parse(results);
+                    }catch(e){
+                        try{
+                            eval((results));
+                        }catch(e){
+                            text = results;
+                        };
+                    }
+                    that.results = json || text || '';
+                    if(!that.results) return;
+                    setDLData(that.queryStr(),that.results);
                     that.run();
                 },
                 error: function(results){
@@ -233,14 +249,19 @@ function ViewData(params){
         this.error = this.results.error || this.results.errcode;
         if(this.dev === 'on') this.log();
         if(typeof this.befor === "function") this.befor(this);
+        //如果befor函数未尾设置exit,将取消执行后继的步骤
+        if(this.dev === 'exit') return;
         this.loadData();
         if(typeof this.after === "function") this.after(this);
+        //设置效果
         this.setEffect();
         app.load();
     }
 
     //设置逻辑代码
     this.setLogicCode = function(){
+        //清除暂存的逻辑代码
+        if(this.clearCode) this.clearLogicCode();
         //如果没有设置listTag 和 selector，则不解释
         if(this.listTag){
             if(!$(this.listTag).length) return;
@@ -253,25 +274,31 @@ function ViewData(params){
             $(LogicCode).append($(this.selector)[0].outerHTML);
         }
     }
+
+    //消除逻辑代码
+    this.clearLogicCode = function(){
+        $(LogicCode).find(this.listTag).remove();
+        $(LogicCode).find(this.selector).remove();
+    }
     
     //渲染数据
     this.loadData = function(){
         var that = this;
         var results = that.tempData || that.results;
         var list;
+        //将逻辑代码暂存在起来
+        that.setLogicCode();
+
         if(results.error > 0 || results.errcode > 0) {
             if(that.deleteInitList) return;
             $(that.selector).html(this.nullData);
-            $(that.listTag).remove();
+            $(that.listTag).html(''); //.remove();
             return;
         }
         if(!results.data) {
             console.error("渲染数据不存在！");
             return;
         }
-        //将逻辑代码暂存在起来
-        that.setLogicCode();
-        
         if(results.data.constructor.name === 'Array'){
             var length = results.data.length;
             var lists = $(LogicCode).find(that.listTag).children();
@@ -362,7 +389,7 @@ function ViewData(params){
                 evalStr = evalStr.replace('&lt;','<');
                 evalStr = evalStr.replace('&gt;','>');
                 evalStr = evalStr.substr(3,evalStr.length - 5);
-                eval(('value = (function(){' + evalStr + '})()'));
+                eval(('value = (function(){try{' + evalStr + '}catch(e){return "";}})()'));
                 itemHtml = itemHtml.replace(matchs[i],value);
             }
         }
@@ -396,15 +423,50 @@ function ViewData(params){
 }
 
 
-//暂存接口返回的数据
+/**
+ * 暂存接口返回的数据
+ * @param {*} key selecter | querystring
+ * @param {*} data 
+ */
 function setDLData(key,data){
     if(!window.DLData) window.DLData = [];
     window.DLData[btoa(key)] = data;
 }
-//获取暂存的接口数据
+/**
+ * 获取暂存的接口数据
+ * @param {*} key selecter | querystring
+ * @param {*} data 
+ */
 function getDLData(key){
     if(!window.DLData) window.DLData = [];
     return window.DLData[btoa(key)];
+}
+
+/**
+ * 修改对象属性名称
+ * data array | object
+ * name array | string 如：['name','name2']
+ * newName array | string 如： ['newName','newName2']
+ * return array | object
+ * */
+function chmod(data,name,newName){
+    if(typeof name != 'object') name = [name];
+    if(typeof newName != 'object') newName = [newName];
+    var dataType = data.constructor.name;
+    var tempData = data;
+
+    if(dataType == 'Array'){
+        for(var j = 0; j < data.length; j ++){
+            for(var i = 0; i < name.length; i ++){
+                tempData[j][newName[i]] = tempData[j][name[i]];
+            }
+        }
+    }else{
+        for(var i = 0; i < name.length; i ++){
+            tempDat[newName[i]] = tempData[name[i]];
+        }
+    }
+    return tempData;
 }
 
 //暂存区代码

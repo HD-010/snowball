@@ -1,0 +1,54 @@
+<!-- 视图加载 -->
+<div class="container-fluid header">
+    <div class="row">
+        <div class="col-xs-2">
+            <ul class="list-inline">
+                <li style="vertical-align:super"><img src="/bootstrap/img/youbanglogo.jpg" alt="logo" width="40px" height="40px" /></li>
+                <li><h3>友邦拉拉平台</h3></li>
+            </ul>
+        </div>
+        <div class="col-xs-7">
+            <ul class="list-inline text-center nvatab" id="header-menu" data-uri="/admin/menu/type">
+                <li class="col-xs-2 {{- return index?'':'active'; }}" data-toggle="tab" data-async="post" data-uri="/admin/menu/type?tid={{id}}&uid={{- return getItem('UID'); }}">
+                    <a href="#">{{name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-3">
+            
+        <div class="form-group" >  
+            <i class="iconfont icon-sousuo"></i>                                 
+            <input type="text" class="form-control"  placeholder="内容" />
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="contener-fluid header-space"></div>
+<script>
+DL({
+    dev : "on",
+    data : {oid :getItem("OID"),uid:getItem("UID")},  //请求时附加的参数
+    //cached : 1,
+    listId : "#header-menu"
+});
+
+/**
+ * 装载栏目数据
+ * */
+function type(results){
+    setDLData("#side-menu",results);
+    reset(); //重置列表
+    DL({
+        listId : "#side-menu",
+        use : 1,
+        cached : 1,
+        packet : results,
+        befor : reset,
+        after : bindevent
+    });
+}
+
+//默认加载首页下的栏目
+$(document).ready(function(){$("#header-menu").children().eq(0).children('a').click()})
+</script>

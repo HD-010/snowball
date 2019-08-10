@@ -29,10 +29,7 @@ function UserInforModel() {
         var _acount = this.service('Acount');
         
         _acount.querySysAcount(sqlStruct,function(error,results,fields){
-            var data = {
-                error  : 1,
-                message: "帐号或者用户名错误"
-            };
+            var data = {};
             if(error){
                 data = {
                     error  : 2,
@@ -41,15 +38,11 @@ function UserInforModel() {
                 callback(data);
                 return;
             }
-            if(!error && (Object.keys(results).length === 0)){
-                data = {error  : 1, message: "帐号或者用户名错误"};
-            }else{
-                results[0].loginTime = (new Date()).valueOf();
-                data = {error: 0,data : results};
-            }
+            data = (error || !results.length) ?
+            {error  : 1,uri: '/admin/sign/_in',data:[], message: "帐号或者用户名错误"} : 
+            {error: 0,data : results};
             
-            callback(data);
-            return;
+            return callback(data);
         });
     }
 
@@ -77,6 +70,23 @@ function UserInforModel() {
             results = results.length ? {error: 1, message: "当前Email已经注册过"} : {error: 0}
             callback(results);
             return;
+        });
+    }
+
+    /**
+     * 读取用户权限，保存在session 中
+     */
+    this.getPermit = function(params,callback){
+        var dataProcess = this.model('DataProcess');
+        this.CURL({
+            uri:"http://127.0.0.1:3005/permit/permit/p-list?uid=" + params.uid,
+            callback:(error,source)=>{
+                if(error || !source.data.length) source.message = '禁止访问！请联系管理员受予访问权';
+                source.permit = source.data;
+                delete source.data;
+                dataProcess.setUserInfo(source,'PERMIT',params.uid);
+                return callback(source);
+            }
         });
     }
 
@@ -228,9 +238,16 @@ function UserInforModel() {
      * 清除用户登录信息
      */
     this.clear = function(callback){
-        var key     = "U_" + this.sessionID();
+        var uid = this.POST('uid') || this.GET('uid');
+        uid = (typeof uid === 'number') ? uid : this.sessionID();
         var session = this.session();
+        //删除用户信息
+        var key     = "U_" + uid;
         delete session[key];
+        //删除权限表
+        key = "PERMIT_" + uid;
+        delete session[key]; 
+
         var data    = {
             error  : 0,
             message: "成功退出登录！",
@@ -478,7 +495,31 @@ function UserInforModel() {
         });
     }
     
+    /**
+     * 根据用户ID 查询用户信息
+     */
+    this.getUserById = function(data,callback){
+         //使用案例：实例化ShimService并调用成员方法查询
+         var struct = {
+            where  : [],
+            groupBy: [],
+            orderBy: [],
+            limit  : []
+        };
+        struct.limit.push(1);
 
+        //添加查询条件
+        if(this.GET('id')) struct.where.push(" id =" + this.GET('id')); 
+
+        //初始化构造查询对象
+        var sqlStruct = this.SqlStruct(struct);        
+        //调用服务类进行查询
+        var acount = this.service('Acount'); 
+        
+        acount.querySysAcount(sqlStruct,function(error,results,fields){
+            callback(results,fields)
+        });
+    }
 
 }
 

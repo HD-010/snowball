@@ -39,7 +39,7 @@ function ImgModel(){
         }
         conditions.where.push('a.id=' + that.POST('aid'));
 
-        this.DB().log().get(conditions,function(error,results,fields){
+        this.DB().get(conditions,function(error,results,fields){
             if(!error && results.length) results = recodeJsonParse(results,'imgurls');
             callback(error,results,fields);
         });
