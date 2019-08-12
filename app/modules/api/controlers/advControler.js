@@ -24,8 +24,11 @@ function advControler() {
             let fieldarr = ["id","link","title","content"];
             //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
             obj = getNewData(obj,fieldarr);
-            if(obj){
+            console.log(obj.length)
+            if(obj.length>1){
                 return that.sendJson(errocode,obj)
+            }else if(obj.length=1){
+                return that.sendJson(errocode,obj[0])
             }
         })
     }
