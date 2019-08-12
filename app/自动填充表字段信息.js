@@ -9,9 +9,9 @@
 	"default": 0,					//字段默认值
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
-	"limit": 4,						//限制图片上传的张数
+	"limit": 4,						//限制图片上传的张数，或限制address的层级数
 	"novaild": 1,					//如果为true，对字段不需要特殊字符过滤
-	"inputtype":"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader|nesmodal
+	"inputtype":"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader|nesmodal|address
 	"attr": " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
 }
 关于 输入框类型的说明：
@@ -23,6 +23,7 @@
  uediter:	
  uploader: 上传图片控件
  nesmodal: 是modal(模态框)与nestable 结相结和的输入对话框
+ address：联动地址模块
  
  
 
@@ -314,7 +315,7 @@
     "fieldget": 1,
     "fieldset": 1,
     "inputtype": "address",
-    "attr": "type=address"
+    "attr": ""
   }
 ]
 

@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:33
+ * @LastEditTime: 2019-08-10 17:05:06
+ * @LastEditors: Please set LastEditors
+ -->
 <%- //print_r(addoninfos) %>
 
 <%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
@@ -151,7 +158,7 @@
             return  `<tr>
                 <td>地址:</td>
                 <td>
-                    <div class="form-group col-xs-12 address-group" data-type=`+ echo(ctag) + `>
+                    <div class="form-group col-xs-12 address-group" data-type="`+ echo(ctag) + `" data-level="`+ addoninfos[index].limit +`">
                         <input type="hidden" data-name='address' name="` + addoninfos[index].field + `" `+ echo(addoninfos[index].attr) + ` value="">
                         <select class="form-control address address-province" style="width:25%;float:left" data-key="" data-val="" name="addr_province" placeholder="--省--" value=""></select>
                         <select class="form-control address hidden" style="width:25%;float:left" name="addr_city" placeholder="--市--" value=""></select>
