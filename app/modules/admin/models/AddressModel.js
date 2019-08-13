@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-02 16:02:34
+ * @LastEditTime: 2019-08-13 08:56:04
+ * @LastEditors: Please set LastEditors
+ */
 function AddressModel(){
     var that = this;
 

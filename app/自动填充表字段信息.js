@@ -5,7 +5,7 @@
 	"type": "int",					//数据表中数据类型
 	"maxlength": "10",				//字段最大长度
 	"isnull": true,					//数据表中是否允许为null
-	"islist": 1,					//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
+	"islist": 列表名称,				//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
 	"default": 0,					//字段默认值
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
@@ -595,4 +595,148 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
 	"inputtype":"input",			
 	"attr": " type=tell data-comment=如：这是注释" //视图中输入框属性
    }
+]
+
+youbang_addonperrecruit 表字自动填充字段配置信息:
+[
+{
+	"field": "classify",			
+	"itemname": "招聘类型",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": true,					
+	"islist": '招聘类型',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " data-comment=请选择招聘类型" 
+},
+{
+	"field": "title",			
+	"itemname": "招聘标题",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"input",			
+	"attr": " data-comment=请填写招聘信息" 
+},
+{
+	"field": "classsalary",			
+	"itemname": "薪资等级",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '薪资分类',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " data-comment=选择薪资所等级" 
+},
+{
+	"field": "classlabel",			
+	"itemname": "标签分类",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"input",			
+	"attr": " data-comment=选择俱有的特点" 
+},
+{
+	"field": "classlabel",			
+	"itemname": "招聘人数",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"input",			
+	"attr": " type=number data-comment=填写最多招聘多少人" 
+},
+{
+	"field": "classexperience",			
+	"itemname": "经验",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '经验分类',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " data-comment=填写最多招聘多少人" 
+},
+{
+	"field": "classeducation",			
+	"itemname": "最学历要求",			
+	"type": "varchar",				
+	"maxlength": "64",				
+	"isnull": false,					
+	"islist": '学历分类',					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"nesmodal",			
+	"attr": " data-comment=选择最低学历要求" 
+},
+{
+	"field": "description",			
+	"itemname": "职位描述",			
+	"type": "varchar",				
+	"maxlength": "255",				
+	"isnull": false,					
+	"islist": "",					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"uediter",			
+	"attr": " data-comment=填写职位要求" 
+},
+{
+	"field": "level",			
+	"itemname": "阅读要求",			
+	"type": "varchar",				
+	"maxlength": "255",				
+	"isnull": false,					
+	"islist": "",					
+	"default": 0,					
+	"fieldget": 1,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"input",			
+	"attr": " type=number data-comment=要求不低于等级的用户可以查看信息" 
+},
+{
+	"field": "mid",			
+	"itemname": "发布者id",			
+	"type": "int",				
+	"maxlength": "11",				
+	"isnull": false,					
+	"islist": "",					
+	"default": 0,					
+	"fieldget": 0,					
+	"fieldset": 1,					
+	"novaild": 0,					
+	"inputtype":"input",			
+	"attr": " type=number data-comment=要求不低于等级的用户可以查看信息" 
+}
 ]
