@@ -6,8 +6,9 @@ function advControler() {
     var that = this;
     /**
      * 查询轮播广告
-     * advtype 广告类型
-     * flag 广告位子
+     * 接口：/api/adv/adv/
+     * advtype 广告类型 参数值：1、图片广告，2、文字广告，3、轮播广告
+     * flag 广告位子 参数值:h、首页，c、推荐，r、热点，z、资讯
      */
     that.adv = function(){
         let prm = ["advtype","flag"];//必填字段

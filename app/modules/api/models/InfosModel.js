@@ -88,7 +88,7 @@ function InfosModel(){
 
     /**
      * 更改信息阅读量
-     * (1)接口:/api/infos/infosbyid
+     * (1)接口:/api/infos/onclick
             ②参数1：id
      */
     that.onclick = function(callback){
@@ -122,7 +122,7 @@ function InfosModel(){
             let areaid = that.POST("!areaid",{default:""});
             let classify = that.POST("classify",{default:""});
             let typeid = that.POST("typeid",{default:""});
-            let keywords = taht.POST("keywords",{default:""});//根据标题筛选
+            let keywords = that.POST("keywords",{default:""});//根据标题筛选
             //let componentid = that.POST("componentid");
             let sql = "select \
             ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname \

@@ -46,6 +46,7 @@ function GoodsModel(){
     /**
      * 获取二级 三级分类
      * 接口：/api/goods/goodstypeall
+     * 参数val：一级分类的val 如：classify_1564640192804
      */
     that.goodstypeall = function(callback){
         let data = [];
@@ -99,7 +100,6 @@ function GoodsModel(){
                 return callback(0,results);
             })
         });
-        
     }
     /**
      * 根据id获取商品规格
