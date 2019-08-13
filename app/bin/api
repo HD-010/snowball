@@ -1,8 +1,14 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-10 17:16:39
+ * @LastEditTime: 2019-08-12 08:44:06
+ * @LastEditors: Please set LastEditors
+ */
 /**
  * Module dependencies.
  */
 
-process.env.PORT = '3005';
 var app = require('../app');
 var wsApp = require('../e/ws');
 
@@ -14,6 +20,7 @@ var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
+
 var port = normalizePort(process.env.PORT || '3005');
 app.set('port', port);
 

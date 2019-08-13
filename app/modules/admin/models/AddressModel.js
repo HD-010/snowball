@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-02 16:02:34
+ * @LastEditTime: 2019-08-13 16:11:07
+ * @LastEditors: Please set LastEditors
+ */
 function AddressModel(){
     var that = this;
 
@@ -13,8 +20,7 @@ function AddressModel(){
             where: []
         }
         conditions.where.push("reid='"+ reid +"'");
-
-        that.DB().log().get(conditions,function(error,results){
+        that.DB().get(conditions,function(error,results){
             data.error = (error || !results.length) ? 1 : 0;
             data.names = results;
             data.name = queryresultKeyValue(results,'name'),
@@ -62,17 +68,15 @@ function AddressModel(){
             fields:[],
             where: []
         }
-        var recod = {type: type}
-        if(type == 'infos') {
-            recod.provinceid = addr[0];
-            recod.cityid = addr[1];
-            recod.countyid = addr[2];
-            recod.detail = addr[3];
-        }
+        var recod = {type: type};
+        if(addr[0]) recod.provinceid = addr[0];
+        if(addr[1]) recod.cityid = addr[1];
+        if(addr[2]) recod.countyid = addr[2];
+        if(addr[3]) recod.detail = addr[3];
+        
         if(!edt) recod.addtime = 'DATE_FORMAT(now(),"%Y-%m-%d %H:%i:%s")';
         if(edt) conditions.where.push('id=' + id);
         conditions.fields.push(recod);
-
         this.DB().set(conditions, function(error, results){
             data.error = error ? 1 : 0;
             if(error){

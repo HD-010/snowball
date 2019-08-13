@@ -1,7 +1,7 @@
 {
   "name": "node_snowball",
   "version": "1.0.0",
-  "description": "染云小店Ｈ５版",
+  "description": "友邦拉拉1.0",
   "main": "index.js",
   "dependencies": {
     "connect-redis": "^3.4.1",

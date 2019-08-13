@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:20
+ * @LastEditTime: 2019-08-13 16:26:17
+ * @LastEditors: Please set LastEditors
+ */
 /** ==============================请求与接口=========================== */
 /**
  * 该类配合autoLoad 类使用最佳
@@ -547,7 +554,6 @@ var addressPice = {
     iUrl: this.initUrl || "/admin/address/show", //查询多级id的字符串
     url: this.uri|| "/admin/address/names",         //查询reid对应的地址列表
     sUrl: this.saveUrl|| "/admin/address/save",  //保存组合后的地列表的id
-    level: 4,                                    //地址层级数
     params:{},
     loadData: function(item, params){
         params = params || {};
@@ -560,11 +566,12 @@ var addressPice = {
             data: data,
             befor: function(that){
                 var res = that.results;
-                if(res.error) app.notice(res);
+                if(res.error || !res.name.length) return me.addClass('hidden');
                 me.attr('data-val', res.name.join('-'));
                 me.attr('data-key', res.id.join('-'));
                 me.attr('data-def', res.id[0]);         //默认值
                 effect.setSelect('.address-group');
+                me.removeClass("hidden");
                 that.dev = 'exit';
             }
         });
@@ -575,7 +582,7 @@ var addressPice = {
         $(".address-group").each(function(i, item){
             var rq = 3;     //等待进程数
             var addrId = $(item).children('input').val();
-            addressPice.level = $(item).attr('data-level') || 4;
+            var level = $(item).attr('data-level');
             data = {
                 oid: getItem("OID"),
                 id: addrId,
@@ -595,6 +602,7 @@ var addressPice = {
                         lisEven();
                     });
                     
+                    if(level < 2) return $(item).children(".address-city").addClass('hidden');
                     data.reid = addr.provinceid;
                     //初始化市名称数据
                     $(item).children(".address-city").attr('data-def',addr.cityid);
@@ -603,7 +611,8 @@ var addressPice = {
                         effect.setSelect(".address-group");
                         lisEven();
                     });
-                    
+
+                    if(level < 3) $(item).children(".address-country").addClass('hidden');
                     $(item).children(".address-country").attr('data-def',addr.countyid);
                     //初始化县名称数据
                     data.reid = addr.cityid
@@ -612,6 +621,8 @@ var addressPice = {
                         effect.setSelect(".address-group");
                         lisEven();
                     });
+
+                    if(level < 4) $(item).children(".address-detail").addClass('hidden');
                     $(item).children(".address-detail").val(addr.detail);
                 }
                 
@@ -628,7 +639,6 @@ var addressPice = {
 
     load: function(){
         addressPice.params.type = $('.address-group').attr('data-type');
-        addressPice.level = $('.address-group').attr('data-level') || 4;
         //加载初始数据（省级）
         if(!this.params.initId) addressPice.loadData($('.address-group .address-province'));
         //触发change事件
@@ -651,9 +661,11 @@ var addressPice = {
         $('.address-group .address').change(function(){
             var me = $(this);
             var reid = me.val();
+            var level = me.parent().attr("data-level");  //控制地区层级数据
             me.attr('data-def',reid);
             var city = me.next();
             if(!me.nextAll("select").length) return;
+            if((me.prevAll("select").length) + 1 >= level) return;
             me.nextAll("select").each(function(i, opt){
                 $(opt).removeAttr('data-val').removeAttr('data-key');
                 if(addressPice.env === "loadEdit") $(opt).removeAttr('data-def');
@@ -661,30 +673,29 @@ var addressPice = {
             effect.setSelect('.address-group');
             var params = {reid: reid};
             addressPice.loadData(city, params);
-            city.removeClass("hidden");
         });
     },
 
     //失去焦点时保存数据
     focusout2save: function(){
-        $(".address-group").focusout(function(){
+        $(".address-group").unbind('focusout').on('focusout',function(){
             var me = $(this);
             var address = [];
             $(this).find("[name^='addr_']").each(function(i,opt){
-                if($(opt).val()) address.push($(opt).val());
+                if($(opt).val()) {address.push($(opt).val())}
             });
-            if(address.length < addressPice.level) return;
             var curVal = me.find('input[data-name="address"]').val();
             var data = {
                 'oid': getItem("OID"),
                 'addr': address.join('-'),
+                'type': me.attr('data-type'),
             }
-            data = mergeObj([data,addressPice.params]);
             if(curVal) {
                 data.edt = 1;
                 data.id = curVal;
             }
-            console.log("保存的地址信息：",data);
+            console.log("||",data);
+            if(address.length < me.attr('data-level')) return;
             $.post(addressPice.sUrl,data,function(res){
                 if(res.error) app.notice(res);
                 me.find('input[data-name="address"]').val(res.newId);
