@@ -145,7 +145,7 @@
     "fieldget": 0,
     "fieldset": 1,
     "inputtype": "input",
-    "attr": "type=datetime"
+    "attr": "type=date"
   },
   {
     "field": "flag",
@@ -171,7 +171,7 @@
     "fieldget": 0,
     "fieldset": 1,
     "inputtype": "input",
-    "attr": "type=datetime disabled"
+    "attr": "type=text disabled"
   },
   {
     "field": "scores",
@@ -222,8 +222,9 @@
     "default": "0",
     "fieldget": 1,
     "fieldset": 1,
-    "inputtype": "input",
-    "attr": "data-key=area1-area2-area3 data-val=城市1-城市2-城市3"
+	"limit": 2,
+    "inputtype": "address",
+    "attr": ""
   },
   {
     "field": "infotype",
@@ -263,7 +264,7 @@
     "fieldget": 1,
     "fieldset": 1,
     "inputtype": "input",
-    "attr": "type=datetime"
+    "attr": "type=date"
   },
   {
     "field": "tel",
@@ -605,7 +606,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": true,					
-	"islist": '招聘类型',					
+	"islist": "招聘类型",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -619,7 +620,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '',					
+	"islist": "",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -633,7 +634,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '薪资分类',					
+	"islist": "薪资分类",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -647,7 +648,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '',					
+	"islist": "",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -661,7 +662,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '',					
+	"islist": "",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -675,7 +676,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '经验分类',					
+	"islist": "经验分类",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					
@@ -689,7 +690,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
 	"type": "varchar",				
 	"maxlength": "64",				
 	"isnull": false,					
-	"islist": '学历分类',					
+	"islist": "学历分类",					
 	"default": 0,					
 	"fieldget": 1,					
 	"fieldset": 1,					

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-13 09:24:21
+ * @LastEditTime: 2019-08-13 09:59:55
  * @LastEditors: Please set LastEditors
  -->
 <!-- admin/left/left_sidebar_0.html -->
@@ -132,9 +132,11 @@
             $(".menu-list a").unbind('click').on("click",function(e){
                 var curlist = $(this).siblings(".list-child");
                 curlist.toggle();
-                if(curlist.css('display') == 'none') return curlist.children().eq(0).nextAll().remove();
+                if(curlist.css('display') == 'none') {
+                    e.preventDefault();
+                    return curlist.children().eq(0).nextAll().remove();
+                }
                 loadChildList(curlist);
-                if(curlist.length) return;
                 var tartget = $(this).attr('target');
                 app.asyncProcess(e, this, function(res) {
                     //调用用户义的与操作名称同名的回调函数
