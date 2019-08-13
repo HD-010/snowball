@@ -15,9 +15,11 @@ function InfosModel(){
         type.getclass("infos",function(res){
             if(!res) return callback(1,["no data"]);
             let flag = that.POST("!flag");
-            //let componentid = that.POST("componentid");
+            let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
+            if(isNaN(userid)) return callback(1,["userid有误"])
+
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname \
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
@@ -25,6 +27,7 @@ function InfosModel(){
             LEFT join \
             youbang_sys_area as ae \
             on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
+            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
             ORDER BY ar.addtime desc";
             that.DB().query(sql,function(error,results,fields){
@@ -33,6 +36,68 @@ function InfosModel(){
                         results[i].classify = treeValue(res,"val",results[i].classify,'name');                   
                     }
                     return callback(0,results);
+                }else{
+                    return callback(1,["no data"]);
+                }         
+            });
+        });       
+        
+    }
+
+
+
+
+
+     /**
+     * 获取首页咨询信息列表
+     * (1)接口:/api/infos/infoscon
+            ②参数2：flag  
+                1)值：h 代表“首页” c代表推荐 'h,c' 代表首页推荐，z代表资讯
+     */
+    that.infoscon = function(callback){
+        let type = that.model("Type");
+        type.getclass("infos",function(res){
+            if(!res) return callback(1,["no data"]);
+            let flag = that.POST("!flag");
+            let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
+            if(isNaN(userid)) return callback(1,["userid有误"])
+
+            let sql = "select \
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            from youbang_archives as ar \
+            left join \
+            youbang_addoninfos as i \
+            on ar.id = i.aid \
+            LEFT join \
+            youbang_sys_area as ae \
+            on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
+            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
+            where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
+            ORDER BY ar.addtime desc";
+            that.DB().query(sql,function(error,results,fields){
+                let flag = 0;
+                if(results.length){
+                    let user = that.model("User");  //获取发布此信息的用户头像
+                    for(let i in results){                
+                        results[i].classify = treeValue(res,"val",results[i].classify,'name');//获取分类
+
+                        //获取头像
+                        user.getUserType(results[i].mid,function(res){
+                            let sql1 = "select a.*, o.* from \
+                            youbang_sys_acount as a\
+                            left  join \
+                            youbang_sys_acount_"+res+" as o on o.id = a.id \
+                            where a.id="+results[i].mid;
+                            that.DB().query(sql1,function(e,r,f){
+                                let logo = r[0].logo ? r[0].logo : r[0].face;
+                                results[i].icon = logo;                               
+                                flag ++;
+                                if(flag == results.length){                                  
+                                     return callback(0,results);
+                                }
+                            })
+                        })                   
+                    } 
                 }else{
                     return callback(1,["no data"]);
                 }         
@@ -119,13 +184,15 @@ function InfosModel(){
         let type = that.model("Type");
         type.getclass("infos",function(res){
             if(!res) return callback(1,["no data"]);
+            let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
+            if(isNaN(userid)) return callback(1,["userid有误"])
             let areaid = that.POST("!areaid",{default:""});
             let classify = that.POST("classify",{default:""});
             let typeid = that.POST("typeid",{default:""});
             let keywords = that.POST("keywords",{default:""});//根据标题筛选
             //let componentid = that.POST("componentid");
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname \
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
@@ -133,6 +200,7 @@ function InfosModel(){
             LEFT join \
             youbang_sys_area as ae \
             on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
+            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and i.areaid LIKE '%"+areaid+"%' and ar.classify like '%"+classify+"%' and ar.typeid like '%"+typeid+"%' and ar.title like '%"+keywords+"%'\
             ORDER BY ar.addtime desc";
             that.DB().query(sql,function(error,results,fields){

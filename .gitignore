@@ -2,3 +2,4 @@ app/public/uploads
 app/configs
 app/e
 dump.rdb
+node_modules

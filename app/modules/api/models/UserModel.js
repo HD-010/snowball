@@ -27,6 +27,18 @@ function UserModel(){
         });
     }
 
+    /**
+     * 获取用户类型
+     */
+    that.getUserType = function(userid,callback){
+        if(isNaN(userid)) return callback({errocode:""});
+        let sql = "select acountType from youbang_sys_acount where id = "+userid;
+        that.DB().query(sql,function(error,results,fields){
+           if(results[0].acountType) return callback(results[0].acountType);
+           return callback({errocode:""});
+        });
+    }
+
 
     /**
      * 用户地址添加

@@ -3,7 +3,7 @@ function favoriteControler(){
     var that = this;
     //点击收藏
     that.favorite = function(){
-        let prm = ["id","uid","componentsid"];//必填字段
+        let prm = ["id","userid","componentsid"];//必填字段
         let obj = that.checkParm(prm);
         if (obj.errcode == 1) {
             that.sendJson(1, obj.errlist);
