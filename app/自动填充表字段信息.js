@@ -232,11 +232,11 @@
     "type": "stepselect",
     "maxlength": "250",
     "isnull": "true",
-    "islist": "",
+    "islist": "信息类型",
     "default": "0",
     "fieldget": 1,
     "fieldset": 1,
-    "inputtype": "select",
+    "inputtype": "nesmodal",
     "attr": ""
   },
   {
@@ -315,6 +315,7 @@
     "default": "",
     "fieldget": 1,
     "fieldset": 1,
+	"limit": 4,
     "inputtype": "address",
     "attr": ""
   }
