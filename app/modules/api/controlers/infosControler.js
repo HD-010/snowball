@@ -102,6 +102,12 @@ function infosControler(){
      * 筛选获取分类信息
      */
     that.getInfosAll = function(){
+        let prm = ["page"];//必填字段
+        let obj = that.checkParm(prm);
+        if (obj.errcode == 1) {
+            that.sendJson(1, obj.errlist);
+            return;
+        }
         let Infos = that.model("Infos");
         Infos.getInfosAll((errocode,obj)=>{
             if(errocode) return that.sendJson(errocode,obj);

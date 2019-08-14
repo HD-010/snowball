@@ -10,32 +10,36 @@ function InfosModel(){
             ②参数2：flag  
                 1)值：h 代表“首页” c代表推荐 'h,c' 代表首页推荐，z代表资讯
      */
-    that.infos = function(callback){
+    that.infos = function(callback){       
         let type = that.model("Type");
         type.getclass("infos",function(res){
             if(!res) return callback(1,["no data"]);
             let flag = that.POST("!flag");
             let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
-            if(isNaN(userid)) return callback(1,["userid有误"])
-
+            if(isNaN(userid)) return callback(1,["userid有误"]);
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
             on ar.id = i.aid \
-            LEFT join \
-            youbang_sys_area as ae \
-            on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
             LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
             ORDER BY ar.addtime desc";
+            let tag = 0;
             that.DB().query(sql,function(error,results,fields){
                 if(results.length){
+                    let area = that.model('Area');
                     for(let i in results){                
-                        results[i].classify = treeValue(res,"val",results[i].classify,'name');                   
+                        results[i].classify = treeValue(res,"val",results[i].classify,'name');
+                        area.getAdress(results[i].address,(res)=>{
+                            results[i].areaname = res[0].provincename+res[0].cityname+res[0].countyname;
+                            tag ++;
+                            if(tag == results.length) return callback(0,results);
+                        });         
                     }
-                    return callback(0,results);
+                   
+                    
                 }else{
                     return callback(1,["no data"]);
                 }         
@@ -63,14 +67,11 @@ function InfosModel(){
             if(isNaN(userid)) return callback(1,["userid有误"])
 
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
             on ar.id = i.aid \
-            LEFT join \
-            youbang_sys_area as ae \
-            on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
             LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
             ORDER BY ar.addtime desc";
@@ -80,7 +81,6 @@ function InfosModel(){
                     let user = that.model("User");  //获取发布此信息的用户头像
                     for(let i in results){                
                         results[i].classify = treeValue(res,"val",results[i].classify,'name');//获取分类
-
                         //获取头像
                         user.getUserType(results[i].mid,function(res){
                             let sql1 = "select a.*, o.* from \
@@ -121,27 +121,26 @@ function InfosModel(){
                 return;
             }
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname \
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.* \
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
             on ar.id = i.aid \
-            LEFT join \
-            youbang_sys_area as ae \
-            on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
             where i.componentid = -8 and ar.id = "+id+" \
             ORDER BY ar.addtime desc";
             that.DB().query(sql,function(error,results,fields){
-                if(results.length){
-                    for(let i in results){                
-                        results[i].classify = treeValue(res,"val",results[i].classify,'name');                   
-                    }
+                if(results.length){                               
+                    results[0].classify = treeValue(res,"val",results[0].classify,'name');
                     //1.获取用户信息
                     let uid = that.POST("uid");
                     //获取token
                     let token = that.POST("token");
-                    that.isvip(uid,token,results,"levelid",(error,res)=>{
-                        return callback(error,res);
+                    that.isvip(uid,token,results,"levelid",(error,r)=>{
+                        let area = that.model('Area');
+                        area.getAdress(r[0].address,(res)=>{
+                            r[0].areaname = res[0].provincename+res[0].cityname+res[0].countyname;
+                            return callback(error,r);
+                        });       
                     });
                 }else{
                     return callback(1,["no data"]);
@@ -186,29 +185,38 @@ function InfosModel(){
             if(!res) return callback(1,["no data"]);
             let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
             if(isNaN(userid)) return callback(1,["userid有误"])
-            let areaid = that.POST("!areaid",{default:""});
+            let address = that.POST("address",{default:""});
             let classify = that.POST("classify",{default:""});
             let typeid = that.POST("typeid",{default:""});
             let keywords = that.POST("keywords",{default:""});//根据标题筛选
+            let page = that.POST("page",{default:0});//页码
+            let limi = (page-1)*10;
+            if(isNaN(page)) callback(1,["page有误"]);
             //let componentid = that.POST("componentid");
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, ae.name as areaname, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
             on ar.id = i.aid \
-            LEFT join \
-            youbang_sys_area as ae \
-            on ae.id = SUBSTRING_INDEX(i.areaid,'_',-1) \
             LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
-            where i.componentid = -8 and i.areaid LIKE '%"+areaid+"%' and ar.classify like '%"+classify+"%' and ar.typeid like '%"+typeid+"%' and ar.title like '%"+keywords+"%'\
-            ORDER BY ar.addtime desc";
+            where i.componentid = -8 and i.address LIKE '%"+address+"%' and ar.classify like '%"+classify+"%' and ar.typeid like '%"+typeid+"%' and ar.title like '%"+keywords+"%'\
+            ORDER BY ar.addtime desc \
+            limit "+limi+",10";
+            let tag = 0;
             that.DB().query(sql,function(error,results,fields){
+                let area = that.model('Area');               
                 if(results.length){
                     for(let i in results){                
-                        results[i].classify = treeValue(res,"val",results[i].classify,'name');                   
+                        results[i].classify = treeValue(res,"val",results[i].classify,'name');
+                        area.getAdress(results[i].address,(res)=>{
+                            results[i].areaname = res[0].provincename+res[0].cityname+res[0].countyname;
+                            tag++;
+                            if(tag==results.length){
+                                return callback(0,results);
+                            }
+                        });                          
                     }
-                    return callback(0,results);
                 }else{
                     return callback(1,["no data"]);
                 }         

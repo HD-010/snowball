@@ -14,24 +14,29 @@ function JobModel(){
                 if(data) return callback(0,data);
                 let gender = that.POST('gender',{default:""});//根据性别筛选
                 let job_experience = that.POST('job_experience',{default:""});//根据经验筛选
-                let sql = "SELECT	ar.*,	j.*,	a.NAME AS provincename,	b.NAME AS cityename,m.onlien,c.NAME AS countyname \
+                let sql = "SELECT	ar.*,m.*,j.*\
                 FROM	\
                 youbang_archives AS ar	LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid	\
-                LEFT JOIN youbang_sys_area AS a ON a.id = j.provinceid\
-                    LEFT JOIN youbang_sys_area AS b ON b.id = j.cityid	\
-                    LEFT JOIN youbang_sys_area AS c ON c.id = j.countyid \
                     RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid\
                     where componentid = (select id from youbang_components where nid = '"+nid+"') and j.gender like '%"+gender+"%' and j.job_experience like '%"+job_experience+"%'";
-                that.DB().log().query(sql,function(error,results,fields){
+                that.DB().query(sql,function(error,results,fields){
                     if(!results.length) return callback(1,['no date']);
+                    let area = that.model('Area');
+                    let tag = 0;
                     for(let i in results){                
                         results[i].classify = treeValue(res,"val",results[i].classify,'name');
                         results[i].job_education = treeValue(res,"val",results[i].job_education,'name');
                         results[i].job_experience = treeValue(res,"val",results[i].job_experience,'name');
-                        results[i].job_salary = treeValue(res,"val",results[i].job_salary,'name');                   
+                        results[i].job_salary = treeValue(res,"val",results[i].job_salary,'name'); 
+                        area.getAdress(results[i].address,(res)=>{
+                            results[i].areaname = res[0].provincename+res[0].cityname+res[0].countyname;
+                            tag ++;
+                            if(tag == results.length){
+                                that.DB('Redis').set(nid+"_job",results);
+                                return callback(0,results);
+                            }
+                        });                         
                     }                    
-                    that.DB('Redis').set(nid+"_job");
-                    return callback(0,results);
                 });
             })
         });
@@ -71,12 +76,9 @@ function JobModel(){
             let nid = "jobwanted"; //查询标识 
             that.DB('Redis').get(jid+"_job",(error,data)=>{
                 if(data) return callback(0,data);
-                let sql = "SELECT	ar.*,	j.*,	a.NAME AS provincename,	b.NAME AS cityename,m.onlien,c.NAME AS countyname \
+                let sql = "SELECT	ar.*,m.*,j.*, \
                 FROM	\
                 youbang_archives AS ar	LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid	\
-                LEFT JOIN youbang_sys_area AS a ON a.id = j.provinceid\
-                    LEFT JOIN youbang_sys_area AS b ON b.id = j.cityid	\
-                    LEFT JOIN youbang_sys_area AS c ON c.id = j.countyid \
                     RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid\
                     where componentid = (select id from youbang_components where nid = '"+nid+"') and j.aid = "+jid;
                 that.DB().query(sql,function(error,results,fields){
