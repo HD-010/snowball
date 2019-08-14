@@ -65,7 +65,7 @@ function goodsControler(){
              let fieldarr = [];
              //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
              res = getNewData(res,fieldarr,false);
-            return that.sendJson(error,res)
+            return that.sendJson(error,res[0])
         });
     }
 

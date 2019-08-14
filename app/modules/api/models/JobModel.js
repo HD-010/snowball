@@ -22,7 +22,7 @@ function JobModel(){
                     LEFT JOIN youbang_sys_area AS c ON c.id = j.countyid \
                     RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid\
                     where componentid = (select id from youbang_components where nid = '"+nid+"') and j.gender like '%"+gender+"%' and j.job_experience like '%"+job_experience+"%'";
-                that.DB().query(sql,function(error,results,fields){
+                that.DB().log().query(sql,function(error,results,fields){
                     if(!results.length) return callback(1,['no date']);
                     for(let i in results){                
                         results[i].classify = treeValue(res,"val",results[i].classify,'name');
