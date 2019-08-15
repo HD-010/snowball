@@ -72,9 +72,8 @@ function JobModel(){
             let jid = that.POST('id');; //查询id
             if(isNaN(jid)) return callback(1,['id参数有误！']);
             let nid = "jobwanted"; //查询标识          
-            let sql = "SELECT	ar.*,m.*,j.* FROM youbang_archives AS ar LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid where j.componentid = (select id from youbang_components where nid = '"+nid+"') and j.aid = "+jid;
-            that.DB().log().query(sql,function(error,results,fields){
-                console.log("------------------------",results);
+            let sql = "SELECT	ar.*,m.*,j.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,DATE_FORMAT(j.updatetiem,'%Y-%m-%d') updatetiem FROM youbang_archives AS ar LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid where j.componentid = (select id from youbang_components where nid = '"+nid+"') and j.aid = "+jid;
+            that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                 let area = that.model('Area');
                 let tag = 0;

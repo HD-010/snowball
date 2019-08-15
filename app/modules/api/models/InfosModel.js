@@ -18,7 +18,7 @@ function InfosModel(){
             let userid = that.POST("userid",{default:0});//获取用户id 去判断有哪些信息是被用户关注过的
             if(isNaN(userid)) return callback(1,["userid有误"]);
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
@@ -67,7 +67,7 @@ function InfosModel(){
             if(isNaN(userid)) return callback(1,["userid有误"])
 
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
@@ -121,7 +121,7 @@ function InfosModel(){
                 return;
             }
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.* \
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.* \
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
@@ -194,7 +194,7 @@ function InfosModel(){
             if(isNaN(page)) callback(1,["page有误"]);
             //let componentid = that.POST("componentid");
             let sql = "select \
-            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d %H:%i:%s') addtime,i.*,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
+            ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
             from youbang_archives as ar \
             left join \
             youbang_addoninfos as i \
