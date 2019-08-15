@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-13 15:44:36
+ * @LastEditTime: 2019-08-14 17:46:37
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -171,7 +171,8 @@
         }
     }
 %>
-
+<!-- 主表控件变量 -->
+<% var typeNme,effect,listName;%>
 <style>
 .add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
@@ -257,6 +258,7 @@
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
+                <input type="hidden" name='mid' value="<%= echo(mid)%>" />
                 
                 <!-- tab-1的表单是固定的 -->
                 <table class="table" id="tab-1">
@@ -324,8 +326,9 @@
 
                         <tr>
                             <% 
-                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
-                            var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
+                            effect = array2value(addoninfos, 'field', 'classify', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
+                            listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
                             %>
                             <td><%= typeName; %>：</td>
                             <td>
@@ -387,7 +390,11 @@
                         </tr>
 
                         <tr>
-                            <td>缩略图：</td>
+                            <% 
+                                effect = array2value(addoninfos, 'field', 'litpic', 'effect');
+                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '所属分类'; 
+                            %>
+                            <td><%= typeName; %>：</td>
                             <td class="pic-box" data-limit="1" data-field='litpic'>
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">

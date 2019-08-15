@@ -2,10 +2,11 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-13 15:40:55
+ * @LastEditTime: 2019-08-15 17:23:39
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(data[0]) %>
+<%- //print_r(addoninfos) %>
 <%
     var formCode = {
         //uediter选项
@@ -36,8 +37,8 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
-                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value="{{' + addoninfos[index].field + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
+                            '<label class="btn btn-outline btn-success btn-checkbox dim">'+
+                                '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' data-def="{{' + addoninfos[index].field + '}}" value="{{' + addoninfos[index].field + '}}" /> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
                     '</td></tr>';     
@@ -50,7 +51,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
+                            '<label class="btn btn-outline btn-success btn-radio dim">'+
                                 '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' data-stat="{{' + addoninfos[index].field + '}}" value=""> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
@@ -269,6 +270,8 @@
                 <input type="hidden" name='id' value="{{id}}" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
+                <input type="hidden" name='mid' value="<%= echo(mid)%>" />
+
                 <input type="hidden" name='addtime' value="{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}" />
                 
                 <!-- tab-1的表单是固定的 -->
@@ -373,9 +376,9 @@
                         <tr>
                             <td>状态：</td>
                             <td>
-                                <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
-                                    <label class="btn btn-outline btn-success dim codeSwitch">
-                                        <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst" data-def={{state}}><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+                                    <label class="btn btn-outline btn-success dim codeSwitch btn-radio">
+                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state" data-def={{state}}><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
                                     </label>
                                 </div>
                             </td>              
@@ -937,19 +940,9 @@
     effect.setDefVal(".add-infor");     //设置页面默认值
     effect.setComments(".add-infor");
     effect.setCheckbox(".auto-checkbox");
-    effect.setCheckbox(".checkbox-content-state");
-    effect.setDefVal(".checkbox-content-state");
+    effect.setRadio(".radio-content-state");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
-    //补充效果
-    $(".auto-checkbox").find('input').each(function(index,item){
-        var keys = $(item).attr('data-key') ? $(item).attr('data-key').split('-'): [];
-        var val = $(item).val();
-        if(keys.indexOf(val) + 1) {
-            $(item).prop("checked",true);
-            $(item).parent().addClass('active');
-        }
-    });
 
     function save(res){
         app.notice(res);
