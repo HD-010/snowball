@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-15 17:38:47
+ * @LastEditTime: 2019-08-15 17:42:33
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -40,7 +40,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
+                            '<label class="btn btn-outline btn-success btn-checkbox dim">'+
                                 '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+

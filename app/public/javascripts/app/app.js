@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-15 17:17:55
+ * @LastEditTime: 2019-08-15 17:41:11
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -794,7 +794,6 @@ var effect = {
             var itemAttr = $(item).find("input[type='checkbox']");
             var key = itemAttr.attr('data-key').split('-');
             var val = itemAttr.attr('data-val').split('-');
-            console.log("==================",itemAttr.attr('data-def'));
             var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
             var htmlCode = item.outerHTML;
             var temCode = '';
