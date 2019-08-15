@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-14 17:46:37
+ * @LastEditTime: 2019-08-15 17:38:47
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -54,7 +54,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
+                            '<label class="btn btn-outline btn-success btn-radio dim">'+
                                 '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
@@ -361,9 +361,9 @@
                         <tr>
                             <td>状态：</td>
                             <td>
-                                <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
-                                    <label class="btn btn-outline btn-success dim codeSwitch">
-                                        <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+                                    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
                                     </label>
                                 </div>
                             </td>              
@@ -907,7 +907,7 @@
     effect.setDefVal(".add-infor");     //设置页面默认值
     effect.setComments(".add-infor");
     effect.setCheckbox(".auto-checkbox");
-    effect.setCheckbox(".checkbox-content-state");
+    effect.setRadio(".radio-content-state");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
     
