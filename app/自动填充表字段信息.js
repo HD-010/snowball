@@ -7,7 +7,7 @@
 	"isnull": true,					//数据表中是否允许为null
 	"islist": 列表名称,				//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
 	"default": 0,					//字段默认值
-	"effect": "",					//作用于表，可选值main(itemnamet和islist项同时作用于主表）|""(默认附加表)
+	"effect": "",					//作用于表，可选值main(itemnamet和islist项同时作用于主表）|""(默认附加表) | "tab_表名"（各项属性适用于对应名称的表）
 	"fieldget": 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
 	"fieldset": 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
 	"limit": 4,						//限制图片上传的张数，或限制address的层级数
@@ -621,6 +621,107 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "limit": 3,
         "inputtype": "address",
         "attr": " data-comment=如：这是注释"
+    },
+	{
+        "field": "company",
+        "itemname": "公司名称",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "32",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "fieldset": 1,
+        "novaild": 0,
+        "inputtype": "input",
+        "attr": " data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "position",
+        "itemname": "职位",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "32",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "fieldset": 1,
+        "novaild": 0,
+        "inputtype": "input",
+        "attr": " data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "salary",
+        "itemname": "薪资",
+        "type": "float",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "11",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "novaild": 0,
+        "inputtype": "input",
+        "attr": " type=number data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "jobtime",
+        "itemname": "在职时间",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "36",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "novaild": 0,
+        "inputtype": "input",
+        "attr": " type=number data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "duty",
+        "itemname": "工作职责",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "11",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "novaild": 0,
+        "inputtype": "input",
+        "attr": " type=number data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "city",
+        "itemname": "工作地点",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "11",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "novaild": 0,
+		"limit": 4,
+        "inputtype": "address",
+        "attr": " type=number data-comment=如：填写任职的公司名称"
+    },
+	{
+        "field": "brightspot",
+        "itemname": "我的亮点",
+        "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
+        "maxlength": "255",
+        "isnull": false,
+        "islist": "",
+        "default": 0,
+        "fieldget": 1,
+        "novaild": 0,
+		"inputtype": "textarea",
+        "attr": " type=number data-comment=如：填写任职的公司名称"
     }
 ]
 youbang_addonperrecruit 表字自动填充字段配置信息:
@@ -700,6 +801,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
         "field": "classexperience",
         "itemname": "经验",
         "type": "varchar",
+		"effect": "tab_youbang_jobexperience",
         "maxlength": "64",
         "isnull": false,
         "islist": "",
@@ -707,7 +809,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
         "fieldget": 1,
         "fieldset": 1,
         "novaild": 0,
-        "inputtype": "freemodal",
+        "inputtype": "nesmodal",
         "attr": " data-comment=填写最多招聘多少人"
     },
     {
