@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-15 17:42:33
+ * @LastEditTime: 2019-08-16 08:46:48
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -518,6 +518,7 @@
         var types = <%- error ? false : JSON.stringify(types) %> || [];
         var classify = <%- results ? results : 0 %> || [];
         var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        console.log("_+_+_+_+_::",mergedList);
         var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
         effect.nestable(optData, error, '#modal-body');
         $("#normalModal").find(".dd").nestable('collapseAll');
