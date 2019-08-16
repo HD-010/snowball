@@ -15,7 +15,7 @@ function jobControler(){
         job.getJobAll((errocode,results)=>{          
             if(errocode) return that.sendJson(errocode,results);
             //要返回的字段
-            let fieldarr = ['id','uname','age','job_education','job_experience','classify','job_salary','gender','litpic','provincename','cityename','countyname','onlien'];
+            let fieldarr = ['id','uname','age','job_education','job_experience','classify','job_salary','gender','litpic','areaname','onlien'];
             //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
             results = getNewData(results,fieldarr);
             if(results.length) return that.sendJson(errocode,results);
@@ -53,7 +53,7 @@ function jobControler(){
         job.getJobById((errocode,results)=>{          
             if(errocode) return that.sendJson(errocode,results);
             //要返回的字段
-            let fieldarr = ['id','uname','age','job_education','job_experience','updatetiem','addtime','delivery','browse','classify','job_salary','provincename','cityename','countyname','phone','level'];
+            let fieldarr = ['id','uname','age','job_education','job_experience','updatetiem','addtime','delivery','click','classify','job_salary','areaname','phone','level'];
             //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
             results = getNewData(results,fieldarr);
             if(results.length) return that.sendJson(errocode,results[0]);

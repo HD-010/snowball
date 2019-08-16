@@ -15,7 +15,7 @@ function FavoriteModel(){
        
         //获取参数
         let id  = that.POST("id");
-        let uid = that.POST("uid");
+        let uid = that.POST("userid");
         let componentsid = that.POST('componentsid');
         if(isNaN(id)) return callback(1,["id参数有误"]);
         if(isNaN(uid)) return callback(1,["uid参数有误"]);

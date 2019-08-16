@@ -76,8 +76,19 @@ function GoodsModel(){
             let sql = "select ar.*,c.*  from youbang_addoncommodities as c left JOIN youbang_archives as ar on c.aid = ar.id where ar.classify='"+val+"' and  ar.component = (select id from youbang_components where nid = 'commodities')";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
-                that.DB('Redis').set(val+"_goods",results);
-                return callback(0,results);
+                //获取地址信息
+                let area = that.model('Area');
+                let tag=0;
+                for(let i in results){                  
+                    area.getAdress(results[i].area,(res)=>{
+                        results[i].area = res[0].provincename+res[0].cityname+res[0].countyname;
+                        tag++;
+                        if(tag==results.length){                            
+                            that.DB('Redis').set(val+"_goods",results);
+                            return callback(0,results);
+                        }
+                    });       
+                }
             })
         });
     }
@@ -96,8 +107,13 @@ function GoodsModel(){
             let sql = "select ar.*,c.*  from youbang_addoncommodities as c left JOIN youbang_archives as ar on c.aid = ar.id where c.aid = "+id+" and ar.component = (select id from youbang_components where nid = 'commodities')";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
-                that.DB('Redis').set(id+"_goods",results);
-                return callback(0,results);
+                  //获取地址信息
+                  let area = that.model('Area');
+                  area.getAdress(results[0].area,(res)=>{
+                    results[0].area = res[0].provincename+res[0].cityname+res[0].countyname;
+                    that.DB('Redis').set(id+"_goods",results);
+                    return callback(0,results);
+                });       
             })
         });
     }
