@@ -40,9 +40,9 @@ function goodsControler(){
         }
         let goods = that.model("Goods");
         goods.getgoodsbyclass(function(error,res){
-            if(error) return that.sendJson(error,obj);
+            if(error) return that.sendJson(error,res);            
              //要返回的字段
-             let fieldarr = [];
+             let fieldarr = ['id','title','shorttitle','price','selled','area','cost','litpic'];
              //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
              res = getNewData(res,fieldarr);
             return that.sendJson(error,res)
@@ -65,7 +65,7 @@ function goodsControler(){
              let fieldarr = [];
              //重新组装数据   为true 代表多个对象返回，为false 代表是一个对象返回,说面渲染页面不需要循环
              res = getNewData(res,fieldarr,false);
-            return that.sendJson(error,res)
+            return that.sendJson(error,res[0])
         });
     }
 
