@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-16 09:41:48
+ * @LastEditTime: 2019-08-16 17:47:23
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -167,7 +167,6 @@ var app = {
             return false;
         }
         var method = $(obj).attr('method').toLowerCase($(obj).attr('method'));
-        console.log("==-=-=-",method);
         if ((method != 'post') && (method != 'get')) {
             alert('请填写method属性的正确值:');
             return false;
@@ -694,7 +693,6 @@ var addressPice = {
                 data.edt = 1;
                 data.id = curVal;
             }
-            console.log("||",data);
             if(address.length < me.attr('data-level')) return;
             $.post(addressPice.sUrl,data,function(res){
                 if(res.error) app.notice(res);
@@ -851,7 +849,6 @@ var effect = {
             $('[data-toggle="buttons"] .btn-radio').unbind('click').on('click',function(e){
                 var curCheckbox = $(this).find('[type="radio"]');
                 $(this).parent().siblings().each(function(i,o){ 
-                    console.log("*************::", $(o).find('.btn-radio')[0]);
                     $(o).find('.btn-radio').removeClass('active');
                     $(o).find('[type="radio"]').removeAttr('checked');
                 })
@@ -1220,7 +1217,6 @@ function treeValue (array,key1,value,key2,all) {
 				temObj = values;
 			}else{
 				if((k == key1) && (item[k] == value) && !all){
-                    console.log(item)
 					temObj = key2 ? item[key2] : item;
 					break;
 				}
