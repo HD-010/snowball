@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-16 08:46:48
+ * @LastEditTime: 2019-08-16 10:13:26
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -392,7 +392,7 @@
                         <tr>
                             <% 
                                 effect = array2value(addoninfos, 'field', 'litpic', 'effect');
-                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '所属分类'; 
+                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
                             %>
                             <td><%= typeName; %>：</td>
                             <td class="pic-box" data-limit="1" data-field='litpic'>
@@ -430,7 +430,7 @@
                     <tbody>
                         <% 
                         for(var i in addoninfos){ 
-                            if(!addoninfos[i].fieldget) continue;
+                            if(!addoninfos[i].fieldget || (addoninfos[i].effect && (addoninfos[i].effect != 'addon'))) continue;
                         %>
                             <%- formCode.get(i); %>
                         <% } %>

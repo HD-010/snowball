@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-15 17:41:11
+ * @LastEditTime: 2019-08-16 09:41:48
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -1021,7 +1021,7 @@ var effect = {
          * 组织项目结构
          **/
         function loadItem(res,farther){
-            res = res || results;
+            res = res || results || [];
             res.forEach(function(item,index){
                 var code = $(initCode);
                 code.attr('data-val',item.val);
