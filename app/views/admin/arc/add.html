@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-13 15:44:36
+ * @LastEditTime: 2019-08-16 10:13:26
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -40,7 +40,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-checkbox" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
+                            '<label class="btn btn-outline btn-success btn-checkbox dim">'+
                                 '<input type="checkbox" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
@@ -54,7 +54,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' + 
                         '<div class="btn-group auto-radio" data-toggle="buttons" style="margin-left:15px;">'+
-                            '<label class="btn btn-outline btn-success dim">'+
+                            '<label class="btn btn-outline btn-success btn-radio dim">'+
                                 '<input type="radio" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value=" "> <i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->'+
                             '</label>'+
                         '</div>'+
@@ -171,7 +171,8 @@
         }
     }
 %>
-
+<!-- 主表控件变量 -->
+<% var typeNme,effect,listName;%>
 <style>
 .add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
@@ -257,6 +258,7 @@
                 <input type="hidden" name='tag' value="add" />
                 <input type="hidden" name='parenttypeid2' value="" />
                 <input type="hidden" name='componentid' value="-8" />
+                <input type="hidden" name='mid' value="<%= echo(mid)%>" />
                 
                 <!-- tab-1的表单是固定的 -->
                 <table class="table" id="tab-1">
@@ -324,8 +326,9 @@
 
                         <tr>
                             <% 
-                            var typeName = array2value(addoninfos, 'field', 'classify', 'itemname') || '所属分类'; 
-                            var listName = array2value(addoninfos, 'field', 'classify', 'islist') || '所属分类'; 
+                            effect = array2value(addoninfos, 'field', 'classify', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
+                            listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
                             %>
                             <td><%= typeName; %>：</td>
                             <td>
@@ -358,9 +361,9 @@
                         <tr>
                             <td>状态：</td>
                             <td>
-                                <div class="btn-group checkbox-content-state" data-toggle="buttons" style="margin-left:10px;">
-                                    <label class="btn btn-outline btn-success dim codeSwitch">
-                                        <input type="checkbox" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="cst"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+                                    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
                                     </label>
                                 </div>
                             </td>              
@@ -387,7 +390,11 @@
                         </tr>
 
                         <tr>
-                            <td>缩略图：</td>
+                            <% 
+                                effect = array2value(addoninfos, 'field', 'litpic', 'effect');
+                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
+                            %>
+                            <td><%= typeName; %>：</td>
                             <td class="pic-box" data-limit="1" data-field='litpic'>
                                 <div class="form-group col-xs-8">
                                     <div class="replaceImg-label">
@@ -423,7 +430,7 @@
                     <tbody>
                         <% 
                         for(var i in addoninfos){ 
-                            if(!addoninfos[i].fieldget) continue;
+                            if(!addoninfos[i].fieldget || (addoninfos[i].effect && (addoninfos[i].effect != 'addon'))) continue;
                         %>
                             <%- formCode.get(i); %>
                         <% } %>
@@ -511,6 +518,7 @@
         var types = <%- error ? false : JSON.stringify(types) %> || [];
         var classify = <%- results ? results : 0 %> || [];
         var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        console.log("_+_+_+_+_::",mergedList);
         var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
         effect.nestable(optData, error, '#modal-body');
         $("#normalModal").find(".dd").nestable('collapseAll');
@@ -900,7 +908,7 @@
     effect.setDefVal(".add-infor");     //设置页面默认值
     effect.setComments(".add-infor");
     effect.setCheckbox(".auto-checkbox");
-    effect.setCheckbox(".checkbox-content-state");
+    effect.setRadio(".radio-content-state");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
     

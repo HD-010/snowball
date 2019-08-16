@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-13 16:26:17
+ * @LastEditTime: 2019-08-16 09:41:48
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -603,9 +603,9 @@ var addressPice = {
                     });
                     
                     if(level < 2) return $(item).children(".address-city").addClass('hidden');
-                    data.reid = addr.provinceid;
                     //初始化市名称数据
                     $(item).children(".address-city").attr('data-def',addr.cityid);
+                    data.reid = addr.provinceid;
                     $.post(addressPice.url, data, function(res){
                         $(".address-group .address-city").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
                         effect.setSelect(".address-group");
@@ -622,7 +622,7 @@ var addressPice = {
                         lisEven();
                     });
 
-                    if(level < 4) $(item).children(".address-detail").addClass('hidden');
+                    if(level < 4) return $(item).children(".address-detail").addClass('hidden');
                     $(item).children(".address-detail").val(addr.detail);
                 }
                 
@@ -783,7 +783,7 @@ var effect = {
      * @param {*} selecter 
      * html代码结构：
      *  <div class="btn-group 监听的选择器" data-toggle="buttons">
-            <label class="btn btn-outline btn-success dim">
+            <label class="btn btn-outline btn-success btn-checkbox dim">
                 <input type="checkbox" data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' > 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
             </label>                                   
         </div>
@@ -799,7 +799,7 @@ var effect = {
             var temCode = '';
             for(var i=0; i < key.length; i ++){
                 var curCode = $(htmlCode);
-                if(defVal.indexOf(key[i]) +1) curCode.find("input[type='checkbox']").parent().addClass('active');//.prop('checked',true);
+                if(defVal.indexOf(key[i]) +1) curCode.find("input[type='checkbox']").attr('checked',"checked").parent().addClass('active');
                 curCode.find("input[type='checkbox']").val(key[i]);
                 curCode.find("input[type='checkbox']").after(val[i]);
                 
@@ -809,40 +809,56 @@ var effect = {
             loadEvent();
         });
         function loadEvent(){
-            $('[data-toggle="buttons"] .btn').unbind('click').on('click',function(e){
+            $('[data-toggle="buttons"] .btn-checkbox').unbind('click').on('click',function(e){
                 var curCheckbox = $(this).find('[type="checkbox"]');
                 curCheckbox.click();
-                (curCheckbox.prop('checked')) ?
-                $(this).addClass('active'):
-                $(this).removeClass('active');
+                curCheckbox.prop('checked') ? $(this).addClass('active') : $(this).removeClass('active');
             });
         }
     },
 
     /**
-     * 状态：预留
+     * 设置checkbox选项
      * @param {*} selecter 
+     * html代码结构：
+     *  <div class="btn-group 监听的选择器" data-toggle="buttons">
+            <label class="btn btn-outline btn-success btn-radio dim">
+                <input type="radio" data-key='选项1val-选项2val' data-val='选项1名称-选项2名称' > 注册会员<i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+            </label>                                   
+        </div>
      */
     setRadio: function(selecter){
         if(!selecter) return;
         $(selecter).each(function(index,item){
             var itemAttr = $(item).find("input[type='radio']");
-            var dataKey = itemAttr.attr('data-key');
-            var key = dataKey ? dataKey.split('-') :[];
-            var val = dataKey ? itemAttr.attr('data-val').split('-') : [];
-            var defVal = itemAttr.attr('data-def') ? itemAttr.attr('data-def').split('-') : [];
+            var key = itemAttr.attr('data-key').split('-');
+            var val = itemAttr.attr('data-val').split('-');
+            var defVal = itemAttr.attr('data-def');
             var htmlCode = item.outerHTML;
             var temCode = '';
             for(var i=0; i < key.length; i ++){
                 var curCode = $(htmlCode);
-                if(defVal.indexOf(key[i]) != -1) curCode.find("input[type='radio']").prop('selected',true);
+                if(defVal == key[i]) curCode.find("input[type='radio']").attr('checked','checked').parent().addClass('active');
                 curCode.find("input[type='radio']").val(key[i]);
                 curCode.find("input[type='radio']").after(val[i]);
                 
                 temCode += curCode[0].outerHTML;
             }
             $(item).replaceWith(temCode);
+            loadEvent();
         });
+        function loadEvent(){
+            $('[data-toggle="buttons"] .btn-radio').unbind('click').on('click',function(e){
+                var curCheckbox = $(this).find('[type="radio"]');
+                $(this).parent().siblings().each(function(i,o){ 
+                    console.log("*************::", $(o).find('.btn-radio')[0]);
+                    $(o).find('.btn-radio').removeClass('active');
+                    $(o).find('[type="radio"]').removeAttr('checked');
+                })
+                $(this).addClass('active');
+                $(this).find('[type="radio"]').attr('checked','checked');
+            });
+        }
     },
 
     /**
@@ -1005,7 +1021,7 @@ var effect = {
          * 组织项目结构
          **/
         function loadItem(res,farther){
-            res = res || results;
+            res = res || results || [];
             res.forEach(function(item,index){
                 var code = $(initCode);
                 code.attr('data-val',item.val);

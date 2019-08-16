@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-19 15:07:29
+ * @LastEditTime: 2019-08-15 18:02:49
+ * @LastEditors: Please set LastEditors
+ */
 /**
  * 注：添加删除修改查看的关键参数 nid
  */
@@ -37,6 +44,7 @@ function arcControler(){
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
             if(res.error){
@@ -294,6 +302,7 @@ function arcControler(){
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
         params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
             data = mergeObj([data,res]);

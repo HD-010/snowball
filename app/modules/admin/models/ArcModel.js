@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-22 14:16:39
+ * @LastEditTime: 2019-08-14 17:09:35
+ * @LastEditors: Please set LastEditors
+ */
 function ArcModel(){
     var that = this;
 
@@ -72,8 +79,9 @@ function ArcModel(){
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
-        log("***************************conditions::",conditions);
-        this.DB().log().set(conditions,function(error,results,fields){
+
+        console.log("=====================================",conditions);
+        this.DB().set(conditions,function(error,results,fields){
             data.error = error ? 1 : 0;
             data.results = results;
             callback(data);
