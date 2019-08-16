@@ -635,7 +635,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldset": 1,
         "novaild": 0,
         "inputtype": "input",
-        "attr": " data-comment=如：填写任职的公司名称"
+        "attr": " data-comment=填写曾经工作过的公司名称"
     },
 	{
         "field": "position",
@@ -650,7 +650,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldset": 1,
         "novaild": 0,
         "inputtype": "input",
-        "attr": " data-comment=如：填写任职的公司名称"
+        "attr": " data-comment=填写曾经工作中的职位"
     },
 	{
         "field": "salary",
@@ -664,7 +664,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldget": 1,
         "novaild": 0,
         "inputtype": "input",
-        "attr": " type=number data-comment=如：填写任职的公司名称"
+        "attr": " type=number data-comment=填写曾经工作时的薪资"
     },
 	{
         "field": "jobtime",
@@ -678,7 +678,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldget": 1,
         "novaild": 0,
         "inputtype": "input",
-        "attr": " type=number data-comment=如：填写任职的公司名称"
+        "attr": " type=text data-comment=填写格式如:2018年1月1-2019年12年31日"
     },
 	{
         "field": "duty",
@@ -692,7 +692,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldget": 1,
         "novaild": 0,
         "inputtype": "input",
-        "attr": " type=number data-comment=如：填写任职的公司名称"
+        "attr": " type=text data-comment=填写曾经工作中的职责"
     },
 	{
         "field": "city",
@@ -706,8 +706,8 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldget": 1,
         "novaild": 0,
 		"limit": 4,
-        "inputtype": "address",
-        "attr": " type=number data-comment=如：填写任职的公司名称"
+        "inputtype": "input",
+        "attr": " data-comment=填写曾经工作的地点"
     },
 	{
         "field": "brightspot",
@@ -721,7 +721,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "fieldget": 1,
         "novaild": 0,
 		"inputtype": "textarea",
-        "attr": " type=number data-comment=如：填写任职的公司名称"
+        "attr": " data-comment=填写曾经工作中的亮点"
     }
 ]
 youbang_addonperrecruit 表字自动填充字段配置信息:

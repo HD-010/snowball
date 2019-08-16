@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-16 15:19:51
+ * @LastEditTime: 2019-08-16 17:29:24
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -81,7 +81,7 @@
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-8">' +
-                            '<textarea class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' ></textarea>' +
+                            '<textarea class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + '></textarea>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
@@ -495,7 +495,6 @@
                         <tr>
                             <td></td>
                             <td>
-                                <a id="test">测试</a>
                                 <button type="submit" class="btn">确定</button>
                                 <button type="reset" class="btn">重置</button>
                             </td>
@@ -507,33 +506,34 @@
 
                 <!-- tab-2的表单由系统生成 -->
                 <table class="table hidden" id="tab-3">
-                        <thead>
-                            <tr>
-                                <th class="col-xs-2">参数说明</th>
-                                <th>参数值</th>
-                            </tr>
-                        </thead>
-                        <tbody class="page-struct">
-                            <% 
-                            for(var i in addoninfos){ 
-                                if(!addoninfos[i].fieldget) continue;
-                                if(addoninfos[i].effect == undefined) continue;
-                                if(addoninfos[i].effect && (addoninfos[i].effect.indexOf('tab_') !== 0)) continue;
-                            %>
-                                <%- formCode.get(i); %>
-                            <% } %>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <a id="test">测试</a>
-                                    <button type="submit" class="btn">确定</button>
-                                    <button type="reset" class="btn">重置</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody class="page-struct">
+                        <% 
+                        for(var i in addoninfos){ 
+                            if(!addoninfos[i].fieldget) continue;
+                            if(addoninfos[i].effect == undefined) continue;
+                            if(addoninfos[i].effect && (addoninfos[i].effect.indexOf('tab_') !== 0)) continue;
+                        %>
+                            <%- formCode.get(i); %>
+                        <% } %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                                <button type="button" class="btn tbody-copy-increment">增加</button>
+                                <button type="button" class="btn tbody-copy-reduction">删除</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             </form>
         </div>
     </div>
@@ -922,7 +922,7 @@
     var UE = {
         frame: $("iframe").eq(0),
         contents: function(){
-            var ue = this.frame[0].contentWindow.ue;
+            var ue = this.frame[0] ? this.frame[0].contentWindow.ue : {getContent:function(){}};
             return ue.getContent();
         },
         full: false,
@@ -1041,7 +1041,7 @@
 <script>
 addressPice.load();
 </script>
-<!-- 页面结构控制  -->
+<!-- 页面结构控制  当tbody中有0个tr时，删除该table和对应的选项卡-->
 <script>
     (function(){
         $(".page-struct").each(function(i, opt){
@@ -1054,6 +1054,35 @@ addressPice.load();
     })()
     
 </script>
-    
+<!-- 第三方表单多记录控制 -->
+<script>
+    delete window.tbodyCopyIncrement;
+    $(".tbody-copy-increment").click(function(){
+        var table = $(this).parentsUntil('table').parent();
+        var tbody = table.find('tbody');
+        var trHTML = window.tbodyCopyIncrement ? window.tbodyCopyIncrement.html : tbody.html();
+        if(!window.tbodyCopyIncrement) {
+            window.tbodyCopyIncrement = {
+                html: trHTML,
+                length: tbody.children().length
+            }
+        }
+        tbody.append(trHTML);
+    });
+    $(".tbody-copy-reduction").click(function(){
+        var table = $(this).parentsUntil('table').parent();
+        var tbody = table.find('tbody');
+        if(!window.tbodyCopyIncrement) {
+            window.tbodyCopyIncrement = {
+                length: 0
+            }
+        }
+        var length = window.tbodyCopyIncrement.length ;
+        if(tbody.children().length <= length) return;
+        for(length; length > 0; length--){
+            tbody.find("tr:last-child").remove();
+        }
+    });
+</script>
 
 

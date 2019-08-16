@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-16 15:23:11
+ * @LastEditTime: 2019-08-16 17:28:25
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(data[0]) %>
@@ -67,6 +67,20 @@
                         '<div class="col-sm-4 col-xs-4 auto-select">' +
                             '<select class="form-control" name="' + addoninfos[index].field + '" '+ echo(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"></select>' +
                         '</div>' +
+                    '</td>' +           
+                '</tr>';
+
+            return str;
+        },
+
+        textarea: function(index){
+            var str = '<tr>' +
+                    '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
+                    '<td>' +
+                        '<div class="form-group col-xs-8">' +
+                            '<textarea class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + '>{{' + addoninfos[index].field + '}}</textarea>' +
+                        '</div>' +
+                        '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
                 '</tr>';
 
@@ -490,9 +504,10 @@
                         <tr>
                             <td></td>
                             <td>
-                                <a id="test">测试</a>
                                 <button type="submit" class="btn">确定</button>
                                 <button type="reset" class="btn">重置</button>
+                                <button type="button" class="btn tbody-copy-increment">增加</button>
+                                <button type="button" class="btn tbody-copy-reduction">删除</button>
                             </td>
                         </tr>
                     </tfoot>
@@ -567,16 +582,6 @@
             });
             spec.reset();
         })()
-
-        //页面结构控制
-        $(".page-struct").each(function(i, opt){
-            alert($(opt).children("tr").length);
-            if(!$(opt).children("tr").length){
-                var select = "#" + $(opt).parent().attr('id');
-                $('.nav-tabs').find("a[data-target='"+select+"']").parent().remove();
-                $(opt).parent().remove();
-            }
-        });
     } 
     /**
      * 规格项相关
@@ -934,7 +939,7 @@
                 UE.frame = $("iframe").eq(0);
                 //读取UE内容
                 UE.contents = function(){
-                    var ue = UE.frame[0].contentWindow.ue;
+                    var ue = UE.frame[0] ? UE.frame[0].contentWindow.ue : {getContent:function(){}};
                     return ue.getContent();
                 }
                 //标识UE是否全屏
@@ -1065,5 +1070,46 @@
     setEffect();
 </script>
 
-
-
+<!-- 页面结构控制  当tbody中有0个tr时，删除该table和对应的选项卡-->
+<script>
+    (function(){
+        $(".page-struct").each(function(i, opt){
+            if(!$(opt).children("tr").length){
+                var select = "#" + $(opt).parent().attr('id');
+                $('.nav-tabs').find("a[data-target='"+select+"']").parent().remove();
+                $(opt).parent().remove();
+            }
+        });
+    })()
+    
+</script>
+<!-- 第三方表单多记录控制 -->
+<script>
+    delete window.tbodyCopyIncrement;
+    $(".tbody-copy-increment").click(function(){
+        var table = $(this).parentsUntil('table').parent();
+        var tbody = table.find('tbody');
+        var trHTML = window.tbodyCopyIncrement ? window.tbodyCopyIncrement.html : tbody.html();
+        if(!window.tbodyCopyIncrement) {
+            window.tbodyCopyIncrement = {
+                html: trHTML,
+                length: tbody.children().length
+            }
+        }
+        tbody.append(trHTML);
+    });
+    $(".tbody-copy-reduction").click(function(){
+        var table = $(this).parentsUntil('table').parent();
+        var tbody = table.find('tbody');
+        if(!window.tbodyCopyIncrement) {
+            window.tbodyCopyIncrement = {
+                length: 0
+            }
+        }
+        var length = window.tbodyCopyIncrement.length ;
+        if(tbody.children().length <= length) return;
+        for(length; length > 0; length--){
+            tbody.find("tr:last-child").remove();
+        }
+    });
+</script>
