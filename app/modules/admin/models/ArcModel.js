@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-14 17:09:35
+ * @LastEditTime: 2019-08-17 14:12:44
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
@@ -80,7 +80,6 @@ function ArcModel(){
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
 
-        console.log("=====================================",conditions);
         this.DB().set(conditions,function(error,results,fields){
             data.error = error ? 1 : 0;
             data.results = results;
@@ -102,7 +101,7 @@ function ArcModel(){
         }
         var record = {};
         for(var i in addoninfos){
-            if(!addoninfos[i].fieldset) continue;
+            if((addoninfos[i].effect && addoninfos[i].effect != 'addon') || !addoninfos[i].fieldset) continue;
             var field = "";
             field = addoninfos[i].field;
             field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
@@ -124,6 +123,58 @@ function ArcModel(){
             data.results = results;
             callback(data);
         });
+    }
+
+    /**
+     * 保存第三类表数据
+     */
+    this.saveThirdTab = function(params, callback){
+        var ps = 0;
+        var conditions,aid;
+        var data = {error: 1};
+        var tab = params.effectTabs || [];
+        var addoninfos =  params.addoninfos;
+        for(var j = 0; j < tab.length; j ++){
+            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            ps ++;
+
+            conditions = {
+                table: tab[j].substring(4),
+                fields: [],
+                where : []
+            }
+            for(var i in addoninfos){
+                if(addoninfos[i].effect != tab[j]) continue;
+                var field = "";
+                field = addoninfos[i].field;
+                field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
+                field = field || array2value(addoninfos, 'field', field, 'default');
+                if(addoninfos[i].novaild) field = utility.base64encode(field);
+                
+                if(field.constructor.name != 'Array') field = [field];
+                for(var k = 0; k < field.length; k ++){
+                    if(!conditions.fields[k]) conditions.fields[k] = {};
+                    conditions.fields[k][addoninfos[i].field] = field[k] ? field[k] : 
+                    array2value(addoninfos,'field',addoninfos[i].field,'default');
+                    conditions.fields[k]['aid'] = params.aid;
+                }
+            }
+            aid = this.POST('id');
+            if(aid) conditions.where.push('aid=' + aid);
+
+            this.DB().log().set(conditions,function(error,results,fields){
+                var data = {};
+                data.error = error ? 1 : 0;
+                data.message = "保存成功！";
+                data.results = results;
+                end(data);
+            });
+        }
+        
+        function end(data){
+            ps --;
+            if(ps===0) callback(data);
+        }
     }
 
     

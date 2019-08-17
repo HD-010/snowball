@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-19 15:07:29
- * @LastEditTime: 2019-08-15 18:02:49
+ * @LastEditTime: 2019-08-17 11:29:58
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -218,6 +218,15 @@ function arcControler(){
                     });
                 }
 
+                //处理需要保存的第三类表
+                params.effectTabs = arrayDistinct(queryresultKeyValue(res.results[0].addoninfos,"effect"));
+                if(params.effectTabs.length){
+                    ps ++;
+                    arc.saveThirdTab(params,function(res){
+                        data = mergeObj([data,res]);
+                        ps = that.testRenderJson(data,ps)
+                    });
+                }
             });
 
         });
