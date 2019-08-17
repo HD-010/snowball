@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-16 17:29:24
+ * @LastEditTime: 2019-08-17 09:40:31
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -186,7 +186,7 @@
     }
 %>
 <!-- 主表控件变量 -->
-<% var typeNme,effect,listName;%>
+<% var typeNme,effect,listName,attr;%>
 <style>
 .add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
@@ -286,20 +286,30 @@
                     </thead>
                     <tbody class="page-struct">
                         <tr>
-                            <td>标题：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'title', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'itemname') : '标题'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="title" placeholder="标题" value=" "/>
+                                    <input type="text" class="form-control" name="title" <%= echo(attr) %> value=" "/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
                             </td>              
                         </tr>
 
                         <tr>
-                            <td>短标题：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'shorttitle', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'itemname') : '短标题'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="shorttitle" placeholder="短标题" value=" "/>
+                                    <input type="text" class="form-control" name="shorttitle" <%= echo(attr) %> value=" "/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写短标题，长度限制25字</span>
                             </td>              
@@ -318,11 +328,17 @@
                         </tr> -->
 
                         <tr>
-                            <td>所属栏目：</td>
+                            <% 
+                                effect = array2value(addoninfos, 'field', 'typeid', 'effect');
+                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
+                                listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
+                                attr = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <div data-freemodal="state" data-name="栏目列表" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                    <input type="hidden" name="typeid" value="" />
+                                    <div data-freemodal="state" data-name="<%= echo(listName) %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="typeid" <%= echo(attr) %> value="" />
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                             </td>              
@@ -345,61 +361,72 @@
                             effect = array2value(addoninfos, 'field', 'classify', 'effect');
                             typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
                             listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'attr') : '';
                             %>
                             <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <div data-freemodal="state" data-name="<%= listName %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                    <input type="hidden" name="classify" value=""/>
+                                    <div data-freemodal="state" data-name="<%= echo(listName) %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                    <input type="hidden" name="classify" <%= echo(attr) %> value=""/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                             </td>              
                         </tr>
 
                         <tr>
-                            <td>推荐：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'component', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'itemname') : '推荐'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td style="padding-left:26px;">
-                                <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="" value="" /><em></em></label>
+                                <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="" <%= echo(attr) %> value="" /><em></em></label>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
                             </td>    
                         </tr>
 
                         <tr>
-                            <td>关键字：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'keywords', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'itemname') : '关键字'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="keywords" placeholder="关键字" value=" "/>
+                                    <input type="text" class="form-control" name="keywords" <%= echo(attr) %> value=" "/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
                         </tr>
                         
                         <tr>
-                            <td>状态：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'state', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'itemname') : '状态'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'attr') : '';
+                            %>
+                            <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
                                     <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state"><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state" <%= echo(attr) %>><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
                                     </label>
                                 </div>
                             </td>              
                         </tr>
 
                         <tr>
-                            <td>描述：</td>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'description', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'itemname') : '描述'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'attr') : '';
+                            %>
+                            <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="description" placeholder="描述" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
-                            </td>              
-                        </tr>
-
-                        <tr>
-                            <td>权重：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="number" class="form-control" name="weight" placeholder="权重" value=" "/>
+                                    <input type="text" class="form-control" name="description" <%= echo(attr) %> value=" "/>
                                 </div>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
@@ -407,8 +434,24 @@
 
                         <tr>
                             <% 
-                                effect = array2value(addoninfos, 'field', 'litpic', 'effect');
-                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
+                            effect = array2value(addoninfos, 'field', 'weight', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'itemname') : '权重'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'attr') : '';
+                            %>
+                            <td><%= typeName; %>：</td>
+                            <td>
+                                <div class="form-group col-xs-4">
+                                    <input type="number" class="form-control" name="weight" <%= echo(attr) %> value=" "/>
+                                </div>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            </td>              
+                        </tr>
+
+                        <tr>
+                            <% 
+                            effect = array2value(addoninfos, 'field', 'litpic', 'effect');
+                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
+                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'attr') : '';
                             %>
                             <td><%= typeName; %>：</td>
                             <td class="pic-box" data-limit="1" data-field='litpic'>
@@ -564,7 +607,6 @@
         var types = <%- error ? false : JSON.stringify(types) %> || [];
         var classify = <%- results ? results : 0 %> || [];
         var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
-        console.log("_+_+_+_+_::",mergedList);
         var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
         effect.nestable(optData, error, '#modal-body');
         $("#normalModal").find(".dd").nestable('collapseAll');

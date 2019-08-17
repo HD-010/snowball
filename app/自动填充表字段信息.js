@@ -359,6 +359,7 @@ youbang_addoncommodities 表字自动填充字段配置信息:
         "field": "classify",
         "itemname": "商品分类",
         "type": "text",
+		"effect": "main",
         "maxlength": "1024",
         "isnull": false,
         "islist": "商品分类",
@@ -724,6 +725,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "attr": " data-comment=填写曾经工作中的亮点"
     }
 ]
+
 youbang_addonperrecruit 表字自动填充字段配置信息:
 [
     {
