@@ -2,14 +2,14 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-17 14:12:44
+ * @LastEditTime: 2019-08-17 15:22:08
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
     var that = this;
 
     /**
-     * 查询（文章）列表
+     * 查询主附表数据（文章）列表
      */
     this.lists = function(params,callback){
         params.SEDate = this.POST('SEDate',{default:this.GET('SEDate')}) || params.SEDate || [];
@@ -45,6 +45,32 @@ function ArcModel(){
             callback(data);
         });
     }
+
+    /**
+     * 获取第三类表数据
+     * 注：当前第三类表查询，只支持
+     */
+    this.thirdList = function(params,callback){
+        var ps = 0;
+        var tempTab = [];
+        var tempWhere = [];
+        var data = {error: 0, thirdList:[]};
+        var tab = params.effectTabs || [];
+        var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
+        if(!params.id) callback(data);
+        for(var j = 0; j < tab.length; j ++){
+            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            tempTab.push(tab[j].substring(4) + ' as `_'+ j +'`');
+            tempWhere.push('`_' + j + '`.aid=' + params.id);
+        }  
+        var sql = 'select * from ' + tempTab.join(',') + ' where ' + tempWhere.join(' and ');
+        this.DB().select(sql,function(error,results,fields){
+            data.error = results.length ? 0 : 1;
+            data.thirdList = error ? [] : recodeBase64decode(results,noVAlid);
+            callback(data);
+        });
+    }
+
     
     /**
      * 保存数据到主表

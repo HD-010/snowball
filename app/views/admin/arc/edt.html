@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-17 10:04:11
+ * @LastEditTime: 2019-08-17 16:57:01
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(data[0]) %>
@@ -957,7 +957,6 @@
     }
 
 </script>
-
 <script>
     //选项卡相关
     $("a[data-toggle='tab']").click(function(){
@@ -970,9 +969,13 @@
             error: <%- error %>,
             data: <%- JSON.stringify(data[0]); %>
         }
+    var thirdList = {
+        error: <%- error %>,
+        data: <%- JSON.stringify(thirdList); %>
+    }
         
     DL({
-        dev: 'on',
+        //dev: "on",
         id: "#add-infor",
         packet: recodData,
         clearCode: true,
@@ -1027,6 +1030,11 @@
         }
     });
 
+    DL({
+        listId: "#tab-3",
+        packet: thirdList,
+        use: 1
+    });
 </script>
 
 
@@ -1130,31 +1138,18 @@
 </script>
 <!-- 第三类表单多记录控制 -->
 <script>
-    delete window.tbodyCopyIncrement;
     $(".tbody-copy-increment").click(function(){
         var table = $(this).parentsUntil('table').parent();
-        var tbody = table.find('tbody');
-        var trHTML = window.tbodyCopyIncrement ? window.tbodyCopyIncrement.html : tbody.html();
-        if(!window.tbodyCopyIncrement) {
-            window.tbodyCopyIncrement = {
-                html: trHTML,
-                length: tbody.children().length
-            }
-        }
-        tbody.append(trHTML);
+        var tbody = table.find('tbody:last');
+        var tbodyHTML = tbody[0].outerHTML;
+        var tbodOjb = $(tbodyHTML);
+        tbodOjb.find('input,select').val('');
+        tbody.after(tbodOjb);
     });
     $(".tbody-copy-reduction").click(function(){
         var table = $(this).parentsUntil('table').parent();
         var tbody = table.find('tbody');
-        if(!window.tbodyCopyIncrement) {
-            window.tbodyCopyIncrement = {
-                length: 0
-            }
-        }
-        var length = window.tbodyCopyIncrement.length ;
-        if(tbody.children().length <= length) return;
-        for(length; length > 0; length--){
-            tbody.find("tr:last-child").remove();
-        }
+        if(tbody.length < 2) return;
+        table.find('tbody:last').remove();
     });
 </script>

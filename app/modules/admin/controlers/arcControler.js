@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-19 15:07:29
- * @LastEditTime: 2019-08-17 11:29:58
+ * @LastEditTime: 2019-08-17 15:23:33
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -132,6 +132,7 @@ function arcControler(){
                 res.message = "查询表信息失败，请稍后重试";
                 return that.testRender(res);
             }
+            //获取主附表数据
             params.addonTab = res.results[0].addtable;
             params.SEDate = [dateFormate('%Y-%m-%d'),1];
             arc.lists(params, (res)=>{
@@ -365,6 +366,17 @@ function arcControler(){
                         if(res.error) return that.render(data);
                         ps = that.testRender(data,ps)
                     })
+                }
+
+                //获取第三类表数据
+                params.effectTabs = arrayDistinct(queryresultKeyValue(data.addoninfos,"effect"));
+                if(params.effectTabs.length){
+                    ps ++;
+                    arc.thirdList(params,function(res){
+                        data = mergeObj([data,res]);
+                        if(res.error) return that.render(data);
+                        ps = that.testRender(data,ps)
+                    });
                 }
 
                 // 上传插件获取前端逻辑处理代码
