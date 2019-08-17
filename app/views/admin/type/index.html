@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-17 17:49:05
+ * @LastEditTime: 2019-08-17 17:59:13
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -92,35 +92,36 @@
         },
         after: function(){
             $('.footable').footable();
-            switchEffect()
+            effect.switch(".mui-switch", '是', '否');
         }
     });
    
-    function switchEffect(){
-        var cl  = $(".mui-switch");
-        for(var i=0;i<cl.length;i++){
-                if($(cl[i]).attr("data-stat")=='1'){
-                    cl[i].nextSibling.innerText='是';
-                    cl[i].nextSibling.style.color="#FFFFFF";
-                    cl[i].nextSibling.style.marginLeft='0px';
-                    cl[i].checked=true;
-                }else{
-                    cl[i].nextSibling.innerText='否';
-                    cl[i].nextSibling.style.color="#D2D2D2";
-                    cl[i].nextSibling.style.marginLeft='16px';
-                }
-        }
-        cl.click(function(){
-                if(this.checked){
-                    this.nextSibling.innerText='是';
-                    this.nextSibling.style.color="#FFFFFF";
-                    this.nextSibling.style.marginLeft='0px';
-                }else{
-                    this.nextSibling.innerText='否';
-                    this.nextSibling.style.color="#D2D2D2";
-                    this.nextSibling.style.marginLeft='16px';                
-                }
-        })
-    }
+    
+    // function switchEffect(){
+    //     var cl  = $(".mui-switch");
+    //     for(var i=0;i<cl.length;i++){
+    //             if($(cl[i]).attr("data-stat")=='1'){
+    //                 cl[i].nextSibling.innerText='是';
+    //                 cl[i].nextSibling.style.color="#FFFFFF";
+    //                 cl[i].nextSibling.style.marginLeft='0px';
+    //                 cl[i].checked=true;
+    //             }else{
+    //                 cl[i].nextSibling.innerText='否';
+    //                 cl[i].nextSibling.style.color="#D2D2D2";
+    //                 cl[i].nextSibling.style.marginLeft='16px';
+    //             }
+    //     }
+    //     cl.click(function(){
+    //             if(this.checked){
+    //                 this.nextSibling.innerText='是';
+    //                 this.nextSibling.style.color="#FFFFFF";
+    //                 this.nextSibling.style.marginLeft='0px';
+    //             }else{
+    //                 this.nextSibling.innerText='否';
+    //                 this.nextSibling.style.color="#D2D2D2";
+    //                 this.nextSibling.style.marginLeft='16px';                
+    //             }
+    //     })
+    // }
 
 </script>
