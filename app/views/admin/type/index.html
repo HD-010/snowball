@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:34
+ * @LastEditTime: 2019-08-17 17:49:05
+ * @LastEditors: Please set LastEditors
+ -->
 <div class="container-fluid base">
     <div class="row head">
         <div class="col-xs-12">
@@ -36,7 +43,6 @@
                             <thead>
                                 <tr>
                                     <th>栏目名称</th>
-                                    <th>浏览器</th>
                                     <th data-sort-ignore="true">关键词</th>
                                     <th data-sort-ignore="true">隐藏</th>
                                     <th data-sort-ignore="true">操作</th>
@@ -45,8 +51,6 @@
                             <tbody id="type-list">
                                 <tr class="grade{{- return index%2?'C':'A'; }}">
                                     <td>{{typename}}</td>
-                                    <td>Internet Explorer 4.0
-                                    </td>
                                     <td>{{keywords}}</td>
                                     <td style="padding-left:26px;">                                       
                                             <label><input class="mui-switch mui-switch-anim" data-stat="{{ishidden}}" type="checkbox" value="{{ishidden}}"><em></em></label>                                      
@@ -59,7 +63,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="4">
                                         <ul class="pagination pull-right"></ul>
                                     </td>
                                 </tr>
