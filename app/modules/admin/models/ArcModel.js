@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-17 15:22:08
+ * @LastEditTime: 2019-08-17 17:33:01
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
@@ -57,17 +57,18 @@ function ArcModel(){
         var data = {error: 0, thirdList:[]};
         var tab = params.effectTabs || [];
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
-        if(!params.id) callback(data);
+        if(!params.id) return callback(data);
         for(var j = 0; j < tab.length; j ++){
             if(tab[j] == 'main' || tab[j] == 'addon') continue;
             tempTab.push(tab[j].substring(4) + ' as `_'+ j +'`');
             tempWhere.push('`_' + j + '`.aid=' + params.id);
-        }  
+        } 
+        if(!tempTab.length) return callback(data);
         var sql = 'select * from ' + tempTab.join(',') + ' where ' + tempWhere.join(' and ');
         this.DB().select(sql,function(error,results,fields){
             data.error = results.length ? 0 : 1;
             data.thirdList = error ? [] : recodeBase64decode(results,noVAlid);
-            callback(data);
+            return callback(data);
         });
     }
 
