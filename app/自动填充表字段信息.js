@@ -42,9 +42,9 @@
     "islist": "工程信息分类",
     "default": 0,
     "fieldget": 0,
-    "fieldset": 0,
+    "fieldset": 1,
     "inputtype": "nesmodal",
-    "attr": " disabled data-def=4 data-comment=如：这是注释"
+    "attr": " data-def=4 data-comment=如：这是注释"
   },
   {
     "field": "componentid",

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-19 15:07:29
- * @LastEditTime: 2019-08-17 15:23:33
+ * @LastEditTime: 2019-08-19 14:42:56
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -134,7 +134,7 @@ function arcControler(){
             }
             //获取主附表数据
             params.addonTab = res.results[0].addtable;
-            params.SEDate = [dateFormate('%Y-%m-%d'),1];
+            params.SEDate = [dateFormate('%Y-%m-%d'),0];
             arc.lists(params, (res)=>{
                 data = mergeObj([data,res]);
                 ps = that.testRender(data,ps);
@@ -189,7 +189,7 @@ function arcControler(){
         //保存数据到主表
         arc.saveHives({},function(res){
             if(res.error) {
-                res.message = "数据写入失败，请稍后重试";
+                //res.message = "数据写入失败，请稍后重试";
                 return that.renderJson(res);
             }
             params.aid = res.results.insertId;
@@ -221,7 +221,7 @@ function arcControler(){
 
                 //处理需要保存的第三类表
                 params.effectTabs = arrayDistinct(queryresultKeyValue(res.results[0].addoninfos,"effect"));
-                if(params.effectTabs.length){
+                if(inArray(params.effectTabs,'^tab_')+1){
                     ps ++;
                     arc.saveThirdTab(params,function(res){
                         data = mergeObj([data,res]);
@@ -241,8 +241,10 @@ function arcControler(){
         var id = this.POST('id');
         var data = {
             error: 1,
-            message: '操作错误，请选择你需要删除的对象！',
+            message: ['操作成功，正在跳转到列表页','操作错误，请选择你需要删除的对象！'],
+            uri: '/admin/arc/show/ctag/' + ctag
         }
+        var ps = 2;
         if(!ctag || !id) return this.renderJson(data);
         var arc = this.model("Arc");
         var addonTable = this.model('Component');
@@ -252,29 +254,43 @@ function arcControler(){
         //查询附加表字段信息
         addonTable.list(params,function(res){
             if(res.error || !res.results.length) {
-                res.message = "查询表信息失败，请稍后重试";
-                return that.renderJson(res);
+                data.message[1] = "查询表信息失败，请稍后重试";
+                return that.renderJson(data);
             }
+            //params.addoninfos = res.results[0].addoninfos;
             params.addtable = res.results[0].addtable;
-            
             params.id = id;
             arc.delHives(params,(res)=>{
                 data.error = res.error ? 1 : 0;
                 if(res.error) {
-                    data.message = '操作失败，请稍后再试！'
+                    data.message[1] = '操作失败，请稍后再试！'
                     return that.renderJson(data);
                 }
-                arc.delAddon(params,(res)=>{
+                ps = that.testRenderJson(data, ps);
+            });
+            //删除附加表数据
+            arc.delAddon(params,(res)=>{
+                data.error = res.error ? 1 : 0;
+                if(res.error) {
+                    data.message[1] = '删除附加表数据出错！';
+                    return that.renderJson(data);
+                }
+                //data.message[0] = "操作成功，删除了" + res.results.affectedRows + "条记录";
+                ps = that.testRenderJson(data, ps);
+            });
+            //删除第三类表数据
+            params.effectTabs = arrayDistinct(queryresultKeyValue(res.results[0].addoninfos,"effect"));
+            if(inArray(params.effectTabs,'^tab_')+1){
+                ps ++;
+                arc.delThirdTab(params,function(res){
                     data.error = res.error ? 1 : 0;
                     if(res.error) {
-                        data.message = '删除附加表数据出错！';
+                        data.message = '删除第三类表数据出错！';
                         return that.renderJson(data);
                     }
-                    data.message = "操作成功，删除了" + res.results.affectedRows + "条记录";
-                    data.uri = '/admin/arc/show/ctag/infos';
-                    that.renderJson(data);
+                    ps = that.testRenderJson(data,ps)
                 });
-            });
+            }
         });
         
     }

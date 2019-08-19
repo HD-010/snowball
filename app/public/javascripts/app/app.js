@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-17 09:31:43
+ * @LastEditTime: 2019-08-19 14:09:07
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -256,11 +256,12 @@ var app = {
      * function callback 
      */
     notice: function(obj, callback) {
+        var message = (typeof obj.message == "object") ? obj.message[obj.error] : obj.message;
         var box = {
-            notice_0: '<div id="notice_0" class="alert alert-success" role="alert">' + obj.message + '</div>',
-            notice_1: '<div id="notice_1" class="alert alert-warning" role="alert">' + obj.message + '</div>',
-            notice_2: '<div id="notice_2" class="alert alert-info" role="alert">' + obj.message + '</div>',
-            notice_3: '<div id="notice_3" class="alert alert-danger" role="alert">' + obj.message + '</div>',
+            notice_0: '<div id="notice_0" class="alert alert-success" role="alert">' + message + '</div>',
+            notice_1: '<div id="notice_1" class="alert alert-warning" role="alert">' + message + '</div>',
+            notice_2: '<div id="notice_2" class="alert alert-info" role="alert">' + message + '</div>',
+            notice_3: '<div id="notice_3" class="alert alert-danger" role="alert">' + message + '</div>',
             notice_4: '',
         }
         var order = obj.error || obj.errcode || 0;

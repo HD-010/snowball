@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-17 17:33:01
+ * @LastEditTime: 2019-08-19 14:16:28
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
@@ -29,8 +29,8 @@ function ArcModel(){
         }
         if(params.SEDate.length){
             typeof params.SEDate[1] == 'number' ?
-            conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and "' + params.SEDate[0] + '"'):
-            conditions.where.push('addtime between "' + params.SEDate[0] + '" and "' + params.SEDate[1] + '"');
+            conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and subdate("' + params.SEDate[0] + '",interval -1 day)'):
+            conditions.where.push('addtime between "' + params.SEDate[0] + '" and subdate("' + params.SEDate[1] + '",interval -1 day)');
         }
         if(sky) conditions.where.push("( youbang_archives.title like '%" + sky + 
         "%' or youbang_archives.shorttitle like '%" + sky + 
@@ -38,7 +38,7 @@ function ArcModel(){
         "%' or youbang_archives.writer like '%" + sky + 
         "%' or youbang_archives.keywords like '%" + sky + "%')");
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().get(conditions,(error,results)=>{
+        this.DB().log().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);
@@ -200,7 +200,7 @@ function ArcModel(){
         
         function end(data){
             ps --;
-            if(ps===0) callback(data);
+            if(ps===0 || data.error) callback(data);
         }
     }
 
@@ -239,6 +239,36 @@ function ArcModel(){
             }
             callback(data);
         });
+    }
+
+    /**
+     * 删除第三类表数据
+     */
+    this.delThirdTab = function(params, callback){
+        var ps = 0;
+        var conditions;
+        var data = {error: 1};
+        var tab = params.effectTabs || [];
+        //var addoninfos =  params.addoninfos;
+        for(var j = 0; j < tab.length; j ++){
+            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            ps ++;
+
+            conditions = {
+                table: tab[j].substring(4),
+                where : [ 'aid = ' + params.id]
+            }
+            this.DB().del(conditions,function(error,results,fields){
+                var data = {};
+                data.error = error ? 1 : 0;
+                end(data);
+            });
+        }
+        
+        function end(data){
+            ps --;
+            if(ps===0 || data.error) callback(data);
+        }
     }
 
 }
