@@ -5,6 +5,13 @@
  * @LastEditTime: 2019-08-19 17:53:49
  * @LastEditors: Please set LastEditors
  -->
+<script>
+    var error = <%- error %>;
+    var aType = <%- JSON.stringify(aType) %>;
+    var allType = <%- JSON.stringify(allType) %>;
+    console.log("@@@@@@@@@@allType:",allType)
+    console.log("@@@@@@@@@@aType:",aType)
+</script>
 <div class="container-fluid base type-edt">
     <div class="row head">
         <div class="col-xs-12">
@@ -40,21 +47,15 @@
                             <div class="form-group col-xs-4">
                                 <input type="text" class="form-control" name="typename" placeholder="栏目名称" value="{{typename}}"/>
                             </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
                         </td>              
                     </tr>
                     <tr>
                         <td>所属栏目：</td>
-                        
                         <td>
-                            <!-- <div class="form-group col-xs-4 auto-type-name">
-                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" data-def=<%= aType[0].pid; %>  placeholder="当前栏目是顶级栏目" value="" ></select>
-                            </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span> -->
-                        
                             <div class="form-group col-xs-4">
-                                <div data-freemodal="type" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                <input type="hidden" name="topid" value="{{typename}}"/>
+                                <div data-freemodal="type" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;">{{- return treeValue(allType, 'id', topid, 'typename'); }}</div>
+                                <input type="hidden" name="topid" value="{{topid}}"/>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
                         </td> 
@@ -150,13 +151,9 @@
         </form>
     </div>
 </div>
-
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 
 <script>
-    var error = <%- error %>;
-    var aType = <%- JSON.stringify(aType) %>;
-    var allType = <%- JSON.stringify(allType) %>;
-    
     DL({
         id: "#type-edt ",
         clearCode: 1,

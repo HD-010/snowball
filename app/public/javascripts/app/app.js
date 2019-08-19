@@ -742,7 +742,7 @@ var effect = {
                 this.nextSibling.style.color = "#D2D2D2";
                 this.nextSibling.style.marginLeft='16px';                
             }
-            onEvent(this);
+            if(onEvent.constructor.name == 'Function') onEvent(this);
         })
         
     },
