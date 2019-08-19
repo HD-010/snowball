@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:34
+ * @LastEditTime: 2019-08-19 17:53:49
+ * @LastEditors: Please set LastEditors
+ -->
 <div class="container-fluid base type-edt">
     <div class="row head">
         <div class="col-xs-12">
@@ -38,24 +45,31 @@
                     </tr>
                     <tr>
                         <td>所属栏目：</td>
+                        
                         <td>
-                            <div class="form-group col-xs-4 auto-type-name">
+                            <!-- <div class="form-group col-xs-4 auto-type-name">
                                 <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" data-def=<%= aType[0].pid; %>  placeholder="当前栏目是顶级栏目" value="" ></select>
                             </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span> -->
+                        
+                            <div class="form-group col-xs-4">
+                                <div data-freemodal="type" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                <input type="hidden" name="topid" value="{{typename}}"/>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
                         </td> 
                     </tr>
                     <tr>
                         <td>隐藏栏目：</td>
                         <td style="padding-left:26px; ">
-                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="ishidden" data-stat="{{-return ishidden||1; }}" value="{{ishidden}}" /><em></em></label>
+                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim is-hidden" type="checkbox" name="ishidden" {{- return ishidden?"checked":""; }} value="1" /><em></em></label>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
                         </td>    
                     </tr>
                     <tr>
                         <td>是否发布：</td>
                         <td style="padding-left:26px; ">
-                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" data-stat="{{issend}}" name="issend" value="{{issend}}"/><em></em></label>
+                            <label class="mui-switch-em"><input class="mui-switch mui-switch-anim is-pub" type="checkbox" {{- return issend?"checked":""; }} name="issend" value="1"/><em></em></label>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如果没有为是，没前栏目有可以网站中访问</span>
                         </td>    
                     </tr>
@@ -145,6 +159,7 @@
     
     DL({
         id: "#type-edt ",
+        clearCode: 1,
         packet:{
             error: error,
             data: aType[0]
@@ -152,16 +167,47 @@
         after: function(){
             effect.setSelect(".auto-type-name");
             app.load(".type-edt");
-            $('input[data-stat]').each(function(){
-                $(this).prop('checked',$(this).attr('data-stat'))
-            });
-            effect.switch('.mui-switch','是','否');
+            effect.switch(".is-hidden", '显示', '隐藏');
+            effect.switch(".is-pub", '是', '否');
             app.addonParams = {oid: getItem('OID')};
         }
     });
 
     /**
-     * 数据保存后的操作 
+     * nestable模态框--(栏目列表和分类列表)
+     */
+        $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(allType) %> || [];
+        // var classify = <%- //results ? results : 0 %> || [];
+        // var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        // var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
+        // effect.nestable(optData, error, '#modal-body');
+        effect.nestable(types, error, '#modal-body');
+        $("#normalModal").find(".dd").nestable('collapseAll');
+        $("#normalModal").find('[data-action="collapse"]').click();
+        $('#modal-body').find('li .dd-edit').hide();
+        $('.modal-footer').children('.cancle').hide();
+        $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+        $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+            var li = $(this).parent();
+            $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+            $(this).siblings('.dd-handle').addClass("dd-addon-click");
+            me.html(li.attr('data-name'));
+            me.attr("data-val",li.attr('data-val'));
+            me.siblings('input').val(li.attr('data-val'));
+            //$("#normalModal").toggle();
+        });
+    });
+
+
+    /**
+     * 数据保存后状态调用 
      */
     function save(res){
         delete res.uri;

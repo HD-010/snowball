@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-19 14:09:07
+ * @LastEditTime: 2019-08-19 16:30:21
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -711,10 +711,15 @@ var effect = {
      * html 代码 ：<label><input class="mui-switch mui-switch-anim" type="checkbox" checked><em></em></label> 
      * 属性 checked 表示默认打开状态
      * @param {*} selecter 事件监听的元素
-     * @param {*} on 打开状态显示的字样
-     * @param {*} off 关闭状态显示的字样
+     * @param {*} onVal 打开状态显示的字样
+     * @param {*} offVal 关闭状态显示的字样
+     * @param {*} onEvent 点击按钮时的事件，用于修改随状态改变的值
+     * 调用案例：
+     *      effect.switch(".is-hidden", '显示', '隐藏',function(e){
+                $(e).val($(e).prop('checked') ? 1: 0);
+            });
      */
-    switch: function(selecter,onVal,offVal){
+    switch: function(selecter,onVal,offVal,onEvent){
         var cl  = $(selecter);
         for(var i=0;i<cl.length;i++){
             if(cl[i].checked){
@@ -737,7 +742,9 @@ var effect = {
                 this.nextSibling.style.color = "#D2D2D2";
                 this.nextSibling.style.marginLeft='16px';                
             }
+            onEvent(this);
         })
+        
     },
 
     /**
@@ -817,7 +824,7 @@ var effect = {
     },
 
     /**
-     * 设置checkbox选项
+     * 设置radio选项
      * @param {*} selecter 
      * html代码结构：
      *  <div class="btn-group 监听的选择器" data-toggle="buttons">
@@ -1308,6 +1315,23 @@ function unique(arr){
     return res;
 }
 
+/**
+ * 扩展Array方法, 去除数组中空白数据
+ * 调用方法
+    var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
+    var b = a.notempty();
+    输出b    [1, 2, 4, 5, 7, 0, 8]
+ */
+function arrNotempty(array){
+    var arr = [];
+    array.map(function(val, index) {
+        //过滤规则为，不为空串、不为null、不为undefined，也可自行修改
+        if (val !== "" && val != undefined) {
+            arr.push(val);
+        }
+    });
+    return arr;
+}
 
 
 
@@ -1532,20 +1556,3 @@ function unique(arr){
 
     
 
-/**
- * 扩展Array方法, 去除数组中空白数据
- * 调用方法
-    var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
-    var b = a.notempty();
-    输出b    [1, 2, 4, 5, 7, 0, 8]
- */
-function arrNotempty(array){
-    var arr = [];
-    array.map(function(val, index) {
-        //过滤规则为，不为空串、不为null、不为undefined，也可自行修改
-        if (val !== "" && val != undefined) {
-            arr.push(val);
-        }
-    });
-    return arr;
-}

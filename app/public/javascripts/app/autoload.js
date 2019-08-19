@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:20
+ * @LastEditTime: 2019-08-19 15:54:26
+ * @LastEditors: Please set LastEditors
+ */
 Array.prototype.remove = function(val) { 
     var index = this.indexOf(val); 
     if (index > -1) { 
@@ -389,6 +396,7 @@ function ViewData(params){
                 evalStr = evalStr.replace('&lt;','<');
                 evalStr = evalStr.replace('&gt;','>');
                 evalStr = evalStr.substr(3,evalStr.length - 5);
+                evalStr = evalStr.replace(/=""/g,'');
                 eval(('value = (function(){try{' + evalStr + '}catch(e){return "";}})()'));
                 itemHtml = itemHtml.replace(matchs[i],value);
             }
@@ -454,6 +462,7 @@ function chmod(data,name,newName){
     if(typeof newName != 'object') newName = [newName];
     var dataType = data.constructor.name;
     var tempData = data;
+    var tempItem;
 
     if(dataType == 'Array'){
         for(var j = 0; j < data.length; j ++){

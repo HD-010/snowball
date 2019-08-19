@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-17 08:56:43
+ * @LastEditTime: 2019-08-19 17:24:39
+ * @LastEditors: Please set LastEditors
+ */
 function typeControler(){
     var that = this;
 
@@ -56,20 +63,14 @@ function typeControler(){
         type.list({id: atid},(res)=>{
             data.error = res.error;
             data.aType = res.data;
-            end(data);
+            ps = that.testRender(data, ps);
         })
         //当前组件的所有栏目信息
         type.list({nid: nid, addTop: true},(res)=>{
             data.error = res.error;
-            data.allType = res.data;
-            end(data);
+            data.allType = treeStrcut(res.data);
+            ps = that.testRender(data, ps);
         })
-
-        function end(data){
-            ps--;
-            if(data.error) return render(data);
-            if(!ps) return that.render(data);
-        }
     }
 
     /**
