@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-19 16:30:21
+ * @LastEditTime: 2019-08-20 16:40:20
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -60,6 +60,7 @@ var app = {
      * 示列 <a href="#" class="" data-async="post" data-uri="/admin/manager/del">删除管理员</a>
      * @attr {data-async} 必填属性 @param get或post 请求
      * @attr {data-uri}  必填属性 @param url 请求的方法或渲染页面的方法
+     * @attr {data-alert}  可选属性 @param string sweetalert跳框效果。值有方法名称一至，当前可用alert
      * @param {event} 事件监听 
      * @param {obj} 对象本身 
      * @param {callback} 这里的callback不是实际用于处理返回结果的函数。
@@ -70,7 +71,8 @@ var app = {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var dataUri = $(obj).attr('data-uri');
-        this.initAction(dataUri);
+        
+        app.initAction(dataUri);
         var uri = app.host + dataUri;
         var type = $(obj).attr('data-type') || 'json';
         if(!uri.length) return false;
@@ -80,10 +82,6 @@ var app = {
         for(var i=0;i<vars.length;i++){
             obj[vars[i].split("=")[0]]= vars[i].split("=")[1];
         }
-
-        // var point = uri.indexOf('?');
-        // var start = uri.lastIndexOf('/')+1;
-        // app.action = (point != -1) ? uri.substr(start,point-start) : uri.substr(start);
         //判断是post提交还是个get提交
         console.log("=====数据请求地址：",uri);
         console.log("=====数据请求参数：",obj);
@@ -286,6 +284,20 @@ var app = {
         }, 2000);
     },
 
+    alert: function(callback){
+        swal({
+            title: "您确定要删除这条信息吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function (res) {
+            swal("删除成功！", "您已经永久删除了这条信息。", "success");
+            callback(res);
+        });
+    },
     /**
      * 
      * @param {获取url参数} name 
@@ -397,12 +409,23 @@ var app = {
         //异步请求
         
         $(el).find('[data-async]').unbind('click').on('click',function(event) {
-            app.asyncProcess(event, this, function(res) {
-                //调用用户义的与操作名称同名的回调函数
-                try{eval((app['action'] + '(res);'));}catch(err){
-                    app.notice(res);
-                }
-            });
+            var that = this;
+            var alert = $(this).attr('data-alert');
+            if(!alert) return process();
+            if(typeof app[alert] == 'function'){
+                app[alert](function(res){
+                    if(res) process();
+                });
+            }
+
+            function process(){
+                app.asyncProcess(event, that, function(res) {
+                    //调用用户义的与操作名称同名的回调函数
+                    try{eval((app['action'] + '(res);'));}catch(err){
+                        app.notice(res);
+                    }
+                });
+            }
         });
 
         //同步请求

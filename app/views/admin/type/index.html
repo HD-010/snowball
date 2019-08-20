@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-20 15:46:28
+ * @LastEditTime: 2019-08-20 16:03:39
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -57,7 +57,7 @@
                                     </td> 
                                     <td class="project-actions">
                                         <a onclick='go("/admin/type/edt/ctag/<%= ctag %>?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
-                                        <a href="javascript:void(0)" data-async="POST" data-uri="/admin/type/del/ctag/<%= ctag %>?atid={{id}}" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                        <a href="javascript:void(0)" data-async="POST" data-alert='alert' data-uri="/admin/type/del/ctag/<%= ctag %>?atid={{id}}" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                                     </td>
                                 </tr>
                             </tbody>
