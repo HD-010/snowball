@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-20 15:36:20
+ * @LastEditTime: 2019-08-20 15:46:28
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -124,7 +124,9 @@
             var li = $(this).parent();
             $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
             $(this).siblings('.dd-handle').addClass("dd-addon-click");
-            me.val(li.attr('data-name'));
+            var searName = li.attr('data-name');
+            if(searName == "顶级栏目") searName = '';
+            me.val(searName);
             //me.attr("data-val",li.attr('data-val'));
             //me.siblings('input').val(li.attr('data-val'));
             me.keyup();

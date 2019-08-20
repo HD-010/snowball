@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-17 09:39:20
- * @LastEditTime: 2019-08-20 14:41:58
+ * @LastEditTime: 2019-08-20 15:45:35
  * @LastEditors: Please set LastEditors
  */
 function TypeModel(){
@@ -23,7 +23,7 @@ function TypeModel(){
         
         this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
-            data.data = (params.addTop) ? [{id: 1, pid: 0, name: "项级栏目", val:1, typename: '项级栏目'}] : []
+            data.data = (params.addTop) ? [{id: 1, pid: 0, name: "顶级栏目", val:1, typename: '项级栏目'}] : []
             data.data = data.data.concat(res);
             
             return callback(data);
