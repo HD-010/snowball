@@ -749,6 +749,8 @@
             var table = spec.createTab(cols,rows);
             var itemVal = '';
             tbody.append(table);
+            //添加表相关事件
+            spec.tabAutoFill();
             
             //设置表单元格信息
             for(var c = cols-1; c >= 0; c --){
@@ -900,6 +902,20 @@
                     (checkObj.html() == 'init') ? rowspan1.push(checkObj) : (rowspan0 = checkObj);
                 });
             }
+        },
+
+        //表相关事件-自动填充（取首行数据往下填充）
+        tabAutoFill: function(){
+            $(".auto-fill").unbind('click').on('click', function(){
+                var tbody,rows,cols,val;    
+                tbody = $(this).parentsUntil('tbody').parent();
+                rows = $(this).parent().prevAll().length + 1;
+                cols = tbody.find("tr");
+                for(var i = 2; i < cols.length; i ++){
+                    val = cols.eq(1).find('td:nth-child('+ rows +') input').val();
+                    cols.eq(i).find('td:nth-child('+ rows +') input').val(val);
+                }
+            })
         },
 
         //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
