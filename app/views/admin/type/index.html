@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-19 16:04:36
+ * @LastEditTime: 2019-08-20 14:51:12
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -57,7 +57,7 @@
                                     </td> 
                                     <td class="project-actions">
                                         <a onclick='go("/admin/type/edt/ctag/<%= ctag %>?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7"></i> 编辑 </a>
-                                        <a onclick='go("/admin/type/etl/ctag/<%= ctag %>?atid={{id}}")' class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                        <a href="javascript:void(0)" data-async="POST" data-uri="/admin/type/del/ctag/<%= ctag %>?atid={{id}}" class="btn btn-white btn-sm"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -83,6 +83,9 @@
 <script>
     var error = <%- error %>;
     var data = <%- JSON.stringify(data) %>;
+    app.addonParams = {oid: getItem("OID")}
+                
+           
     DL({
         dev: "on",
         listId: "#type-list",
@@ -94,6 +97,18 @@
         after: function(){
             $('.footable').footable();
             effect.switch(".mui-switch", '显示', '隐藏');
+            
+            app.load("#type-list");
         }
     });
+
+    /**
+     * 数据删除后状态调用 
+     */
+     function del(res){
+        delete res.uri;
+        app.notice(res,function(){
+            if(!res.error) go('/admin/type/index/ctag/' + res.ctag);
+        });
+    }
 </script>

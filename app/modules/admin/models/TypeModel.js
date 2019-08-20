@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-17 09:39:20
- * @LastEditTime: 2019-08-20 09:22:30
+ * @LastEditTime: 2019-08-20 14:41:58
  * @LastEditors: Please set LastEditors
  */
 function TypeModel(){
@@ -76,6 +76,38 @@ function TypeModel(){
             if(!error) data.message = '数据保存成功,正在跳转到列表...';
             return callback(data);
         });
+    }
+
+    /**
+     * 删除栏目信息
+     */
+    this.del = function(params, callback){
+        this.counSub(params, function(res){
+            if(res.error) return callback(res);
+            if(res.results[0].total) return callback(res);
+            var sql = `delete from youbang_arctype where componentid=` + params.componentId + ` and id=`+ params.atid;
+            that.DB().log().delete(sql, function(error, results){
+                res.error = error? 1: 0;
+                res.results = results;
+                return callback(res);
+            });
+        })
+        
+    }
+
+    /**
+     * 统计栏目id下有多少子栏目
+     */
+    this.counSub = function(params, callback){
+        var sql = 'select count(*) as total from youbang_arctype where topid=' + params.atid;
+        this.DB().select(sql, function(error, results){
+            var data = {
+                error: error? 1: 0,
+                results: results
+            }
+
+            return callback(data);
+        })
     }
 
 }
