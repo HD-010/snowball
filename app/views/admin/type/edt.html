@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-19 17:53:49
+ * @LastEditTime: 2019-08-20 09:40:09
  * @LastEditors: Please set LastEditors
  -->
 <script>
@@ -31,7 +31,7 @@
         <form id="type-edt" data-form-async='json' action="/admin/type/save" method="post" >
             <input type="hidden" name='tag' value="edt" />
             <input type="hidden" name='atid' value="{{id}}" />
-            <input type="hidden" name='ctag' value="infos" />
+            <input type="hidden" name='ctag' value="<%- echo(ctag) %>" />
             <input type="hidden" name='cmid' value="{{componentid}}" />
             <table class="table">
                 <thead>

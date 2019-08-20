@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:34
+ * @LastEditTime: 2019-08-20 09:40:17
+ * @LastEditors: Please set LastEditors
+ -->
 <div class="container-fluid base type-add">
     <div class="row head">
         <div class="col-xs-12">
@@ -15,6 +22,7 @@
     <div class="row form">
         <form id="type-add" data-form-async='json' action="/admin/type/save" method="post" >
             <input type="hidden" name='tag' value="add" />
+            <input type="hidden" name='ctag' value="<%- echo(ctag) %>" />
             <input type="hidden" name='cmid' value="<%= componentId; %>" />
             <table class="table">
                 <thead>
@@ -36,10 +44,11 @@
                     <tr>
                         <td>所属栏目：</td>
                         <td>
-                            <div class="form-group col-xs-4 auto-type-name">
-                                <select class="form-control" name='topid' data-key="<%= queryresultKeyValue(allType,'id').join('-') %>"  data-val="<%= queryresultKeyValue(allType,'typename').join('-')%>" placeholder="当前栏目是顶级栏目"></select>
+                            <div class="form-group col-xs-4">
+                                <div data-freemodal="type" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                                <input type="hidden" name="topid" value="1"/>
                             </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：选择栏目名称</span>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
                         </td> 
                     </tr>
                     <tr>
@@ -133,7 +142,7 @@
         </form>
     </div>
 </div>
-
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 
 <script>
     app.load(".type-add");
@@ -144,15 +153,46 @@
     var allType = <%- JSON.stringify(allType) %>;
     app.addonParams = {oid: getItem('OID')};
 
-    
+    /**
+     * nestable模态框--(栏目列表和分类列表)
+     */
+     $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(allType) %> || [];
+        // var classify = <%- //results ? results : 0 %> || [];
+        // var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
+        // var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
+        // effect.nestable(optData, error, '#modal-body');
+        effect.nestable(types, error, '#modal-body');
+        $("#normalModal").find(".dd").nestable('collapseAll');
+        $("#normalModal").find('[data-action="collapse"]').click();
+        $('#modal-body').find('li .dd-edit').hide();
+        $('.modal-footer').children('.cancle').hide();
+        $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+        $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+            var li = $(this).parent();
+            $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+            $(this).siblings('.dd-handle').addClass("dd-addon-click");
+            me.html(li.attr('data-name'));
+            me.attr("data-val",li.attr('data-val'));
+            me.siblings('input').val(li.attr('data-val'));
+            //$("#normalModal").toggle();
+        });
+    });
 
     /**
      * 数据保存后的操作 
      */
     function save(res){
         delete res.uri;
+        console.log("@@@@@@@@@@@@@@@@@OPOPO:",res);
         app.notice(res,function(){
-            if(!res.error) go('/admin/type/index');
+            if(!res.error) go('/admin/type/index' + res.ctag);
         });
     }
 </script>

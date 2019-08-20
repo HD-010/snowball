@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-17 08:56:43
- * @LastEditTime: 2019-08-19 17:24:39
+ * @LastEditTime: 2019-08-20 09:43:14
  * @LastEditors: Please set LastEditors
  */
 function typeControler(){
@@ -26,12 +26,11 @@ function typeControler(){
      * 添加栏目信息
      */
     this.add = function(){
-        var ps = 1;
         var data = {};
         var params = {};
         params.atid = that.GET('atid');
         params.addTop = true;
-        params.nid = params.ctag = this.param("ctag");
+        data.ctag = params.nid = params.ctag = this.param("ctag");
         //获取组件id
         var component = that.model('Component');
         component.list(params,(res)=>{
@@ -44,7 +43,7 @@ function typeControler(){
             //所有栏目信息或当前组件下的栏目信息
             type.list(params,(res)=>{
                 data.error = res.error;
-                data.allType = res.data;
+                data.allType = treeStrcut(res.data);
                 that.render(data);
             })
         });
@@ -59,6 +58,7 @@ function typeControler(){
         var data = {};
         var atid = that.GET('atid');
         var nid = this.param("ctag");
+        data.ctag = nid;
         //被编辑栏目信息
         type.list({id: atid},(res)=>{
             data.error = res.error;
