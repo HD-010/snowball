@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-17 16:57:01
+ * @LastEditTime: 2019-08-20 17:58:12
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(data[0]) %>
@@ -867,13 +867,18 @@
         //设置表样式
         setCss : function(){
             var table = $("#spec-table");
+            table.css({
+                'margin-top': '1em',
+                'margin-bottom': '0.8em'
+            });
             table.find('tr').css({
                 height:'2em',
             });
             table.find("th").addClass('col-md-1');
             table.find("th").css({
                 border:'1px solid #dee5e7',
-                'text-align':'center'
+                'text-align':'center',
+                'height':'2.5em'
             });
             table.find("td").css({
                 border:'1px solid #dee5e7',
@@ -883,6 +888,7 @@
                 display:"inline-block",
                 width:'100%',
                 height:'100%',
+                height:'2em',
                 border:0
             });
         },

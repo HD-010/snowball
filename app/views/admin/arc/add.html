@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-17 16:56:47
+ * @LastEditTime: 2019-08-20 17:58:06
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(addoninfos) %>
@@ -134,7 +134,7 @@
                         <input type="checkbox" id="oper-spec" style="width:20px;height:20px;vertical-align:bottom;" name="usespec" value="1" />启用分类
                     </label>
                     <div class="col-xs-8" id="oper-spec-nes" style="border:0;display:none;"></div>
-                    <table border='1' class="col-xs-12" id="spec-table"> </table>
+                    <table border='1' class="col-xs-12" id="spec-table" style="display:none;"> </table>
                 </td>
                 <input type="hidden" name="specname" value="">         
                 <input type="hidden" name="specitem" value="">         
@@ -814,10 +814,10 @@
 
         //创建表
         createTab : function(cols,rows) {
-            var addonTd = `<td><input class="spec_option text-center" data-option="" type='number' name='spec_marketprice' value=''></td>
+            var addonTd = `<td><input class="spec_option text-center " data-option="" type='number' name='spec_marketprice' value=''></td>
                             <td><input class="spec_option text-center" data-option="" type='number' name='spec_stock' value=''></td>
                             <td><input class="spec_option text-center" data-option="" type='text' name='spec_remark' value=''></td>`;
-            var str = "<tr onfocusout='spec.serializeTable()'>";
+            var str = `<tr onfocusout='spec.serializeTable()'>`;
             var etr = "</tr>";
             var tr = '';
             var tem = '';
@@ -850,13 +850,18 @@
         //设置表样式
         setCss : function(){
             var table = $("#spec-table");
+            table.css({
+                'margin-top': '1em',
+                'margin-bottom': '0.8em'
+            });
             table.find('tr').css({
                 height:'2em',
             });
             table.find("th").addClass('col-md-1');
             table.find("th").css({
                 border:'1px solid #dee5e7',
-                'text-align':'center'
+                'text-align':'center',
+                'height':'2.5em'
             });
             table.find("td").css({
                 border:'1px solid #dee5e7',
@@ -865,7 +870,7 @@
             table.find('input').css({
                 display:"inline-block",
                 width:'100%',
-                height:'100%',
+                height:'2em',
                 border:0
             });
         },
