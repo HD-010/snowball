@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-17 08:56:43
- * @LastEditTime: 2019-08-20 14:44:27
+ * @LastEditTime: 2019-08-20 15:22:29
  * @LastEditors: Please set LastEditors
  */
 function typeControler(){
@@ -10,6 +10,7 @@ function typeControler(){
 
     //展示所有栏目
     this.index = function(){
+        var ps = 2;
         var params = {};
         var ctag = this.param("ctag");
         var data = {ctag: ctag};
@@ -18,8 +19,14 @@ function typeControler(){
         //获取栏目列表
         type.list(params,(res)=>{
             data = mergeObj([data,res]);
-            that.render(data)
+            ps = that.testRender(data, ps);
         });
+        //当前组件的所有栏目信息
+        type.list({nid: ctag, addTop: true},(res)=>{
+            data.error = res.error;
+            data.allType = treeStrcut(res.data);
+            ps = that.testRender(data, ps);
+        })
     }
 
     /**

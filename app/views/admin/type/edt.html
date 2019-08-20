@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-20 14:49:52
+ * @LastEditTime: 2019-08-20 15:26:54
  * @LastEditors: Please set LastEditors
  -->
 <script>
@@ -54,7 +54,7 @@
                         <td>所属栏目：</td>
                         <td>
                             <div class="form-group col-xs-4">
-                                <div data-freemodal="type" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;">{{- return treeValue(allType, 'id', topid, 'typename'); }}</div>
+                                <div data-freemodal="type" data-name="选择栏目名称" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;">{{- return treeValue(allType, 'id', topid, 'typename'); }}</div>
                                 <input type="hidden" name="topid" value="{{topid}}"/>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
@@ -181,10 +181,6 @@
             confirm: function(item){}
         });
         var types = <%- error ? false : JSON.stringify(allType) %> || [];
-        // var classify = <%- //results ? results : 0 %> || [];
-        // var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
-        // var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
-        // effect.nestable(optData, error, '#modal-body');
         effect.nestable(types, error, '#modal-body');
         $("#normalModal").find(".dd").nestable('collapseAll');
         $("#normalModal").find('[data-action="collapse"]').click();

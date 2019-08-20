@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-20 14:51:12
+ * @LastEditTime: 2019-08-20 15:36:20
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索栏目名称...">
+                        <input type="text" data-name="选择栏目名称" data-freemodal="type" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索栏目名称...">
                         <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
                             <thead>
                                 <tr>
@@ -78,6 +78,7 @@
 </div>
 <!-- 全局js -->
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 
 
 <script>
@@ -91,7 +92,7 @@
         listId: "#type-list",
         clearCode: 1,
         packet: {
-            error: error,
+            error: data.length ? error : 1,
             data: data
         },
         after: function(){
@@ -100,6 +101,34 @@
             
             app.load("#type-list");
         }
+    });
+
+    /**
+     * nestable模态框--(栏目列表和分类列表)
+     */
+     $("[data-freemodal]").click(function(){
+        var me = $(this);
+        var title = me.attr('data-name');
+        effect.modal({
+            title: title,
+            confirm: function(item){}
+        });
+        var types = <%- error ? false : JSON.stringify(allType) %> || [];
+        effect.nestable(types, error, '#modal-body');
+        $("#normalModal").find(".dd").nestable('collapseAll');
+        $("#normalModal").find('[data-action="collapse"]').click();
+        $('#modal-body').find('li .dd-edit').hide();
+        $('.modal-footer').children('.cancle').hide();
+        $('#modal-body').find('li .dd-addon-handel').removeClass('hidden');
+        $("#normalModal").find('li .dd-addon-handel').unbind("click").on("click",function(){
+            var li = $(this).parent();
+            $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
+            $(this).siblings('.dd-handle').addClass("dd-addon-click");
+            me.val(li.attr('data-name'));
+            //me.attr("data-val",li.attr('data-val'));
+            //me.siblings('input').val(li.attr('data-val'));
+            me.keyup();
+        });
     });
 
     /**
