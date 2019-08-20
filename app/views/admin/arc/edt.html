@@ -927,14 +927,15 @@
             $(".auto-fill").unbind('click').on('click', function(){
                 var tbody,rows,cols,val;    
                 tbody = $(this).parentsUntil('tbody').parent();
-                rows = $(this).parent().prevAll().length + 1;
+                rows = $(this).parent().nextAll().length + 1;
                 cols = tbody.find("tr");
                 for(var i = 2; i < cols.length; i ++){
-                    val = cols.eq(1).find('td:nth-child('+ rows +') input').val();
-                    cols.eq(i).find('td:nth-child('+ rows +') input').val(val);
+                    val = cols.eq(1).find('td:nth-last-child('+ rows +') input').val();
+                    cols.eq(i).find('td:nth-last-child('+ rows +') input').val(val);
                 }
             })
         },
+
 
         //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
         specName: function(){
