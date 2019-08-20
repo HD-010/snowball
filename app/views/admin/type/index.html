@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:34
- * @LastEditTime: 2019-08-20 16:03:39
+ * @LastEditTime: 2019-08-20 17:05:59
  * @LastEditors: Please set LastEditors
  -->
 <div class="container-fluid base">
@@ -52,6 +52,7 @@
                                 <tr class="grade{{- return index%2?'C':'A'; }}">
                                     <td>{{typename}}</td>
                                     <td>{{keywords}}</td>
+                                    <td class="hidden">{{- return treeValue(types,'id',topid,'typename'); }}</td>
                                     <td style="padding-left:26px;">                                       
                                             <label><input class="mui-switch mui-switch-anim" {{- return ishidden?"checked":""; }} type="checkbox" value="{{ishidden}}"><em></em></label>                                      
                                     </td> 
@@ -80,10 +81,12 @@
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 
+<%- //print_r(data) %>
 
 <script>
     var error = <%- error %>;
     var data = <%- JSON.stringify(data) %>;
+    var types = <%- error ? false : JSON.stringify(allType) %> || [];
     app.addonParams = {oid: getItem("OID")}
                 
            
@@ -113,7 +116,6 @@
             title: title,
             confirm: function(item){}
         });
-        var types = <%- error ? false : JSON.stringify(allType) %> || [];
         effect.nestable(types, error, '#modal-body');
         $("#normalModal").find(".dd").nestable('collapseAll');
         $("#normalModal").find('[data-action="collapse"]').click();
@@ -124,9 +126,7 @@
             var li = $(this).parent();
             $("#normalModal").find(".dd-handle").removeClass('dd-addon-click');
             $(this).siblings('.dd-handle').addClass("dd-addon-click");
-            var searName = li.attr('data-name');
-            if(searName == "顶级栏目") searName = '';
-            me.val(searName);
+            me.val(li.attr('data-name'));
             //me.attr("data-val",li.attr('data-val'));
             //me.siblings('input').val(li.attr('data-val'));
             me.keyup();
