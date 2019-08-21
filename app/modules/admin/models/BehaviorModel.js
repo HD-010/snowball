@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-21 16:04:44
+ * @LastEditors: Please set LastEditors
+ */
 function BehaviorModel() {
     var uid;
     /**
@@ -95,6 +102,7 @@ function BehaviorModel() {
         // log("body:",this.req.body);
         // log("-----------------------oid--------------------------");
         if(!openID) return callback({error:1,uri:"/admin/sign/_check",router:router,message:"openID不存在"});
+        console.log("+++++++++++++++++++++:::::::::::::",openID);
         var openIDObj = parseOpenID(openID);
         uid = parseInt(openIDObj.id);
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];

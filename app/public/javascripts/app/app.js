@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-20 17:03:32
+ * @LastEditTime: 2019-08-21 17:11:04
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -394,6 +394,65 @@ var app = {
             obj[RegExp.$1] = RegExp.$2;
         }
         return obj;
+    },
+
+    /**
+     * 历史记录控制
+     */
+    history: {
+        init: function(){ 
+            app.history.push(); 
+            window.addEventListener("popstate", function(e) { 
+                app.history.push();
+                this.alert(e.state.url);
+                go(e.state.url);
+            }, true); 
+        },
+
+        push: function(state) { 
+            state = state || { 
+                title: "title", 
+                url: "#"
+            }; 
+            window.history.pushState(state, "title", "#"); 
+        } 
+    },
+
+    /**
+     * 请求重定向
+     * @param {*} el 
+     */
+    go: {
+        //默认frame框架
+        frame: '#left-space',
+        //定义全局的frame框架，优先级低于局部的
+        setFrame: function(name){
+            if(name) app.go.frame = name;
+            return app.go;
+        },
+        //跳转到指定的页面
+        location: function(url,layer){
+            if(!url) return;
+            var callback = null;
+            if(typeof layer == 'function'){
+                callback = layer;
+                layer = '';
+            }
+            if(!(url.indexOf('?') + 1)) url += '?';
+            if(!(url.indexOf('oid=') + 1)) url += '&oid=' + getItem("OID") ;
+            //将请求写入历史记录
+            if(layer === "top") return location.href = url;
+            $.ajax({
+                url : url,
+                type : 'get',
+                dataType : 'text',
+                success : callback || function(res){
+                    try{eval((res))}catch(e){
+                        $(layer || app.go.frame).html(res);
+                    }
+                }
+            });
+        },
     },
 
     /**
@@ -1120,8 +1179,29 @@ var effect = {
 
 }
 
+
+
 /** ============================效果插件 end=========================== */
 /** ===============================tools============================== */
+/**
+ * 加载内容到页面的指定位置
+ * url 数据请求地址
+ * layer 页面的指定位置的id号 或者是 'top' 直接跳转到新的页面 
+ * 或者 是方法名称，请求回来的数据交由指定的函数处理
+ */
+function go(url,layer){
+    app.go.location(url,layer);
+}
+
+/**
+ * 设置需要载入数据的框架的id,这里设置的是全局的，刷新页面失效。
+ * 超全局的 id是：'#left-space',优先级低于setFrame(id)设置的优先级
+ */
+function setFrame(id){
+    app.go.setFrame(id);
+}
+        
+
 /**
  * 返回请求时暂存的参数，如果参数不存在则返回null
  * @param {string} parNmae 
@@ -1580,4 +1660,3 @@ function arrNotempty(array){
     /** ===============================md5 end============================== */
 
     
-
