@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:20
+ * @LastEditTime: 2019-08-21 10:25:41
+ * @LastEditors: Please set LastEditors
+ -->
 
     <style>
         .dd-list>li .dd-edit{
@@ -222,12 +229,6 @@
                     return obj;
                 }
             };
-    
-            
-            //用于事件测试的元素
-            //$('#flushSpec').click(function(){
-                //console.log("=========================|||:",spce.readSpec());
-            //});
             
             //activate Nestable for list 2
             $('#nestable2').nestable({
@@ -237,6 +238,9 @@
             // output initial serialised data
             (function(){
                 spce.updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+                //收起所有项
+                $('.dd').nestable('collapseAll');  
+                //绑定相关事件   
                 spce.reset()
             })();
 

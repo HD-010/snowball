@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-21 09:58:39
+ * @LastEditTime: 2019-08-21 10:06:43
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(data[0]) %>
@@ -715,9 +715,6 @@
             $('input[name="specname"]').val(btoa(encodeURI(JSON.stringify(spec.specName()))));
             $('input[name="specitem"]').val(btoa(encodeURI(JSON.stringify(spec.specItem()))));
             $('input[name="specoption"]').val(btoa(encodeURI(JSON.stringify(spec.outSpec()))));
-            console.log("0000000specName00000000:", spec.specName());
-            console.log("0000000specItem00000000:", spec.specItem());
-            console.log("0000000outSpec00000000:", spec.outSpec());
         },
 
         //初始化数据到规格项明细表
