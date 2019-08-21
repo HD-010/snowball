@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-21 17:11:04
+ * @LastEditTime: 2019-08-21 18:00:10
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -403,8 +403,7 @@ var app = {
         init: function(){ 
             app.history.push(); 
             window.addEventListener("popstate", function(e) { 
-                app.history.push();
-                this.alert(e.state.url);
+                console.log(e);
                 go(e.state.url);
             }, true); 
         },
@@ -439,8 +438,9 @@ var app = {
                 layer = '';
             }
             if(!(url.indexOf('?') + 1)) url += '?';
-            if(!(url.indexOf('oid=') + 1)) url += '&oid=' + getItem("OID") ;
+            if(!(url.indexOf('oid=') + 1)) url += '&oid=' + getItem("OID");
             //将请求写入历史记录
+            app.history.push({title:'', url: url});
             if(layer === "top") return location.href = url;
             $.ajax({
                 url : url,
@@ -523,6 +523,7 @@ var app = {
     },
 
 };
+app.history.init();
 /** ===========================请求与接口 end========================= */
 
 /** ===========================scroll事件监听========================= */
@@ -1437,6 +1438,7 @@ function arrNotempty(array){
     });
     return arr;
 }
+
 
 
 
