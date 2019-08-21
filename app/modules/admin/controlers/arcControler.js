@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-19 15:07:29
- * @LastEditTime: 2019-08-19 14:42:56
+ * @LastEditTime: 2019-08-21 08:42:00
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -208,6 +208,9 @@ function arcControler(){
 
                 //当usespec参数为真，表示需要保存商品规格数据
                 if(that.POST('usespec')){
+                    log("@@@@@@@@@@@@@@@@@@::::",that.POST('specname'));
+                    log("@@@@@@@@@@@@@@@@@@::::",that.POST('specitem'));
+                    log("@@@@@@@@@@@@@@@@@@::::",that.POST('specoption'));
                     params.specname = JSON.parse(decodeURI(utility.base64decode(that.POST('specname'))));
                     params.specitem = JSON.parse(decodeURI(utility.base64decode(that.POST('specitem'))));
                     params.specoption = JSON.parse(decodeURI(utility.base64decode(that.POST('specoption'))));
