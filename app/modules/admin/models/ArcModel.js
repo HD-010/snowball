@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-19 14:16:28
+ * @LastEditTime: 2019-08-21 17:40:21
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
@@ -213,7 +213,8 @@ function ArcModel(){
             table:'youbang_archives',
             where:[]
         }
-        if(params.id) conditions.where.push("id in (" + params.id.replace(/_/g,',') + ")");
+        if(!params.id) return callback({error:1, message:'参数错误，删除失败'});
+        conditions.where.push("id in (" + params.id.replace(/_/g,',') + ")");
         this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
@@ -231,7 +232,8 @@ function ArcModel(){
             table: params.addtable,
             where:[]
         }
-        if(params.id) conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
+        if(!params.id) return callback({error:1, message:'参数错误，删除失败'});
+        conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
         this.DB().del(conditions,(error,results)=>{
             var data = {
                 error: error,
@@ -249,6 +251,7 @@ function ArcModel(){
         var conditions;
         var data = {error: 1};
         var tab = params.effectTabs || [];
+        if(!params.id) return callback({error:1, message:'参数错误，删除失败'});
         //var addoninfos =  params.addoninfos;
         for(var j = 0; j < tab.length; j ++){
             if(tab[j] == 'main' || tab[j] == 'addon') continue;
@@ -256,8 +259,9 @@ function ArcModel(){
 
             conditions = {
                 table: tab[j].substring(4),
-                where : [ 'aid = ' + params.id]
+                where : []
             }
+            conditions.where.push("aid in (" + params.id.replace(/_/g,',') + ")");
             this.DB().del(conditions,function(error,results,fields){
                 var data = {};
                 data.error = error ? 1 : 0;
