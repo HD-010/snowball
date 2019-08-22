@@ -17,6 +17,7 @@ function indexControler(){
        
         // log(parseOpenID(openID))
         var referer = this.req.headers.referer || this.req.headers.refererd;
+        if(!referer) return that.render({},'/admin/sign/_in');
         referer.indexOf('/admin/sign/_in') ? 
         that.renderLayer({}) : 
         that.render({});
