@@ -1175,6 +1175,21 @@ var effect = {
         });
         $("#" + attr.type + "Modal").toggle();
 
+    },
+
+    /**
+     * 优化图片加载
+     * @param {*} el 
+     * @param {*} defurl 
+     */
+    optimizeImgloading: function(el,defurl){
+        defurl = defurl || '/img/sys/admin/lose.jpg';
+        $(el).find('img').each(function(i, item){
+            if(!$(item).attr('src') && defurl) $(item).attr('src', defurl);
+        });
+        $(el).find('img').unbind('error').one('error',function(){
+            $(this).attr('src', defurl);
+        })
     }
 
 
