@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-19 15:54:26
+ * @LastEditTime: 2019-08-22 11:53:29
  * @LastEditors: Please set LastEditors
  */
 Array.prototype.remove = function(val) { 

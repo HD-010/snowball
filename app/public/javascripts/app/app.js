@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-21 18:00:10
+ * @LastEditTime: 2019-08-22 10:17:36
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -400,11 +400,13 @@ var app = {
      * 历史记录控制
      */
     history: {
+        state: [],
+
         init: function(){ 
             app.history.push(); 
             window.addEventListener("popstate", function(e) { 
-                console.log(e);
-                go(e.state.url);
+                e.preventDefault();
+                go(e.state.url, 1);
             }, true); 
         },
 
@@ -413,6 +415,7 @@ var app = {
                 title: "title", 
                 url: "#"
             }; 
+            console.log("pushAddress:",state.url)
             window.history.pushState(state, "title", "#"); 
         } 
     },
@@ -429,18 +432,28 @@ var app = {
             if(name) app.go.frame = name;
             return app.go;
         },
-        //跳转到指定的页面
-        location: function(url,layer){
+        /**
+         * 加载内容到页面的指定位置
+         * url 数据请求地址
+         * layer 页面的指定位置的id号 或者是 'top' 直接跳转到新的页面 
+         * 或者 是方法名称，请求回来的数据交由指定的函数处理
+         * state 状态 1 表示从历史记录访问
+         */
+        location: function(url,layer,state){
             if(!url) return;
             var callback = null;
             if(typeof layer == 'function'){
                 callback = layer;
                 layer = '';
             }
+            if(typeof layer == 'number'){
+                state = layer;
+                layer = '';
+            }
             if(!(url.indexOf('?') + 1)) url += '?';
             if(!(url.indexOf('oid=') + 1)) url += '&oid=' + getItem("OID");
             //将请求写入历史记录
-            app.history.push({title:'', url: url});
+            if(state !== 1) app.history.push({title:'url', url: url});
             if(layer === "top") return location.href = url;
             $.ajax({
                 url : url,
@@ -1204,9 +1217,10 @@ var effect = {
  * url 数据请求地址
  * layer 页面的指定位置的id号 或者是 'top' 直接跳转到新的页面 
  * 或者 是方法名称，请求回来的数据交由指定的函数处理
+ * state 状态 1 表示从历史记录访问
  */
-function go(url,layer){
-    app.go.location(url,layer);
+function go(url,layer,state){
+    app.go.location(url,layer,state);
 }
 
 /**

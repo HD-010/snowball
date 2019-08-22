@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:34
+ * @LastEditTime: 2019-08-22 12:59:35
+ * @LastEditors: Please set LastEditors
+ -->
 <!-- 视图加载 -->
 <div class="container-fluid header">
     <div class="row">
@@ -37,6 +44,10 @@ DL({
  * 装载栏目数据
  * */
 function type(results){
+    if(typeof results != 'object') {
+        try{eval((results))}catch(e){};
+        return;
+    }
     setDLData("#side-menu",results);
     reset(); //重置列表
     DL({
@@ -47,6 +58,10 @@ function type(results){
         befor : reset,
         after : bindevent
     });
+    
+        
+    
+    
 }
 
 //默认加载首页下的栏目
