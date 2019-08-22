@@ -415,7 +415,7 @@ var app = {
                 title: "title", 
                 url: "#"
             }; 
-            console.log("pushAddress:",state.url)
+            if(!state.url) return;
             window.history.pushState(state, "title", "#"); 
         } 
     },
