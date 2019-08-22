@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 11:31:33
- * @LastEditTime: 2019-08-22 10:55:02
+ * @LastEditTime: 2019-08-22 10:59:49
  * @LastEditors: Please set LastEditors
  */
 function indexControler(){
@@ -17,7 +17,7 @@ function indexControler(){
        
         // log(parseOpenID(openID))
         var referer = this.req.headers.referer || this.req.headers.refererd;
-        referer == 'http://127.0.0.1:3005/admin/sign/_in' ? 
+        referer.indexOf('/admin/sign/_in') ? 
         that.renderLayer({}) : 
         that.render({});
     }
