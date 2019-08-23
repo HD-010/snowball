@@ -974,9 +974,10 @@ var effect = {
         if(!selecter) return;
         $(selecter).find("select").each(function(index,item){
             //var itemAttr = $(item).find("select");
-            var dataKey = $(item).attr('data-key');
+            var dataKey = $(item).attr('data-key'); 
+            var dataval = $(item).attr('data-val'); 
             var key = dataKey ? dataKey.split('-') : [];
-            var val = dataKey ? $(item).attr('data-val').split('-') : [];
+            var val = dataval ? dataval.split('-') : key;
             var defVal = $(item).attr('data-def') ? $(item).attr('data-def').split('-') : [];
             var htmlCode = item.outerHTML;
             var optHtml = '';

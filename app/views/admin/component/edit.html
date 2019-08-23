@@ -9,17 +9,35 @@
 <% var data = results[0] || {} %>
 <% log(data.fieldset) %>
 <% log(data.listfields) %>
+<link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
 <style>
 .component-edit .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
+.component-edit .footable-row-detail-name {vertical-align: middle;}
+
+.component-edit .full {
+    height: 100%;
+    width: 100%;
+    border: 0;
+    display:inline-block;
+    margin:0 !important;
+}
+.component-edit td{padding:0; margin:0; text-align:center}
+.component-edit th{padding:0; margin:0;text-align:center}
+.component-edit .footable-toggle{display: none !important}
+.component-edit .footable-visible{
+    padding:0 !important;
+}
 .component-edit .mui-switch + em {
     position: relative;
-    top: -24px;
-    left: -8px;
-    font-size: 10px;
-    color: #ffffff;
-    cursor: pointer;
+    left: -42px;
 }
+.component-edit .textarea{
+    position: absolute !important;
+    margin-left: 300px !important;
+    margin-top: -140px !important;
+}
+    
 </style>
 <div class="container-fluid base">
     <div class="row head">
@@ -44,7 +62,7 @@
     
     <div class="row form component-edit">
         <form action="" method="">
-            <table class="table text-center" id="tab-1">
+            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="50">
                <thead>
                    <tr class="text-center">
                         <th>字段名称</th>
@@ -54,150 +72,97 @@
                         <th>是否为空</th>
                         <th>所属列表</th>
                         <th>默认值</th>
-                        <th>作用于表</th>
-                        <th>采集数据</th>
-                        <th>采集数量</th>
-                        <th>写入数据</th>
-                        <th>过滤数据</th>
+                        <th data-hide="all">作用于表</th>
+                        <th data-hide="all">采集数据</th>
+                        <th data-hide="all">采集数量</th>
+                        <th data-hide="all">写入数据</th>
+                        <th data-hide="all">过滤数据</th>
                         <th>输入类型</th>
-                        <th>更多属性</th>
+                        <th data-hide="all"></th>
+                        <th>操作</th>
                    </tr>
                 </thead>
                     <tbody>
                         <tr>
                             <!-- 字段名称 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input type="text" class="full"  name="itemname" value=""/>
                             </td>  
                             <!-- 字段标识  -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input type="text" class="full" name="field" value=""/>
                             </td>  
                             <!-- 数据类型 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <select class="full" data-key='int-varchar' data-def='' name="type"></select>
                             </td>  
                             <!-- 数据长度 -->
                             <td>
-                                <label class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </label>
+                                    <input type="number" class="full" name="maxlength" min=0 max=255 value=""/>
                             </td>  
                             <!-- 是否为空 -->
                             <td>
-                                <label class="form-group">
                                     <input class="mui-switch mui-switch-anim is-null"  type="checkbox" checked name="isnull" value="1"><em></em>
-                                </label>
                             </td> 
                             <!-- 所属列表  -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value=""/>
                             </td>  
                             <!-- 默认值 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input type="text" class="full" name="default" value=""/>
                             </td>  
                             <!-- 作用于表 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input type="text" name="effect" placeholder="'main' 或 表名称 或不填" value=""/>
                             </td>  
                             <!-- 采集数据 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                    <input class="mui-switch mui-switch-anim is-get"  type="checkbox" checked name="fieldget" value="1"><em></em>
                             </td> 
                             <!-- 采集数量  -->
                             <td>
-                                <label class="form-group">
-                                    <input class="mui-switch mui-switch-anim is-get"  type="checkbox" checked name="get" value="1"><em></em>
-                                </label>
+                                <input type="number" min=0 name="limit" value=""/>
                             </td>  
                             <!-- 写入数据 -->
                             <td>
-                                <label class="form-group">
-                                    <input class="mui-switch mui-switch-anim is-set"  type="checkbox" checked name="set" value="1"><em></em>
-                                </label>
+                                <input class="mui-switch mui-switch-anim is-set"  type="checkbox" checked name="fieldset" value="1"><em></em>
                             </td> 
                             <!-- 验证数据   -->
                             <td>
-                                <label class="form-group">
-                                    <input class="mui-switch mui-switch-anim is-novaild"  type="checkbox" checked name="novaild" value="1"><em></em>
-                                </label>
+                                <input class="mui-switch mui-switch-anim is-novaild"  type="checkbox" checked name="novaild" value="1"><em></em>
                             </td>  
                             <!-- 输入类型 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
-                                </div>
+                                <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
                             </td>  
                             <!-- 更多属性 -->
                             <td>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="comname" value=""/>
+                                <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols=150 rows=6 name="attr"></textarea>
+                            </td>   
+                            <td>
+                                <div class="btn-group hidden-xs pull-right" id="exampleToolbar" role="group">
+                                    <button type="button" class="btn btn-outline btn-default">
+                                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline btn-default">
+                                        <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline btn-default">
+                                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                    </button>
                                 </div>
-                            </td>            
+                            </td>         
                         </tr>
                         
                     </tbody>
-                <!-- <tbody>
-                    <tr>
-                        <td>：</td>
-                        <td>
-                            <div class="form-group col-xs-4">
-                                <input type="text" class="form-control" id="comname" name="comname" disabled placeholder="网站名称" value="<%= data.comname %>"/>
-                            </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
-                        </td>              
-                    </tr>
-
-                    <tr>
-                        <td>系统内置：</td>
-                        <td style="padding-left: 26px">
-                            <label><input class="mui-switch mui-switch-anim" disabled type="checkbox" checked><em></em></label>  
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>组件图标：</td>
-                        <td>
-                            <div class="form-group col-xs-4">
-                                <img src="<%= data.icon %>" />
-                            </div>       
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>组件数据表：</td>
-                        <td>
-                            <div class="form-group col-xs-4">
-                                <input type="text" class="form-control" id="comname" name="addtable" disabled placeholder="" value="<%= data.addtable %>"/>
-                            </div>
-                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
-                        </td>              
-                    </tr>
-                </tbody> -->
                 <tfoot>
                    <tr>
-                       <td></td>
-                       <td>
+                       <td colspan=14>
                             <button type="submit" class="btn">确定</button>
-                        </td>
-                        <td>
                             <button type="reset" class="btn">重置</button>
-                       </td>
+                        </td>
+                        
                    </tr>
                 </tfoot>
             </table>
@@ -206,11 +171,16 @@
 </div>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('.footable').footable();
+    });
     effect.switch('.is-null','是','否');
     effect.switch('.is-get','是','否');
     effect.switch('.is-set','是','否');
     effect.switch('.is-novaild','是','否');
+    effect.setSelect('.component-edit');
 
     
     $("a[data-toggle='tab']").click(function(){
