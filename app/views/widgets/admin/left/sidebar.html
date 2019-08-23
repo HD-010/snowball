@@ -85,6 +85,10 @@
         #wrapper .nav .user-infor>div>strong{
             display:block;
         }
+        #wrapper .menu-list .clickBg{
+            background-color:#f5faff !important;
+            /* background-color:#3ca2d7 !important; */
+        }
     </style>
     <!--左侧导航开始-->
     <div id="wrapper">
@@ -131,6 +135,8 @@
         function bindevent(){
             $(".menu-list a").unbind('click').on("click",function(e){
                 var curlist = $(this).siblings(".list-child");
+                $('#side-menu').find('.menu-list a').removeClass('clickBg');
+                $(this).addClass('clickBg');
                 curlist.toggle();
                 if(curlist.css('display') == 'none') {
                     e.preventDefault();
@@ -148,7 +154,7 @@
             var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
             data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
             DL({
-                dev : "on",
+                //dev : "on",
                 listId : '#'+listId,
                 cached : 1,
                 data: {uid:getItem("UID")},

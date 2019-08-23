@@ -153,6 +153,7 @@
         after: function(){
             app.load(".arcinfo");
             effect.unionSelect();
+            effect.optimizeImgloading('#arc-lists');
         }
     });
     
@@ -196,6 +197,7 @@
             after: function(){
                 app.load(".content-lists");
                 effect.unionSelect();
+                effect.optimizeImgloading('#arc-lists');
             }
         });
     }

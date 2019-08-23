@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-22 17:16:20
+ * @LastEditTime: 2019-08-23 14:58:58
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -415,7 +415,7 @@ var app = {
                 title: "title", 
                 url: "#"
             }; 
-            console.log("pushAddress:",state.url)
+            if(!state.url) return;
             window.history.pushState(state, "title", "#"); 
         } 
     },
@@ -1191,13 +1191,18 @@ var effect = {
     },
 
     /**
-     * 图片加载效果优化
+     * 优化图片加载
+     * @param {*} el 
+     * @param {*} defurl 
      */
-    optimize_imgload: function(el){
-        var img = $(el).find('img');
-        img.each(function(i,opt){
-            
+    optimizeImgloading: function(el,defurl){
+        defurl = defurl || '/img/sys/admin/lose.jpg';
+        $(el).find('img').each(function(i, item){
+            if(!$(item).attr('src') && defurl) $(item).attr('src', defurl);
         });
+        $(el).find('img').unbind('error').one('error',function(){
+            $(this).attr('src', defurl);
+        })
     }
 
 
