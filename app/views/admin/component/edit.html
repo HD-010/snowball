@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:33
+ * @LastEditTime: 2019-08-23 17:14:47
+ * @LastEditors: Please set LastEditors
+ -->
 
 <% var data = results[0] || {} %>
 <% log(data.fieldset) %>
@@ -5,6 +12,14 @@
 <style>
 .component-edit .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
+.component-edit .mui-switch + em {
+    position: relative;
+    top: -24px;
+    left: -8px;
+    font-size: 10px;
+    color: #ffffff;
+    cursor: pointer;
+}
 </style>
 <div class="container-fluid base">
     <div class="row head">
@@ -29,16 +44,117 @@
     
     <div class="row form component-edit">
         <form action="" method="">
-            <table class="table" id="tab-1">
+            <table class="table text-center" id="tab-1">
                <thead>
-                   <tr>
-                        <th class="col-xs-2">参数说明</th>
-                        <th>参数值</th>
+                   <tr class="text-center">
+                        <th>字段名称</th>
+                        <th>字段标识</th>
+                        <th>数据类型</th>
+                        <th>数据长度</th>
+                        <th>是否为空</th>
+                        <th>所属列表</th>
+                        <th>默认值</th>
+                        <th>作用于表</th>
+                        <th>采集数据</th>
+                        <th>采集数量</th>
+                        <th>写入数据</th>
+                        <th>过滤数据</th>
+                        <th>输入类型</th>
+                        <th>更多属性</th>
                    </tr>
                 </thead>
-                <tbody>
+                    <tbody>
+                        <tr>
+                            <!-- 字段名称 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 字段标识  -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 数据类型 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 数据长度 -->
+                            <td>
+                                <label class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </label>
+                            </td>  
+                            <!-- 是否为空 -->
+                            <td>
+                                <label class="form-group">
+                                    <input class="mui-switch mui-switch-anim is-null"  type="checkbox" checked name="isnull" value="1"><em></em>
+                                </label>
+                            </td> 
+                            <!-- 所属列表  -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 默认值 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 作用于表 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 采集数据 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td> 
+                            <!-- 采集数量  -->
+                            <td>
+                                <label class="form-group">
+                                    <input class="mui-switch mui-switch-anim is-get"  type="checkbox" checked name="get" value="1"><em></em>
+                                </label>
+                            </td>  
+                            <!-- 写入数据 -->
+                            <td>
+                                <label class="form-group">
+                                    <input class="mui-switch mui-switch-anim is-set"  type="checkbox" checked name="set" value="1"><em></em>
+                                </label>
+                            </td> 
+                            <!-- 验证数据   -->
+                            <td>
+                                <label class="form-group">
+                                    <input class="mui-switch mui-switch-anim is-novaild"  type="checkbox" checked name="novaild" value="1"><em></em>
+                                </label>
+                            </td>  
+                            <!-- 输入类型 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>  
+                            <!-- 更多属性 -->
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comname" value=""/>
+                                </div>
+                            </td>            
+                        </tr>
+                        
+                    </tbody>
+                <!-- <tbody>
                     <tr>
-                        <td>组件名称：</td>
+                        <td>：</td>
                         <td>
                             <div class="form-group col-xs-4">
                                 <input type="text" class="form-control" id="comname" name="comname" disabled placeholder="网站名称" value="<%= data.comname %>"/>
@@ -72,13 +188,15 @@
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：</span>
                         </td>              
                     </tr>
-                </tbody>
+                </tbody> -->
                 <tfoot>
                    <tr>
                        <td></td>
                        <td>
-                             <button type="submit" disabled class="btn">确定</button>
-                             <button type="reset" disabled class="btn">重置</button>
+                            <button type="submit" class="btn">确定</button>
+                        </td>
+                        <td>
+                            <button type="reset" class="btn">重置</button>
                        </td>
                    </tr>
                 </tfoot>
@@ -86,9 +204,15 @@
          </form>
      </div>
 </div>
-
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
-    effect.switch('.mui-switch','是','否');
+    effect.switch('.is-null','是','否');
+    effect.switch('.is-get','是','否');
+    effect.switch('.is-set','是','否');
+    effect.switch('.is-novaild','是','否');
+
+    
     $("a[data-toggle='tab']").click(function(){
         $(".table").addClass('hidden');
         $($(this).attr('data-target')).removeClass('hidden');

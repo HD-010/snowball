@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-23 14:58:58
+ * @LastEditTime: 2019-08-23 16:44:46
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -838,7 +838,7 @@ var effect = {
                 this.nextSibling.style.color = "#D2D2D2";
                 this.nextSibling.style.marginLeft='16px';                
             }
-            if(onEvent.constructor.name == 'Function') onEvent(this);
+            if(onEvent && onEvent.constructor.name == 'Function') onEvent(this);
         })
         
     },
