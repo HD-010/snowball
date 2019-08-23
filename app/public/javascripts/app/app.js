@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-22 10:17:36
+ * @LastEditTime: 2019-08-22 17:16:20
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -1188,6 +1188,16 @@ var effect = {
         });
         $("#" + attr.type + "Modal").toggle();
 
+    },
+
+    /**
+     * 图片加载效果优化
+     */
+    optimize_imgload: function(el){
+        var img = $(el).find('img');
+        img.each(function(i,opt){
+            
+        });
     }
 
 

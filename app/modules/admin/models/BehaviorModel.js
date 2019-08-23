@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:19
- * @LastEditTime: 2019-08-21 16:04:44
+ * @LastEditTime: 2019-08-22 13:02:33
  * @LastEditors: Please set LastEditors
  */
 function BehaviorModel() {
