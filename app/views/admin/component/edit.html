@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-24 08:38:11
+ * @LastEditTime: 2019-08-24 17:59:18
  * @LastEditors: Please set LastEditors
  -->
 
@@ -11,12 +11,13 @@
 <% log(data.listfields) %>
 <link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
 <style>
+.base .form td{padding:0}
 .component-edit .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
 .component-edit .footable-row-detail-name {vertical-align: middle;}
 
 .component-edit .full {
-    height: 100%;
+    height: 3.5em;
     width: 100%;
     border: 0;
     display:inline-block;
@@ -38,10 +39,18 @@
     margin-top: -140px !important;
 }
 .component-edit .tab-oper{
-    width: 36px !important;
+    width: 30px !important;
+    border:0;
+    padding-left:10px;
     position: absolute !important;
-    margin-top: -30px !important;
-    margin-left: 70px !important;
+    margin-top: -35px !important;
+    margin-left: 60px !important;
+}
+.component-edit .tab-oper .btn{
+    padding:0;
+}
+.component-edit .tab-hidden{
+    display:none;
 }
     
 </style>
@@ -140,15 +149,15 @@
                             <!-- 输入类型 -->
                             <td>
                                 <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
-                                <div class="btn-group hidden-xs pull-right tab-oper" id="exampleToolbar" role="group">
+                                <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar" role="group">
                                     <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                        <i class="glyphicon glyphicon-plus" data-name="plus" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                                        <i class="glyphicon glyphicon-chevron-down" data-name="down" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                        <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </td>  
@@ -159,6 +168,7 @@
                         </tr>
                         
                     </tbody>
+                    
                 <tfoot>
                    <tr>
                        <td colspan=14>
@@ -176,20 +186,55 @@
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('.footable').footable();
+    /**
+     * 操作柄 
+     **/
+    var oper = {
+        plus: function(o){
+            var tbody = $(o).parentsUntil('tbody').parent('tbody');
+            var tbodyHtml = $(o).parentsUntil('tbody').parent()[0].outerHTML;
+            $(tbody).after(tbodyHtml);
+            $(o).mouseout();
+            oper.event();
+        },
+        down: function(o){
+            
+            var me  = $(o).parentsUntil('td').parent('td').click();
+        },
+        trash: function(o){
+            $(o).parentsUntil('tbody').parent('tbody').remove();
+        },
+        hadShow: function(o){
+            $(o).parent().find(".tab-oper").addClass('tab-hidden');
+            $(o).find(".tab-oper").removeClass('tab-hidden');
+        },
+        hadHidden: function(o){
+            $(o).find(".tab-oper").addClass('tab-hidden');
+        },
+        event: function(){
+            $(".component-edit .tab-oper .btn").unbind('click').on('click', function(){
+                var name = $(this).children('i').attr('data-name');
+                if(name in oper) oper[name](this);
+            })
+            $(".component-edit tbody tr").unbind('mouseover').on('mouseover',function(){
+                oper.hadShow(this)
+            })
+            $(".component-edit tbody tr").unbind('mouseout').on('mouseout',function(){
+                oper.hadHidden(this)
+            })
+            //$('.footable').footable();
+        }
+    }
+    
+
+    $(document).ready(function(){
+        oper.event();
     });
     effect.switch('.is-null','是','否');
     effect.switch('.is-get','是','否');
     effect.switch('.is-set','是','否');
     effect.switch('.is-novaild','是','否');
     effect.setSelect('.component-edit');
-
-    
-    $("a[data-toggle='tab']").click(function(){
-        $(".table").addClass('hidden');
-        $($(this).attr('data-target')).removeClass('hidden');
-    });
 </script>
  
     
