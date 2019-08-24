@@ -25,6 +25,7 @@
 }
 .component-edit td{padding:0; margin:0; text-align:center}
 .component-edit th{padding:0; margin:0;text-align:center}
+.component-edit td input{text-align:center}
 .component-edit .footable-toggle{display: none !important}
 .component-edit .footable-visible{
     padding:0 !important;
@@ -35,16 +36,18 @@
 }
 .component-edit .textarea{
     position: absolute !important;
-    margin-left: 300px !important;
-    margin-top: -140px !important;
+    margin-left: 150px !important;
+    margin-top: -120px !important;
+    width: 70%;
+    border: 1px solid #cecece;
 }
 .component-edit .tab-oper{
     width: 30px !important;
     border:0;
     padding-left:10px;
     position: absolute !important;
-    margin-top: -35px !important;
-    margin-left: 60px !important;
+    margin-top: -45px !important;
+    margin-left: 3.3% !important;
 }
 .component-edit .tab-oper .btn{
     padding:0;
@@ -60,12 +63,12 @@
             <span>系统管理-应用编辑</span>
         </div>
     </div>
-    <!-- <ul class="nav nav-tabs" style="background-color:#fff">
+    <ul class="nav nav-tabs" style="background-color:#fff">
         <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 组件信息 </a>
         </li>
         <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i> 字段设置 </a>
         </li>
-    </ul> -->
+    </ul>
     <div class="row tips">
         <div class="col-xs-12">
             <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
@@ -76,107 +79,136 @@
     </div>
     
     <div class="row form component-edit">
-        <form action="" method="" >
-            <table class="footable table table-stripped toggle-arrow-tiny col-xs-10" data-page-size="50">
-               <thead>
-                   <tr class="text-center">
-                        <th>字段名称</th>
-                        <th>字段标识</th>
-                        <th>数据类型</th>
-                        <th>数据长度</th>
-                        <th>是否为空</th>
-                        <th>所属列表</th>
-                        <th>默认值</th>
-                        <th data-hide="all">作用于表</th>
-                        <th data-hide="all">采集数据</th>
-                        <th data-hide="all">采集数量</th>
-                        <th data-hide="all">写入数据</th>
-                        <th data-hide="all">过滤数据</th>
-                        <th>输入类型</th>
-                        <th data-hide="all"></th>
-                   </tr>
+        <form method="post" data-form-async='json' action="/admin/component/save" >
+            <table id="tab-1" class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                    </tr>
                 </thead>
-                    <tbody>
-                        <tr>
-                            <!-- 字段名称 -->
-                            <td>
-                                    <input type="text" class="full"  name="itemname" value=""/>
-                            </td>  
-                            <!-- 字段标识  -->
-                            <td>
-                                    <input type="text" class="full" name="field" value=""/>
-                            </td>  
-                            <!-- 数据类型 -->
-                            <td>
-                                    <select class="full" data-key='int-varchar' data-def='' name="type"></select>
-                            </td>  
-                            <!-- 数据长度 -->
-                            <td>
-                                    <input type="number" class="full" name="maxlength" min=0 max=255 value=""/>
-                            </td>  
-                            <!-- 是否为空 -->
-                            <td>
-                                    <input class="mui-switch mui-switch-anim is-null"  type="checkbox" checked name="isnull" value="1"><em></em>
-                            </td> 
-                            <!-- 所属列表  -->
-                            <td>
-                                    <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value=""/>
-                            </td>  
-                            <!-- 默认值 -->
-                            <td>
-                                    <input type="text" class="full" name="default" value=""/>
-                            </td>  
-                            <!-- 作用于表 -->
-                            <td>
-                                    <input type="text" name="effect" placeholder="'main' 或 表名称 或不填" value=""/>
-                            </td>  
-                            <!-- 采集数据 -->
-                            <td>
-                                    <input class="mui-switch mui-switch-anim is-get"  type="checkbox" checked name="fieldget" value="1"><em></em>
-                            </td> 
-                            <!-- 采集数量  -->
-                            <td>
-                                <input type="number" min=0 name="limit" value=""/>
-                            </td>  
-                            <!-- 写入数据 -->
-                            <td>
-                                <input class="mui-switch mui-switch-anim is-set"  type="checkbox" checked name="fieldset" value="1"><em></em>
-                            </td> 
-                            <!-- 验证数据   -->
-                            <td>
-                                <input class="mui-switch mui-switch-anim is-novaild"  type="checkbox" checked name="novaild" value="1"><em></em>
-                            </td>  
-                            <!-- 输入类型 -->
-                            <td>
-                                <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
-                                <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar" role="group">
-                                    <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-plus" data-name="plus" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-chevron-down" data-name="down" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline btn-default">
-                                        <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </td>  
-                            <!-- 更多属性 -->
-                            <td>
-                                <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols=150 rows=6 name="attr"></textarea>
-                            </td>   
-                        </tr>
-                        
-                    </tbody>
-                    
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
                 <tfoot>
-                   <tr>
-                       <td colspan=14>
+                    <tr>
+                        <td></td>
+                        <td>
                             <button type="submit" class="btn">确定</button>
                             <button type="reset" class="btn">重置</button>
                         </td>
-                        
-                   </tr>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="tab-2" class="footable table table-stripped toggle-arrow-tiny col-xs-10 hidden" data-page-size="50">
+               <thead>
+                    <tr class="text-center">
+                        <th style="min-width: 90px">字段别名</th>
+                        <th style="min-width: 90px">字段名称</th>
+                        <th style="min-width: 90px">所属数据表</th>
+                        <th style="min-width: 90px">数据类型</th>
+                        <th style="min-width: 90px">数据长度</th>
+                        <th style="min-width: 90px">是否为空</th>
+                        <th style="min-width: 90px">所属列表</th>
+                        <th style="min-width: 90px">默认值</th>
+                        <th style="min-width: 90px">输入类型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- 字段名称 -->
+                        <td>
+                            <input type="text" class="full"  name="itemname" value="" placeholder="字段含义"/>
+                        </td>  
+                        <!-- 字段名称  -->
+                        <td>
+                            <input type="text" class="full" name="field" value="" placeholder=""/>
+                        </td>  
+                        <td>
+                            <input type="text" class="full" name="effect" placeholder="'main' 或 tab_表名称 或不填" value="">
+                        </td>
+                        <!-- 数据类型 -->
+                        <td>
+                            <select class="full" data-key='int-varchar' data-def='' name="type"></select>
+                        </td>  
+                        <!-- 数据长度 -->
+                        <td>
+                            <input type="number" class="full" name="maxlength" min=0 max=255 value=""/>
+                        </td>  
+                        <!-- 是否为空 -->
+                        <td>
+                            <input class="mui-switch mui-switch-anim is-null"  type="checkbox" checked name="isnull" value="1"><em></em>
+                        </td> 
+                        <!-- 所属列表  -->
+                        <td>
+                            <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value=""/>
+                        </td>  
+                        <!-- 默认值 -->
+                        <td>
+                            <input type="text" class="full" name="default" value=""/>
+                        </td>  
+                        <td>
+                            <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
+                            <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar" role="group">
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-plus" data-name="plus" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-chevron-down" data-name="down" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </td>  
+                    </tr>
+                    <tr class="footable-row-detail" style="display:none">
+                        <td class="footable-row-detail-cell" colspan="9">
+                            <div class="footable-row-detail-inner">
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">采集数据:</div>
+                                    <div class="footable-row-detail-value">
+                                            <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked="" name="fieldget" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">采集数量:</div>
+                                    <div class="footable-row-detail-value" style="border:0; float:left;">
+                                        <input type="number" style="width:50px;border:1px solid #cecece" min=0 max=20 name="limit" value="">
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">写入数据:</div>
+                                    <div class="footable-row-detail-value">
+                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked="" name="fieldset" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">过滤数据:</div>
+                                    <div class="footable-row-detail-value">
+                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked="" name="novaild" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name"></div>
+                                    <div class="footable-row-detail-value">
+                                        <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols="150" rows="6" name="attr"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan=9>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                        </td>
+                    </tr>
                 </tfoot>
             </table>
          </form>
@@ -186,6 +218,7 @@
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script>
+    app.addonParams = {oid: getItem("OID")};
     /**
      * 操作柄 
      **/
@@ -198,11 +231,19 @@
             oper.event();
         },
         down: function(o){
-            
-            var me  = $(o).parentsUntil('td').parent('td').click();
+            var tr = $(o).parentsUntil('tbody').parent('tbody').find('.footable-row-detail');
+            tr.toggle();
+            tr.children('td').css({
+                padding:'10px',
+            })
+
         },
         trash: function(o){
-            $(o).parentsUntil('tbody').parent('tbody').remove();
+            var tbody = $(o).parentsUntil('tbody').parent('tbody');
+            if(!tbody.siblings("tbody").length) return;
+            app.alert(function(res){
+                if(res) tbody.remove();
+            });
         },
         hadShow: function(o){
             $(o).parent().find(".tab-oper").addClass('tab-hidden');
@@ -222,7 +263,12 @@
             $(".component-edit tbody tr").unbind('mouseout').on('mouseout',function(){
                 oper.hadHidden(this)
             })
-            //$('.footable').footable();
+            effect.switch('.is-null','是','否');
+            effect.switch('.is-get','是','否');
+            effect.switch('.is-set','是','否');
+            effect.switch('.is-novaild','是','否');
+            effect.setSelect('.component-edit');
+            app.load(".component-edit");
         }
     }
     
@@ -230,11 +276,20 @@
     $(document).ready(function(){
         oper.event();
     });
-    effect.switch('.is-null','是','否');
-    effect.switch('.is-get','是','否');
-    effect.switch('.is-set','是','否');
-    effect.switch('.is-novaild','是','否');
-    effect.setSelect('.component-edit');
+
+    //选项卡相关
+    $("a[data-toggle='tab']").click(function(){
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+
+    //数据保存时的回调
+    function save(res){
+        app.notice(res);
+        console.log("999999999999999999999999999999::", res);
+    }
 </script>
+
+
  
     

@@ -21,8 +21,17 @@ function componentControler(){
             
             that.render(res);
         });
+    }
 
-        
+    //保存数据
+    this.save = function(){
+        var params = {};
+        var compponent = this.model("Component");
+
+        compponent.save(params, function(results){
+
+            that.renderJson(results);
+        });
     }
 }
 
