@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-23 17:14:47
+ * @LastEditTime: 2019-08-24 08:38:11
  * @LastEditors: Please set LastEditors
  -->
 
@@ -37,6 +37,12 @@
     margin-left: 300px !important;
     margin-top: -140px !important;
 }
+.component-edit .tab-oper{
+    width: 36px !important;
+    position: absolute !important;
+    margin-top: -30px !important;
+    margin-left: 70px !important;
+}
     
 </style>
 <div class="container-fluid base">
@@ -61,8 +67,8 @@
     </div>
     
     <div class="row form component-edit">
-        <form action="" method="">
-            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="50">
+        <form action="" method="" >
+            <table class="footable table table-stripped toggle-arrow-tiny col-xs-10" data-page-size="50">
                <thead>
                    <tr class="text-center">
                         <th>字段名称</th>
@@ -79,7 +85,6 @@
                         <th data-hide="all">过滤数据</th>
                         <th>输入类型</th>
                         <th data-hide="all"></th>
-                        <th>操作</th>
                    </tr>
                 </thead>
                     <tbody>
@@ -135,13 +140,7 @@
                             <!-- 输入类型 -->
                             <td>
                                 <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
-                            </td>  
-                            <!-- 更多属性 -->
-                            <td>
-                                <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols=150 rows=6 name="attr"></textarea>
-                            </td>   
-                            <td>
-                                <div class="btn-group hidden-xs pull-right" id="exampleToolbar" role="group">
+                                <div class="btn-group hidden-xs pull-right tab-oper" id="exampleToolbar" role="group">
                                     <button type="button" class="btn btn-outline btn-default">
                                         <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                     </button>
@@ -152,7 +151,11 @@
                                         <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
-                            </td>         
+                            </td>  
+                            <!-- 更多属性 -->
+                            <td>
+                                <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols=150 rows=6 name="attr"></textarea>
+                            </td>   
                         </tr>
                         
                     </tbody>
