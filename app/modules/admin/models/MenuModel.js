@@ -47,19 +47,33 @@ function MenuModel(){
         var data = {error: 0};
         var topid = params.topid || 0;
         var url = params.topid ? 'url' : '';
-        var sql = "select max(id)+1 as pid from `youbang_sys_menu` where pid="+topid;
-        this.DB().select(sql, function(error, results){
+        var sql0 = "select max(id)+1 as pid from `youbang_sys_menu` where pid="+topid;
+        this.DB().select(sql0, function(error, results){
             data.error = error ? 1 : 0; 
             if(error) return callback(data);
-            log("7777777777777777777777777777777results:", results);
-
             var sql = "insert into `youbang_sys_menu` values \
             ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
             
-            log("7777777777777777777777777777777sql:", sql);
             that.DB().insert(sql, function(error, results){
                 data.error = error ? 1 : 0; 
-                callback(data);
+                this.DB().select(sql0, function(error, results){
+                    data.error = error ? 1 : 0; 
+                    if(error) return callback(data);
+                    url = '';
+                    var sql1 = "insert into `youbang_sys_menu` values \
+                    ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '查看"+ params.comname +"', 0, '"+ url +"', '1', '1')";
+                    url = '';
+                    var sql2 = "insert into `youbang_sys_menu` values \
+                    (("+ parseInt(results[0].pid + 1 ) +"), "+ topid +", '添加"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
+                    url = '';
+                    var sql3 = "insert into `youbang_sys_menu` values \
+                    (("+ parseInt(results[0].pid + 1 ) +"), "+ topid +", '添加"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
+                    that.DB().insert(sql1, function(error, results){});
+                    that.DB().insert(sql2, function(error, results){});
+                    that.DB().insert(sql3, function(error, results){});
+
+                    callback(data);
+                })
             })
         })
         
