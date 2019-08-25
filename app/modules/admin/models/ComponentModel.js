@@ -1,8 +1,9 @@
 function ComponentModel(){
+    var that = this;
     /**
      * 组件配置原数据
      */
-    this.originData = {
+    var originData = {
         field: "",			//字段标识
         itemname: "",			//字段名称(显示有页面)
         type: "int",					//数据表中数据类型
@@ -47,7 +48,6 @@ function ComponentModel(){
      * 保存数据
      */
     this.save = function(params,callback){
-        
         var fields,temField,conditions,names,temData,addonInfos;
         var data = {
             error: 1,
@@ -56,26 +56,48 @@ function ComponentModel(){
         conditions = {
             table: 'youbang_components',
             fields: [],
+            where: []
         }
         fields = this.POST('field');
+        if(typeof fields != "object") fields = [fields];
+        
         addonInfos = [];
         for(var i = 0; i < fields.length; i ++ ){
             if(!fields[i]) continue;
-            if(!names) names  = Object.keys(this.originData);
+            if(!names) names  = Object.keys(originData);
             temField = {};
             for(var j = 0; j < names.length; j ++){
                 temData = this.POST(names[j]);
                 if(!temData[i]) continue;
+                if(typeof temData != 'object') temData = [temData];
                 temField[names[j]] = temData[i];
             }
-            addonInfos.push(mergeObj([this.originData, temField]));
+            addonInfos.push(mergeObj([originData, temField]));
         }
-        if(!addonInfos.length) return callback(data);
-        addonInfos = JSON.stringify(addonInfos);
         
-        log("00000000000000000000000000000000:",addonInfos);
+        if(!addonInfos.length) return callback(data);comname
+        var nid = that.POST('nid');
+        if(!nid) return callback(data);
+        var comname = that.POST('comname');
+        if(!comname) return callback(data);
+        conditions.fields.push({
+            nid: nid,
+            comname: comname,
+            maintable: 'youbang_archives',
+            addtable:  'youbang_addon' + nid,
+            addoninfos: JSON.stringify(addonInfos),
+            issystem: 0,
+            isshow: 1,
+            icon: this.POST('icon')
+        })
+        var comid = this.POST('comid');
+        if(comid) conditions.where.push('id=' + comid);
+        this.DB().log().set(conditions, function(error, results){
+            data.error = error? 1: 0;
+            
+            return callback(data);
+        });
     }
-
 }
 
 module.exports = ComponentModel;
