@@ -75,21 +75,20 @@ function ComponentModel(){
             addonInfos.push(mergeObj([originData, temField]));
         }
         
-        if(!addonInfos.length) return callback(data);comname
+        if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);
-        var comname = that.POST('comname');
-        if(!comname) return callback(data);
         conditions.fields.push({
             nid: nid,
-            comname: comname,
+            comname: params.comname,
             maintable: 'youbang_archives',
             addtable:  'youbang_addon' + nid,
             addoninfos: JSON.stringify(addonInfos),
             issystem: 0,
             isshow: 1,
-            icon: this.POST('icon')
+            icon: params.icon
         })
+        data.comInfos = conditions.fields[0];
         var comid = this.POST('comid');
         if(comid) conditions.where.push('id=' + comid);
         this.DB().log().set(conditions, function(error, results){
@@ -97,6 +96,45 @@ function ComponentModel(){
             
             return callback(data);
         });
+    }
+
+    /**
+     * 创建组件信息表
+     */
+    this.create = function(params,callback){
+        var fields = [];
+        var data = {
+            error: 1,
+            message:["保存成功","请检查填写项，输入有误！！"]
+        }
+        var fieldInfos = JSON.parse(params.comInfos.addoninfos);
+        var _null,_default;
+        var sql = 'drop table if exists `'+ params.comInfos.addtable +'`';
+        for(var i = 0; i < fieldInfos.length; i ++){
+            var field = [];
+            _null = '';
+            _default = '';
+            field.push('`' + fieldInfos[i]['field'] + '`');
+            field.push(fieldInfos[i]['type']);
+            field.push('(' + fieldInfos[i]['maxlength'] + ')');
+            _null = fieldInfos[i]['isnull'] ? 'NULL' : 'NOT NULL';
+            field.push( _null );
+            _default = fieldInfos[i]['default'] ? 'DEFAULT '+ fieldInfos[i]['default'] : '';
+            field.push( _default );
+            field.push('COMMENT "' + fieldInfos[i]['itemname'] + '"');
+            fields.push(field.join(' '));
+        }
+        this.DB().query(sql, function(error, results){
+            if(error) return callback(data);
+            sql = 'create table `'+ params.comInfos.addtable +'`(' + fields.join(',') + '\
+            )ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;';
+
+            that.DB().query(sql, function(error, results){
+                log(error);
+                log(results);
+            });
+        });
+        
     }
 }
 

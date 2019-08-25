@@ -39,6 +39,31 @@ function MenuModel(){
             return callback(data);
         });
     }
+
+    /**
+     * 添加组件到菜单
+     */
+    this.add = function(params,callback){
+        var data = {error: 0};
+        var topid = params.topid || 0;
+        var url = params.topid ? 'url' : '';
+        var sql = "select max(id)+1 as pid from `youbang_sys_menu` where pid="+topid;
+        this.DB().select(sql, function(error, results){
+            data.error = error ? 1 : 0; 
+            if(error) return callback(data);
+            log("7777777777777777777777777777777results:", results);
+
+            var sql = "insert into `youbang_sys_menu` values \
+            ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
+            
+            log("7777777777777777777777777777777sql:", sql);
+            that.DB().insert(sql, function(error, results){
+                data.error = error ? 1 : 0; 
+                callback(data);
+            })
+        })
+        
+    }
     
 }
 

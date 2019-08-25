@@ -61,12 +61,32 @@ function componentControler(){
     //保存数据
     this.save = function(){
         var params = {};
+        var data = {error: 1, message: ['恭喜，创建应用成功！', '错误，填写的参数有误！']};
+        var ps = 1;
         var compponent = this.model("Component");
-
-        compponent.save(params, function(results){
-
-            that.renderJson(results);
+        params.comname = this.POST('comname') || '';
+        params.icon = this.POST('icon') || '';
+        if(!params.comname) return that.renderJson(data);
+        //保存组件信息
+        compponent.save(params, function(res){
+            if(res.error) return that.renderJson(data);
+            //创建与组件信息匹配的数据表
+            params.comInfos = res.comInfos;
+            compponent.create(params, function(res){
+                data = mergeObj([data, res]);
+                ps = that.testRenderJson(data, ps);
+            });
         });
+        //将组件管理写入菜单表
+        if(this.POST('isadd')){
+            ps ++;
+            var menu = this.model("Menu");
+            menu.add(params, function(res){
+                data = mergeObj([data, res]);
+                ps = that.testRenderJson(data, ps);
+            })
+        }
+        //将菜单id写入权限表
     }
 }
 
