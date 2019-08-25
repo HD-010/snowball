@@ -11,51 +11,88 @@
 <% log(data.listfields) %>
 <link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
 <style>
-.base .form td{padding:0}
-.component-edit .active{background-color:#FFF;}
-.table .active{background-color:#23AD44;}
-.component-edit .footable-row-detail-name {vertical-align: middle;}
+    .base .form td {
+        padding: 0
+    }
 
-.component-edit .full {
-    height: 3.5em;
-    width: 100%;
-    border: 0;
-    display:inline-block;
-    margin:0 !important;
-}
-.component-edit td{padding:0; margin:0; text-align:center}
-.component-edit th{padding:0; margin:0;text-align:center}
-.component-edit td input{text-align:center}
-.component-edit .footable-toggle{display: none !important}
-.component-edit .footable-visible{
-    padding:0 !important;
-}
-.component-edit .mui-switch + em {
-    position: relative;
-    left: -42px;
-}
-.component-edit .textarea{
-    position: absolute !important;
-    margin-left: 150px !important;
-    margin-top: -120px !important;
-    width: 70%;
-    border: 1px solid #cecece;
-}
-.component-edit .tab-oper{
-    width: 30px !important;
-    border:0;
-    padding-left:10px;
-    position: absolute !important;
-    margin-top: -45px !important;
-    margin-left: 3.3% !important;
-}
-.component-edit .tab-oper .btn{
-    padding:0;
-}
-.component-edit .tab-hidden{
-    display:none;
-}
+    .component-edit .active {
+        background-color: #FFF;
+    }
+
+    .table .active {
+        background-color: #23AD44;
+    }
+
+    #tab-2 .footable-row-detail-name {
+        vertical-align: middle;
+    }
+
+    #tab-2 .full {
+        height: 3.5em;
+        width: 100%;
+        border: 0;
+        display: inline-block;
+        margin: 0 !important;
+    }
+    #tab-1 td {
+        padding: 8px;
+        margin: 0;
+        text-align: left;
+    }
+    #tab-2 td {
+        padding: 0;
+        margin: 0;
+        text-align: center
+    }
     
+
+    #tab-2 th {
+        padding: 0;
+        margin: 0;
+        text-align: center
+    }
+
+    #tab-2 td input {
+        text-align: center
+    }
+
+    #tab-2 .footable-toggle {
+        display: none !important
+    }
+
+    #tab-2 .footable-visible {
+        padding: 0 !important;
+    }
+
+    #tab-2 .mui-switch+em {
+        position: relative;
+        left: -42px;
+    }
+
+    #tab-2 .textarea {
+        position: absolute !important;
+        margin-left: 150px !important;
+        margin-top: -120px !important;
+        width: 70%;
+        border: 1px solid #cecece;
+    }
+
+    #tab-2 .tab-oper {
+        width: 30px !important;
+        border: 0;
+        padding-left: 10px;
+        position: absolute !important;
+        margin-top: -45px !important;
+        margin-left: 3.3% !important;
+    }
+
+    #tab-2 .tab-oper .btn {
+        padding: 0;
+    }
+
+    #tab-2 .tab-hidden {
+        display: none;
+    }
 </style>
 <div class="container-fluid base">
     <div class="row head">
@@ -72,14 +109,14 @@
     <div class="row tips">
         <div class="col-xs-12">
             <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
-           <div class="col-xs-12">
-                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>              
-           </div>
+            <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>
+            </div>
         </div>
     </div>
-    
+
     <div class="row form component-edit">
-        <form method="post" data-form-async='json' action="/admin/component/save" >
+        <form method="post" data-form-async='json' action="/admin/component/save">
             <table id="tab-1" class="table">
                 <thead>
                     <tr>
@@ -89,8 +126,36 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>2</td>
+                        <td>应用名称</td>
+                        <td>
+                            <div class="form-group col-xs-4"><input type="text" class="form-control" name="comname"
+                                    val="" />
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi"
+                                    style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>应用图标</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" name="nid" val="" /></div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi"
+                                    style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>应用图标</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" name="comname" val="" />
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi"
+                                    style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -103,8 +168,9 @@
                     </tr>
                 </tfoot>
             </table>
-            <table id="tab-2" class="footable table table-stripped toggle-arrow-tiny col-xs-10 hidden" data-page-size="50">
-               <thead>
+            <table id="tab-2" class="footable table table-stripped toggle-arrow-tiny col-xs-10 hidden"
+                data-page-size="50">
+                <thead>
                     <tr class="text-center">
                         <th style="min-width: 90px">字段别名</th>
                         <th style="min-width: 90px">字段名称</th>
@@ -121,38 +187,42 @@
                     <tr>
                         <!-- 字段名称 -->
                         <td>
-                            <input type="text" class="full"  name="itemname" value="" placeholder="字段含义"/>
-                        </td>  
+                            <input type="text" class="full" name="itemname" value="" placeholder="字段含义" />
+                        </td>
                         <!-- 字段名称  -->
                         <td>
-                            <input type="text" class="full" name="field" value="" placeholder=""/>
-                        </td>  
+                            <input type="text" class="full" name="field" value="" placeholder="" />
+                        </td>
                         <td>
                             <input type="text" class="full" name="effect" placeholder="'main' 或 tab_表名称 或不填" value="">
                         </td>
                         <!-- 数据类型 -->
                         <td>
                             <select class="full" data-key='int-varchar' data-def='' name="type"></select>
-                        </td>  
+                        </td>
                         <!-- 数据长度 -->
                         <td>
-                            <input type="number" class="full" name="maxlength" min=0 max=255 value=""/>
-                        </td>  
+                            <input type="number" class="full" name="maxlength" min=0 max=255 value="" />
+                        </td>
                         <!-- 是否为空 -->
                         <td>
-                            <input class="mui-switch mui-switch-anim is-null"  type="checkbox" checked name="isnull" value="1"><em></em>
-                        </td> 
+                            <input class="mui-switch mui-switch-anim is-null" type="checkbox" checked name="isnull"
+                                value="1"><em></em>
+                        </td>
                         <!-- 所属列表  -->
                         <td>
-                            <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value=""/>
-                        </td>  
+                            <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value="" />
+                        </td>
                         <!-- 默认值 -->
                         <td>
-                            <input type="text" class="full" name="default" value=""/>
-                        </td>  
+                            <input type="text" class="full" name="default" value="" />
+                        </td>
                         <td>
-                            <select class="full" data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal' data-def='' name="inputtype"></select>
-                            <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar" role="group">
+                            <select class="full"
+                                data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal'
+                                data-def='' name="inputtype"></select>
+                            <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar"
+                                role="group">
                                 <button type="button" class="btn btn-outline btn-default">
                                     <i class="glyphicon glyphicon-plus" data-name="plus" aria-hidden="true"></i>
                                 </button>
@@ -163,7 +233,7 @@
                                     <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
                                 </button>
                             </div>
-                        </td>  
+                        </td>
                     </tr>
                     <tr class="footable-row-detail" style="display:none">
                         <td class="footable-row-detail-cell" colspan="9">
@@ -171,31 +241,39 @@
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">采集数据:</div>
                                     <div class="footable-row-detail-value">
-                                            <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked="" name="fieldget" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                        <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked=""
+                                            name="fieldget" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">采集数量:</div>
                                     <div class="footable-row-detail-value" style="border:0; float:left;">
-                                        <input type="number" style="width:50px;border:1px solid #cecece" min=0 max=20 name="limit" value="">
+                                        <input type="number" style="width:50px;border:1px solid #cecece" min=0 max=20
+                                            name="limit" value="">
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">写入数据:</div>
                                     <div class="footable-row-detail-value">
-                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked="" name="fieldset" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked=""
+                                            name="fieldset" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">过滤数据:</div>
                                     <div class="footable-row-detail-value">
-                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked="" name="novaild" value="1"><em style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked=""
+                                            name="novaild" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name"></div>
                                     <div class="footable-row-detail-value">
-                                        <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..." cols="150" rows="6" name="attr"></textarea>
+                                        <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..."
+                                            cols="150" rows="6" name="attr"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -211,85 +289,81 @@
                     </tr>
                 </tfoot>
             </table>
-         </form>
-     </div>
+        </form>
+    </div>
 </div>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script>
-    app.addonParams = {oid: getItem("OID")};
+    app.addonParams = { oid: getItem("OID") };
     /**
      * 操作柄 
      **/
     var oper = {
-        plus: function(o){
+        plus: function (o) {
             var tbody = $(o).parentsUntil('tbody').parent('tbody');
             var tbodyHtml = $(o).parentsUntil('tbody').parent()[0].outerHTML;
             $(tbody).after(tbodyHtml);
             $(o).mouseout();
             oper.event();
         },
-        down: function(o){
+        down: function (o) {
             var tr = $(o).parentsUntil('tbody').parent('tbody').find('.footable-row-detail');
             tr.toggle();
             tr.children('td').css({
-                padding:'10px',
+                padding: '10px',
             })
 
         },
-        trash: function(o){
+        trash: function (o) {
             var tbody = $(o).parentsUntil('tbody').parent('tbody');
-            if(!tbody.siblings("tbody").length) return;
-            app.alert(function(res){
-                if(res) tbody.remove();
+            if (!tbody.siblings("tbody").length) return;
+            app.alert(function (res) {
+                if (res) tbody.remove();
             });
         },
-        hadShow: function(o){
+        hadShow: function (o) {
             $(o).parent().find(".tab-oper").addClass('tab-hidden');
             $(o).find(".tab-oper").removeClass('tab-hidden');
         },
-        hadHidden: function(o){
+        hadHidden: function (o) {
             $(o).find(".tab-oper").addClass('tab-hidden');
         },
-        event: function(){
-            $(".component-edit .tab-oper .btn").unbind('click').on('click', function(){
+        event: function () {
+            $(".component-edit .tab-oper .btn").unbind('click').on('click', function () {
                 var name = $(this).children('i').attr('data-name');
-                if(name in oper) oper[name](this);
+                if (name in oper) oper[name](this);
             })
-            $(".component-edit tbody tr").unbind('mouseover').on('mouseover',function(){
+            $(".component-edit tbody tr").unbind('mouseover').on('mouseover', function () {
                 oper.hadShow(this)
             })
-            $(".component-edit tbody tr").unbind('mouseout').on('mouseout',function(){
+            $(".component-edit tbody tr").unbind('mouseout').on('mouseout', function () {
                 oper.hadHidden(this)
             })
-            effect.switch('.is-null','是','否');
-            effect.switch('.is-get','是','否');
-            effect.switch('.is-set','是','否');
-            effect.switch('.is-novaild','是','否');
+            effect.switch('.is-null', '是', '否');
+            effect.switch('.is-get', '是', '否');
+            effect.switch('.is-set', '是', '否');
+            effect.switch('.is-novaild', '是', '否');
             effect.setSelect('.component-edit');
             app.load(".component-edit");
         }
     }
-    
 
-    $(document).ready(function(){
+
+    $(document).ready(function () {
         oper.event();
     });
 
     //选项卡相关
-    $("a[data-toggle='tab']").click(function(){
+    $("a[data-toggle='tab']").click(function () {
         $(".table").addClass('hidden');
         $($(this).attr('data-target')).removeClass('hidden');
     });
 
     //数据保存时的回调
-    function save(res){
+    function save(res) {
         app.notice(res);
         console.log("999999999999999999999999999999::", res);
     }
 </script>
-
-
- 
-    

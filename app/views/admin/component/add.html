@@ -1,0 +1,481 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-25 11:08:33
+ * @LastEditTime: 2019-08-24 17:59:18
+ * @LastEditors: Please set LastEditors
+ -->
+
+<% //var data = results[0] || {} %>
+<% //log(data.fieldset) %>
+<% //log(data.listfields) %>
+<link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
+<style>
+    .base .form td {
+        padding: 0
+    }
+
+    .component-edit .active {
+        background-color: #FFF;
+    }
+
+    .table .active {
+        background-color: #23AD44;
+    }
+
+    #tab-2 .footable-row-detail-name {
+        vertical-align: middle;
+    }
+
+    #tab-2 .full {
+        height: 3.5em;
+        width: 100%;
+        border: 0;
+        display: inline-block;
+        margin: 0 !important;
+    }
+    #tab-1 td {
+        padding: 8px;
+        margin: 0;
+        text-align: left;
+    }
+    #tab-2 td {
+        padding: 0;
+        margin: 0;
+        text-align: center
+    }
+    
+
+    #tab-2 th {
+        padding: 0;
+        margin: 0;
+        text-align: center
+    }
+
+    #tab-2 td input {
+        text-align: center
+    }
+
+    #tab-2 .footable-toggle {
+        display: none !important
+    }
+
+    #tab-2 .footable-visible {
+        padding: 0 !important;
+    }
+
+    #tab-2 .mui-switch+em {
+        position: relative;
+        left: -42px;
+    }
+
+    #tab-2 .textarea {
+        position: absolute !important;
+        margin-left: 150px !important;
+        margin-top: -120px !important;
+        width: 70%;
+        border: 1px solid #cecece;
+    }
+
+    #tab-2 .tab-oper {
+        width: 30px !important;
+        border: 0;
+        padding-left: 10px;
+        position: absolute !important;
+        margin-top: -45px !important;
+        margin-left: 3.3% !important;
+    }
+
+    #tab-2 .tab-oper .btn {
+        padding: 0;
+    }
+
+    #tab-2 .tab-hidden {
+        display: none;
+    }
+    .replaceImg-label{
+    border:0;
+    width: 90%;
+    padding: 0;
+    margin : 0;
+    display: inline-table;
+    float: none;
+}
+.replaceImg-label label{margin-top: -5px;}
+.replaceImg-label img{
+    width: 130px;
+    height: 130px;
+    border:0;
+    overflow:hidden;
+    padding:0;
+    margin: 0;
+    margin-right: 10px;
+    float: left;
+}
+.replaceImg-label .fa-size{
+    font-size: 45px;
+    position: absolute;
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    /* left: 0;
+    margin-left:15px; */
+    text-align: center;
+    line-height: 130px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    visibility: hidden;
+}
+.replaceImg-label .fa-size :hover{visibility:visible;}
+</style>
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-添加应用</span>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" style="background-color:#fff">
+        <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 组件信息 </a>
+        </li>
+        <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i> 字段设置 </a>
+        </li>
+    </ul>
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form component-edit">
+        <form method="post" data-form-async='json' action="/admin/component/save">
+            <table id="tab-1" class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2">参数说明</th>
+                        <th>参数值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>应用名称</td>
+                        <td>
+                            <div class="form-group col-xs-4"><input type="text" class="form-control" name="comname"
+                                    val="" />
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi"
+                                    style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>应用标识</td>
+                        <td>
+                            <div class="form-group col-xs-4">
+                                <input type="text" class="form-control" name="nid" val="" /></div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi"
+                                    style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>应用图标：</td>
+                        <td class="pic-box" data-limit="1" data-field='icon''>
+                            <div class="form-group col-xs-8">
+                                <div class="replaceImg-label">
+                                    <label class="col-sm-2 control-label img-add" for="replaceImg">
+                                        <img src="/img/plus.png" />
+                                    </label>
+                                </div>
+                            </div>
+                            <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+                        </td>     
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table id="tab-2" class="footable table table-stripped toggle-arrow-tiny col-xs-10 hidden"
+                data-page-size="50">
+                <thead>
+                    <tr class="text-center">
+                        <th style="min-width: 90px">字段别名</th>
+                        <th style="min-width: 90px">字段名称</th>
+                        <th style="min-width: 90px">所属数据表</th>
+                        <th style="min-width: 90px">数据类型</th>
+                        <th style="min-width: 90px">数据长度</th>
+                        <th style="min-width: 90px">是否为空</th>
+                        <th style="min-width: 90px">所属列表</th>
+                        <th style="min-width: 90px">默认值</th>
+                        <th style="min-width: 90px">输入类型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- 字段名称 -->
+                        <td>
+                            <input type="text" class="full" name="itemname" value="" placeholder="字段含义" />
+                        </td>
+                        <!-- 字段名称  -->
+                        <td>
+                            <input type="text" class="full" name="field" value="" placeholder="" />
+                        </td>
+                        <td>
+                            <input type="text" class="full" name="effect" placeholder="'main' 或 tab_表名称 或不填" value="">
+                        </td>
+                        <!-- 数据类型 -->
+                        <td>
+                            <select class="full" data-key='int-varchar' data-def='' name="type"></select>
+                        </td>
+                        <!-- 数据长度 -->
+                        <td>
+                            <input type="number" class="full" name="maxlength" min=0 max=255 value="" />
+                        </td>
+                        <!-- 是否为空 -->
+                        <td>
+                            <input class="mui-switch mui-switch-anim is-null" type="checkbox" checked name="isnull"
+                                value="1"><em></em>
+                        </td>
+                        <!-- 所属列表  -->
+                        <td>
+                            <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value="" />
+                        </td>
+                        <!-- 默认值 -->
+                        <td>
+                            <input type="text" class="full" name="default" value="" />
+                        </td>
+                        <td>
+                            <select class="full"
+                                data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal'
+                                data-def='' name="inputtype"></select>
+                            <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar"
+                                role="group">
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-plus" data-name="plus" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-chevron-down" data-name="down" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="footable-row-detail" style="display:none">
+                        <td class="footable-row-detail-cell" colspan="9">
+                            <div class="footable-row-detail-inner">
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">采集数据:</div>
+                                    <div class="footable-row-detail-value">
+                                        <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked=""
+                                            name="fieldget" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">采集数量:</div>
+                                    <div class="footable-row-detail-value" style="border:0; float:left;">
+                                        <input type="number" style="width:50px;border:1px solid #cecece" min=0 max=20
+                                            name="limit" value="">
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">写入数据:</div>
+                                    <div class="footable-row-detail-value">
+                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked=""
+                                            name="fieldset" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name">过滤数据:</div>
+                                    <div class="footable-row-detail-value">
+                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked=""
+                                            name="novaild" value="1"><em
+                                            style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
+                                    </div>
+                                </div>
+                                <div class="footable-row-detail-row">
+                                    <div class="footable-row-detail-name"></div>
+                                    <div class="footable-row-detail-value">
+                                        <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..."
+                                            cols="150" rows="6" name="attr"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan=9>
+                            <button type="submit" class="btn">确定</button>
+                            <button type="reset" class="btn">重置</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- 图片上传必要 -->
+            <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+        </form>
+    </div>
+</div>
+<!-- 输出视图组件 -->
+<%- cropperView %>
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+<script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
+<script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
+<script>
+    app.addonParams = { oid: getItem("OID") };
+    /**
+     * 操作柄 
+     **/
+    var oper = {
+        plus: function (o) {
+            var tbody = $(o).parentsUntil('tbody').parent('tbody');
+            var tbodyHtml = $(o).parentsUntil('tbody').parent()[0].outerHTML;
+            $(tbody).after(tbodyHtml);
+            $(o).mouseout();
+            oper.event();
+        },
+        down: function (o) {
+            var tr = $(o).parentsUntil('tbody').parent('tbody').find('.footable-row-detail');
+            tr.toggle();
+            tr.children('td').css({
+                padding: '10px',
+            })
+
+        },
+        trash: function (o) {
+            var tbody = $(o).parentsUntil('tbody').parent('tbody');
+            if (!tbody.siblings("tbody").length) return;
+            app.alert(function (res) {
+                if (res) tbody.remove();
+            });
+        },
+        hadShow: function (o) {
+            $(o).parent().find(".tab-oper").addClass('tab-hidden');
+            $(o).find(".tab-oper").removeClass('tab-hidden');
+        },
+        hadHidden: function (o) {
+            $(o).find(".tab-oper").addClass('tab-hidden');
+        },
+        event: function () {
+            $(".component-edit .tab-oper .btn").unbind('click').on('click', function () {
+                var name = $(this).children('i').attr('data-name');
+                if (name in oper) oper[name](this);
+            })
+            $(".component-edit tbody tr").unbind('mouseover').on('mouseover', function () {
+                oper.hadShow(this)
+            })
+            $(".component-edit tbody tr").unbind('mouseout').on('mouseout', function () {
+                oper.hadHidden(this)
+            })
+            effect.switch('.is-null', '是', '否');
+            effect.switch('.is-get', '是', '否');
+            effect.switch('.is-set', '是', '否');
+            effect.switch('.is-novaild', '是', '否');
+            effect.setSelect('.component-edit');
+            app.load(".component-edit");
+        }
+    }
+
+
+    $(document).ready(function () {
+        oper.event();
+    });
+
+    //选项卡相关
+    $("a[data-toggle='tab']").click(function () {
+        $(".table").addClass('hidden');
+        $($(this).attr('data-target')).removeClass('hidden');
+    });
+
+    //数据保存时的回调
+    function save(res) {
+        app.notice(res);
+        console.log("999999999999999999999999999999::", res);
+    }
+</script>
+
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
+<script>
+    /**
+     * 图片上传处理器
+     * */
+     var uploader = {
+        index: 0,
+        picBox: ''
+    }
+    
+    //定位picBox
+    $("label.img-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+    });
+
+    //图片上传回调处理
+    function upProcess(data){
+        var info = {
+            error : 1,
+            message : "上传失败，请重新上传！"
+        };
+        if(data.state != 1) return app.notice(info);
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
+            <span class="fa fa-close fa-size"></span>
+            <img src="/` + data.url + `" />
+            </div>`;
+            
+        $(uploader.picBox).find(".img-add").before($(addObj));
+        $(uploader.picBox).append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
+        info.message = "恭喜您上传成功！";
+        app.notice(info);
+        uploader.index ++;
+    
+        setEffect();
+    }
+    function setEffect(){
+        $(".img-handl").unbind('mouseover').on("mouseover",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'visible'
+            });
+        })
+        $(".img-handl").unbind('mouseout').on("mouseout",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'hidden'
+            });
+        })
+        //删除上传的图片
+        $(".img-handl").unbind('click').on("click",function(e){
+            var dataImg = $(this).attr('data-img');
+            $('[data-img='+ dataImg +']').remove();
+            var arr = dataImg.split('-');
+            var index = arr[arr.length - 1];
+            delete j[index];
+            if(j.length) j.length --;
+            setEffect()
+        })
+
+        //控制添加按钮显示与隐藏
+        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+        $(picBox).each(function(index,item){
+            var limit = $(item).attr('data-limit');//设置显示张数
+            $(item).find(".replaceImg-label").children().hide();
+            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        });
+    } 
+    
+    //效果初始化
+    setEffect();
+</script>
