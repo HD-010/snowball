@@ -1,4 +1,11 @@
-function permitModel(){
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-17 15:04:46
+ * @LastEditTime: 2019-08-26 17:52:20
+ * @LastEditors: Please set LastEditors
+ */
+function PermitModel(){
 
     var that = this;
     /**
@@ -35,11 +42,6 @@ function permitModel(){
                     });
                 }       
         })
-           
-       
-       
-
-       
     }
 
     /**
@@ -217,7 +219,28 @@ function permitModel(){
         })       
     }
 
+    /**
+     * 向权限表写入新增组件的menuid
+     */
+    that.add = function(params, callback){
+        var data = {};
+        var sql = "insert into `youbang_sys_permit`\
+        (`userId`, `groupId`,`menuId`,`add`,`delete`,`edit`,`show`,`enable`) \
+        values \
+        ('', 1, " + params.menuid + ", '1', '1', '1', '1', '1'),\
+        ('', 1, "+ parseInt(params.menuSubid - 4) +", '1', '1', '1', '1', '1'),\
+        ('', 1, "+ parseInt(params.menuSubid - 3) +", '1', '1', '1', '1', '1'),\
+        ('', 1, "+ parseInt(params.menuSubid - 2) +", '1', '1', '1', '1', '1'),\
+        ('', 1, "+ parseInt(params.menuSubid - 1) +", '1', '1', '1', '1', '1'),\
+        ('', 1, "+ params.menuSubid +", '1', '1', '1', '1', '1')";
 
+        this.DB().insert(sql, function(error, results){
+            data.error = error ? 1 : 0;
+            callback(data);
+        })
+    }
 }
 
-module.exports = permitModel;
+
+
+module.exports = PermitModel;

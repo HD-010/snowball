@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-04 10:32:08
+ * @LastEditTime: 2019-08-26 16:50:35
+ * @LastEditors: Please set LastEditors
+ */
 function MenuModel(){
 
     var that = this;
@@ -45,34 +52,33 @@ function MenuModel(){
      */
     this.add = function(params,callback){
         var data = {error: 0};
-        var topid = params.topid || 0;
-        var url = params.topid ? 'url' : '';
+        var topid = params.topid || 3;
+        var ctag = '/ctag/' + params.nid;
         var sql0 = "select max(id)+1 as pid from `youbang_sys_menu` where pid="+topid;
+        
         this.DB().select(sql0, function(error, results){
             data.error = error ? 1 : 0; 
             if(error) return callback(data);
             var sql = "insert into `youbang_sys_menu` values \
-            ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
-            
+            ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '"+ params.comname +"', 0, '', '1', '1')";
             that.DB().insert(sql, function(error, results){
                 data.error = error ? 1 : 0; 
-                this.DB().select(sql0, function(error, results){
+                if(!error) data.menuid = results.insertId;
+                that.DB().select(sql0, function(error, results){
                     data.error = error ? 1 : 0; 
                     if(error) return callback(data);
-                    url = '';
                     var sql1 = "insert into `youbang_sys_menu` values \
-                    ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '查看"+ params.comname +"', 0, '"+ url +"', '1', '1')";
-                    url = '';
-                    var sql2 = "insert into `youbang_sys_menu` values \
-                    (("+ parseInt(results[0].pid + 1 ) +"), "+ topid +", '添加"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
-                    url = '';
-                    var sql3 = "insert into `youbang_sys_menu` values \
-                    (("+ parseInt(results[0].pid + 1 ) +"), "+ topid +", '添加"+ params.icon +"', '"+ params.comname +"', 0, '"+ url +"', '1', '1')";
-                    that.DB().insert(sql1, function(error, results){});
-                    that.DB().insert(sql2, function(error, results){});
-                    that.DB().insert(sql3, function(error, results){});
+                    ("+ parseInt(data.menuid) * 10 + 1 +", "+ data.menuid +", '', '查看"+ params.comname +"', 0, '/admin/arc/show"+ ctag +"', '1', '1'),\
+                    ("+ parseInt(data.menuid) * 10 + 2 +", "+ data.menuid +", '', '创建"+ params.comname +"', 0, '/admin/arc/add"+ ctag +"', '1', '1'),\
+                    ("+ parseInt(data.menuid) * 10 + 3 +", "+ data.menuid +", '', '添加栏目', 0, '/admin/type/add"+ ctag +"', '1', '1'),\
+                    ("+ parseInt(data.menuid) * 10 + 4 +", "+ data.menuid +", '', '查看栏目', 0, '/admin/type/index"+ ctag +"', '1', '1'),\
+                    ("+ parseInt(data.menuid) * 10 + 5 +", "+ data.menuid +", '', '管理分类', 0, '/admin/classify/index"+ ctag +"', '1', '1')";
 
-                    callback(data);
+                    that.DB().insert(sql1, function(error, results){
+                        data.error = error ? 1 : 0;
+                        if(!error) data.menuSubid = results.insertId;
+                        callback(data);
+                    });
                 })
             })
         })

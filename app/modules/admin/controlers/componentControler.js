@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-15 14:22:07
+ * @LastEditTime: 2019-08-26 17:51:25
+ * @LastEditors: Please set LastEditors
+ */
 function componentControler(){
     var that = this;
     //展示所有应用
@@ -66,7 +73,8 @@ function componentControler(){
         var compponent = this.model("Component");
         params.comname = this.POST('comname') || '';
         params.icon = this.POST('icon') || '';
-        if(!params.comname) return that.renderJson(data);
+        params.nid = this.POST('nid') || '';
+        if(!params.comname || !params.nid) return that.renderJson(data);
         //保存组件信息
         compponent.save(params, function(res){
             if(res.error) return that.renderJson(data);
@@ -77,16 +85,23 @@ function componentControler(){
                 ps = that.testRenderJson(data, ps);
             });
         });
-        //将组件管理写入菜单表
+
         if(this.POST('isadd')){
+            //将组件管理写入菜单表
             ps ++;
             var menu = this.model("Menu");
             menu.add(params, function(res){
                 data = mergeObj([data, res]);
-                ps = that.testRenderJson(data, ps);
+                if(res.error) return renderJson(data);
+                
+                //将菜单id写入权限表
+                that.model('Permit').add(res, function(res){
+                    data = mergeObj([data, res]);
+                    //ps = that.testRenderJson(data, ps);
+                })
             })
+            
         }
-        //将菜单id写入权限表
     }
 }
 
