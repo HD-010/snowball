@@ -583,6 +583,7 @@
 </div>
 <!-- 输出视图组件 -->
 <%- cropperView %>
+<%- print_r(results) %>
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
@@ -605,7 +606,7 @@
             confirm: function(item){}
         });
         var types = <%- error ? false : JSON.stringify(types) %> || [];
-        var classify = <%- results ? results : 0 %> || [];
+        var classify = <%- results.length ? results : 'new Array()' %>;
         var mergedList = classify.concat(types);                         //合并分类列表数据和栏目列表数据
         var optData = treeValue(mergedList,'name',title,'children');      //应用于初始化选项的数据
         effect.nestable(optData, error, '#modal-body');

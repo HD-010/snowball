@@ -227,12 +227,12 @@ function PermitModel(){
         var sql = "insert into `youbang_sys_permit`\
         (`userId`, `groupId`,`menuId`,`add`,`delete`,`edit`,`show`,`enable`) \
         values \
-        ('', 1, " + params.menuid + ", '1', '1', '1', '1', '1'),\
-        ('', 1, "+ parseInt(params.menuSubid - 4) +", '1', '1', '1', '1', '1'),\
-        ('', 1, "+ parseInt(params.menuSubid - 3) +", '1', '1', '1', '1', '1'),\
-        ('', 1, "+ parseInt(params.menuSubid - 2) +", '1', '1', '1', '1', '1'),\
-        ('', 1, "+ parseInt(params.menuSubid - 1) +", '1', '1', '1', '1', '1'),\
-        ('', 1, "+ params.menuSubid +", '1', '1', '1', '1', '1')";
+        (null, 1, " + params.menuid + ", '1', '1', '1', '1', '1'),\
+        (null, 1, "+ parseInt(params.menuSubid - 4) +", '1', '1', '1', '1', '1'),\
+        (null, 1, "+ parseInt(params.menuSubid - 3) +", '1', '1', '1', '1', '1'),\
+        (null, 1, "+ parseInt(params.menuSubid - 2) +", '1', '1', '1', '1', '1'),\
+        (null, 1, "+ parseInt(params.menuSubid - 1) +", '1', '1', '1', '1', '1'),\
+        (null, 1, "+ params.menuSubid +", '1', '1', '1', '1', '1')";
 
         this.DB().insert(sql, function(error, results){
             data.error = error ? 1 : 0;

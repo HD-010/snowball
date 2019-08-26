@@ -4,20 +4,20 @@ function ComponentModel(){
      * 组件配置原数据
      */
     var originData = {
-        field: "",			//字段标识
-        itemname: "",			//字段名称(显示有页面)
-        type: "int",					//数据表中数据类型
-        maxlength: "10",				//字段最大长度
-        isnull: true,					//数据表中是否允许为null
-        islist: "信息分类",				//数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
-        default: 0,					//字段默认值
+        field: "",			        //字段标识
+        itemname: "",			    //字段名称(显示有页面)
+        type: "int",				//数据表中数据类型
+        maxlength: "10",			//字段最大长度
+        isnull: true,				//数据表中是否允许为null
+        islist: "",			 //数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
+        default: '',				//字段默认值
         effect: "",					//作用于表，可选值main(itemnamet和islist项同时作用于主表）|""(默认附加表) | "tab_表名"（各项属性适用于对应名称的表）
-        fieldget: 1,					//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
-        fieldset: 1,					//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
-        limit: 1,						//限制图片上传的张数，或限制address的层级数
+        fieldget: 1,				//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
+        fieldset: 1,				//是否写入数据（如果设置1，则在model中获取客户后台客户端采集到的数据，将其保存到数据库中；返回之不保存。）
+        limit: 1,					//限制图片上传的张数，或限制address的层级数
         novaild: 1,					//如果为true，对字段不需要特殊字符过滤
         inputtype:"input",			//输入框类型 input|checkbox|radio|select|textarea|uediter|uploader|nesmodal|address|freemodal
-        attr: " disabled data-def=4 data-comment=如：这是注释" //视图中输入框属性
+        attr: " data-comment=如：这是注释" //视图中输入框属性
     }
 
     /**
@@ -102,7 +102,13 @@ function ComponentModel(){
      * 创建组件信息表
      */
     this.create = function(params,callback){
-        var fields = [];
+        var fields = [
+            "`aid` bigint(13) NOT NULL DEFAULT '0'",
+            "`typeid` int(11) NOT NULL DEFAULT '0' COMMENT '栏目id'",
+            "`componentid` smallint(6) NOT NULL DEFAULT '0' COMMENT '组件id'",
+            "`arcrank` smallint(6) NOT NULL DEFAULT '0' COMMENT '排序'",
+            "`mid` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '发布人id'"
+        ];
         var data = {
             error: 1,
             message:["保存成功","请检查填写项，输入有误！！"]
