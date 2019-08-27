@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-27 16:45:17
+ * @LastEditTime: 2019-08-27 16:56:34
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -239,6 +239,14 @@ var app = {
 
     /**
      * 唯一值检测
+     * 验证输入数据在数据表的唯一性，如果与数据表中对应字段值重复，当前输入值被清空
+     * html 代码：
+     * <input type="text" data-check="components" data-uri="/admin/trance/val-exists" data-check="val-exists" class="form-control" name="nid" val="" />
+     * 注：
+     * data-check="表名"
+     * data-uri="验证接口"
+     * name="被验证的字段名称"
+     * value="被验证字段对应的值"
      */
     valExistsPorcess: function(e, o, el){
         var tab = $(o).attr('data-check');
