@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-27 17:05:00
+ * @LastEditTime: 2019-08-27 17:51:52
  * @LastEditors: Please set LastEditors
  -->
 
@@ -196,12 +196,17 @@
                         <td class="pic-box" data-limit="1" data-field='icon''>
                             <div class="form-group col-xs-8">
                                 <div class="replaceImg-label">
+                                    <div class="img-handl" data-img="'+ imgTag +'">
+                                        <span class="fa fa-close fa-size"></span>
+                                        <img src="" />
+                                    </div>
                                     <label class="col-sm-2 control-label img-add" for="replaceImg">
                                         <img src="/img/plus.png" />
                                     </label>
                                 </div>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+                            <input type="hidden" data-img="data-img-icon-0" name="icon"  value="" />
                         </td>     
                     </tr>
                 </tbody>
