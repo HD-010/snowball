@@ -73,7 +73,7 @@ function arcControler(){
             data.comname = res.results[0].comname;              //附加表字段信息
             //获取上传文件组件信息
             var oid = that.GET('oid') || that.POST('oid');
-            data = mergeObj([data, this.model("File").upload({
+            data = mergeObj([data, that.model("File").upload({
                 oid: oid
             })]);
             ps = that.testRender(data,ps);

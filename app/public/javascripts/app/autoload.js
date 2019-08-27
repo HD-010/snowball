@@ -378,7 +378,15 @@ function ViewData(params){
             try{
                 eval(('var '+key+' = data[key];'));
             }catch(e){
-                eval(('var '+key+' = "";'));
+                try{
+                    eval(('var _'+key+' = data[key];'));
+                }catch(e){
+                    try{
+                        eval(('var '+key+' = "";'));
+                    }catch(e){
+                        eval(('var _'+key+' = "";'));
+                    }
+                }
             }
             reg = '{{\\s*' + key + '\\s*}}';
             reg = new RegExp(reg,"g");

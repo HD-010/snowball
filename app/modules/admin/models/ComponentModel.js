@@ -35,7 +35,7 @@ function ComponentModel(){
         if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
         if(params.id || params.ctag) conditions.limit.push(1);
         
-        this.DB().get(conditions,function(error,results,fields){
+        this.DB().log().get(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.uri = "";

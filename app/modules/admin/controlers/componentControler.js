@@ -20,9 +20,7 @@ function componentControler(){
     this.add = function(){
         var data = {error: 0};
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").upload({
-            oid: oid
-        })]);
+        data = mergeObj([data, this.model("File").upload({oid: oid})]);
         
         return that.render(data);
     }
@@ -30,18 +28,17 @@ function componentControler(){
     //编辑应用
     this.edit = function(){
         var data = {error: 0};
+        var param ={};
         var cid = this.GET('cid');
         if(!cid) return this.render({},"/err404");
+        param.id = cid;
         var component = that.model('Component');
         
         //获取上传文件组件信息
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").upload({
-            oid: oid
-        })]);
-        
+        data = mergeObj([data, this.model("File").upload({oid: oid})]);
+         
         //获取组件信息
-        var param = {limit: 1,id: cid};
         component.list(param,function(res){
             data = mergeObj([data, res]);
             that.render(data);

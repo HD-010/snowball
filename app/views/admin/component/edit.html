@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-27 17:51:52
  * @LastEditors: Please set LastEditors
  -->
-
+<%- //print_r(results[0].addoninfos)%>
 <link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
 <style>
     .base .form td {
@@ -159,8 +159,9 @@
 
     <div class="row form component-edit">
         <form method="post" data-form-async='json' action="/admin/component/save">
-            <input type="hidden" name="isadd" value="1" />
+            <input type="hidden" name="isedt" value="1" />
             <table id="tab-1" class="table">
+                <input type="hidden" name="id" value="{{id}}" />
                 <thead>
                     <tr>
                         <th class="col-xs-2">参数说明</th>
@@ -172,7 +173,7 @@
                         <td>应用名称</td>
                         <td>
                             <div class="form-group col-xs-4"><input type="text" class="form-control" name="comname"
-                                    val="" />
+                                    value="{{comname}}" />
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi"
                                     style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
@@ -184,7 +185,7 @@
                         <td>
                             <div class="form-group col-xs-4">
                                 <input type="text" data-check="components" data-uri="/admin/trance/val-exists"
-                                    data-check="val-exists" class="form-control" name="nid" val="" /></div>
+                                    data-check="val-exists" class="form-control" name="nid" value="{{nid}}" /></div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi"
                                     style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
 
@@ -198,7 +199,7 @@
                                 <div class="replaceImg-label">
                                     <div class="img-handl" data-img="'+ imgTag +'">
                                         <span class="fa fa-close fa-size"></span>
-                                        <img src="" />
+                                        <img src="{{icon}}" />
                                     </div>
                                     <label class="col-sm-2 control-label img-add" for="replaceImg">
                                         <img src="/img/plus.png" />
@@ -206,7 +207,7 @@
                                 </div>
                             </div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
-                            <input type="hidden" data-img="data-img-icon-0" name="icon"  value="" />
+                            <input type="hidden" data-img="data-img-icon-0" name="icon"  value="{{icon}}" />
                         </td>     
                     </tr>
                 </tbody>
@@ -239,14 +240,14 @@
                     <tr>
                         <!-- 字段含义 -->
                         <td>
-                            <input type="text" class="full" name="itemname" value="" placeholder="字段含义" />
+                            <input type="text" class="full" name="itemname" value="{{itemname}}" placeholder="字段含义" />
                         </td>
                         <!-- 字段名称  -->
                         <td>
-                            <input type="text" data-check="" class="full" name="field" value="" placeholder="" />
+                            <input type="text" data-check="" class="full" name="field" value="{{field}}" placeholder="" />
                         </td>
                         <td>
-                            <input type="text" class="full" name="effect" placeholder="' main' 或 tab_表名称 或不填" value="">
+                            <input type="text" class="full" name="effect" value="{{- return (typeof effect!='object')?effect:''; }}">
                         </td>
                         <!-- 数据类型 -->
                         <td>
@@ -255,29 +256,29 @@
                             int-integer-json-linesring-longblob-longtext-mediumblob-mediumint-
                             mediumtext-multilinestring-multipoint-multipolygon-numeric-point-
                             ploygon-real-set-smallint-text-time-timestamp-tinyblob-tinyint-
-                            tinytext-varbinary-varchar-year' data-def='' name="type"></select>
+                            tinytext-varbinary-varchar-year' data-def='{{type}}' name="type"></select>
                         </td>
                         <!-- 数据长度 -->
                         <td>
-                            <input type="number" class="full" name="maxlength" min=0 max=255 value="" />
+                            <input type="number" class="full" name="maxlength" min=0 max=255 value="{{maxlength}}" />
                         </td>
                         <!-- 是否为空 -->
                         <td>
                             <input class="mui-switch mui-switch-anim is-null" type="checkbox" checked name="isnull"
-                                value="1"><em></em>
+                            data-stat="{{isnull}}"   value="1"><em></em>
                         </td>
                         <!-- 所属列表  -->
                         <td>
-                            <input type="text" class="full" name="islist" placeholder="填写列表名称，如：'商品分类'" value="" />
+                            <input type="text" class="full" name="islist" value="{{- return (typeof islist != 'object')?islist:''; }}" />
                         </td>
                         <!-- 默认值 -->
                         <td>
-                            <input type="text" class="full" name="default" value="" />
+                            <input type="text" class="full" name="default" value="{{- return (typeof _default!='object')?_default:''; }}" />
                         </td>
                         <td>
                             <select class="full"
                                 data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal'
-                                data-def='' name="inputtype"></select>
+                                data-def='{{inputtype}}' name="inputtype"></select>
                             <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar"
                                 role="group">
                                 <button type="button" class="btn btn-outline btn-default">
@@ -299,7 +300,7 @@
                                     <div class="footable-row-detail-name">采集数据:</div>
                                     <div class="footable-row-detail-value">
                                         <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked=""
-                                            name="fieldget" value="1"><em
+                                            name="fieldget" data-def="{{fieldget}}" value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -307,14 +308,14 @@
                                     <div class="footable-row-detail-name">采集数量:</div>
                                     <div class="footable-row-detail-value" style="border:0; float:left;">
                                         <input type="number" style="width:50px;border:1px solid #cecece" min=0 max=20
-                                            name="limit" value="">
+                                            name="limit" value="{{limit}}">
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">写入数据:</div>
                                     <div class="footable-row-detail-value">
                                         <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked=""
-                                            name="fieldset" value="1"><em
+                                            name="fieldset" data-def="{{fieldset}}" value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -322,7 +323,7 @@
                                     <div class="footable-row-detail-name">过滤数据:</div>
                                     <div class="footable-row-detail-value">
                                         <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked=""
-                                            name="novaild" value="1"><em
+                                            name="novaild" data-def="{{novaild}}" value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -330,7 +331,7 @@
                                     <div class="footable-row-detail-name"></div>
                                     <div class="footable-row-detail-value">
                                         <textarea class="textarea" placeholder="设计表单输入框属性，如: min=0 max=100 ..."
-                                            cols="150" rows="6" name="attr"></textarea>
+                                            cols="150" rows="6" name="attr">{{attr}}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -498,4 +499,28 @@
 
     //效果初始化
     setEffect();
+</script>
+
+<!-- 加载数据 -->
+<script>
+DL({
+    dev: 'on',
+    id: '#tab-1',
+    clearCode: 1,
+    packet:{
+        error: <%- error %>,
+        data: <%- error ? 'false' :  JSON.stringify(results[0]) %> || []
+    }
+})
+DL({
+    dev: 'on',
+    listId: '#tab-2',
+    clearCode: 1,
+    use: 1,
+    packet:{
+        error: <%- error %>,
+        data: <%- error ? 'false' :  JSON.stringify(results[0].addoninfos) %> || []
+    },
+    after:oper.event
+})
 </script>
