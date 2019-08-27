@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:22:07
- * @LastEditTime: 2019-08-27 17:20:24
+ * @LastEditTime: 2019-08-27 17:33:40
  * @LastEditors: Please set LastEditors
  */
 function componentControler(){
@@ -20,7 +20,7 @@ function componentControler(){
     this.add = function(){
         var data = {error: 0};
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").uploadImg({
+        data = mergeObj([data, this.model("File").upload({
             oid: oid
         })]);
         
@@ -32,11 +32,13 @@ function componentControler(){
         var cid = this.GET('cid');
         if(!cid) return this.render({},"/err404");
         var component = that.model('Component');
+        
         //获取上传文件组件信息
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").uploadImg({
+        data = mergeObj([data, this.model("File").upload({
             oid: oid
         })]);
+        
         //获取组件信息
         var param = {limit: 1,id: cid};
         component.list(param,function(res){

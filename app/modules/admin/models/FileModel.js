@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-27 17:09:11
- * @LastEditTime: 2019-08-27 17:18:33
+ * @LastEditTime: 2019-08-27 17:33:16
  * @LastEditors: Please set LastEditors
  */
 function FileModel(){
@@ -11,7 +11,7 @@ function FileModel(){
     /**
      * 上传图片
      */
-    this.uploadImg = function(params){
+    this.upload = function(params){
         var data = {};
         // 获取前端逻辑处理代码
         data.cropperView = that.plug('Uploads',{
@@ -34,7 +34,7 @@ function FileModel(){
             zoomable      : true,            //是否允许缩放图片大小
             mouseWheelZoom: true,            //是否允许通过鼠标滚轮来缩放图片
             touchDragZoom : true,            //是否允许通过触摸移动来缩放图片
-            rotatable     : false,           //是否允许旋转图片
+            rotatable     : true,            //是否允许旋转图片
             responsive    : false,
             crop          : function(e) {
                 console.log(e)// 输出结果数据裁剪图像。
