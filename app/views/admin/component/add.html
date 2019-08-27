@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-24 17:59:18
+ * @LastEditTime: 2019-08-27 16:29:16
  * @LastEditors: Please set LastEditors
  -->
 
@@ -175,7 +175,7 @@
                         <td>应用标识</td>
                         <td>
                             <div class="form-group col-xs-4">
-                                <input type="text" class="form-control" name="nid" val="" /></div>
+                                <input type="text" data-check="components" data-uri="/admin/trance/val-exists" data-check="val-exists" class="form-control" name="nid" val="" /></div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi"
                                     style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
 
@@ -223,13 +223,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <!-- 字段名称 -->
+                        <!-- 字段含义 -->
                         <td>
                             <input type="text" class="full" name="itemname" value="" placeholder="字段含义" />
                         </td>
                         <!-- 字段名称  -->
                         <td>
-                            <input type="text" class="full" name="field" value="" placeholder="" />
+                            <input type="text" data-check="" class="full" name="field" value="" placeholder="" />
                         </td>
                         <td>
                             <input type="text" class="full" name="effect" placeholder="'main' 或 tab_表名称 或不填" value="">

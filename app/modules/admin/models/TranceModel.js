@@ -1,4 +1,14 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-27 16:27:45
+ * @LastEditors: Please set LastEditors
+ */
 function TranceModel(){
+    /**
+     * 保存数据
+     */
     this.set = function(params, callback){
         "feature=SDFGDFGDFGDFG&refrerence=id-1-number&val=1";
         var data = {error: 1, message: "error"};
@@ -19,13 +29,34 @@ function TranceModel(){
         }
         if(!where.length) return callback(data);
         sql += " where " + where.join(' and ');
-        console.log("@@@@@@@@@@@@@@@@@@",sql);
         this.DB().update(sql,function(error,results){
             return callback({
                 error: error ? 1 : 0,
                 message: "操作成功！"
             });
         });
+    }
+
+    /**
+     * 检测字段有没有值
+     */
+    this.valExists = function(params, callback){
+        var data = {error:1, message:['参数有效，请继续填写...','参数错误']};
+        var tab = this.POST('tab');
+        var name = this.POST('name');
+        var val = this.POST('val');
+        if(!tab) return callback(data)
+        var condition = {
+            table: ['#@'+tab],
+            fields: ['count(1) as rec'],
+            where: ["`" + name + "`='" + val + "'"]
+        }
+        this.DB().log().get(condition, function(error, results){
+            data.rec = results[0].rec;
+            data.error = data.rec || error ? 1 : 0; 
+            
+            return callback(data);
+        })
     }
 }
 

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:22:07
- * @LastEditTime: 2019-08-26 17:51:25
+ * @LastEditTime: 2019-08-26 17:56:15
  * @LastEditors: Please set LastEditors
  */
 function componentControler(){
@@ -97,7 +97,7 @@ function componentControler(){
                 //将菜单id写入权限表
                 that.model('Permit').add(res, function(res){
                     data = mergeObj([data, res]);
-                    //ps = that.testRenderJson(data, ps);
+                    ps = that.testRenderJson(data, ps);
                 })
             })
             

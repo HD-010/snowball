@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-05-27 09:47:20
- * @LastEditTime: 2019-08-23 16:44:46
+ * @LastEditTime: 2019-08-27 16:45:17
  * @LastEditors: Please set LastEditors
  */
 /** ==============================请求与接口=========================== */
@@ -235,6 +235,39 @@ var app = {
             dataType : 'JSON',
             success : app.notice
         });
+    },
+
+    /**
+     * 唯一值检测
+     */
+    valExistsPorcess: function(e, o, el){
+        var tab = $(o).attr('data-check');
+        var uri = $(o).attr('data-uri');
+        var val = $(o).val();
+        var name = $(o).attr('name');
+        var subval = [];
+        if(!val.length) return;
+        if(tab){
+            $.ajax({
+                url : uri,
+                type : "post",
+                data : {tab: tab,name: name,val: val,oid:getItem('OID')},
+                dataType : 'JSON',
+                success : function(res){
+                    console.log(res);
+                    app.notice(res);
+                    if(res.rec) $(o).val('')
+                }
+            });
+        }else{
+           $(el).find('[data-check][name="'+ name +'"]').each(function(i, item){
+                if($(item).val()) subval.push($(item).val());
+                var usubval = unique(subval);
+                if(usubval.length == subval.length) return;
+                app.notice({error: 1, message: '错误：当前参数不可再次使用！'})
+                $(o).val('');
+           });
+        }
     },
 
     /**
@@ -533,6 +566,11 @@ var app = {
             });
         });
         $(el).find("[contenteditable='true']").after('&nbsp;&nbsp;<i class="fa fa-edit"></i>');    //添加编辑标识
+
+        //数据存在记录检测
+        $(el).find("[data-check]").unbind('focusout').on("focusout", function(e){
+            app.valExistsPorcess(e,this,el);
+        })
     },
 
 };
