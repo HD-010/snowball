@@ -60,7 +60,7 @@ function MenuModel(){
             data.error = error ? 1 : 0; 
             if(error) return callback(data);
             var sql = "insert into `#@sys_menu` values \
-            ("+ results[0].pid+", "+ topid +", '"+ params.icon +"', '"+ params.comname +"', 0, '', '1', '1')";
+            ("+ results[0].pid+", "+ topid +", 'icon', '"+ params.comname +"', 0, '"+ params.icon +"', '1', '1')";
             that.DB().insert(sql, function(error, results){
                 data.error = error ? 1 : 0; 
                 if(!error) data.menuid = results.insertId;

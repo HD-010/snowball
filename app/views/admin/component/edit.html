@@ -197,7 +197,7 @@
                         <td class="pic-box" data-limit="1" data-field='icon''>
                             <div class="form-group col-xs-8">
                                 <div class="replaceImg-label">
-                                    <div class="img-handl" data-img="'+ imgTag +'">
+                                    <div class="img-handl" data-img="data-img-icon-0">
                                         <span class="fa fa-close fa-size"></span>
                                         <img src="{{icon}}" />
                                     </div>
@@ -264,8 +264,8 @@
                         </td>
                         <!-- 是否为空 -->
                         <td>
-                            <input class="mui-switch mui-switch-anim is-null" type="checkbox" checked name="isnull"
-                            data-stat="{{isnull}}"   value="1"><em></em>
+                            <input class="mui-switch mui-switch-anim is-null" type="checkbox" name="isnull"
+                            {{- return isnull?'':'checked'; }}   value="1"><em></em>
                         </td>
                         <!-- 所属列表  -->
                         <td>
@@ -299,8 +299,8 @@
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">采集数据:</div>
                                     <div class="footable-row-detail-value">
-                                        <input class="mui-switch mui-switch-anim is-get" type="checkbox" checked=""
-                                            name="fieldget" data-def="{{fieldget}}" value="1"><em
+                                        <input class="mui-switch mui-switch-anim is-get" type="checkbox" {{- return fieldget?'checked':''; }}
+                                            name="fieldget"  value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -314,16 +314,16 @@
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">写入数据:</div>
                                     <div class="footable-row-detail-value">
-                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" checked=""
-                                            name="fieldset" data-def="{{fieldset}}" value="1"><em
+                                        <input class="mui-switch mui-switch-anim is-set" type="checkbox" {{- return fieldset?'checked':''; }}
+                                            name="fieldset" value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">过滤数据:</div>
                                     <div class="footable-row-detail-value">
-                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" checked=""
-                                            name="novaild" data-def="{{novaild}}" value="1"><em
+                                        <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" {{- return novaild?'checked':''; }}
+                                            name="novaild" value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -426,7 +426,6 @@
     //数据保存时的回调
     function save(res) {
         app.notice(res);
-        console.log("999999999999999999999999999999::", res);
     }
 </script>
 
@@ -441,11 +440,6 @@
         picBox: ''
     }
 
-    //定位picBox
-    $("label.img-add").unbind('click').on('click', function () {
-        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
-    });
-
     //图片上传回调处理
     function upProcess(data) {
         var info = {
@@ -459,7 +453,7 @@
             </div>`;
 
         $(uploader.picBox).find(".img-add").before($(addObj));
-        $(uploader.picBox).append($('<input type="hidden" data-img="img-add-' + uploader.index + '" name="' + uploader.picBox.attr('data-field') + '"  value="/' + data.url + '" />'));
+        $(uploader.picBox).append($('<input type="hidden" data-img="img-add-' + uploader.index + '" name="icon"  value="/' + data.url + '" />'));
         info.message = "恭喜您上传成功！";
         app.notice(info);
         uploader.index++;
@@ -497,8 +491,7 @@
         });
     }
 
-    //效果初始化
-    setEffect();
+    
 </script>
 
 <!-- 加载数据 -->
@@ -521,6 +514,15 @@ DL({
         error: <%- error %>,
         data: <%- error ? 'false' :  JSON.stringify(results[0].addoninfos) %> || []
     },
-    after:oper.event
+    after: function(){
+        oper.event();
+        effect.optimizeImgloading('#tab-2');
+        //效果初始化
+        setEffect();
+        //定位picBox
+        $("label.img-add").unbind('click').on('click', function () {
+            uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+        });
+    }
 })
 </script>
