@@ -1,4 +1,12 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-15 14:46:48
+ * @LastEditTime: 2019-08-28 15:38:54
+ * @LastEditors: Please set LastEditors
+ */
 function ComponentModel(){
+    var utility = require('utility');
     var that = this;
     /**
      * 组件配置原数据
@@ -35,11 +43,11 @@ function ComponentModel(){
         if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
         if(params.id || params.ctag) conditions.limit.push(1);
         
-        this.DB().log().get(conditions,function(error,results,fields){
+        this.DB().get(conditions,function(error,results,fields){
             var data = {};
             data.error = error ? 1 : 0;
             data.uri = "";
-            data.results = recodeJsonParse(results,'addoninfos');
+            data.results = recodeJsonParse(recodeBase64decode(results,'addoninfos'),'addoninfos');
             return callback(data);
         });
     }
@@ -78,19 +86,22 @@ function ComponentModel(){
         if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);
+        //utility.base64encode(JSON.stringify(addonInfos));
         conditions.fields.push({
             nid: nid,
             comname: params.comname,
             maintable: 'youbang_archives',
             addtable:  'youbang_addon' + nid,
-            addoninfos: JSON.stringify(addonInfos),
+            addoninfos: utility.base64encode(JSON.stringify(addonInfos)),
             issystem: 0,
             isshow: 1,
             icon: params.icon
         })
+        
         data.comInfos = conditions.fields[0];
         var comid = this.POST('comid');
-        if(comid) conditions.where.push('id=' + comid);
+        if(comid) conditions.where.push('id="' + comid + '"');
+        log("===========================:conditions:", conditions)
         this.DB().log().set(conditions, function(error, results){
             data.error = error? 1: 0;
             
@@ -113,7 +124,7 @@ function ComponentModel(){
             error: 1,
             message:["保存成功","请检查填写项，输入有误！！"]
         }
-        var fieldInfos = JSON.parse(params.comInfos.addoninfos);
+        var fieldInfos = JSON.parse(utility.base64decode(params.comInfos.addoninfos));
         var _null,_default;
         var sql = 'drop table if exists `'+ params.comInfos.addtable +'`';
         for(var i = 0; i < fieldInfos.length; i ++){
@@ -136,8 +147,8 @@ function ComponentModel(){
             )ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;';
 
             that.DB().query(sql, function(error, results){
-                log(error);
-                log(results);
+                data.error = error ? 1 : 0;
+                callback(data);
             });
         });
         

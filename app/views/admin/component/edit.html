@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-07-25 11:08:33
- * @LastEditTime: 2019-08-27 17:51:52
+ * @LastEditTime: 2019-08-28 11:12:05
  * @LastEditors: Please set LastEditors
  -->
 <%- //print_r(results[0].addoninfos)%>
@@ -161,7 +161,7 @@
         <form method="post" data-form-async='json' action="/admin/component/save">
             <input type="hidden" name="isedt" value="1" />
             <table id="tab-1" class="table">
-                <input type="hidden" name="id" value="{{id}}" />
+                <input type="hidden" name="comid" value="{{id}}" />
                 <thead>
                     <tr>
                         <th class="col-xs-2">参数说明</th>
@@ -260,7 +260,7 @@
                         </td>
                         <!-- 数据长度 -->
                         <td>
-                            <input type="number" class="full" name="maxlength" min=0 max=255 value="{{maxlength}}" />
+                            <input type="number" class="full" name="maxlength" min=0 value="{{maxlength}}" />
                         </td>
                         <!-- 是否为空 -->
                         <td>

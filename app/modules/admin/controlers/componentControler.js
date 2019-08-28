@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:22:07
- * @LastEditTime: 2019-08-27 17:55:47
+ * @LastEditTime: 2019-08-28 15:39:25
  * @LastEditors: Please set LastEditors
  */
 function componentControler(){
