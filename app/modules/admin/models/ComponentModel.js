@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:46:48
- * @LastEditTime: 2019-08-28 15:38:54
+ * @LastEditTime: 2019-08-28 16:49:45
  * @LastEditors: Please set LastEditors
  */
 function ComponentModel(){
@@ -15,9 +15,9 @@ function ComponentModel(){
         field: "",			        //字段标识
         itemname: "",			    //字段名称(显示有页面)
         type: "int",				//数据表中数据类型
-        maxlength: "10",			//字段最大长度
+        maxlength: "",			    //字段最大长度
         isnull: true,				//数据表中是否允许为null
-        islist: "",			 //数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
+        islist: "",			        //数据表中值是否为列表(如果是列表，其值为列表名称；否则为空)
         default: '',				//字段默认值
         effect: "",					//作用于表，可选值main(itemnamet和islist项同时作用于主表）|""(默认附加表) | "tab_表名"（各项属性适用于对应名称的表）
         fieldget: 1,				//是否采集数据（如果设置1，则在视图输出该字段的输入框；返回之不输出。）
@@ -101,8 +101,8 @@ function ComponentModel(){
         data.comInfos = conditions.fields[0];
         var comid = this.POST('comid');
         if(comid) conditions.where.push('id="' + comid + '"');
-        log("===========================:conditions:", conditions)
-        this.DB().log().set(conditions, function(error, results){
+        this.DB().set(conditions, function(error, results){
+            log("===========================:conditions:", error)
             data.error = error? 1: 0;
             
             return callback(data);
@@ -133,7 +133,7 @@ function ComponentModel(){
             _default = '';
             field.push('`' + fieldInfos[i]['field'] + '`');
             field.push(fieldInfos[i]['type']);
-            field.push('(' + fieldInfos[i]['maxlength'] + ')');
+            field.push(fieldInfos[i]['maxlength']?'(' + fieldInfos[i]['maxlength'] + ')':'');
             _null = fieldInfos[i]['isnull'] ? 'NULL' : 'NOT NULL';
             field.push( _null );
             _default = fieldInfos[i]['default'] ? 'DEFAULT '+ fieldInfos[i]['default'] : '';

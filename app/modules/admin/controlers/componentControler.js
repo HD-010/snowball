@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:22:07
- * @LastEditTime: 2019-08-28 15:39:25
+ * @LastEditTime: 2019-08-28 16:43:35
  * @LastEditors: Please set LastEditors
  */
 function componentControler(){
@@ -61,6 +61,7 @@ function componentControler(){
             //创建与组件信息匹配的数据表
             params.comInfos = res.comInfos;
             compponent.create(params, function(res){
+                log(res);
                 data = mergeObj([data, res]);
                 ps = that.testRenderJson(data, ps);
             });
