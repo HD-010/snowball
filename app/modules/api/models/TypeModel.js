@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:52:55
+ * @LastEditors: Please set LastEditors
+ */
 /**
  * 操作分类模块
  */
@@ -9,7 +16,7 @@ function TypeMpdel(){
      * 参数：type 传入要查询的分类 infos表示项目信息分类
      */
     that.getclass = function(prm,callback){
-        let sql = " select classify from youbang_arcclass where comtag = '"+prm+"'";
+        let sql = " select classify from #@arcclass where comtag = '"+prm+"'";
         that.DB("Redis").get(prm,function(res){
             if(res) return callback(res);
             that.DB().query(sql,(error,results,fields)=>{
@@ -34,7 +41,7 @@ function TypeMpdel(){
             callback(1,["参数有误"]);
             return;
         }
-        let sql = "select * from youbang_arctype where componentid = "+prm;
+        let sql = "select * from #@arctype where componentid = "+prm;
         that.DB("Redis").get(prm,function(res){
             if(res) return callback(res);
             that.DB().query(sql,(error,results,fields)=>{

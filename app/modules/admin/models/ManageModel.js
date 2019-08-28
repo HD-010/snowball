@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-24 17:27:06
+ * @LastEditTime: 2019-08-28 17:51:06
+ * @LastEditors: Please set LastEditors
+ */
 //管理员查找类
 function ManageModel(){
     var that = this;
@@ -11,7 +18,7 @@ function ManageModel(){
         var process =  that.model("DataProcess");
         var uid = process.getUserInfo('UID');
         if(uid){
-            var sql = "select ac.*,g.groupName from youbang_sys_acount as ac LEFT JOIN youbang_sys_acount_group as g ON ac.groupId = g.id where ac.id in ( SELECT c.id FROM (SELECT	a.id,IF(	FIND_IN_SET( a.pid, @pids ) > 0,IF(	length( @pids ) - length( REPLACE ( @pids, a.pid, '' ) ) > 1,IF(	length( @pids ) - length( REPLACE ( @pids, a.id, '' ) ) > 1,	@pids,	@pids := concat( @pids, ',', a.id )	),@pids := concat( @pids, ',', a.id )	),	0 	) AS 'plist',IF( FIND_IN_SET( a.pid, @pids ) > 0, @pids, 0 ) AS ischild FROM	( SELECT r.id, r.pid FROM youbang_sys_acount r ) a,	( SELECT @pids := "+uid+" ) b	) c WHERE	c.ischild != 0)";
+            var sql = "select ac.*,g.groupName from #@sys_acount as ac LEFT JOIN #@sys_acount_group as g ON ac.groupId = g.id where ac.id in ( SELECT c.id FROM (SELECT	a.id,IF(	FIND_IN_SET( a.pid, @pids ) > 0,IF(	length( @pids ) - length( REPLACE ( @pids, a.pid, '' ) ) > 1,IF(	length( @pids ) - length( REPLACE ( @pids, a.id, '' ) ) > 1,	@pids,	@pids := concat( @pids, ',', a.id )	),@pids := concat( @pids, ',', a.id )	),	0 	) AS 'plist',IF( FIND_IN_SET( a.pid, @pids ) > 0, @pids, 0 ) AS ischild FROM	( SELECT r.id, r.pid FROM #@sys_acount r ) a,	( SELECT @pids := "+uid+" ) b	) c WHERE	c.ischild != 0)";
             that.DB().query(sql,function(error,results){
                 if(results) callback(results)
             })
@@ -34,7 +41,7 @@ function ManageModel(){
         data.groupId = this.POST('groupId');
         data.tel = this.POST('tel');
         var condition = {
-            table:["youbang_sys_acount"],                                 //查询的表名
+            table:["#@sys_acount"],                                 //查询的表名
             fields:[{
                 "pid":data.pid,
                 "acount": data.acount,
@@ -66,7 +73,7 @@ function ManageModel(){
         data.id = that.GET("id");
         data.id = data.id.split("_");
         if(data){
-           var sql  = "delete from youbang_sys_acount where id in ("+data.id+")"; 
+           var sql  = "delete from #@sys_acount where id in ("+data.id+")"; 
             that.DB().query(sql,function(error,results){
                 if(results.affectedRows){
                     var obj={
@@ -90,7 +97,7 @@ function ManageModel(){
             if(res.results.length){
                 data.results = res.results;
                 data.id = that.GET("pid");
-                var sql = "select id,acount,userName,password,tel,groupId from youbang_sys_acount where id = "+data.id;
+                var sql = "select id,acount,userName,password,tel,groupId from #@sys_acount where id = "+data.id;
                 that.DB().query(sql,function(error,results){
                     if(results) data.manageInfo = results;
                     callback(data)
@@ -109,7 +116,7 @@ function ManageModel(){
         data.groupId = this.POST('groupId');
         data.tel = this.POST('tel');
         if(data){
-            var sql = "update youbang_sys_acount set userName = '"+data.userName+"',tel = "+data.tel+",groupId = "+data.groupId+" where id = "+data.id;          
+            var sql = "update #@sys_acount set userName = '"+data.userName+"',tel = "+data.tel+",groupId = "+data.groupId+" where id = "+data.id;          
             that.DB().query(sql,function(error,results){
                 if(results.affectedRows){
                     var obj={
@@ -133,7 +140,7 @@ function ManageModel(){
         uri:"http://127.0.0.1:3005/passport/manager/resetPassword?password=123456",
         callback:(error,source)=>{
           if(source.password.password){
-            var sql = "update youbang_sys_acount set password = '"+source.password.password+"',addTime = '"+source.password.time+"' where id ="+data.id;
+            var sql = "update #@sys_acount set password = '"+source.password.password+"',addTime = '"+source.password.time+"' where id ="+data.id;
             that.DB().query(sql,function(error,results){
                 if(results.affectedRows){
                     var obj={

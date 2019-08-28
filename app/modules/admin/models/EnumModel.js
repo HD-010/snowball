@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:50:30
+ * @LastEditors: Please set LastEditors
+ */
 function EnumModel(){
     var that = this;
 
@@ -9,7 +16,7 @@ function EnumModel(){
         if(!params.enumtag) return callback(data);
 
         var conditions = {
-            table: ['youbang_enum'],
+            table: ['#@enum'],
             fields:['*', 'value as val'],
             where: []
         }
@@ -30,7 +37,7 @@ function EnumModel(){
      */
     this.tag = function(params, callback){
         var conditions = {
-            table: ['youbang_enum'],
+            table: ['#@enum'],
             fields: ['distinct enumtag']
         }
 

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-22 14:16:39
- * @LastEditTime: 2019-08-21 17:40:21
+ * @LastEditTime: 2019-08-28 17:49:42
  * @LastEditors: Please set LastEditors
  */
 function ArcModel(){
@@ -17,14 +17,14 @@ function ArcModel(){
         var sky = this.POST('sky');
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
-            table: ['youbang_archives'],
-            fields: ['youbang_archives.*', params.addonTab + '.*'],
-            joinOn: ' left join ' + params.addonTab + ' on youbang_archives.id=' + params.addonTab + '.aid',
+            table: ['#@archives'],
+            fields: ['#@archives.*', params.addonTab + '.*'],
+            joinOn: ' left join ' + params.addonTab + ' on #@archives.id=' + params.addonTab + '.aid',
             where: [],
             limit: []
         };
         if(params.id) {
-            conditions.where.push('youbang_archives.id=' + params.id);
+            conditions.where.push('#@archives.id=' + params.id);
             conditions.limit.push(1);
         }
         if(params.SEDate.length){
@@ -32,11 +32,11 @@ function ArcModel(){
             conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and subdate("' + params.SEDate[0] + '",interval -1 day)'):
             conditions.where.push('addtime between "' + params.SEDate[0] + '" and subdate("' + params.SEDate[1] + '",interval -1 day)');
         }
-        if(sky) conditions.where.push("( youbang_archives.title like '%" + sky + 
-        "%' or youbang_archives.shorttitle like '%" + sky + 
-        "%' or youbang_archives.description like '%" + sky + 
-        "%' or youbang_archives.writer like '%" + sky + 
-        "%' or youbang_archives.keywords like '%" + sky + "%')");
+        if(sky) conditions.where.push("( #@archives.title like '%" + sky + 
+        "%' or #@archives.shorttitle like '%" + sky + 
+        "%' or #@archives.description like '%" + sky + 
+        "%' or #@archives.writer like '%" + sky + 
+        "%' or #@archives.keywords like '%" + sky + "%')");
         conditions.where.push(params.addonTab + '.aid is not null');
         this.DB().log().get(conditions,(error,results)=>{
             var data = {};
@@ -83,7 +83,7 @@ function ArcModel(){
         if(!classify) return callback(data);
         var litpic = this.POST('litpic');
         var conditions = {
-            table:'youbang_archives',
+            table:'#@archives',
             where:[],
             fields:[],
         }
@@ -210,7 +210,7 @@ function ArcModel(){
      */
     this.delHives = function(params, callback){
         var conditions = {
-            table:'youbang_archives',
+            table:'#@archives',
             where:[]
         }
         if(!params.id) return callback({error:1, message:'参数错误，删除失败'});

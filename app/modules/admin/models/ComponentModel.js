@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:46:48
- * @LastEditTime: 2019-08-28 16:49:45
+ * @LastEditTime: 2019-08-28 17:50:22
  * @LastEditors: Please set LastEditors
  */
 function ComponentModel(){
@@ -29,12 +29,12 @@ function ComponentModel(){
     }
 
     /**
-     * 查询youbang_components，获取组件列表,获取获取组件字段信息
+     * 查询#@components，获取组件列表,获取获取组件字段信息
      */
     this.list = function(params,callback){
         //使用案例：实例化TestService并调用showApp()方法
         var conditions = {
-            table:['youbang_components'],
+            table:['#@components'],
             where:[],
             limit:[]
         }
@@ -62,7 +62,7 @@ function ComponentModel(){
             message:["保存成功","请检查填写项，输入有误！！"]
         }
         conditions = {
-            table: 'youbang_components',
+            table: '#@components',
             fields: [],
             where: []
         }
@@ -90,8 +90,8 @@ function ComponentModel(){
         conditions.fields.push({
             nid: nid,
             comname: params.comname,
-            maintable: 'youbang_archives',
-            addtable:  'youbang_addon' + nid,
+            maintable: '#@archives',
+            addtable:  '#@addon' + nid,
             addoninfos: utility.base64encode(JSON.stringify(addonInfos)),
             issystem: 0,
             isshow: 1,

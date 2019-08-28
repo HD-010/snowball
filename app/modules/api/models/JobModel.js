@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:52:40
+ * @LastEditors: Please set LastEditors
+ */
 //劳务人才模块
 function JobModel(){
     var that = this;
@@ -15,9 +22,9 @@ function JobModel(){
             console.log("1234657",job_experience);
             let sql = "SELECT	ar.*,m.*,j.*\
             FROM	\
-            youbang_archives AS ar	LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid	\
-                RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid\
-                where componentid = (select id from youbang_components where nid = '"+nid+"') and j.gender like '%"+gender+"%' and j.job_experience like '%"+job_experience+"%'";
+            #@archives AS ar	LEFT JOIN #@addonjobwanted AS j ON ar.id = j.aid	\
+                RIGHT JOIN #@acount_member as m on m.mid = ar.mid\
+                where componentid = (select id from #@components where nid = '"+nid+"') and j.gender like '%"+gender+"%' and j.job_experience like '%"+job_experience+"%'";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                 let area = that.model('Area');
@@ -72,7 +79,7 @@ function JobModel(){
             let jid = that.POST('id');; //查询id
             if(isNaN(jid)) return callback(1,['id参数有误！']);
             let nid = "jobwanted"; //查询标识          
-            let sql = "SELECT	ar.*,m.*,j.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,DATE_FORMAT(j.updatetiem,'%Y-%m-%d') updatetiem FROM youbang_archives AS ar LEFT JOIN youbang_addonjobwanted AS j ON ar.id = j.aid RIGHT JOIN youbang_acount_member as m on m.mid = ar.mid where j.componentid = (select id from youbang_components where nid = '"+nid+"') and j.aid = "+jid;
+            let sql = "SELECT	ar.*,m.*,j.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,DATE_FORMAT(j.updatetiem,'%Y-%m-%d') updatetiem FROM #@archives AS ar LEFT JOIN #@addonjobwanted AS j ON ar.id = j.aid RIGHT JOIN #@acount_member as m on m.mid = ar.mid where j.componentid = (select id from #@components where nid = '"+nid+"') and j.aid = "+jid;
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                 let area = that.model('Area');
@@ -106,7 +113,7 @@ function JobModel(){
         if(isNaN(jid)) return callback(1,['id 参数有误！']);
         that.DB('Redis').get(jid+"_experience",function(error,data){
             if(data) return callback(0,data);
-            let  sql = " select * from  youbang_jobexperience where aid = "+jid;
+            let  sql = " select * from  #@jobexperience where aid = "+jid;
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no data']);
                 that.DB('Redis').set(jid+"_experience",results);

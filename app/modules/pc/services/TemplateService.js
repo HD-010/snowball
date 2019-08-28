@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-28 17:53:16
+ * @LastEditors: Please set LastEditors
+ */
 function TemplateService(){
     
     /**
@@ -6,8 +13,8 @@ function TemplateService(){
     this.userTemplate = function(sqlStruct,callback){
         var sql = `select tu.effectiveTime as permitEffectiveTime,tu.expirationTime as permitExpirationTime,
         t.id tId,t.name tName, t.industry as tIndustry, t.models as tModels,t.icon as tIcon 
-        from youbang_sys_template_users as tu 
-        left join youbang_sys_template as t 
+        from #@sys_template_users as tu 
+        left join #@sys_template as t 
         on t.id = tu.templateId` +
         sqlStruct.where() + 
         sqlStruct.limit();
@@ -19,7 +26,7 @@ function TemplateService(){
 
     
     this.models = function(sqlStruct,callback){
-        var sql = 'select * from youbang_sys__template ' +
+        var sql = 'select * from #@sys__template ' +
         sqlStruct.where() + 
         sqlStruct.limit();
         

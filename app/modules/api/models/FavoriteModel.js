@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:52:14
+ * @LastEditors: Please set LastEditors
+ */
 // 收藏模型
 function FavoriteModel(){
     var that = this;
@@ -20,15 +27,15 @@ function FavoriteModel(){
         if(isNaN(id)) return callback(1,["id参数有误"]);
         if(isNaN(uid)) return callback(1,["uid参数有误"]);
         if(isNaN(componentsid)) return callback(1,["componentsid参数有误"]);
-        let sql = "select deleted from youbang_member_favorite where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid;
+        let sql = "select deleted from #@member_favorite where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid;
         that.DB().query(sql,(error,results,fields)=>{                    
             if(results.length){
-                let sql1 = results[0].deleted==1? " update youbang_member_favorite set deleted = '0' where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid: " update youbang_member_favorite set deleted = '1' where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid;
+                let sql1 = results[0].deleted==1? " update #@member_favorite set deleted = '0' where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid: " update #@member_favorite set deleted = '1' where favoriteid = "+id+" and mid = "+uid+" and componentsid = "+componentsid;
                 that.DB().query(sql1,function(error,res,fields){
                     if(res.affectedRows) return callback(0,results[0].deleted==0?"1":"0");
                 })
             }else{
-                let sql2 = "insert into youbang_member_favorite(mid,favoriteid,createtime,deleted,componentsid) VALUES("+uid+","+id+",NOW(),'1',"+componentsid+")"; 
+                let sql2 = "insert into #@member_favorite(mid,favoriteid,createtime,deleted,componentsid) VALUES("+uid+","+id+",NOW(),'1',"+componentsid+")"; 
                 that.DB().log().query(sql2,function(error,res1,fields){
                     if(res1.affectedRows) return callback(0,res1.affectedRows);
                 })

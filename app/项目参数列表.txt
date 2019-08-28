@@ -37,8 +37,8 @@ mchid: 商户id
 
 
 系统参数见数据表：
-youbang_sys_upload、
-youbang_sys_cached、
-youbang_sys_logo、
-youbang_sys_map、
-youbang_sys_option、
+#@sys_upload、
+#@sys_cached、
+#@sys_logo、
+#@sys_map、
+#@sys_option、

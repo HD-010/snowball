@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:52:22
+ * @LastEditors: Please set LastEditors
+ */
 /**
  * 商品模块
  */
@@ -12,7 +19,7 @@ function GoodsModel(){
         var commodities = 'commodities';//商品类的标识
         that.model("Type").getclass(commodities,function(res){
             if(!res.length) return callback(1,['no data']);
-            let sql = "select DISTINCT(classify), litpic, id from youbang_archives where component = (select id from youbang_components where nid = '"+commodities+"') GROUP BY classify";
+            let sql = "select DISTINCT(classify), litpic, id from #@archives where component = (select id from #@components where nid = '"+commodities+"') GROUP BY classify";
             that.DB().query(sql,function(error,results,fields){
                 let a;
                 for(let i in results){
@@ -73,7 +80,7 @@ function GoodsModel(){
         let val  = that.POST('val');
         that.DB('Redis').get(val+"_goods",function(error,data){
             if(data) return callback(0,data);
-            let sql = "select ar.*,c.*  from youbang_addoncommodities as c left JOIN youbang_archives as ar on c.aid = ar.id where ar.classify='"+val+"' and  ar.component = (select id from youbang_components where nid = 'commodities')";
+            let sql = "select ar.*,c.*  from #@addoncommodities as c left JOIN #@archives as ar on c.aid = ar.id where ar.classify='"+val+"' and  ar.component = (select id from #@components where nid = 'commodities')";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                 //获取地址信息
@@ -104,7 +111,7 @@ function GoodsModel(){
         if(isNaN(id)) return callback(1,["id参数有误"]);
         that.DB('Redis').get(id+"_goods",function(error,data){
             if(data) return callback(0,data);
-            let sql = "select ar.*,c.*  from youbang_addoncommodities as c left JOIN youbang_archives as ar on c.aid = ar.id where c.aid = "+id+" and ar.component = (select id from youbang_components where nid = 'commodities')";
+            let sql = "select ar.*,c.*  from #@addoncommodities as c left JOIN #@archives as ar on c.aid = ar.id where c.aid = "+id+" and ar.component = (select id from #@components where nid = 'commodities')";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                   //获取地址信息
@@ -128,7 +135,7 @@ function GoodsModel(){
         if(isNaN(id)) return callback(1,["id参数有误"]);
         that.DB('Redis').get(id+"_spec",function(error,data){
             if(data) return callback(0,data);
-            let sql = "select * from youbang_commidity_specoption where commodityid = "+id;
+            let sql = "select * from #@commidity_specoption where commodityid = "+id;
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
                 that.DB('Redis').set(id+"_spec",results);

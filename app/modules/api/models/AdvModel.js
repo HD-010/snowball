@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:51:49
+ * @LastEditors: Please set LastEditors
+ */
 function AdvModel(){
     var that = this;
     
@@ -21,7 +28,7 @@ function AdvModel(){
         console.log(flag.substring(0,1))
         var sql = "select \
                   id,topid,title,description,content,link,isdel,DATE_FORMAT(effectivetime,'%Y-%m-%d %H:%i:%s') effectivetime,DATE_FORMAT(expirationtime,'%Y-%m-%d %H:%i:%s') expirationtime,advtype,enable,flag \
-                  from youbang_addonadv \
+                  from #@addonadv \
                   where advtype = "+advtype+" and enable = 1 and INSTR(flag,'"+flag+"')";
         that.DB().query(sql,function(error,results,fields){        
            if(results.length){
@@ -55,7 +62,7 @@ function AdvModel(){
         }                
         var sql = "select \
                   id,topid,title,description,content,link,isdel,DATE_FORMAT(effectivetime,'%Y-%m-%d %H:%i:%s') effectivetime,DATE_FORMAT(expirationtime,'%Y-%m-%d %H:%i:%s') expirationtime,advtype,enable,flag \
-                  from youbang_addonadv \
+                  from #@addonadv \
                   where advtype = "+advtype+" and enable = 1 and id = "+id;
         that.DB().log().query(sql,function(error,results,fields){        
            if(results.length){

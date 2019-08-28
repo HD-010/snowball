@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-02 16:02:34
- * @LastEditTime: 2019-08-13 16:11:07
+ * @LastEditTime: 2019-08-28 17:48:03
  * @LastEditors: Please set LastEditors
  */
 function AddressModel(){
@@ -15,7 +15,7 @@ function AddressModel(){
         var data = {error: 1};
         var reid = this.POST('reid') || 0;
         var conditions = {
-            table: ['youbang_sys_area'],
+            table: ['#@sys_area'],
             fields: ['id', 'concat(`name`, `extra`, `suffix`) as name', 'code', 'reid', '`order`'],
             where: []
         }
@@ -39,7 +39,7 @@ function AddressModel(){
         
         if(!id || !type)return callback(data);
         var conditions = {
-            table: ['youbang_addresslist'],
+            table: ['#@addresslist'],
             where: []
         }
         conditions.where.push('id=' + id, 'type="' + type + '"');
@@ -64,7 +64,7 @@ function AddressModel(){
         addr = addr.split('-');
 
         var conditions = {
-            table: ['youbang_addresslist'],
+            table: ['#@addresslist'],
             fields:[],
             where: []
         }

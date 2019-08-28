@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-16 15:28:18
+ * @LastEditors: your name
+ */
 function TranceConfsModel(){
     /**
      * 配置说明：
@@ -7,7 +14,7 @@ function TranceConfsModel(){
      */
     var confs = {
         SDFGDFGDFGDFG: {
-            table: "youbang_commodities_orders",//表名
+            table: "#@commodities_orders",//表名
             number: 'float',                    //限制能够储存到数据的数据类型
             totalprice: 'float',
             trancefree: 'float',

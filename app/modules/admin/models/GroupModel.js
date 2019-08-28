@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-24 17:12:08
+ * @LastEditTime: 2019-08-28 17:50:52
+ * @LastEditors: Please set LastEditors
+ */
 function GroupModel(){
     var that = this;
 
@@ -8,7 +15,7 @@ function GroupModel(){
     that.getAcountTypeAll = function(callback){
         var list = {};
         var condition = {
-            table:["youbang_sys_acount_type"],                                 //查询的表名
+            table:["#@sys_acount_type"],                                 //查询的表名
             fields:["id","typeName","alias"],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['id asc']
@@ -35,7 +42,7 @@ function GroupModel(){
        data.groupName = this.POST('groupName');
        data.type = this.POST('type');
        var condition = {
-            table:["youbang_sys_acount_group"],                                 //查询的表名
+            table:["#@sys_acount_group"],                                 //查询的表名
             fields:[{
                 "pid":data.pid,
                 "groupName":data.groupName,
@@ -59,7 +66,7 @@ function GroupModel(){
 
     /**
      * 查询当前用户所有管理组信息
-     * 表名 youbang_sys_acount_group
+     * 表名 #@sys_acount_group
      * 查询字段 id,pid,groupName,type,status,addTime
      * 条件,传管理组id为查询单条信息，不传查询所有列表信息
      * 必要条件 deleted 是否可用(用户是否被删除) 0 可用,1 已删除
@@ -74,7 +81,7 @@ function GroupModel(){
 
         var id = that.GET('id') || that.POST('id') || '';//获取管理组ID
         var condition = {
-            table:["youbang_sys_acount_group"],                                 //查询的表名
+            table:["#@sys_acount_group"],                                 //查询的表名
             fields:["id","pid","groupName","type","status",'addTime'],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['id asc']
@@ -95,7 +102,7 @@ function GroupModel(){
     that.getGroupAll = function(params,callback){
         var process =  that.model("DataProcess");
         var uid = process.getUserInfo('UID');        
-        var sql = " select id,pid,groupName,type,`status`,addTime from youbang_sys_acount_group where pid in (select id from youbang_sys_acount where pid= "+uid+") or pid in ("+uid+") AND deleted = 0";
+        var sql = " select id,pid,groupName,type,`status`,addTime from #@sys_acount_group where pid in (select id from #@sys_acount where pid= "+uid+") or pid in ("+uid+") AND deleted = 0";
         that.DB().query(sql,function(error,results){
             if(results) callback(results);
         })
@@ -110,7 +117,7 @@ function GroupModel(){
 
         //获取类型
         var condition = {
-            table:["youbang_sys_acount_type"],                                 //查询的表名
+            table:["#@sys_acount_type"],                                 //查询的表名
             fields:["id","typeName","alias"],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['id asc']
@@ -119,7 +126,7 @@ function GroupModel(){
         that.DB().get(condition,function(error,results){
             data.results = results;
               if(data.results){
-                  var sql = "select id,pid,groupName,type,status,addTime from youbang_sys_acount_group where id ="+data.id;
+                  var sql = "select id,pid,groupName,type,status,addTime from #@sys_acount_group where id ="+data.id;
                   that.DB().query(sql,function(error,res){
                     data.list= res;
                     callback(data);
@@ -143,7 +150,7 @@ function GroupModel(){
         if(data){
              //获取类型
             var condition = {
-                table:["youbang_sys_acount_group"],            //查询的表名
+                table:["#@sys_acount_group"],            //查询的表名
                 fields:[{
                     groupName:data.groupName,
                     type:data.type,
@@ -175,7 +182,7 @@ function GroupModel(){
         data.id = that.GET("id");
         if(data){
             var condition = {
-                table:["youbang_sys_acount_group"],          //查询的表名
+                table:["#@sys_acount_group"],          //查询的表名
                 where:[]          //更新条件              
             };
             condition.where.push(" id = "+data.id);

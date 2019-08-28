@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-28 17:49:55
+ * @LastEditors: Please set LastEditors
+ */
 function ClassifyModel(){
     var that = this;
 
@@ -6,7 +13,7 @@ function ClassifyModel(){
      */
     this.get = function(params,callback){
         var conditions = {
-            table: ['youbang_arcclass'],
+            table: ['#@arcclass'],
             where: []
         }
         conditions.where.push("comtag='" + params.ctag + "'");
@@ -33,7 +40,7 @@ function ClassifyModel(){
      */
     this.save = function(params,callback){
         var conditions = {
-            table: 'youbang_arcclass',
+            table: '#@arcclass',
             fields: [],
             where: []
         }

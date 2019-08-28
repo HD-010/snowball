@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-28 17:53:27
+ * @LastEditors: Please set LastEditors
+ */
 function PermitModel(){
     var that = this;
 
@@ -7,7 +14,7 @@ function PermitModel(){
     this.power = function(params,callback){
         var data = {error: 0};
         var condition = {
-            table:["youbang_sys_permit"],             //查询的表名
+            table:["#@sys_permit"],             //查询的表名
             fields:['*'],           //被查询的字段名称（别名在此指定）
             where:[],               //查询条件
             orderBy:[]
@@ -29,7 +36,7 @@ function PermitModel(){
     this.group = function(params,callback){
         var data = {error: 0};
         var condition = {
-            table:["youbang_sys_acount"],                                 //查询的表名
+            table:["#@sys_acount"],                                 //查询的表名
             fields:['groupId'],             //被查询的字段名称（别名在此指定）
             where:[],                   //查询条件
         };

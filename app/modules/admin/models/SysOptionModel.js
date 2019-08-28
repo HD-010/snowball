@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-15 09:46:04
+ * @LastEditTime: 2019-08-28 17:51:26
+ * @LastEditors: Please set LastEditors
+ */
 function SysOptionModel(){
 
     /**
@@ -5,7 +12,7 @@ function SysOptionModel(){
      */
     this.options = function(params,callback){
         var contions = {
-            table : ['youbang_sys_option'],
+            table : ['#@sys_option'],
             fields : ['*']
         };
         this.DB().get(contions,function(error,res){

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-17 09:39:20
- * @LastEditTime: 2019-08-20 17:08:39
+ * @LastEditTime: 2019-08-28 17:51:42
  * @LastEditors: Please set LastEditors
  */
 function TypeModel(){
@@ -13,13 +13,13 @@ function TypeModel(){
     this.list = function(params,callback){
         var data = {};
         var conditions = {
-            table : ['youbang_arctype'],
+            table : ['#@arctype'],
             fields : ['*', 'id as val','typename as name','topid as pid'],
             where : [],
             orderBy:['topid asc', 'id asc'],
         };
         if(params.id) conditions.where.push("id=" + params.id);
-        if(params.nid) conditions.where.push("componentid=(select id from youbang_components where nid='" + params.nid + "')");    //查看组件id
+        if(params.nid) conditions.where.push("componentid=(select id from #@components where nid='" + params.nid + "')");    //查看组件id
         
         this.DB().get(conditions,function(error,res){
             data.error = error ? 1 : 0;
@@ -47,7 +47,7 @@ function TypeModel(){
         if(!componentid) return callback(data);
 
        var conditions = {
-            table:'youbang_arctype',
+            table:'#@arctype',
             where:[],
             fields:[]
         }
@@ -85,7 +85,7 @@ function TypeModel(){
         this.counSub(params, function(res){
             if(res.error) return callback(res);
             if(res.results[0].total) return callback(res);
-            var sql = `delete from youbang_arctype where componentid=` + params.componentId + ` and id=`+ params.atid;
+            var sql = `delete from #@arctype where componentid=` + params.componentId + ` and id=`+ params.atid;
             that.DB().log().delete(sql, function(error, results){
                 res.error = error? 1: 0;
                 res.results = results;
@@ -99,7 +99,7 @@ function TypeModel(){
      * 统计栏目id下有多少子栏目
      */
     this.counSub = function(params, callback){
-        var sql = 'select count(*) as total from youbang_arctype where topid=' + params.atid;
+        var sql = 'select count(*) as total from #@arctype where topid=' + params.atid;
         this.DB().select(sql, function(error, results){
             var data = {
                 error: error? 1: 0,
