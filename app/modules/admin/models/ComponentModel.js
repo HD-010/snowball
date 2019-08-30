@@ -115,14 +115,22 @@ function ComponentModel(){
     /**
      * 创建组件信息表
      */
-    this.create = function(params,callback){
-        var fields = [
-            "`aid` bigint(13) NOT NULL DEFAULT '0'",
-            "`typeid` int(11) NOT NULL DEFAULT '0' COMMENT '栏目id'",
-            "`componentid` smallint(6) NOT NULL DEFAULT '0' COMMENT '组件id'",
+    this.create = async function(params,callback){
+        var tabSql = {};
+        //第二类表固定字段
+        var addonFields = [
+            "`aid` bigint(13) NOT NULL DEFAULT '1'",
+            "`typeid` int(11) NOT NULL DEFAULT '1' COMMENT '栏目id'",
+            "`componentid` smallint(6) NOT NULL DEFAULT '1' COMMENT '组件id'",
             "`arcrank` smallint(6) NOT NULL DEFAULT '0' COMMENT '排序'",
-            "`mid` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '发布人id'"
+            "`mid` mediumint(8) unsigned NOT NULL COMMENT '发布人id'"
         ];
+        //第三类表固定字段
+        var otherFields = [
+            "`id` bigint(13) not null primary key AUTO_INCREMENT ",
+            "`aid` bigint(13) NOT NULL DEFAULT '1'",
+            "`mid` mediumint(8) unsigned NOT NULL COMMENT '发布人id'"
+        ]
         var data = {
             error: 1,
             message:["保存成功","请检查填写项，输入有误！！"]
@@ -130,11 +138,13 @@ function ComponentModel(){
         var fieldInfos = JSON.parse(utility.base64decode(params.comInfos.addoninfos));
         var _null,_default;
         var tab = params.comInfos.addtable.replace(/\s/g, '');
-        var sql = 'drop table if exists `'+ tab +'`';
+        
         for(var i = 0; i < fieldInfos.length; i ++){
             var field = [];
             _null = '';
             _default = '';
+            //创建附加表字段
+            if(!params.effect[i]) params.effect[i] = 'addon';
             field.push('`' + fieldInfos[i]['field'].replace(/\s/g,'') + '`');
             field.push(fieldInfos[i]['type']);
             field.push(fieldInfos[i]['maxlength']?'(' + fieldInfos[i]['maxlength'] + ')':'');
@@ -143,20 +153,29 @@ function ComponentModel(){
             _default = fieldInfos[i]['default'] ? 'DEFAULT '+ fieldInfos[i]['default'] : '';
             field.push( _default );
             field.push('COMMENT "' + fieldInfos[i]['itemname'] + '"');
-            fields.push(field.join(' '));
+            if(!tabSql[params.effect[i]]) tabSql[params.effect[i]] = [];
+            var fieldSql = field.join(" ");
+            tabSql[params.effect[i]].push(fieldSql);
         }
-        this.DB().query(sql, function(error, results){
-            if(error) return callback(data);
-            sql = 'create table `'+ tab +'`(' + fields.join(',') + '\
+        var sql = sSql = allSql = ctab = '';
+        for(var k in tabSql){
+            sql =  (k == 'addon') ? 
+            'drop table if exists `'+ tab +'`' :
+            'drop table if exists `#@' + k + '`';
+            var drop = await this.DB().syncQuery(sql);
+            if(drop.error) return callback(data);
+            sSql = (k == 'addon') ? addonFields : otherFields;
+            allSql = tabSql[k].concat(sSql);
+            ctab = (k == 'addon') ? tab : '#@' + k;
+            sql = 'create table '+ctab+'(' + allSql.join(',') + '\
             )ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;';
-
-            that.DB().query(sql, function(error, results){
-                data.error = error ? 1 : 0;
-                callback(data);
-            });
-        });
-        
+            var creat = await this.DB().syncQuery(sql);
+            if(creat.error) return callback(data);
+        }
+        data.error = 0;
+        return callback(data);
     }
+    
 }
 
 module.exports = ComponentModel;

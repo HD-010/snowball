@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'node_snowball',
     store: sessionStore,
-    cookie: {maxAge:60*1000*10},
+    cookie: {maxAge:60*1000*100},
     saveUninitialized: true,
     resave: true
 }));

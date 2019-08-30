@@ -54,6 +54,7 @@ function componentControler(){
         params.comname = this.POST('comname') || '';
         params.icon = this.POST('icon') || '';
         params.nid = this.POST('nid') || '';
+        params.effect = this.POST('effect');
         if(!params.comname || !params.nid) return that.renderJson(data);
         //保存组件信息
         compponent.save(params, function(res){
