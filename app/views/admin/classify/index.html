@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 15:28:20
- * @LastEditTime: 2019-08-31 14:30:06
+ * @LastEditTime: 2019-08-31 15:35:11
  * @LastEditors: Please set LastEditors
  -->
 
@@ -72,8 +72,6 @@
                         </tr>
                     </tfoot>
                 </table>
-
-                
             </form>
         </div>
     </div>
@@ -83,7 +81,7 @@
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <!-- Sweet alert -->
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
-<%- print_r(results) %>
+<%- //print_r(results) %>
 <script>
         jQuery(function($){
             var results = <%- results.length ? JSON.stringify(results) : false %> || [{name: '添加分类',val:'nesinit'}];

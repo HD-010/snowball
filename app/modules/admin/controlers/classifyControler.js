@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 15:28:18
- * @LastEditTime: 2019-08-31 14:58:57
+ * @LastEditTime: 2019-08-31 15:33:02
  * @LastEditors: Please set LastEditors
  */
 function classifyControler(){
@@ -24,8 +24,6 @@ function classifyControler(){
             if(res.error) return that.render({},'/err404');
             //[ '所属分类', '投标分类' ]
             data.className = array2value(res.results[0].addoninfos, 'islist', '!=','islist',true);
-            console.log("&&&&&&&&&&&&&&&&&&&:::", data.className);
-
             //获取当前商户的分类列表
             var classify = that.model("Classify");
             classify.get(params, function(res){
