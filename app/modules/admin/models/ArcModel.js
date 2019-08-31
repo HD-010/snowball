@@ -66,7 +66,7 @@ function ArcModel(){
         if(!tempTab.length) return callback(data);
         var sql = 'select * from ' + tempTab.join(',') + ' where ' + tempWhere.join(' and ');
         this.DB().select(sql,function(error,results,fields){
-            data.error = results.length ? 0 : 1;
+            data.error = error ? 1 : 0;
             data.thirdList = error ? [] : recodeBase64decode(results,noVAlid);
             return callback(data);
         });

@@ -269,8 +269,6 @@
         </li>
         <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
         </li>
-        <li class=""><a data-toggle="tab" data-target="#tab-3"><i class="fa fa-briefcase"></i>其他</a>
-        </li>
     </ul>
     <div class="add-infor">
         <div class="row tips">
@@ -523,40 +521,54 @@
                             </td>
                         </tr>
                     </tfoot>
-                    <!-- 图片上传必要 -->
-                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+                    
                 </table>
+                <%
+                    var thirdTabs = {}
+                    for(var k in addoninfos){ 
+                        if(!addoninfos[k].fieldget) continue;
+                        if(!addoninfos[k].effect) addoninfos[k].effect = '';
+                        if(!addoninfos[k].effect.match(/^tab_/)) continue;
+                        thirdTabs[addoninfos[k].effect] = 1;
+                    }
+                    thirdTabs = Object.keys(thirdTabs);
+                    for(var j = 0; j < thirdTabs.length; j ++){
                 
+                %>
+                <%- print_r(thirdTabs) %>
+
                 <!-- tab-3的表单由系统生成 -->
-                <table class="table hidden" id="tab-3">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-2">参数说明</th>
-                            <th>参数值</th>
-                        </tr>
-                    </thead>
-                    <tbody class="page-struct">
-                        <% 
-                        for(var i in addoninfos){ 
-                            if(!addoninfos[i].fieldget) continue;
-                            if(addoninfos[i].effect == undefined) continue;
-                            if(addoninfos[i].effect && (addoninfos[i].effect.indexOf('tab_') !== 0)) continue;
-                        %>
-                            <%- formCode.get(i); %>
-                        <% } %>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="submit" class="btn">确定</button>
-                                <button type="reset" class="btn">重置</button>
-                                <button type="button" class="btn tbody-copy-increment">增加</button>
-                                <button type="button" class="btn tbody-copy-reduction">删除</button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                    <table class="table hidden" id="tab-3">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-2">参数说明</th>
+                                <th>参数值</th>
+                            </tr>
+                        </thead>
+                        <tbody class="page-struct">
+                            <% 
+                            for(var i in addoninfos){ 
+                                if(!addoninfos[i].fieldget) continue;
+                                if(addoninfos[i].effect != thirdTabs[j]) continue;
+                            %>
+                                <%- formCode.get(i); %>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn">确定</button>
+                                    <button type="reset" class="btn">重置</button>
+                                    <button type="button" class="btn tbody-copy-increment">增加</button>
+                                    <button type="button" class="btn tbody-copy-reduction">删除</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                <% } %>
+                <!-- 图片上传必要 -->
+                <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
             </form>
         </div>
     </div>
@@ -985,12 +997,6 @@
 
 </script>
 <script>
-    //选项卡相关
-    $("a[data-toggle='tab']").click(function(){
-        $(".table").addClass('hidden');
-        $($(this).attr('data-target')).removeClass('hidden');
-    });
-
     //初始化表单的值
     var recodData = {
             error: <%- error %>,
@@ -1153,12 +1159,27 @@
 <!-- 页面结构控制  当tbody中有0个tr时，删除该table和对应的选项卡-->
 <script>
     (function(){
+        //同步选项卡个数
         $(".page-struct").each(function(i, opt){
+            var select = "#" + $(opt).parent().attr('id');
+            var option = $('.nav-tabs').find("a[data-target='"+select+"']").parent();
+            var newOption = $($(".nav-tabs").children('li').eq(0)[0].outerHTML);
             if(!$(opt).children("tr").length){
-                var select = "#" + $(opt).parent().attr('id');
-                $('.nav-tabs').find("a[data-target='"+select+"']").parent().remove();
+                option.remove();
                 $(opt).parent().remove();
+            }else{
+                if(i>1){
+                    newOption.removeClass("active");
+                    newOption.children('a').attr('data-target', select);
+                    newOption.children('a').html("<i class='fa fa-user'></i>其他");
+                    $('.nav-tabs').append(newOption);
+                }
             }
+        });
+        //操作选项卡
+        $("a[data-toggle='tab']").click(function(){
+            $(".table").addClass('hidden');
+            $($(this).attr('data-target')).removeClass('hidden');
         });
     })()
     

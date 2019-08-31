@@ -268,8 +268,8 @@ var formCode = {
             </li>
             <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
             </li>
-            <li class=""><a data-toggle="tab" data-target="#tab-3"><i class="fa fa-briefcase"></i>其他</a>
-            </li>
+            <!-- <li class=""><a data-toggle="tab" data-target="#tab-3"><i class="fa fa-briefcase"></i>其他</a>
+            </li> -->
         </ul>
         <div class="row form tab-content">
             <form id="add-infor" data-form-async='json' action="/admin/arc/save/ctag/<%= ctag %>" method="post" novalidate="novalidate">
@@ -317,18 +317,6 @@ var formCode = {
                             </td>              
                         </tr>
 
-                        <!-- <tr>
-                            <td>所属栏目：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                    <input type="hidden" name="typeid" value="" />
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
-                                <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
-                            </td>              
-                        </tr> -->
-
                         <tr>
                             <% 
                                 effect = array2value(addoninfos, 'field', 'typeid', 'effect');
@@ -345,18 +333,6 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                             </td>              
                         </tr>
-
-                        <!-- <tr>
-                            <td>所属分类：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
-                                    <input type="hidden" name="classify" value=""/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
-                                <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
-                            </td>              
-                        </tr> -->
 
                         <tr>
                             <% 
@@ -495,46 +471,6 @@ var formCode = {
                         %>
                             <%- formCode.get(i); %>
                         <% } %>
-                        <!--<tr>
-                            <td>联系电话：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="tel" class="form-control" name="tel" placeholder="联系电话" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;联系电话</span>
-                            </td>              
-                        </tr>
-
-                        <tr>
-                            <td>email:</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="email" class="form-control" name="email" placeholder="email" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;email</span>
-                            </td>              
-                        </tr>
-
-                        <tr>
-                            <td>地址:</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="address" placeholder="地址" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;地址</span>
-                            </td>              
-                        </tr>
-                        
-                        
-                        <tr>
-                            <td>内容详情:</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <input type="text" class="form-control" name="body" placeholder="内容详情" value=" "/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;内容详情</span>
-                            </td>              
-                        </tr> -->
                     </tbody>
                     <tfoot>
                         <tr>
@@ -545,40 +481,54 @@ var formCode = {
                             </td>
                         </tr>
                     </tfoot>
-                    <!-- 图片上传必要 -->
-                    <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+                    
                 </table>
 
-                <!-- tab-2的表单由系统生成 -->
-                <table class="table hidden" id="tab-3">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-2">参数说明</th>
-                            <th>参数值</th>
-                        </tr>
-                    </thead>
-                    <tbody class="page-struct">
-                        <% 
-                        for(var i in addoninfos){ 
-                            if(!addoninfos[i].fieldget) continue;
-                            if(addoninfos[i].effect == undefined) continue;
-                            if(addoninfos[i].effect && (addoninfos[i].effect.indexOf('tab_') !== 0)) continue;
-                        %>
-                            <%- formCode.get(i); %>
-                        <% } %>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="submit" class="btn">确定</button>
-                                <button type="reset" class="btn">重置</button>
-                                <button type="button" class="btn tbody-copy-increment">增加</button>
-                                <button type="button" class="btn tbody-copy-reduction">删除</button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <%
+                    var thirdTabs = {}
+                    for(var k in addoninfos){ 
+                        if(!addoninfos[k].fieldget) continue;
+                        if(!addoninfos[k].effect) addoninfos[k].effect = '';
+                        if(!addoninfos[k].effect.match(/^tab_/)) continue;
+                        thirdTabs[addoninfos[k].effect] = 1;
+                    }
+                    thirdTabs = Object.keys(thirdTabs);
+                    for(var j = 0; j < thirdTabs.length; j ++){
+                
+                %>
+                <%- print_r(thirdTabs) %>
+                    <!-- tab-3的表单由系统生成 -->
+                    <table class="table hidden" id="tab-<%= j + 3 %>">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-2">参数说明</th>
+                                <th>参数值</th>
+                            </tr>
+                        </thead>
+                        <tbody class="page-struct">
+                            <% 
+                            for(var i in addoninfos){ 
+                                if(!addoninfos[i].fieldget) continue;
+                                if(addoninfos[i].effect != thirdTabs[j]) continue;
+                            %>
+                                <%- formCode.get(i); %>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn">确定</button>
+                                    <button type="reset" class="btn">重置</button>
+                                    <button type="button" class="btn tbody-copy-increment">增加</button>
+                                    <button type="button" class="btn tbody-copy-reduction">删除</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                <% } %>
+                <!-- 图片上传必要 -->
+                <input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
             </form>
         </div>
     </div>
@@ -1009,11 +959,7 @@ var formCode = {
         console.log(UE.contents());
     });
 
-    //选项卡相关
-    $("a[data-toggle='tab']").click(function(){
-        $(".table").addClass('hidden');
-        $($(this).attr('data-target')).removeClass('hidden');
-    });
+    
 </script>
 
 <script>
@@ -1112,12 +1058,27 @@ addressPice.load();
 <!-- 页面结构控制  当tbody中有0个tr时，删除该table和对应的选项卡-->
 <script>
     (function(){
+        //同步选项卡个数
         $(".page-struct").each(function(i, opt){
+            var select = "#" + $(opt).parent().attr('id');
+            var option = $('.nav-tabs').find("a[data-target='"+select+"']").parent();
+            var newOption = $($(".nav-tabs").children('li').eq(0)[0].outerHTML);
             if(!$(opt).children("tr").length){
-                var select = "#" + $(opt).parent().attr('id');
-                $('.nav-tabs').find("a[data-target='"+select+"']").parent().remove();
+                option.remove();
                 $(opt).parent().remove();
+            }else{
+                if(i>1){
+                    newOption.removeClass("active");
+                    newOption.children('a').attr('data-target', select);
+                    newOption.children('a').html("<i class='fa fa-user'></i>其他");
+                    $('.nav-tabs').append(newOption);
+                }
             }
+        });
+        //操作选项卡
+        $("a[data-toggle='tab']").click(function(){
+            $(".table").addClass('hidden');
+            $($(this).attr('data-target')).removeClass('hidden');
         });
     })()
     
