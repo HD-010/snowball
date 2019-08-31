@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 15:28:18
- * @LastEditTime: 2019-08-28 17:49:55
+ * @LastEditTime: 2019-08-31 15:30:14
  * @LastEditors: Please set LastEditors
  */
 function ClassifyModel(){
@@ -78,6 +78,7 @@ function ClassifyModel(){
         var tem = [];
         var temObj;
         for(var i = 0; i < listName.length; i ++){
+            if(!listName[i].length) continue;
             temObj = array2value(classifies, 'name', listName[i]);
             if(!temObj) temObj = {name: listName[i], val: "classify_" + (new Date()).valueOf() + i};
             tem.push(temObj);

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 15:28:20
- * @LastEditTime: 2019-08-31 10:42:19
+ * @LastEditTime: 2019-08-31 14:30:06
  * @LastEditors: Please set LastEditors
  -->
 
@@ -83,7 +83,7 @@
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <!-- Sweet alert -->
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
-
+<%- print_r(results) %>
 <script>
         jQuery(function($){
             var results = <%- results.length ? JSON.stringify(results) : false %> || [{name: '添加分类',val:'nesinit'}];
@@ -121,6 +121,7 @@
                     spce.edit();
                     spce.plus();
                     spce.minus();
+                    spce.checkBtn();
                 },
                 
                 //获取规格项名称（用于表单提交时,与commidity_spec中的title对应）
@@ -170,9 +171,11 @@
                         var sn = "" + Math.ceil((new Date()).valueOf()/1000) + Math.ceil(Math.random() * 1000);
                         var html = $(curEl[0].outerHTML);
                         html.children('ol').remove();
+                        //html = $('<ol class="dd-list" style="">' + html[0].outerHTML + '</ol>');
                         html.find('[data-action="collapse"]').css('display', 'none');
                         html.attr('data-val','classify_' + sn );
                         curEl.after(html);
+                        curEl.find('[data-action="collapse"]').css('display', 'block');
                         spce.reset();
                         $('#nestable2').nestable({group: 0}).change();
                     });
@@ -196,6 +199,17 @@
                             swal("删除成功！", "您已经永久删除了这条信息。", "success");
                             $('#nestable2').nestable({group: 0}).change();
                         });
+                    });
+                },
+
+                //检查收拢展开按键的个数，确保各有一个
+                checkBtn: function(){
+                    $('li .dd-item').each(function(i, opt){
+                        $(opt).children("[data-action='collapse']:gt(0)").remove();
+                        $(".dd .minus").css('display', 'inline-block');
+                        $(".dd>ol>.dd-item>.dd-edit>.minus").css('display', 'none');
+                        $(".dd .fa-edit").css('display', 'inline-block');
+                        $(".dd>ol>.dd-item>.dd-edit>.fa-edit").css('display', 'none');
                     });
                 },
                 
