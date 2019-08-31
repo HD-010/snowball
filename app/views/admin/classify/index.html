@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 15:28:20
- * @LastEditTime: 2019-08-21 10:25:41
+ * @LastEditTime: 2019-08-31 10:42:19
  * @LastEditors: Please set LastEditors
  -->
 
@@ -167,12 +167,12 @@
                 plus : function(){
                     $('.plus').unbind('click').on('click',function(e){
                         var curEl = $(this).parent().parent();
-                        var html = $(curEl[0].outerHTML);
-                        if(html.find('ol').length){
-                            html = html.find('ol').remove();
-                        }
                         var sn = "" + Math.ceil((new Date()).valueOf()/1000) + Math.ceil(Math.random() * 1000);
-                        curEl.after($(html).attr('data-val','classify_' + sn ));
+                        var html = $(curEl[0].outerHTML);
+                        html.children('ol').remove();
+                        html.find('[data-action="collapse"]').css('display', 'none');
+                        html.attr('data-val','classify_' + sn );
+                        curEl.after(html);
                         spce.reset();
                         $('#nestable2').nestable({group: 0}).change();
                     });
