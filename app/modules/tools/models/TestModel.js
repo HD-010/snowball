@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-31 09:04:44
+ * @LastEditors: Please set LastEditors
+ */
 function TestModel(){
     this.showApp = function(data,callback){
         //callback = callback || function(){};
@@ -10,6 +17,7 @@ function TestModel(){
         });
         
     }
+
 }
 
 module.exports = TestModel;

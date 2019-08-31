@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-31 09:44:46
+ * @LastEditors: Please set LastEditors
+ */
 function expControler(){
     this.useModel = function(){
         var data = {};
@@ -49,6 +56,21 @@ function expControler(){
         this.render({});
 
 
+    }
+
+    /**
+     * 测试mysql数据库同步查询
+     * 访问地址：/dome/exp/sync-sql
+     */
+    this.syncSql = async function(){
+        var table = this.model("Table");
+        var res1 = await table.testSql();
+        log("---------------------------res1-----------------------", res1);
+        var res2 = await table.testSql2();
+        log("---------------------------res2-----------------------", res2);
+        log("---------------------------resInfo-----------------------");
+
+        //that.renderJson(res)
     }
 
     this.useRequest = function(){

@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-06-15 14:46:48
- * @LastEditTime: 2019-08-28 17:50:22
+ * @LastEditTime: 2019-08-31 08:47:31
  * @LastEditors: Please set LastEditors
  */
 function ComponentModel(){
@@ -45,7 +45,7 @@ function ComponentModel(){
         
         this.DB().get(conditions,function(error,results,fields){
             var data = {};
-            data.error = error ? 1 : 0;
+            data.error = (error || !results.length) ? 1 : 0;
             data.uri = "";
             data.results = recodeJsonParse(recodeBase64decode(results,'addoninfos'),'addoninfos');
             return callback(data);

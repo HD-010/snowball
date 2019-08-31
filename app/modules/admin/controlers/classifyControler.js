@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 15:28:18
+ * @LastEditTime: 2019-08-31 08:51:29
+ * @LastEditors: Please set LastEditors
+ */
 function classifyControler(){
     var that = this;
     /**
@@ -6,7 +13,7 @@ function classifyControler(){
     this.index = function(){
         var params = data = {};
         var ctag = this.param('ctag');
-        if(!ctag) return that.render('/err404');
+        if(!ctag) return that.render({},'/err404');
 
         var process = this.model("DataProcess");
         params.ctag = ctag;
@@ -14,7 +21,7 @@ function classifyControler(){
         params.enable = '1';
         //获取组件表中字段为列表的字段信息
         this.model('Component').list(params,function(res){
-            if(res.error) return that.render(res);
+            if(res.error) return that.render({},'/err404');
             //[ '所属分类', '投标分类' ]
             data.className = array2value(res.results[0].addoninfos, 'islist', '!=','islist',true);
             //获取当前商户的分类列表

@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-27 09:47:19
+ * @LastEditTime: 2019-08-31 09:42:49
+ * @LastEditors: Please set LastEditors
+ */
 function TableModel() {
     this.attr = "attr in model Test";
 
@@ -176,6 +183,20 @@ function TableModel() {
             
             that.renderJson(results);
         });
+    }
+
+    /**
+     * 测试mysql数据库同步查询
+     */
+    this.testSql = async function(){
+        var sql = "select * from #@addonadv";
+        var res = await this.DB().syncQuery(sql);
+        return res;
+    }
+    this.testSql2 = async function(){
+        var sql = "select * from #@arcatt";
+        var res = await this.DB().syncQuery(sql);
+        return res;
     }
 
 }
