@@ -135,7 +135,7 @@ function ViewData(params){
     this.listTag = params.childId || params.listId;
     //限制加载的记录,limit:0,5, 加载第0条开始，共加载5条
     this.limit = params.limit || '0,-1';
-    //请求是传送的参数
+    //请求时传送的参数
     this.data = params.data;
     //是否异步
     this.async = params.async || true;

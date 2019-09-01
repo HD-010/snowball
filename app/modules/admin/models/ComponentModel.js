@@ -118,6 +118,7 @@ function ComponentModel(){
     this.create = async function(params,callback){
         var tabSql = {};
         //第二类表固定字段
+        var addonSFields = ['aid', 'typeid', 'componentid', 'arcrank', 'mid'] ;
         var addonFields = [
             "`aid` bigint(13) NOT NULL DEFAULT '1'",
             "`typeid` int(11) NOT NULL DEFAULT '1' COMMENT '栏目id'",
@@ -125,7 +126,9 @@ function ComponentModel(){
             "`arcrank` smallint(6) NOT NULL DEFAULT '0' COMMENT '排序'",
             "`mid` mediumint(8) unsigned NOT NULL COMMENT '发布人id'"
         ];
+
         //第三类表固定字段
+        var otherSFields = ['id', 'aid', 'mid'];
         var otherFields = [
             "`id` bigint(13) not null primary key AUTO_INCREMENT ",
             "`aid` bigint(13) NOT NULL DEFAULT '1'",
@@ -141,11 +144,17 @@ function ComponentModel(){
         
         for(var i = 0; i < fieldInfos.length; i ++){
             var field = [];
+            var 
             _null = '';
             _default = '';
             //创建附加表字段
             if(!params.effect[i]) params.effect[i] = 'addon';
-            field.push('`' + fieldInfos[i]['field'].replace(/\s/g,'') + '`');
+            var fieldName = fieldInfos[i]['field'].replace(/\s/g,'');
+            //过滤表固有的字段
+            if(params.effect[i] == 'main') continue;
+            if((params.effect[i] == 'addon') && (addonSFields.indexOf(fieldName) + 1)) continue;
+            if(((params.effect[i] != 'main') && ((params.effect[i] != 'addon'))) && (otherSFields.indexOf(fieldName) + 1)) continue;
+            field.push('`' + fieldName + '`');
             field.push(fieldInfos[i]['type']);
             field.push(fieldInfos[i]['maxlength']?'(' + fieldInfos[i]['maxlength'] + ')':'');
             _null = fieldInfos[i]['isnull'] ? 'NULL' : 'NOT NULL';

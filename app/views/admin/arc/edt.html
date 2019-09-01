@@ -7,6 +7,7 @@
  -->
 <%- //print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
+<%- print_r(thirdList) %>
 <%
     var formCode = {
         //uediter选项
@@ -328,18 +329,6 @@
                             </td>              
                         </tr>
 
-                        <!-- <tr>
-                            <td>栏目：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <div id="oper-types" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(types,'id',data[0].typeid,'name'); %></div>
-                                    <input type="hidden" name="typeid" value="<%= data[0].typeid; %>" />
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
-                                <div class="col-xs-8" id="oper-types-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
-                            </td>              
-                        </tr> -->
-
                         <tr>
                             <% 
                             effect = array2value(addoninfos, 'field', 'typeid', 'effect');
@@ -356,19 +345,6 @@
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
                             </td>              
                         </tr>
-
-                        <!-- <tr>
-                            <td>分类：</td>
-                            <td>
-                                <div class="form-group col-xs-4">
-                                    <% var classify = JSON.parse(results); %>
-                                    <div id="oper-classify" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(classify,'val',data[0].classify,'name'); %></div>
-                                    <input type="hidden" name="classify" value="<%= data[0].classify %>"/>
-                                </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
-                                <div class="col-xs-8" id="oper-classify-nes" style="border:1px solid #CFDADD;margin-left:15px;display:none;"></div>
-                            </td>              
-                        </tr> -->
 
                         <tr>
                             <% 
@@ -1006,6 +982,11 @@
         error: <%- error %>,
         data: <%- JSON.stringify(thirdList); %>
     }
+    DL({
+        listId: "#tab-3",
+        packet: thirdList,
+        use: 1
+    });
         
     DL({
         //dev: "on",
@@ -1063,11 +1044,7 @@
         }
     });
 
-    DL({
-        listId: "#tab-3",
-        packet: thirdList,
-        use: 1
-    });
+   
 </script>
 
 
