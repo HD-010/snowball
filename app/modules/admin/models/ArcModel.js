@@ -103,6 +103,7 @@ function ArcModel(){
         record.litpic = litpic || '';
         record.addtime = this.POST('!addtime') || 'now()';
         record.mid = that.model("DataProcess").uid();
+        record.voteid = that.POST("voteid") || 0;
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
@@ -139,6 +140,9 @@ function ArcModel(){
             array2value(addoninfos,'field',addoninfos[i].field,'default');
         }
         record.aid = params.aid;
+        record.mid = that.model("DataProcess").uid();
+        record.componentid = this.POST('component') || '1';
+        record.arcrank = this.POST('arcrank') || '0';
         record.typeid = parseInt(this.POST('typeid')) || 0;
         conditions.fields.push(record);
         var aid = this.POST('id');
@@ -156,6 +160,7 @@ function ArcModel(){
      * 保存第三类表数据
      */
     this.saveThirdTab = function(params, callback){
+        var utility = require("utility");
         var ps = 0;
         var conditions,aid;
         var data = {error: 1};
@@ -184,6 +189,7 @@ function ArcModel(){
                     conditions.fields[k][addoninfos[i].field] = field[k] ? field[k] : 
                     array2value(addoninfos,'field',addoninfos[i].field,'default');
                     conditions.fields[k]['aid'] = params.aid;
+                    conditions.fields[k]['mid'] = that.model("DataProcess").uid();
                 }
             }
             aid = this.POST('id');

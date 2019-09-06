@@ -231,10 +231,14 @@ var formCode = {
     margin-right: 10px;
     float: left;
 }
+.replaceImg-label .img-handl{
+    display: table-cell;
+    position: initial;
+}
 .replaceImg-label .fa-size{
     font-size: 45px;
     position: absolute;
-    display: inline-block;
+    display: block;
     width: 130px;
     height: 130px;
     /* left: 0;
@@ -496,7 +500,7 @@ var formCode = {
                     for(var j = 0; j < thirdTabs.length; j ++){
                 
                 %>
-                <%- print_r(thirdTabs) %>
+                
                     <!-- tab-3的表单由系统生成 -->
                     <table class="table hidden" id="tab-<%= j + 3 %>">
                         <thead>
@@ -533,6 +537,7 @@ var formCode = {
         </div>
     </div>
 </div>
+<%- print_r(addoninfos) %>
 <!-- 输出视图组件 -->
 <%- cropperView %>
 <%- //print_r(results) %>

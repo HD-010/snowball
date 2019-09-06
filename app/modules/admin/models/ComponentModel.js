@@ -80,7 +80,14 @@ function ComponentModel(){
                 if(!temData[i]) continue;
                 if(typeof temData != 'object') temData = [temData];
                 if(names[j] == 'field'){
-                    temField[names[j]] = temData[i].replace(/\s/g,'');  //字段名称能有空格
+                    temField[names[j]] = temData[i].replace(/\s/g,'');  //字段名称不能有空格
+                    continue;
+                }
+                if((names[j] == 'effect') && 
+                (temData[i] != 'main' && temData[i] != 'addon' && temData[i]) &&
+                !temData[i].match(/^tab_/)
+                ){
+                    temField[names[j]] = 'tab_#@' + temData[i].replace(/\s/g,'');  //表名稱不能有空格
                     continue;
                 }
                 temField[names[j]] = temData[i];
@@ -91,6 +98,7 @@ function ComponentModel(){
         if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);
+        nid = nid.toLowerCase();
         conditions.fields.push({
             nid: nid,
             comname: params.comname,
