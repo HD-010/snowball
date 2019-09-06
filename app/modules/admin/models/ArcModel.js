@@ -32,13 +32,13 @@ function ArcModel(){
             conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and subdate("' + params.SEDate[0] + '",interval -1 day)'):
             conditions.where.push('addtime between "' + params.SEDate[0] + '" and subdate("' + params.SEDate[1] + '",interval -1 day)');
         }
-        if(sky) conditions.where.push("( #@archives.title like '%" + sky + 
-        "%' or #@archives.shorttitle like '%" + sky + 
-        "%' or #@archives.description like '%" + sky + 
-        "%' or #@archives.writer like '%" + sky + 
-        "%' or #@archives.keywords like '%" + sky + "%')");
+        if(sky) conditions.where.push("( #@archives.title INSTR(" + sky + 
+        ") or #@archives.shorttitle INSTR(" + sky + 
+        ") or #@archives.description INSTR(" + sky + 
+        ") or #@archives.writer INSTR(" + sky + 
+        ") or #@archives.keywords INSTR(" + sky + ")");
         conditions.where.push(params.addonTab + '.aid is not null');
-        this.DB().log().get(conditions,(error,results)=>{
+        this.DB().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);
@@ -59,7 +59,7 @@ function ArcModel(){
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         if(!params.id) return callback(data);
         for(var j = 0; j < tab.length; j ++){
-            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            if(tab[j] == 'main' || tab[j] == 'addon' || !tab[j]) continue;
             tempTab.push(tab[j].substring(4) + ' as `_'+ j +'`');
             tempWhere.push('`_' + j + '`.aid=' + params.id);
         } 
@@ -132,9 +132,9 @@ function ArcModel(){
             if((addoninfos[i].effect && addoninfos[i].effect != 'addon') || !addoninfos[i].fieldset) continue;
             var field = "";
             field = addoninfos[i].field;
-            field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
+            field = addoninfos[i].novaild ? this.POST(field) : this.POST('!' + field);
             field = field || array2value(addoninfos, 'field', field, 'default');
-            if(addoninfos[i].novaild) field = utility.base64encode(field);
+            if(!addoninfos[i].novaild) field = utility.base64encode(field);
             if(field.constructor.name == 'Array') field = field.join('-');
             record[addoninfos[i].field] = field ? field : 
             array2value(addoninfos,'field',addoninfos[i].field,'default');
@@ -159,7 +159,7 @@ function ArcModel(){
     /**
      * 保存第三类表数据
      */
-    this.saveThirdTab = function(params, callback){
+    this.saveThirdTab = async function(params, callback){
         var utility = require("utility");
         var ps = 0;
         var conditions,aid;
@@ -171,7 +171,7 @@ function ArcModel(){
             ps ++;
 
             conditions = {
-                table: tab[j].substring(4),
+                table: tab[j].substring(4).toLowerCase(),
                 fields: [],
                 where : []
             }
@@ -179,9 +179,9 @@ function ArcModel(){
                 if(addoninfos[i].effect != tab[j]) continue;
                 var field = "";
                 field = addoninfos[i].field;
-                field = addoninfos[i].novaild ? this.POST('!' + field) : this.POST(field);
+                field = addoninfos[i].novaild ? this.POST(field) : this.POST('!' + field);
                 field = field || array2value(addoninfos, 'field', field, 'default');
-                if(addoninfos[i].novaild) field = utility.base64encode(field);
+                if(!addoninfos[i].novaild) field = utility.base64encode(field);
                 
                 if(field.constructor.name != 'Array') field = [field];
                 for(var k = 0; k < field.length; k ++){

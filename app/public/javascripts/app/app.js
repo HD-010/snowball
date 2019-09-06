@@ -181,7 +181,7 @@ var app = {
         
         //获取对象的值
         var formData = $(obj).serialize() + "&" + app.serializeParams();
-        
+        alert()
         //console.log(formData)
         console.log("=====数据请求地址：",url);
         $.ajax({

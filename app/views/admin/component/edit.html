@@ -41,7 +41,8 @@
     #tab-2 td {
         padding: 0;
         margin: 0;
-        text-align: center
+        text-align: center;
+        position: initial;
     }
 
 
@@ -81,7 +82,7 @@
         border: 0;
         padding-left: 10px;
         position: absolute !important;
-        margin-top: -45px !important;
+        margin-top: -25px !important;
         right: -25px !important;
     }
 
@@ -281,9 +282,6 @@
                             <input type="text" class="full" name="default" value="{{- return (typeof _default!='object')?_default:''; }}" />
                         </td>
                         <td>
-                            <select class="full"
-                                data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal'
-                                data-def='{{inputtype}}' name="inputtype"></select>
                             <div class="btn-group hidden-xs pull-right tab-oper tab-hidden" id="exampleToolbar"
                                 role="group">
                                 <button type="button" class="btn btn-outline btn-default">
@@ -296,6 +294,10 @@
                                     <i class="glyphicon glyphicon-trash" data-name="trash" aria-hidden="true"></i>
                                 </button>
                             </div>
+                            <select class="full"
+                                data-key='input-checkbox-radio-select-textarea-uediter-uploader-nesmodal-address-freemodal'
+                                data-def='{{inputtype}}' name="inputtype">
+                            </select>
                         </td>
                     </tr>
                     <tr class="footable-row-detail" style="display:none">
