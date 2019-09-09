@@ -7,7 +7,7 @@
  -->
 <%- //print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
-<%- print_r(thirdList) %>
+<%- //print_r(thirdList) %>
 <%
     var formCode = {
         //uediter选项
@@ -515,10 +515,10 @@
                     for(var j = 0; j < thirdTabs.length; j ++){
                 
                 %>
-                <%- print_r(thirdTabs) %>
+                <%- //print_r(thirdTabs) %>
 
                 <!-- tab-3的表单由系统生成 -->
-                    <table class="table hidden" id="tab-3">
+                    <table class="table hidden" id="tab-<%= j + 3 %>">
                         <thead>
                             <tr>
                                 <th class="col-xs-2">参数说明</th>
@@ -986,12 +986,18 @@
         error: <%- error %>,
         data: <%- JSON.stringify(thirdList); %>
     }
-    DL({
-        listId: "#tab-3",
-        packet: thirdList,
-        use: 1
+
+    $('[id^=tab-]').each(function(i,opt){
+        if(i>1){
+            DL({
+                dev: "on",
+                listId: "#tab-"+parseInt(i+1),
+                packet: thirdList,
+                use: 1
+            });
+        }
     });
-        
+    
     DL({
         //dev: "on",
         id: "#add-infor",

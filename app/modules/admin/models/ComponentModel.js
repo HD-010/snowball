@@ -68,7 +68,6 @@ function ComponentModel(){
         }
         fields = this.POST('field');
         if(typeof fields != "object") fields = [fields];
-        
         addonInfos = [];
         for(var i = 0; i < fields.length; i ++ ){
             if(!fields[i]) continue;
@@ -84,13 +83,13 @@ function ComponentModel(){
                     continue;
                 }
                 if((names[j] == 'effect') && 
-                (temData[i] != 'main' && temData[i] != 'addon' && temData[i]) &&
-                !temData[i].match(/^tab_/)
-                ){
+                (temData[i] != 'main' && temData[i] != 'addon' && temData[i])){
+                    temData[i] = temData[i].replace(/tab_#@/g, '');
                     temField[names[j]] = 'tab_#@' + temData[i].replace(/\s/g,'');  //表名稱不能有空格
                     continue;
                 }
                 temField[names[j]] = temData[i];
+                
             }
             addonInfos.push(mergeObj([originData, temField]));
         }
@@ -176,13 +175,15 @@ function ComponentModel(){
         }
         var sql = sSql = allSql = ctab = '';
         for(var k in tabSql){
+            allSql = tabSql[k];
+            k = k.replace(/^tab_/g,'');
             sql =  (k == 'addon') ? 
             'drop table if exists `'+ tab +'`' :
             'drop table if exists `#@' + k + '`';
             var drop = await this.DB().syncQuery(sql);
             if(drop.error) return callback(data);
             sSql = (k == 'addon') ? addonFields : otherFields;
-            allSql = tabSql[k].concat(sSql);
+            allSql = allSql.concat(sSql);
             ctab = (k == 'addon') ? tab : '#@' + k;
             sql = 'create table '+ctab+'(' + allSql.join(',') + '\
             )ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;';

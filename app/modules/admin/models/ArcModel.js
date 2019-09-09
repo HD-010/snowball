@@ -60,7 +60,7 @@ function ArcModel(){
         if(!params.id) return callback(data);
         for(var j = 0; j < tab.length; j ++){
             if(tab[j] == 'main' || tab[j] == 'addon' || !tab[j]) continue;
-            tempTab.push(tab[j].substring(4) + ' as `_'+ j +'`');
+            tempTab.push('#@' + tab[j].replace(/^tab_#@/g,'') + ' as `_'+ j +'`');
             tempWhere.push('`_' + j + '`.aid=' + params.id);
         } 
         if(!tempTab.length) return callback(data);
@@ -159,7 +159,7 @@ function ArcModel(){
     /**
      * 保存第三类表数据
      */
-    this.saveThirdTab = async function(params, callback){
+    this.saveThirdTab =  async function(params, callback){
         var utility = require("utility");
         var ps = 0;
         var conditions,aid;
@@ -167,7 +167,7 @@ function ArcModel(){
         var tab = params.effectTabs || [];
         var addoninfos =  params.addoninfos;
         for(var j = 0; j < tab.length; j ++){
-            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            if(tab[j] == 'main' || tab[j] == 'addon' || !tab[j]) continue;
             ps ++;
 
             conditions = {
@@ -194,8 +194,7 @@ function ArcModel(){
             }
             aid = this.POST('id');
             if(aid) conditions.where.push('aid=' + aid);
-
-            this.DB().log().set(conditions,function(error,results,fields){
+            this.DB().set(conditions,function(error,results,fields){
                 var data = {};
                 data.error = error ? 1 : 0;
                 data.message = "保存成功！";
@@ -260,7 +259,7 @@ function ArcModel(){
         if(!params.id) return callback({error:1, message:'参数错误，删除失败'});
         //var addoninfos =  params.addoninfos;
         for(var j = 0; j < tab.length; j ++){
-            if(tab[j] == 'main' || tab[j] == 'addon') continue;
+            if(tab[j] == 'main' || tab[j] == 'addon' || !tab[j]) continue;
             ps ++;
 
             conditions = {

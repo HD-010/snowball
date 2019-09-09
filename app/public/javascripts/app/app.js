@@ -175,13 +175,8 @@ var app = {
             return false;
         }
         this.initAction(action);
-        // var point = action.indexOf('?');
-        // var start = action.lastIndexOf('/')+1;
-        // app.action = (point != -1) ? action.substr(start,point-start) : action.substr(start);
-        
         //获取对象的值
         var formData = $(obj).serialize() + "&" + app.serializeParams();
-        alert()
         //console.log(formData)
         console.log("=====数据请求地址：",url);
         $.ajax({

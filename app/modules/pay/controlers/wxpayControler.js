@@ -240,7 +240,7 @@ function wxpayControler(){
      */
     this.notify_url =function(){
         var data = this.POST()
-        console.log("post",data);
+        //console.log("post",data);
     }
 
 
