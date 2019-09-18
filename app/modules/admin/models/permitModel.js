@@ -239,6 +239,24 @@ function PermitModel(){
             callback(data);
         })
     }
+
+    /**
+     * 从权限表删除menuid
+     */
+    that.del = function(params, callback){
+        let data = {error:1, message: ["删除成功！","参数menuId错误！"]};
+        let condition = {
+            table: '#@sys_permit',
+            where:[]
+        }
+        if(!params.menuId.length) return callback(data);
+        condition.where.push('menuId in('+params.menuId.join(',')+')');
+        this.DB().log().del(condition, (error, results)=>{
+            data.error = error ? 1: 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
 }
 
 

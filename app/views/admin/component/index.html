@@ -6,7 +6,7 @@ ul{
     border:0;
 }
 .compontents li{
-    border:1px solid;
+    border:1px solid #5db4e0;
     padding : 0;
     height:5.5em;
     width:17em;
@@ -43,16 +43,24 @@ ul{
             <span>系统管理-应用列表</span>
         </div>
     </div>
-    <div class="row ibox-content">
-        <ul class="compontents" id="compontents-list">
+    <div class="row tips">
+        <div class="col-xs-12">
+            <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+            <div class="col-xs-12">
+                <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content row" style="margin-left:15px;margin-right:15px;">
+        <ul class="compontents" id="compontents-list" >
             <li>
                 <div class="component-icon">
                     <img src="{{icon}}"/ >
                     {{comname}}
                 </div>
                 <div class="component-oper">
-                    <a class="oper-item" data-uri="/admin/component/edit?cid={{id}}">编辑</a>
-                    <a class="oper-item" data-uri="/admin/component/view?cid={{id}}">查看</a>
+                    <a  href='javascript:go("/admin/component/edit?cid={{id}}")'>编辑</a>
+                    <a class="oper-item" data-async="post" data-uri="/admin/component/del?cid={{id}}">删除</a>
                 </div>
             </li>
         </ul>
@@ -63,17 +71,20 @@ ul{
 <script>
  
     var compontents = <%- JSON.stringify({error: error, data: results}); %>
+    app.addonParams = {oid:  getItem('OID')}
     DL({
         listId : "#compontents-list",
         packet : compontents,
-        after : loadEve
+        after : function(){
+            app.load("#compontents-list");
+        }
     });
 
-    //事件相关
-    function loadEve(){
-        $('.oper-item').unbind('click').on('click',function(o){
-            var uri = $(this).attr('data-uri');
-            go(uri)
-        })
+
+    //删除应用
+    function del(res){
+        app.notice(res, function(){
+            if(!res.error) go('/admin/component/index');
+        });
     }
 </script>

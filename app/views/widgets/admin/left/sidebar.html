@@ -7,163 +7,201 @@
  -->
 <!-- admin/left/left_sidebar_0.html -->
 <!-- 视图加载 -->
-    <!-- 左则导航-样式 -->
-  
-    <style>
-        #wrapper {
-            min-width:190px;
-            max-width:250px;
-            width:15%;
-            position: fixed;
-            border: 1px solid #E5E5E6;
-            height: 100%;
-            /* overflow: scroll; */
-            bottom: 30px;
-        }
-        #wrapper {
-            /* background-color: #2f4050; */
-            background-color:#fff;
-        }
-        #wrapper .nav-header {
-            /* background: #1c2b36; */
-            background-color:#fff;
-            border-bottom:1px solid #E4E4E5;
-        }
-        #wrapper .black-bg {
-            /* background-color: #262626; */
-            background-color:#fff;
-        }
-        #wrapper .line {
-            /* background-color: #131e26; */
-            background-color:#fff;
-        }
+<!-- 左则导航-样式 -->
 
-        #wrapper .navbar-default .nav>li>a:focus {
-            /* background-color: #131e26; */
-            background-color:#fff;
-        }
+<style>
+    #wrapper {
+        min-width: 190px;
+        max-width: 250px;
+        width: 15%;
+        position: fixed;
+        border: 1px solid #E5E5E6;
+        height: 100%;
+        /* overflow: scroll; */
+        bottom: 30px;
+    }
 
-        #wrapper .navbar-default {
-            /* border-color: #2f4050; */
-            background-color:#fff;
-        }
-        #wrapper .gohome a {
-            /* background: #2f4050; */
-            background-color:#fff;
-        }
-        #wrapper .nav li>a{
-            border-bottom:1px solid #E4E4E5;
-        }
-        #wrapper .nav>li.active {
-            /* background: #131e26; */
-            background-color:#F7F7F8;
-        }
-        #wrapper .navbar-default .nav>li>a:hover, .navbar-default .nav>li>a:focus {
-            /* background-color: #131e26; */
-            background-color: #fff;
-            color: #A5ADB6;
-        }
-        #wrapper .nav>li.active>a {
-            color: #A5ADB6;
-        }
-        #wrapper .nav .user-infor>img{
-            border:0;
-            width:6em;
-            height:6em;
-            border-radius:3em;
-            display: block;
-            margin:auto;
-        }
-        #wrapper .nav .user-infor>div{
-            font-size:16px;
-            color:#595959;
-            display:blcok;
-            margin:auto;
-            margin-top:1em;
-            border:0;
-        }
-        #wrapper .nav .user-infor>div>strong{
-            display:block;
-        }
-        #wrapper .menu-list .clickBg{
-            background-color:#f5faff !important;
-            /* background-color:#3ca2d7 !important; */
-        }
-    </style>
-    <!--左侧导航开始-->
-    <div id="wrapper">
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="nav-close"><i class="fa fa-times-circle"></i>
-            </div>
-            <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-collapse" style="width: auto; height: 100%;">
+    #wrapper {
+        /* background-color: #2f4050; */
+        background-color: #fff;
+    }
+
+    #wrapper .nav-header {
+        /* background: #1c2b36; */
+        background-color: #fff;
+        border-bottom: 1px solid #E4E4E5;
+    }
+
+    #wrapper .black-bg {
+        /* background-color: #262626; */
+        background-color: #fff;
+    }
+
+    #wrapper .line {
+        /* background-color: #131e26; */
+        background-color: #fff;
+    }
+
+    #wrapper .navbar-default .nav>li>a:focus {
+        /* background-color: #131e26; */
+        background-color: #fff;
+    }
+
+    #wrapper .navbar-default {
+        /* border-color: #2f4050; */
+        background-color: #fff;
+    }
+
+    #wrapper .gohome a {
+        /* background: #2f4050; */
+        background-color: #fff;
+    }
+
+    #wrapper .nav li>a {
+        border-bottom: 1px solid #E4E4E5;
+    }
+
+    #wrapper .nav>li.active {
+        /* background: #131e26; */
+        background-color: #F7F7F8;
+    }
+
+    #wrapper .navbar-default .nav>li>a:hover,
+    .navbar-default .nav>li>a:focus {
+        /* background-color: #131e26; */
+        background-color: #fff;
+        color: #A5ADB6;
+    }
+
+    #wrapper .nav>li.active>a {
+        color: #A5ADB6;
+    }
+    #wrapper .nav .user-infor{
+        margin-top: 7em;
+    }
+    #wrapper .nav .user-infor>img {
+        border: 0;
+        width: 6em;
+        height: 6em;
+        border-radius: 3em;
+        display: block;
+        margin: auto;
+    }
+
+    #wrapper .nav .user-infor>div {
+        font-size: 16px;
+        color: #595959;
+        display: blcok;
+        margin: auto;
+        margin-top: 1em;
+        border: 0;
+    }
+
+    #wrapper .nav .user-infor>div>strong {
+        display: block;
+    }
+
+    #wrapper .menu-list .clickBg {
+        background-color: #f5faff !important;
+        /* background-color:#3ca2d7 !important; */
+    }
+</style>
+<!--左侧导航开始-->
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i>
+        </div>
+        <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;">
+            <div class="sidebar-collapse" style="width: auto; height: 100%;">
                 <ul class="nav" id="side-menu">
-                    <li class="nav-header">
+                    <li class="nav-header" id="user-infor">
                         <div class="user-infor">
-                            <img src="/img/sys/shop/pay.png" />
+                            <img src="{{face}}" />
                             <div class="dropdown profile-element">
-                                <strong class="text-center">昵称:山大王 </strong>
-                                <strong class="text-center">职务:一把手</strong>
+                                <strong class="text-center">昵称:{{userName}} </strong>
+                                <strong class="text-center">职务:{{acountType}}</strong>
                             </div>
                         </div>
                     </li>
                     <li class="menu-list">
-                        <a href="javascript:;" onclick="go('{{- return url?url+'?tid='+id:''; }}')">
+                        <a href="javascript:;" onclick="go('{{- return url?url+'?lay=no&tid='+id:''; }}')">
                             <i class="fa fa fa-bar-chart-o"></i>
                             <span class="nav-label">{{name}}</span>
                             <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}" data-index="{{- return index; }}">
+                        <ul class="nav nav-second-level collapse list-child" id="child-1-{{- return index; }}"
+                            data-index="{{- return index; }}">
                             <li class="menu-list">
-                                    <a class="J_menuItem" href="javascript:;" onclick="go('{{url_1}}?tid={{id_1}}')">{{name_1}}</a>
+                                <a class="J_menuItem" href="javascript:;"
+                                    onclick="go('{{url_1}}?tid={{id_1}}')">{{name_1}}</a>
                             </li>
                         </ul>
                     </li>
-                    
+
                 </ul>
-            </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 465.324px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div></div>
-        </nav>
-        <!--左侧导航结束-->
-    </div>
-    <script src="/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/bootstrap/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script>
-        //重置列表
-        function reset(){
-            $("#side-menu").children().eq(1).nextAll().remove();
-        }
+            </div>
+            <div class="slimScrollBar"
+                style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 465.324px;">
+            </div>
+            <div class="slimScrollRail"
+                style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;">
+            </div>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+</div>
+<script src="/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/bootstrap/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script>
+    console.log(getItem("UIF"));
+    DL({
+        dev : "on",
+        id : "#user-infor",
+        packet : {
+            error: 0,
+            data: getItem("UIF")
+        },  //请求时附加的参数
+        cached : 1,
+    });
+    //重置列表
+    function reset() {
+        $("#side-menu").children().eq(1).nextAll().remove();
+    }
 
-        function bindevent(){
-            $(".menu-list a").unbind('click').on("click",function(e){
-                var curlist = $(this).siblings(".list-child");
-                $('#side-menu').find('.menu-list a').removeClass('clickBg');
-                $(this).addClass('clickBg');
-                curlist.toggle();
-                if(curlist.css('display') == 'none') {
-                    e.preventDefault();
-                    return curlist.children().eq(0).nextAll().remove();
-                }
-                loadChildList(curlist);
-            });
-        }
+    function bindevent() {
+        $(".menu-list a").unbind('click').on("click", function (e) {
+            var curlist = $(this).siblings(".list-child");
+            $('#side-menu').find('.menu-list a').removeClass('clickBg');
+            $(this).addClass('clickBg');
+            curlist.toggle();
+            if (curlist.css('display') == 'none') {
+                e.preventDefault();
+                return curlist.children().eq(0).nextAll().remove();
+            }
+            loadChildList(curlist);
+        });
+    }
 
-        function loadChildList(o){
-            var curlist = $(o);
-            var listIndex = curlist.attr("data-index");
-            var listId = curlist.attr("id");
-            var sideMenu = getDLData("#side-menu").data[listIndex];
-            var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
-            data = chmod(data,['name','id','url','childrens'],['name_1','id_1','url_1','childrens_1']);
-            DL({
-                //dev : "on",
-                listId : '#'+listId,
-                cached : 1,
-                data: {uid:getItem("UID")},
-                packet : {
-                    error : data.length ? 0 : 1, 
-                    data: data
-                },
-                after : bindevent
-            });
-        }
-    </script>
-    
+    function loadChildList(o) {
+        var curlist = $(o);
+        var listIndex = curlist.attr("data-index");
+        var listId = curlist.attr("id");
+        var sideMenu = getDLData("#side-menu").data[listIndex];
+        var data = (sideMenu && ('childrens' in sideMenu)) ? sideMenu.childrens : [];
+        data = chmod(data, ['name', 'id', 'url', 'childrens'], ['name_1', 'id_1', 'url_1', 'childrens_1']);
+        DL({
+            //dev : "on",
+            listId: '#' + listId,
+            cached: 1,
+            data: { uid: getItem("UID") },
+            packet: {
+                error: data.length ? 0 : 1,
+                data: data
+            },
+            after: bindevent
+        });
+
+        
+
+    }
+</script>

@@ -7,18 +7,20 @@
  */
 function indexControler(){
     var that = this;
-    this.index = function(){
+    this.index = async function(){
+        var data =  {error: 0};
         // var userInfor = {
         //     loginTime:'2019/05/27 17:50:00',
         //     uid : 124898
         // };
         
         //var openID = createOpenID(this.req,userInfor);
-       
         // log(parseOpenID(openID))
-        var referer = this.req.headers.referer || this.req.headers.refererd;
-        
-        return that.renderLayer({});
+        if(that.GET('lay') == 'no') return that.render({});
+        data.sysOptions = await that.DB("Redis").syncGet("SYS_OPTIONS");
+        data.sysOptions = recodeJsonParse(data.sysOptions.results);
+        data.sysBasic = array2value(data.sysOptions, 'tagname', 'SYS_BASIC','key1');
+        return that.renderLayer(data);
     }
 }
 

@@ -48,6 +48,27 @@ function MenuModel(){
     }
 
     /**
+     * 根据nid查找菜单id
+     */
+    this.listByNid = async function(params){
+        var condition = {
+            table:["#@sys_menu"],    //查询的表名
+            fields:["id"],           //被查询的字段名称（别名在此指定）
+            where:[]                 //查询条件
+        };
+        var data = {
+            error: 1,
+            message: ['删除成功','参数错误，删除失败']
+        }
+        if(!params.nid) return data;
+        condition.where.push("comid='" + params.nid + "'");
+        var results = await this.DB().syncGet(condition);
+
+        return mergeObj([data, results]);
+    }
+
+
+    /**
      * 添加组件到菜单
      */
     this.add = function(params,callback){
@@ -60,7 +81,7 @@ function MenuModel(){
             data.error = error ? 1 : 0; 
             if(error) return callback(data);
             var sql = "insert into `#@sys_menu` values \
-            ("+ results[0].pid+", "+ topid +", 'icon', '"+ params.comname +"', 0, '"+ params.icon +"', '1', '1')";
+            ("+ results[0].pid+", "+ topid +", 'icon', '"+ params.comname +"', 0, '"+ params.icon +"', '1', '1','"+ params.nid+"')";
             that.DB().insert(sql, function(error, results){
                 data.error = error ? 1 : 0; 
                 if(!error) data.menuid = results.insertId;
@@ -68,11 +89,11 @@ function MenuModel(){
                     data.error = error ? 1 : 0; 
                     if(error) return callback(data);
                     var sql1 = "insert into `#@sys_menu` values \
-                    ("+ parseInt(data.menuid) * 10 + 1 +", "+ data.menuid +", '', '查看"+ params.comname +"', 0, '/admin/arc/show"+ ctag +"', '1', '1'),\
-                    ("+ parseInt(data.menuid) * 10 + 2 +", "+ data.menuid +", '', '创建"+ params.comname +"', 0, '/admin/arc/add"+ ctag +"', '1', '1'),\
-                    ("+ parseInt(data.menuid) * 10 + 3 +", "+ data.menuid +", '', '添加栏目', 0, '/admin/type/add"+ ctag +"', '1', '1'),\
-                    ("+ parseInt(data.menuid) * 10 + 4 +", "+ data.menuid +", '', '查看栏目', 0, '/admin/type/index"+ ctag +"', '1', '1'),\
-                    ("+ parseInt(data.menuid) * 10 + 5 +", "+ data.menuid +", '', '管理分类', 0, '/admin/classify/index"+ ctag +"', '1', '1')";
+                    ("+ parseInt(data.menuid) * 10 + 1 +", "+ data.menuid +", '', '查看"+ params.comname +"', 0, '/admin/arc/show"+ ctag +"', '1', '1','"+ params.nid+"'),\
+                    ("+ parseInt(data.menuid) * 10 + 2 +", "+ data.menuid +", '', '创建"+ params.comname +"', 0, '/admin/arc/add"+ ctag +"', '1', '1','"+ params.nid+"'),\
+                    ("+ parseInt(data.menuid) * 10 + 3 +", "+ data.menuid +", '', '添加栏目', 0, '/admin/type/add"+ ctag +"', '1', '1','"+ params.nid+"'),\
+                    ("+ parseInt(data.menuid) * 10 + 4 +", "+ data.menuid +", '', '查看栏目', 0, '/admin/type/index"+ ctag +"', '1', '1','"+ params.nid+"'),\
+                    ("+ parseInt(data.menuid) * 10 + 5 +", "+ data.menuid +", '', '管理分类', 0, '/admin/classify/index"+ ctag +"', '1', '1','"+ params.nid+"')";
 
                     that.DB().insert(sql1, function(error, results){
                         data.error = error ? 1 : 0;
@@ -82,9 +103,27 @@ function MenuModel(){
                 })
             })
         })
-        
     }
-    
+
+    /**
+     * 根据comid删除菜单
+     */
+    this.del = function(params, callback){
+        let data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        let conditions = {
+            table: "#@sys_menu",
+            where: []
+        }
+        if(!params.nid) return callback(data);
+        conditions.where.push("comid='" +params.nid+ "'");
+        that.DB().del(conditions, function(error, results){
+            data.error = error ? 1: 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
+
+
 }
 
 module.exports = MenuModel;

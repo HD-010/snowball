@@ -53,9 +53,34 @@ function ComponentModel(){
     }
 
     /**
+     * 查询#@components，获取组件列表,获取获取组件字段信息
+     */
+    this.syncList = async function(params){
+        //使用案例：实例化TestService并调用showApp()方法
+        var conditions = {
+            table:['#@components'],
+            where:[],
+            limit:[]
+        }
+        if(params.limit) conditions.limit.push(params.limit);
+        if(params.id) conditions.where.push("id=" + params.id);
+        if(params.ctag) conditions.where.push("nid='" + params.ctag + "'");
+        if(params.id || params.ctag) conditions.limit.push(1);
+        
+        var results = await this.DB().syncGet(conditions);
+        var data = {};
+        data.error = (results.error || !results.results.length) ? 1 : 0;
+        data.results = recodeJsonParse(recodeBase64decode(results.results,'addoninfos'),'addoninfos');
+        data.uri = "";
+        
+        return data;
+    }
+
+    /**
      * 保存数据
      */
     this.save = function(params,callback){
+        params.comname = params.comname.replace(/\s/g, '');
         var fields,temField,conditions,names,temData,addonInfos;
         var data = {
             error: 1,
@@ -84,7 +109,7 @@ function ComponentModel(){
                 }
                 if((names[j] == 'effect') && 
                 (temData[i] != 'main' && temData[i] != 'addon' && temData[i])){
-                    temData[i] = temData[i].replace(/tab_#@/g, '');
+                    temData[i] = temData[i].replace(/(tab_#@)|(\s)/g, '');
                     temField[names[j]] = 'tab_#@' + temData[i].replace(/\s/g,'');  //表名稱不能有空格
                     continue;
                 }
@@ -97,7 +122,7 @@ function ComponentModel(){
         if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);
-        nid = nid.toLowerCase();
+        nid = nid.toLowerCase().replace(/\s/g, '');
         conditions.fields.push({
             nid: nid,
             comname: params.comname,
@@ -176,7 +201,6 @@ function ComponentModel(){
         var sql = sSql = allSql = ctab = '';
         for(var k in tabSql){
             allSql = tabSql[k];
-            k = k.replace(/^tab_/g,'');
             sql =  (k == 'addon') ? 
             'drop table if exists `'+ tab +'`' :
             'drop table if exists `#@' + k + '`';
@@ -185,6 +209,7 @@ function ComponentModel(){
             sSql = (k == 'addon') ? addonFields : otherFields;
             allSql = allSql.concat(sSql);
             ctab = (k == 'addon') ? tab : '#@' + k;
+            ctab = ctab.replace(/(^tab_)|(\s)/g,'');
             sql = 'create table '+ctab+'(' + allSql.join(',') + '\
             )ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;';
             var creat = await this.DB().syncQuery(sql);
@@ -193,7 +218,86 @@ function ComponentModel(){
         data.error = 0;
         return callback(data);
     }
+
+    /**
+     * 删除应用
+     */
+    this.del = function(params, callback){
+        var data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        let conditions = {
+            table: "#@components",
+            where: []
+        }
+        if(!params.nid) return callback(data);
+        conditions.where.push("nid='" +params.nid+ "'");
+        that.DB().del(conditions, function(error, results){
+            data.error = error ? 1 : 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
+
+    /**
+     * 删除二类表
+     */
+    this.delSecondTab = (params, callback)=>{
+        var data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        if(!params.nid) return callback(data);
+        let sql = 'delete table #@addon_' + params.nid;
+        this.DB().delete(sql, (error, results) => {
+            data.error = error ? 1 : 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
+
+    /**
+     * 删除二类表
+     */
+    this.delSecondTab = (params, callback)=>{
+
+        var data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        if(!params.nid) return callback(data);
+        let sql = 'drop table #@addon' + params.nid;
+        log("999999999999999999999999999", sql)
+        this.DB().delete(sql, (error, results) => {
+            data.error = error ? 1 : 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
     
+    /**
+     * 删除三类表
+     */
+    this.delThirdTab = async (params, callback)=>{
+        let data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        let effect, sql, res;
+        if(!params.nid) return callback(data);
+        for(let i = 0; i < params.effectTab.length; i ++ ){
+            effect = params.effectTab[i].replace(/tab_/, '');
+            sql = 'drop table ' + effect;
+            log("88888888888888888888888888", sql)
+            res = await this.DB().syncDelete(sql);
+            if(res.error) break;
+        }
+
+        return res;
+    }
+
+    /**
+     * 卸载应用
+     */
+    this.uninstall = function(params, callback){
+        let data = {error:1, message: ["删除成功！","参数nid错误！"]};
+        if(!params.nid) return callback(data);
+        let sql = 'delete table #@_' + params.nid;
+        this.DB().delete(sql, (error, results) => {
+            data.error = error ? 1 : 0;
+            data.results = results;
+            return callback(data);
+        });
+    }
 }
 
 module.exports = ComponentModel;

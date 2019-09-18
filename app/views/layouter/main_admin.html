@@ -49,7 +49,7 @@
     <!-- load contents page -->
     <div id="left-space">
         <% if(locals.viewPath){ %>
-        <%- include(viewPath);  %>
+        <%- include(viewPath, locals);  %>
         <% } %>
     </div>
     <!-- footer -->

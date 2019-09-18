@@ -72,7 +72,7 @@ function BehaviorModel() {
         if(global.sysOtion) return callback({error:0});
         var option = that.model('SysOption');
         option.options({},function(res){
-            if(!res.error) return callback(res);
+            if(res.error) return callback(res);
             that.DB("Redis").set("SYS_OPTIONS",res.data);
             global.sysOtion = 1;
             return callback(res);

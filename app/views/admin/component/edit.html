@@ -191,7 +191,7 @@
                         <td>
                             <div class="form-group col-xs-4">
                                 <input type="text" data-check="components" data-uri="/admin/trance/val-exists"
-                                    data-check="val-exists" class="form-control" name="nid" value="{{nid}}" /></div>
+                                 class="form-control" name="nid" value="{{nid}}" /></div>
                             <span style="line-height: 40px;"><i class="iconfont icon-tishi"
                                     style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
 
@@ -253,7 +253,7 @@
                             <input type="text" data-check="" class="full" name="field" value="{{field}}" placeholder="" />
                         </td>
                         <td>
-                            <input type="text" class="full" name="effect" value="{{- return (typeof effect!='object')?effect:''; }}">
+                            <input type="text" class="full" name="effect" value="{{- return (typeof effect!='object')?effect.replace(/tab_#@/,''):''; }}">
                         </td>
                         <!-- 数据类型 -->
                         <td>
@@ -430,9 +430,13 @@
         $($(this).attr('data-target')).removeClass('hidden');
     });
 
+    
+
     //数据保存时的回调
     function save(res) {
-        app.notice(res);
+        app.notice(res, function(){
+            if(!res.error) go('/admin/component/index');
+        });
     }
 </script>
 
@@ -530,6 +534,9 @@ DL({
         $("label.img-add").unbind('click').on('click', function () {
             uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
         });
+        $('[data-check="components"]').unbind('keydown').on('keydown', function(){
+            $(this).val($(this).val().replace(/\s/g, ''));
+        })
     }
 })
 </script>

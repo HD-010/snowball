@@ -55,7 +55,11 @@ function classifyControler(){
      * 删除分类
      */
     this.del = function(){
-        that.render({});
+        let data = {
+            error: 0,
+            message: that.POST('cid')
+        }
+        that.renderJson(data);
     }
 
 }

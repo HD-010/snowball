@@ -1123,35 +1123,29 @@ var effect = {
         var append = $(appendid);
         if(!append.length) return;
         var nesId = initElem || 'nestable2';
-        // if(!initElem){
-        //     nesId = $(".dd").eq(0).attr('id');
-        //     var index = parseInt(nesId.replace(/[^0-9]/ig,''));
-        //     index = index == NaN ? 1 : index + 1;
-        //     nesId = nesId ? 'nestable' + index : 'nestable2';
-        // }
-        var nesPreBox = `<div class='hidden' id='nesTemCode'></div>`;
-        var nesBox = `<style>
-                        .dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}
-                        .dd-list>li .dd-addon-handel {top:0;position: absolute;right: 0;height: 3em;border: 0;left: 3em;border:0;}
-                        .dd-addon-click{background-color:#3CA2D7 !important}
-                        .dd-list>li .dd-edit span{margin-right:0.5em;}
-                    </style>
-                    <div class="dd" id="`+ nesId +`">
-                        <ol class="dd-list"></ol>
-                    </div>`;
-        var initCode =  `<li class="dd-item" data-val="classify_init">
-                            <div class="dd-handle">
-                                <span class="label label-info"><i class="fa fa-cog"></i></span> 
-                                <span class="dd-val" style="font-weight:100;">分类名称</span>
-                            </div>
-                            <div class="dd-edit">
-                                <input class="hidden" type="text" name="spec" value="规格名称" />
-                                <span class="fa fa-edit"></span>
-                                <span class="fa fa-minus-square-o minus"></span>
-                                <span class="fa fa-plus-square-o plus"></span>
-                            </div>
-                            <div class="dd-addon-handel handel-`+ nesId +` hidden"></div>
-                        </li>`;
+        var nesPreBox = "<div class='hidden' id='nesTemCode'></div>";
+        var nesBox = "<style>" +
+                        ".dd-list>li .dd-edit{position:absolute;right:1em;top:0.6em;height:1.5em;line-height:2em;}"+
+                        ".dd-list>li .dd-addon-handel {top:0;position: absolute;right: 0;height: 3em;border: 0;left: 3em;border:0;}"+
+                        ".dd-addon-click{background-color:#3CA2D7 !important}"+
+                        ".dd-list>li .dd-edit span{margin-right:0.5em;}"+
+                    "</style>"+
+                    "<div class='dd' id='"+ nesId +"'>"+
+                        "<ol class='dd-list'></ol>"+
+                    "</div>";
+        var initCode =  '<li class="dd-item" data-val="classify_init">'+
+                            '<div class="dd-handle">'+
+                                '<span class="label label-info"><i class="fa fa-cog"></i></span> '+
+                                '<span class="dd-val" style="font-weight:100;">分类名称</span>'+
+                            '</div>'+
+                            '<div class="dd-edit">'+
+                                '<input class="hidden" type="text" name="spec" value="规格名称" />'+
+                                '<span class="fa fa-edit"></span>'+
+                                '<span class="fa fa-minus-square-o minus"></span>'+
+                                '<span class="fa fa-plus-square-o plus"></span>'+
+                            '</div>'+
+                            '<div class="dd-addon-handel handel-'+ nesId +' hidden"></div>'+
+                        '</li>';
         $("#nesTemCode").html('');
         $('body').append(nesPreBox);
         append.find('#' + nesId).remove();
@@ -1193,26 +1187,25 @@ var effect = {
         }
         
         var model = {
-            normal_type: `<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content animated bounceInRight">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="normalModal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
-                            </button>
-                            <i class="fa fa-laptop modal-icon"></i>
-                            <h4 class="modal-title">`+ attr.title +`</h4>
-                            <small class="font-bold">`+ attr.detail +`</small>
-                        </div>
-                        <div class="modal-body" id="modal-body">
-                            
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white cancle" data-dismiss="normalModal">关闭</button>
-                            <button type="button" class="btn btn-primary submit" data-confirm="normalModal" >确定</button>
-                        </div>
-                    </div>
-                </div>
-            </div>`,
+            normal_type: '<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">'+
+                '<div class="modal-dialog">'+
+                    '<div class="modal-content animated bounceInRight">'+
+                        '<div class="modal-header">'+
+                            '<button type="button" class="close" data-dismiss="normalModal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>'+
+                            '</button>'+
+                            '<i class="fa fa-laptop modal-icon"></i>'+
+                            '<h4 class="modal-title">'+ attr.title +'</h4>'+
+                            '<small class="font-bold">'+ attr.detail +'</small>'+
+                        '</div>'+
+                        '<div class="modal-body" id="modal-body">'+
+                        '</div>'+
+                        '<div class="modal-footer">'+
+                            '<button type="button" class="btn btn-white cancle" data-dismiss="normalModal">关闭</button>'+
+                            '<button type="button" class="btn btn-primary submit" data-confirm="normalModal">确定</button>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'
         }
         
         if(!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
@@ -1249,7 +1242,84 @@ var effect = {
 
 }
 
-
+function xhr5(){
+	this.url = '';
+	this.xhr = null;
+	var that = this;
+	this.req = function(params, callback) {
+		if (this.xhr) {
+			console.log("xhr请求已创建");
+			return;
+		}
+		if(!params.uri) return;
+		this.url = params.uri;
+		this.method = params.method || 'GET';
+		this.data = params.data || '';
+		console.log("创建请求：");
+		this.xhr = new plus.net.XMLHttpRequest();
+		console.log("this is xhr5:::",this.xhr)
+		this.xhr.onreadystatechange = function() {
+			switch (that.xhr.readyState) {
+				case 0:
+					console.log("xhr请求已初始化");
+					break;
+				case 1:
+					console.log("xhr请求已打开");
+					break;
+				case 2:
+					console.log("xhr请求已发送");
+					break;
+				case 3:
+					console.log("xhr请求已响应");
+					break;
+				case 4:
+					console.log("xhr请求已完成");
+					callback({
+						status: that.xhr.status,
+						response: that.xhr.responseText
+					});
+					// if (that.xhr.status == 200) {
+					// 	console.log("xhr请求成功：" + that.xhr.responseText);
+					// } else {
+					// 	console.log("xhr请求失败：" + that.xhr.status);
+					// }
+					break;
+				default:
+					break;
+			}
+		}
+		that.xhr.open(that.method, that.url);
+		that.xhr.send(that.data);
+		
+	}
+	
+	this.responseHeader = function() {
+		if (that.xhr) {
+			if (that.xhr.readyState != 4) {
+				console.log("xhr请求未完成");
+			} else if (that.xhr.status != 200) {
+				console.log("xhr请求失败：" + that.xhr.readyState);
+			} else {
+				console.log("xhr请求响应头数据：");
+				console.log(that.xhr.getAllResponseHeaders());
+			}
+		} else {
+			console.log("未发送请求");
+		}
+	}
+	
+	this.abort = function() {
+		if (that.xhr) {
+			console.log("取消请求");
+			if (that.xhr.readyState != 4) {
+				that.xhr.abort();
+			}
+			that.xhr = null;
+		} else {
+			console.log("未发送请求");
+		}
+	}
+}
 
 /** ============================效果插件 end=========================== */
 /** ===============================tools============================== */

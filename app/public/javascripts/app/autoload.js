@@ -201,37 +201,70 @@ function ViewData(params){
                 that.run();
                 return;
             }
-            $.ajax({
-                url:  that.host + that.uri,
-                data: that.data,
-                dataType: "text",
-                type: "POST",
-                async: that.async,
-                success: function(results){
-                    var json = '';
-                    var text = '';
-                    try{
-                        json = JSON.parse(results);
-                    }catch(e){
-                        try{
-                            eval((results));
-                        }catch(e){
-                            text = results;
-                        };
-                    }
-                    that.results = json || text || '';
-                    if(!that.results) return;
-                    setDLData(that.queryStr(),that.results);
-                    that.run();
-                },
-                error: function(results){
-                    that.results = results;
-                    if(that.dev === 'on') that.log(that.results);
-                    if(typeof that.error === "function") that.error(that.results);
-                }
-            });
+			
+			if(typeof plus == 'undefined'){
+				$.ajax({
+					url:  that.host + that.uri,
+					data: that.data,
+					dataType: "text",
+					type: "POST",
+					async: that.async,
+					success: function(results){
+						console.log("success::::",results)
+						that.setRespons(results);
+						if(!that.results) return;
+						setDLData(that.queryStr(),that.results);
+						that.run();
+					},
+					error: function(results){
+						console.log("error::::",results);
+						that.results = results;
+						if(that.dev === 'on') that.log(that.results);
+						if(typeof that.error === "function") that.error(that.results);
+					}
+				});
+			}else{
+				
+				(new xhr5()).req({
+					uri: that.host + that.uri,
+					method: "GET"
+				},function(results){
+					if(results.status == 200){
+						results = results.response;
+						that.setRespons(results);
+						if(!that.results) return;
+						setDLData(that.queryStr(),that.results);
+						that.run();
+					}else{
+						results = results.responseText;
+						//console.log("error::::",results);
+						that.results = results;
+						if(that.dev === 'on') that.log(that.results);
+						if(typeof that.error === "function") that.error(that.results);
+					}
+				});
+			}
         }
     }
+	
+	/**
+	 * @param {Object} results 设置响应的数据
+	 */
+	this.setRespons = function(results){
+		var that = this;
+		var json = '';
+		var text = '';
+		try{
+			json = JSON.parse(results);
+		}catch(e){
+			try{
+				eval((results));
+			}catch(e){
+				text = results;
+			};
+		}
+		that.results = json || text || '';
+	}
 
     //生成请求标识
     this.queryStr = function(){
@@ -395,7 +428,7 @@ function ViewData(params){
         }
         
                                  
-        var patern = new RegExp(/\{{2}\-\s*(?:\S[^\}{2}]*){4}\s+\}{2}/,'gm');
+        var patern = new RegExp(/\{{2}\-\s*(?:\S[^\}{2}]*){4}\s+\}{2}/gm);
         var matchs = itemHtml.match(patern);
         var evalStr;
         if(matchs && matchs.constructor.name === 'Array'){

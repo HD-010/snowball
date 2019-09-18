@@ -62,7 +62,6 @@ function componentControler(){
             //创建与组件信息匹配的数据表
             params.comInfos = res.comInfos;
             compponent.create(params, function(res){
-                log(res);
                 data = mergeObj([data, res]);
                 ps = that.testRenderJson(data, ps);
             });
@@ -84,6 +83,48 @@ function componentControler(){
             })
             
         }
+    }
+
+    //删除应用
+    this.del = async function(){
+        let ps = 4;
+        let params = {id: this.POST("cid")};
+        let component = this.model('Component');
+        let conInfos = await component.syncList(params);
+        let data = {error: 0, message:["删除成功！", "删除应用失败"]};
+        data = mergeObj([data, conInfos]);
+        if(data.error || !data.results.length) return that.renderJson(data);
+        params.effectTab = arrayDistinct(treeValue(data.results[0].addoninfos, 'effect', '!=', 'effect', 'all'));
+        params.nid = data.results[0].nid;
+        //查询menuid
+        params.menuId = await this.model('Menu').listByNid(params)
+        params.menuId = queryresultKeyValue(params.menuId.results, 'id');
+        //删除三类表
+        component.delThirdTab(params);
+        //删除二类表
+        component.delSecondTab(params, (res)=>{
+            data = mergeObj([data, res]);
+            if(data.error) return that.renderJson(data); 
+            ps = that.testRenderJson(data, ps);
+        });
+        //删除menu记录
+        this.model('Menu').del(params, function(res){
+            data = mergeObj([data, res]);
+            if(data.error) return that.renderJson(data); 
+            ps = that.testRenderJson(data, ps);
+        });
+        //删除权限配置
+        this.model('Permit').del(params, function(res){
+            data = mergeObj([data, res]);
+            if(data.error) return that.renderJson(data); 
+            ps = that.testRenderJson(data, ps);
+        })
+        //删除component记录
+        component.del(params, function(res){
+            data = mergeObj([data, res]);
+            if(data.error) return that.renderJson(data); 
+            ps = that.testRenderJson(data, ps);
+        })
     }
 }
 
