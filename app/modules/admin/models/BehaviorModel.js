@@ -6,7 +6,7 @@
  * @LastEditors: Please set LastEditors
  */
 function BehaviorModel() {
-    var uid;
+    var uid,gid;
     /**
      * 定义执行请求操作前执行的操作名称
      * 规则：
@@ -105,6 +105,7 @@ function BehaviorModel() {
         console.log("+++++++++++++++++++++:::::::::::::",openID);
         var openIDObj = parseOpenID(openID);
         uid = parseInt(openIDObj.id);
+        gid = parseInt(openIDObj.groupId);
         var userInfor = this.model("passport:DataProcess").getUserInfo(uid)[0];
         if(!userInfor) return callback({error:1,uri:"/admin/sign/_check",router:router,message:'用户信息不存在'});
         var signature = createSignature(this.req,userInfor);
@@ -153,6 +154,7 @@ function BehaviorModel() {
         function check(res){
             //将用户id暂存session
             process.setUserInfo(uid,'UID');
+            process.setUserInfo(gid,'GID');
             //查找当前路由对应的菜单对象
             var menu = array2value(res,'url',router);
             //当前路由不在菜单列表

@@ -5,7 +5,7 @@ function SysModel(){
     that.getSysInfo = function(tagname,callback){
         //根据网站基本配置信息
         var condition = {
-            table:["youbang_sys_option"],//查询的表名
+            table:["#@sys_option"],//查询的表名
             where:[],           //更新条件
           
         };
@@ -24,7 +24,7 @@ function SysModel(){
         //根据ID 获取友情链接信息
         var id = that.POST("fid") || this.GET("fid");
         var condition = {
-            table:["youbang_flink"],//查询的表名
+            table:["#@flink"],//查询的表名
             where:[],           //更新条件
           
         };
@@ -47,7 +47,7 @@ function SysModel(){
         data.enable = this.POST('enable') || 0;
        console.log(data);
        var condition = {
-            table:["youbang_flink"],                                 //查询的表名
+            table:["#@flink"],                                 //查询的表名
             fields:[{
                 "litpic":data.litpic,
                 "title":data.title,
@@ -89,7 +89,7 @@ function SysModel(){
         data.id = that.GET("id");
         if(data){
             var condition = {
-                table:["youbang_flink"],          //查询的表名
+                table:["#@flink"],          //查询的表名
                 where:[]          //更新条件              
             };
             condition.where.push(" id = "+data.id);
@@ -150,7 +150,7 @@ function SysModel(){
         var tagname  = "SYS_UPDATE";
         var data = {};
         data.updateData = that.POST("!updateData");
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -171,7 +171,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -192,7 +192,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -213,7 +213,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -235,7 +235,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -257,7 +257,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={
@@ -278,7 +278,7 @@ function SysModel(){
         var data = {};
         data.updateData = that.POST("!updateData");
         console.log("得到的数据",data.updateData);
-        var sql  = "update youbang_sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
+        var sql  = "update #@sys_option set key1 = '"+data.updateData+"' where tagname = '"+tagname+"'";
         that.DB().query(sql,function(error,results){
             if(results.affectedRows){
                 var obj={

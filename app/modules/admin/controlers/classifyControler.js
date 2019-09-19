@@ -17,7 +17,7 @@ function classifyControler(){
 
         var process = this.model("DataProcess");
         params.ctag = ctag;
-        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        params.macid = process.getUserInfo(GID');    //商户id，暂以登录用户id表示
         params.enable = '1';
         //获取组件表中字段为列表的字段信息
         this.model('Component').list(params,function(res){

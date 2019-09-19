@@ -6,7 +6,7 @@ function AgentService(){
         var sql = 'select a.* ,' +
         ' g.id gid, g.merchNo, g.merchName regName,' +
         ' m.id mid,m.nick,m.realName regName ' + 
-        'from ranyun_sys_acount as a left join ranyun_sys_acount_agent as g on a.id = g.acountid left join ranyun_sys_acount_manager as m on a.id = m.acountid' +
+        'from #@sys_acount as a left join #@sys_acount_agent as g on a.id = g.acountid left join #@sys_acount_manager as m on a.id = m.acountid' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -22,7 +22,7 @@ function AgentService(){
      */
     this.agentCount = function(sqlStruct,callback){
         var sql = 'select count(*) total ' +
-        'from ranyun_sys_acount as a left join ranyun_sys_acount_agent as g on a.id = g.acountid left join ranyun_sys_acount_manager as m on a.id = m.acountid' +
+        'from #@sys_acount as a left join #@sys_acount_agent as g on a.id = g.acountid left join #@sys_acount_manager as m on a.id = m.acountid' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 

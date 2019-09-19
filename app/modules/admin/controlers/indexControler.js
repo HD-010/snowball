@@ -16,6 +16,9 @@ function indexControler(){
         
         //var openID = createOpenID(this.req,userInfor);
         // log(parseOpenID(openID))
+		var process = this.model("DataProcess");
+		log("*******************************************", process.getUserInfo('UID'))
+		
         if(that.GET('lay') == 'no') return that.render({});
         data.sysOptions = await that.DB("Redis").syncGet("SYS_OPTIONS");
         data.sysOptions = recodeJsonParse(data.sysOptions.results);

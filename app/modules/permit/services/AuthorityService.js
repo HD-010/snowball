@@ -10,7 +10,7 @@ function AuthorityService() {
             return;
         }
 
-        var sql = 'select a.*,m.url,m.valid from ranyun_authority as a left join ranyun_sys_menu as m on a.menuId = m.id' +
+        var sql = 'select a.*,m.url,m.valid from #@authority as a left join #@sys_menu as m on a.menuId = m.id' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -26,7 +26,7 @@ function AuthorityService() {
      */
     this.add = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'insert into ranyun_authority ' +
+        var sql = 'insert into #@authority ' +
         st.insertNames() +
         st.insertValues();
 
@@ -37,7 +37,7 @@ function AuthorityService() {
 
     this.del = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'delete from ranyun_authority ' + st.where();
+        var sql = 'delete from #@authority ' + st.where();
         this.DB().delete(sql,function(error,results,fields){
             callback(error,results,fields);
         });
@@ -48,8 +48,8 @@ function AuthorityService() {
      * 写入组的基本权限
      *  */
     this.cpAu = function(params,callback){
-        var sql = 'INSERT INTO ranyun_authority (`gounpId`,	`menuId`,	`add`,	`delete`,	`edit`,	`show`,	`enable`) ' +
-        'SELECT ' + params.gId + ' as `gounpId`,`menuId`,`add`,`delete`,`edit`,`show`,`enable`	FROM ranyun_authority WHERE	gounpId = 2000';
+        var sql = 'INSERT INTO #@authority (`gounpId`,	`menuId`,	`add`,	`delete`,	`edit`,	`show`,	`enable`) ' +
+        'SELECT ' + params.gId + ' as `gounpId`,`menuId`,`add`,`delete`,`edit`,`show`,`enable`	FROM #@authority WHERE	gounpId = 2000';
         console.log(sql);
         this.DB().insert(sql,function(error,results,fields){
             callback(error,results,fields);

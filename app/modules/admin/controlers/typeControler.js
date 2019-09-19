@@ -66,6 +66,8 @@ function typeControler(){
         var nid = this.param("ctag");
         data.ctag = nid;
         var type = that.model('Type');
+		var process = this.model("DataProcess");
+		params.macid = process.getUserInfo('GID');
         //被编辑栏目信息
         type.list({id: atid},(res)=>{
             data.error = res.error;

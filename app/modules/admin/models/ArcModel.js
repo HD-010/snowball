@@ -38,6 +38,8 @@ function ArcModel(){
         ") or #@archives.writer INSTR(" + sky + 
         ") or #@archives.keywords INSTR(" + sky + ")");
         conditions.where.push(params.addonTab + '.aid is not null');
+		conditions.where.push("#@archives.groupid = " + params.macid);
+		
         this.DB().get(conditions,(error,results)=>{
             var data = {};
             data.error = results.length ? 0 : 1;
@@ -77,7 +79,6 @@ function ArcModel(){
      * 保存数据到主表
      */
     this.saveHives = function(params,callback){
-        
         var data = {error: 1, message: '请填完整必填项！'};
         var classify = this.POST('classify');
         if(!classify) return callback(data);
@@ -104,6 +105,7 @@ function ArcModel(){
         record.addtime = this.POST('!addtime') || 'now()';
         record.mid = that.model("DataProcess").uid();
         record.voteid = that.POST("voteid") || 0;
+        record.groupid = params.macid;
         conditions.fields.push(record);
         var id = this.POST('id');
         if(id) conditions.where.push('id=' + id);
