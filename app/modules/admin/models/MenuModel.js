@@ -25,12 +25,12 @@ function MenuModel(){
             where:[],           //查询条件
             orderBy:['pid asc',' weight asc']
         };
-        if(pid > 0) condition.where.push("(pid=" + pid + " or (pid in (select id from #@sys_menu where pid = " + pid + "))) and (`show`='1')");
-        if(pid === 0) condition.where.push("(pid=" + pid + ") and (`show`='1')" );
-        //if(pid != -1) condition.where.push("`show`='1'");
+        if(pid > 0) condition.where.push("pid=" + pid + " or (pid in (select id from #@sys_menu where pid = " + pid + "))");
+        if(pid === 0) condition.where.push("pid=" + pid );
+        if(pid != -1) condition.where.push("`show`='1'");
 
         var process = this.model("DataProcess");
-        this.DB().log().get(condition,function(error,results){
+        this.DB().get(condition,function(error,results){
             //返回全原部菜单列表
             if(pid == -1) return callback(results);
             //过滤禁止访问的菜单

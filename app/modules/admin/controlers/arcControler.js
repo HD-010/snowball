@@ -43,7 +43,7 @@ function arcControler(){
         var classify = this.model("Classify");
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
-        params.macid = process.getUserInfo('GID');    //商户id，以登录用户所属组groupid表示
+        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
@@ -101,8 +101,6 @@ function arcControler(){
             ps = that.testRender(data, ps);
         });
         
-		var process = this.model("DataProcess");
-		params.macid = process.getUserInfo('GID');    //商户id，以登录用户所属组groupid表示
         //查询附加表的信息
         var addonTable = this.model('Component');
         addonTable.list(params,function(res){
@@ -139,8 +137,6 @@ function arcControler(){
         params.SEDate = [dateFormate('%Y-%m-%d'),1];
         //查询附加表的信息
         var addonTable = this.model('Component');
-		var process = this.model("DataProcess");
-		params.macid = process.getUserInfo('GID');    //商户id，以登录用户所属组groupid表示
         addonTable.list(params,function(res){
             if(res.error || !res.results.length) {
                 res.message = "查询表信息失败，请稍后重试";
@@ -165,11 +161,9 @@ function arcControler(){
         var data = {error: 1, message: '参数错误'};
         var ps = 1;
         var utility = require('utility');
-		var process = this.model("DataProcess");
-		params.macid = process.getUserInfo('GID');    //商户id，以登录用户所属组groupid表示
         params.ctag = ctag;
         //保存数据到主表
-        arc.saveHives(params,function(res){
+        arc.saveHives({},function(res){
             if(res.error) {
                 //res.message = "数据写入失败，请稍后重试";
                 return that.renderJson(res);
@@ -309,7 +303,7 @@ function arcControler(){
         var classify = this.model("Classify");
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
-        params.macid = process.getUserInfo('GID');    //商户id，以登录用户所属组groupid表示
+        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
         data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){

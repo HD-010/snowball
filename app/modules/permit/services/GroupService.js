@@ -2,7 +2,7 @@ function GroupService() {
     //添加加色
     this.addSysGroup = function(sqlStruct, callback) {
         var st = sqlStruct;
-        var sql = 'insert into #@sys_acount_group ' +
+        var sql = 'insert into ranyun_sys_acount_group ' +
             st.insertNames() +
             st.insertValues();
         this.DB().insert(sql, function(error, results, fields) {
@@ -13,7 +13,7 @@ function GroupService() {
     //查询角色
     this.selectSysGroup = function(sqlStruct, callback) {
             var st = sqlStruct;
-            var sql = 'select * from #@sys_acount_group ' +
+            var sql = 'select * from ranyun_sys_acount_group ' +
                 st.where() +
                 st.groupBy() +
                 st.orderBy() +
@@ -25,7 +25,7 @@ function GroupService() {
         //删除角色
     this.deleteSysGroup = function(sqlStruct, callback) {
             var st = sqlStruct;
-            var sql = 'delete from #@sys_acount_group ' +
+            var sql = 'delete from ranyun_sys_acount_group ' +
                 st.where();
             console.log(sql);
             this.DB().delete(sql, function(error, results, fields) {
@@ -35,7 +35,7 @@ function GroupService() {
         //修改角色
     this.updateSysGroup = function(sqlStruct, callback) {
         var st = sqlStruct;
-        var sql = 'update #@sys_acount_group set ' +
+        var sql = 'update ranyun_sys_acount_group set ' +
             st.updateFeilds() +
             st.where();
         console.log(sql);
@@ -47,7 +47,7 @@ function GroupService() {
     //获取表总记录数
     this.count = function(sqlStruct, callback) {
         var st = sqlStruct;
-        var sql = 'select count(*) as num from #@sys_acount_group ' + st.where();
+        var sql = 'select count(*) as num from ranyun_sys_acount_group ' + st.where();
         
         this.DB().select(sql, function(error, results, fields) {
             callback(error, results, fields);

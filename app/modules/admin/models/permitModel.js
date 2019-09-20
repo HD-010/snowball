@@ -11,7 +11,7 @@ function PermitModel(){
     /**
      * 根据ID查询当前管理组所具有的权限
      * 条件 根据管理组id查询
-     * 表名 #@sys_permit
+     * 表名 youbang_sys_permit
      * 所取字段 id,userId,groupId,menuId,add,delete,edit,show
      * 必要条件 enable = 1
      */
@@ -21,11 +21,11 @@ function PermitModel(){
         data.name = that.GET('name') || that.POST('name') || '';//获取管理组名称
         data.id = id;
         var condition = {
-            table:["#@sys_permit as p"],                                 //查询的表名
+            table:["youbang_sys_permit as p"],                                 //查询的表名
             fields:["p.id as permitId","p.groupId","p.`userId`","m.`pid`","m.id","m.`name`","p.`menuId`","p.`add`","p.`delete`",'p.`edit`','p.`show`'],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['id asc'],
-            joinOn:" LEFT JOIN #@sys_menu as m ON m.id = p.menuId "
+            joinOn:" LEFT JOIN youbang_sys_menu as m ON m.id = p.menuId "
         };
 
         var dataProcess = that.model('DataProcess'); 
@@ -57,11 +57,11 @@ function PermitModel(){
         // callback(permit);
         var userInfo =process.getUserInfo(uid)[0];
         var condition = {
-            table:["#@sys_permit as p"],                                 //查询的表名
+            table:["youbang_sys_permit as p"],                                 //查询的表名
             fields:["p.id as permitId","p.`userId`","p.groupId","m.id","m.`name`","m.pid","p.`menuId`","p.`add`","p.`delete`",'p.`edit`','p.`show`'],           //被查询的字段名称（别名在此指定）
             where:[],           //查询条件
             orderBy:['id asc'],
-            joinOn:" LEFT JOIN #@sys_menu as m ON m.id = p.menuId "
+            joinOn:" LEFT JOIN youbang_sys_menu as m ON m.id = p.menuId "
         };
 
         //判断管理组id 
@@ -101,10 +101,10 @@ function PermitModel(){
         }
 
         var groupId = data.base64[0].groupId;
-        var sql  = "delete from #@sys_permit where userId is null and groupId = "+groupId;
+        var sql  = "delete from youbang_sys_permit where userId is null and groupId = "+groupId;
         that.DB().query(sql,function(error,results){
             var condition = {
-                table:["#@sys_permit"],                                 //查询的表名
+                table:["youbang_sys_permit"],                                 //查询的表名
                 fields:data.base64           //被查询的字段名称（别名在此指定）                       
             };
             that.DB().set(condition,function(error,results){
@@ -138,11 +138,11 @@ function PermitModel(){
                 if(data.userInfo){
                     //根据用户id 查询权限，查不到 在根据用户的组ID查询
                     var condition = {
-                        table:["#@sys_permit as p"],                                 //查询的表名
+                        table:["youbang_sys_permit as p"],                                 //查询的表名
                         fields:["p.id as permitId","p.`userId`","p.groupId","m.id","m.`name`","m.pid","p.`menuId`","p.`add`","p.`delete`",'p.`edit`','p.`show`'],           //被查询的字段名称（别名在此指定）
                         where:[],           //查询条件
                         orderBy:['id asc'],
-                        joinOn:" LEFT JOIN #@sys_menu as m ON m.id = p.menuId "
+                        joinOn:" LEFT JOIN youbang_sys_menu as m ON m.id = p.menuId "
                     };
                     condition.where.push("userId ="+data.id);
                     that.DB().get(condition,function(error,res){
@@ -200,10 +200,10 @@ function PermitModel(){
 
         var groupId = data.base64[0].groupId;
         var userId = data.base64[0].userId;
-        var sql  = "delete from #@sys_permit where userId = "+userId+" and groupId = "+groupId;
+        var sql  = "delete from youbang_sys_permit where userId = "+userId+" and groupId = "+groupId;
         that.DB().query(sql,function(error,res){
             var condition = {
-                table:["#@sys_permit"],                                 //查询的表名
+                table:["youbang_sys_permit"],                                 //查询的表名
                 fields:data.base64           //被查询的字段名称（别名在此指定）                       
             };
             that.DB().set(condition,function(error,results){
@@ -224,7 +224,7 @@ function PermitModel(){
      */
     that.add = function(params, callback){
         var data = {};
-        var sql = "insert into `#@sys_permit`\
+        var sql = "insert into `youbang_sys_permit`\
         (`userId`, `groupId`,`menuId`,`add`,`delete`,`edit`,`show`,`enable`) \
         values \
         (null, 1, " + params.menuid + ", '1', '1', '1', '1', '1'),\
