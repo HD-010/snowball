@@ -18,12 +18,12 @@ function TestModel() {
 
     
     this.testSql = async function(){
-        var sql = "select * from youbang_addonadv";
+        var sql = "select * from #@addonadv";
         var res = await this.DB().syncQuery(sql);
         return res;
     }
     this.testSql2 = async function(){
-        var sql = "select * from youbang_arcatt";
+        var sql = "select * from #@arcatt";
         var res = await this.DB().syncQuery(sql);
         return res;
     }

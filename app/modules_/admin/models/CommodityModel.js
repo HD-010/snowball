@@ -46,8 +46,8 @@ function CommodityModel(){
                 i.id AS itemid,
                 i.title AS itemtitle 
             FROM
-                youbang_commidity_spec AS m
-                LEFT JOIN youbang_commidity_specitem AS i ON i.specid = m.id 
+                #@commidity_spec AS m
+                LEFT JOIN #@commidity_specitem AS i ON i.specid = m.id 
             WHERE
                 m.commodityid = `+ params.commodityId +` 
                 AND i.SHOW = '1' 
@@ -70,7 +70,7 @@ function CommodityModel(){
         var data = {error: 1, message: '参数错误'}
         if(!params.commodityId) return callback(data);
         var conditions = {
-            table: ['youbang_commidity_specoption'],
+            table: ['#@commidity_specoption'],
             where: ['commodityid = '+ params.commodityId],
             orderBy: ['id asc']
         }
@@ -95,7 +95,7 @@ function CommodityModel(){
             if(res.error) callback(res);
             //保存specname
             var conditions = {
-                table:'youbang_commidity_spec',
+                table:'#@commidity_spec',
                 fields:[]
             }
 
@@ -114,7 +114,7 @@ function CommodityModel(){
                 
                 //保存specitem
                 conditions = {
-                    table:'youbang_commidity_specitem',
+                    table:'#@commidity_specitem',
                     fields:[]
                 }
                 params.items = [];
@@ -131,9 +131,9 @@ function CommodityModel(){
                 that.DB().set(conditions,function(error,results,fields){
                     if(error) callback(data);
                     params.itemsId = results.insertId;
-                    //保存youbang_commidity_specoption
+                    //保存#@commidity_specoption
                     conditions = {
-                        table:'youbang_commidity_specoption',
+                        table:'#@commidity_specoption',
                         fields:[]
                     }
                     for(i = 0; i < params.specoption.length; i++ ){
@@ -172,7 +172,7 @@ function CommodityModel(){
         var data = {error: 1, message: 'params error!'}
         //删除commodityId对应的值
         var conditions = {
-            table:'youbang_commidity_spec',
+            table:'#@commidity_spec',
             where:[]
         }
         if(!params.aid) return callback(data);
@@ -197,7 +197,7 @@ function CommodityModel(){
         var sky = this.POST('sky');
         if(!params.SEDate) return callback(data);
         var conditions = {
-            table: ['youbang_commodities_orders'],
+            table: ['#@commodities_orders'],
             where: [],
             orderBy:['addtime asc']
         }
@@ -224,9 +224,9 @@ function CommodityModel(){
         
         if(typeof orderId != 'number') return callback({error: 1,message: 'message error'});
         var conditions = {
-            table: ['youbang_commodities_orders as a '],
+            table: ['#@commodities_orders as a '],
             fields:['b.*'],
-            joinOn:'left join youbang_commodities_orders as b on a.merchantid=b.merchantid and a.sn=b.sn ',
+            joinOn:'left join #@commodities_orders as b on a.merchantid=b.merchantid and a.sn=b.sn ',
             where: ['a.id = ' + orderId],
             limit:[1]
         }

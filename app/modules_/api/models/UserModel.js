@@ -32,7 +32,7 @@ function UserModel(){
      */
     that.getUserType = function(userid,callback){
         if(isNaN(userid)) return callback({errocode:""});
-        let sql = "select acountType from youbang_sys_acount where id = "+userid;
+        let sql = "select acountType from #@sys_acount where id = "+userid;
         that.DB().query(sql,function(error,results,fields){
            if(results[0].acountType) return callback(results[0].acountType);
            return callback({errocode:""});
@@ -70,9 +70,9 @@ function UserModel(){
         let tel = that.POST('tel');
         if(isNaN(tel)) return callback(1,"tel非法");
         if(defaultt==1){
-            let sql = "update youbang_addresslist set `default`= '0' where type='"+type+"' and mainid = "+mainid;
+            let sql = "update #@addresslist set `default`= '0' where type='"+type+"' and mainid = "+mainid;
             that.DB().query(sql,function(error,res,fields){
-                let sql1 = "insert into youbang_addresslist(`type`,`mainid`,`provinceid`,`cityid`,`countyid`,`detail`,`addtime`,`default`,`realname`,`tel`) \
+                let sql1 = "insert into #@addresslist(`type`,`mainid`,`provinceid`,`cityid`,`countyid`,`detail`,`addtime`,`default`,`realname`,`tel`) \
                 values('"+type+"',"+mainid+","+provinceid+","+cityid+","+countyid+",'"+detail+"',NOW(),'"+defaultt+"','"+realname+"','"+tel+"')";
                 that.DB().query(sql1,function(error,results,fields){
                     if(results.affectedRows){
@@ -82,7 +82,7 @@ function UserModel(){
                 });
             })
         }else{            
-            let sql2 = "insert into youbang_addresslist(`type`,`mainid`,`provinceid`,`cityid`,`countyid`,`detail`,`addtime`,`default`) \
+            let sql2 = "insert into #@addresslist(`type`,`mainid`,`provinceid`,`cityid`,`countyid`,`detail`,`addtime`,`default`) \
             values('"+type+"',"+mainid+","+provinceid+","+cityid+","+countyid+",'"+detail+"',NOW(),'"+defaultt+"','"+realname+"','"+tel+"')";
             that.DB().query(sql2,function(error,results,fields){
                 if(results.affectedRows){
@@ -110,10 +110,10 @@ function UserModel(){
             if(data) return callback(0,data);
             let sql = "SELECT	\
             ad.*,	a.NAME AS province,	b.NAME AS city,	c.NAME AS county \
-            FROM	youbang_addresslist AS ad	\
-            LEFT JOIN youbang_sys_area a ON a.id = ad.provinceid	\
-            LEFT JOIN youbang_sys_area b ON b.id = ad.cityid	\
-            LEFT JOIN youbang_sys_area c ON c.id = ad.countyid \
+            FROM	#@addresslist AS ad	\
+            LEFT JOIN #@sys_area a ON a.id = ad.provinceid	\
+            LEFT JOIN #@sys_area b ON b.id = ad.cityid	\
+            LEFT JOIN #@sys_area c ON c.id = ad.countyid \
             where ad.type = '"+type+"' and ad.mainid = "+mainid+" order by id";
             that.DB().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
@@ -140,10 +140,10 @@ function UserModel(){
             if(data) return callback(0,data);
             let sql = "SELECT	\
             ad.*,	a.NAME AS province,	b.NAME AS city,	c.NAME AS county \
-            FROM	youbang_addresslist AS ad	\
-            LEFT JOIN youbang_sys_area a ON a.id = ad.provinceid	\
-            LEFT JOIN youbang_sys_area b ON b.id = ad.cityid	\
-            LEFT JOIN youbang_sys_area c ON c.id = ad.countyid \
+            FROM	#@addresslist AS ad	\
+            LEFT JOIN #@sys_area a ON a.id = ad.provinceid	\
+            LEFT JOIN #@sys_area b ON b.id = ad.cityid	\
+            LEFT JOIN #@sys_area c ON c.id = ad.countyid \
             where ad.id = "+id+" and ad.mainid = "+userid+" order by id";
             that.DB().log().query(sql,function(error,results,fields){
                 if(!results.length) return callback(1,['no date']);
@@ -189,9 +189,9 @@ function UserModel(){
         if(isNaN(defaultt)) return callback(1,"default非法");
         defaultt = parseInt(defaultt)+1;
         if(defaultt==1){
-            let sql = "update youbang_addresslist set `default`= '0' where type='"+type+"' and mainid = "+mainid;
+            let sql = "update #@addresslist set `default`= '0' where type='"+type+"' and mainid = "+mainid;
             that.DB().log().query(sql,function(error,res,fields){
-                let sql1 = "update youbang_addresslist set `type`='"+type+"',mainid="+mainid+",provinceid="+provinceid+",cityid ="+cityid+",countyid="+countyid+",detail='"+detail+"',`default`="+defaultt+",`realname`='"+realname+"',`tel`='"+tel+"',addtime=NOW() where id ="+id;
+                let sql1 = "update #@addresslist set `type`='"+type+"',mainid="+mainid+",provinceid="+provinceid+",cityid ="+cityid+",countyid="+countyid+",detail='"+detail+"',`default`="+defaultt+",`realname`='"+realname+"',`tel`='"+tel+"',addtime=NOW() where id ="+id;
                 that.DB().log().query(sql1,function(error,results,fields){
                     if(results.affectedRows){
                         return callback(0,"Success");
@@ -200,7 +200,7 @@ function UserModel(){
                 });
             })
         }else{            
-            let sql2 = "update youbang_addresslist set \
+            let sql2 = "update #@addresslist set \
             `type` = '"+type+"',mainid = "+mainid+", provinceid = "+provinceid+", cityid = "+cityid+", countyid = "+countyid+", detail = '"+detail+"',`default` ="+defaultt+",`realname`='"+realname+"',`tel`='"+tel+"',addtime = NOW() \
             where id = "+id;
             that.DB().log().query(sql2,function(error,results,fields){
@@ -220,7 +220,7 @@ function UserModel(){
     that.deladdress = function(callback){
         let id = that.POST('id');
         if(isNaN(id)) return callback(1,"id非法");
-        let sql = "delete from youbang_addresslist where id = "+id;
+        let sql = "delete from #@addresslist where id = "+id;
         that.DB().query(sql,function(error,results,fields){
             if(results.affectedRows){
                 return callback(0,"Success");

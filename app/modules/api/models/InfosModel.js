@@ -19,11 +19,11 @@ function InfosModel(){
             if(isNaN(userid)) return callback(1,["userid有误"]);
             let sql = "select \
             ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
-            from youbang_archives as ar \
+            from #@archives as ar \
             left join \
-            youbang_addoninfos as i \
+            #@addoninfos as i \
             on ar.id = i.aid \
-            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
+            LEFT JOIN #@member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
             ORDER BY ar.addtime desc";
             let tag = 0;
@@ -68,11 +68,11 @@ function InfosModel(){
 
             let sql = "select \
             ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*, IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
-            from youbang_archives as ar \
+            from #@archives as ar \
             left join \
-            youbang_addoninfos as i \
+            #@addoninfos as i \
             on ar.id = i.aid \
-            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
+            LEFT JOIN #@member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and INSTR(ar.flag,'"+flag+"') \
             ORDER BY ar.addtime desc";
             that.DB().query(sql,function(error,results,fields){
@@ -84,9 +84,9 @@ function InfosModel(){
                         //获取头像
                         user.getUserType(results[i].mid,function(res){
                             let sql1 = "select a.*, o.* from \
-                            youbang_sys_acount as a\
+                            #@sys_acount as a\
                             left  join \
-                            youbang_sys_acount_"+res+" as o on o.id = a.id \
+                            #@sys_acount_"+res+" as o on o.id = a.id \
                             where a.id="+results[i].mid;
                             that.DB().query(sql1,function(e,r,f){
                                 let logo = r[0].logo ? r[0].logo : r[0].face;
@@ -122,9 +122,9 @@ function InfosModel(){
             }
             let sql = "select \
             ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.* \
-            from youbang_archives as ar \
+            from #@archives as ar \
             left join \
-            youbang_addoninfos as i \
+            #@addoninfos as i \
             on ar.id = i.aid \
             where i.componentid = -8 and ar.id = "+id+" \
             ORDER BY ar.addtime desc";
@@ -161,7 +161,7 @@ function InfosModel(){
             callback(1,["id参数有误"]);
             return;
         }
-        let sql = "update youbang_archives set click=click+1 where id = "+id;
+        let sql = "update #@archives set click=click+1 where id = "+id;
         that.DB().query(sql,function(error,results,fields){
             if(results.affectedRows){
                 return callback(0,["Success"]);
@@ -195,11 +195,11 @@ function InfosModel(){
             //let componentid = that.POST("componentid");
             let sql = "select \
             ar.*,DATE_FORMAT(ar.addtime,'%Y-%m-%d') addtime,i.*,IFNULL(if(f.mid="+userid+",1,null),0) as favorite\
-            from youbang_archives as ar \
+            from #@archives as ar \
             left join \
-            youbang_addoninfos as i \
+            #@addoninfos as i \
             on ar.id = i.aid \
-            LEFT JOIN youbang_member_favorite AS f ON f.favoriteid = ar.id \
+            LEFT JOIN #@member_favorite AS f ON f.favoriteid = ar.id \
             where i.componentid = -8 and i.address LIKE '%"+address+"%' and ar.classify like '%"+classify+"%' and ar.typeid like '%"+typeid+"%' and ar.title like '%"+keywords+"%'\
             ORDER BY ar.addtime desc \
             limit "+limi+",10";
@@ -245,7 +245,7 @@ function InfosModel(){
             if(!token) return callback(1,['请传入token!']);
             if(token==data){
                 //获取用户信息是否为vip会员
-                let sql = "select levelid from  youbang_acount_member where mid = "+uid;
+                let sql = "select levelid from  #@acount_member where mid = "+uid;
                 that.DB().log().query(sql,(error,res,fields)=>{
                     if(res.length){
                         if(res[0].levelid >= results[0][field]) return callback(0,results);

@@ -661,7 +661,7 @@ app.history.init();
         <input class="form-control" style="width:25%;float:left" type="text" name="addr_detail" placeholder="详细地址" value=""/>
     </div>`;
     须要的属性:
-    data-type: 对应 youbang_addresslist 表中的 type 字段
+    data-type: 对应 #@addresslist 表中的 type 字段
     调用： addressPice.load();
     2、编辑已经存在的地址
     `<tr>
@@ -678,7 +678,7 @@ app.history.init();
         </td>              
     </tr>`;
     须要的属性:
-    1、data-type: 对应 youbang_addresslist 表中的 type 字段
+    1、data-type: 对应 #@addresslist 表中的 type 字段
     2、初始值必填 
     调用： addressPice.initAddr();
 

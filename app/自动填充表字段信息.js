@@ -30,7 +30,7 @@
  
 
 
-//youbang_addoninfos 表字自动填充字段配置信息：(当前与表一致)
+//#@addoninfos 表字自动填充字段配置信息：(当前与表一致)
 [
   {
     "field": "classify",
@@ -325,7 +325,7 @@
 ]
 
 
-youbang_addoncommodities 表字自动填充字段配置信息:
+#@addoncommodities 表字自动填充字段配置信息:
 [
     {
         "field": "componentid",
@@ -435,7 +435,7 @@ youbang_addoncommodities 表字自动填充字段配置信息:
 ]
 
 
-youbang_addonjobwanted 表字自动填充字段配置信息:
+#@addonjobwanted 表字自动填充字段配置信息:
 [
     {
         "field": "componentid",
@@ -627,7 +627,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "company",
         "itemname": "公司名称",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "32",
         "isnull": false,
         "islist": "",
@@ -642,7 +642,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "position",
         "itemname": "职位",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "32",
         "isnull": false,
         "islist": "",
@@ -657,7 +657,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "salary",
         "itemname": "薪资",
         "type": "float",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "11",
         "isnull": false,
         "islist": "",
@@ -671,7 +671,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "jobtime",
         "itemname": "在职时间",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "36",
         "isnull": false,
         "islist": "",
@@ -685,7 +685,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "duty",
         "itemname": "工作职责",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "11",
         "isnull": false,
         "islist": "",
@@ -699,7 +699,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "city",
         "itemname": "工作地点",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "11",
         "isnull": false,
         "islist": "",
@@ -714,7 +714,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
         "field": "brightspot",
         "itemname": "我的亮点",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "255",
         "isnull": false,
         "islist": "",
@@ -726,7 +726,7 @@ youbang_addonjobwanted 表字自动填充字段配置信息:
     }
 ]
 
-youbang_addonperrecruit 表字自动填充字段配置信息:
+#@addonperrecruit 表字自动填充字段配置信息:
 [
     {
         "field": "classify",
@@ -803,7 +803,7 @@ youbang_addonperrecruit 表字自动填充字段配置信息:
         "field": "classexperience",
         "itemname": "经验",
         "type": "varchar",
-		"effect": "tab_youbang_jobexperience",
+		"effect": "tab_#@jobexperience",
         "maxlength": "64",
         "isnull": false,
         "islist": "",

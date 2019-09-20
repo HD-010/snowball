@@ -1,7 +1,7 @@
 function AcountService(){
     //查询案例2：
     this.querySysAcount = function(sqlStruct,callback){
-        var sql = 'select * from youbang_sys_acount ' +
+        var sql = 'select * from #@sys_acount ' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -17,7 +17,7 @@ function AcountService(){
      */
     this.addSysAcount = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'insert into youbang_sys_acount ' +
+        var sql = 'insert into #@sys_acount ' +
         st.insertNames() +
         st.insertValues();
        
@@ -33,7 +33,7 @@ function AcountService(){
         var sql = 'select a.* ,' +
         ' g.id gid, g.merchNo, g.merchName regName,' +
         ' m.id mid,m.nick,m.realName regName ' + 
-        'from youbang_sys_acount as a left join youbang_sys_acount_agent as g on a.id = g.acountid left join youbang_sys_acount_manager as m on a.id = m.acountid' +
+        'from #@sys_acount as a left join #@sys_acount_agent as g on a.id = g.acountid left join #@sys_acount_manager as m on a.id = m.acountid' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -49,7 +49,7 @@ function AcountService(){
      */
     this.countAcountList = function(sqlStruct,callback){
         var sql = 'select count(*) total ' +
-        'from youbang_sys_acount as a left join youbang_sys_acount_agent as g on a.id = g.acountid left join youbang_sys_acount_manager as m on a.id = m.acountid' +
+        'from #@sys_acount as a left join #@sys_acount_agent as g on a.id = g.acountid left join #@sys_acount_manager as m on a.id = m.acountid' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -64,7 +64,7 @@ function AcountService(){
     //更新数据,该服务数据表字段更新，可以为同类业务的model提供服务
     this.updateAcount = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'update youbang_sys_acount set '+
+        var sql = 'update #@sys_acount set '+
         st.updateFeilds() + 
         st.where();
         this.DB().update(sql,function(error,results,fields){
@@ -80,7 +80,7 @@ function AcountService(){
      */
     this.managerInfo = function(sqlStruct,callback){
         var sql = 'select a.*,m.* ' +
-        'from youbang_sys_acount as a left join youbang_sys_acount_manager as m on a.id = m.acountid ' +
+        'from #@sys_acount as a left join #@sys_acount_manager as m on a.id = m.acountid ' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -96,7 +96,7 @@ function AcountService(){
      */
     this.agentInfo = function(sqlStruct,callback){
         var sql = 'select a.*,g.* ' +
-        'from youbang_sys_acount as a left join youbang_sys_acount_agent as g on a.id = g.acountid ' +
+        'from #@sys_acount as a left join #@sys_acount_agent as g on a.id = g.acountid ' +
         sqlStruct.where() + 
         sqlStruct.groupBy() + 
         sqlStruct.orderBy() + 
@@ -111,7 +111,7 @@ function AcountService(){
      */
     this.managerUp = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'update youbang_sys_acount_manager set '+
+        var sql = 'update #@sys_acount_manager set '+
         st.updateFeilds() + 
         st.where();
 
@@ -125,7 +125,7 @@ function AcountService(){
      */
     this.agentUp = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'update youbang_sys_acount_agent set '+
+        var sql = 'update #@sys_acount_agent set '+
         st.updateFeilds() + 
         st.where();
         
@@ -139,7 +139,7 @@ function AcountService(){
      */
     this.agentAdd = function(sqlStruct,callback){
         var st  = sqlStruct;
-        var sql = 'insert into youbang_sys_acount_agent ' +
+        var sql = 'insert into #@sys_acount_agent ' +
         st.insertNames() +
         st.insertValues();
         
