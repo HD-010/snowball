@@ -43,6 +43,45 @@ function FileModel(){
         }).cropperAsync;
         return data;
     }
+
+	/**
+	 * 通用文字识别
+	 */
+	var generalBasic = function(params, callback){
+		//新建一个AipOcrClient
+		var AipOcrClient = require("baidu-aip-sdk").ocr;
+		// 设置APPID/AK/SK
+		var APP_ID = "17302357";
+		var API_KEY = "7YpU4E20aabNI3W7KV5EUdFl";
+		var SECRET_KEY = "24jaa8GcPqdSGdLvNtGC4nu92uBDwKxq";
+		// 新建一个对象，建议只保存一个对象调用服务接口
+		var client = new AipOcrClient(APP_ID, API_KEY, SECRET_KEY);
+		
+		//设置全局参数和全局请求拦截器的方法
+		var HttpClient = require('baidu-qip-sdk').HttpClient;
+		//设置request库的一些参数，例如代理服务地址，超时时间等
+		HttpClient.setRequestOptions({timeout: 10000});
+		HttpClient.setRequestInterceptor(function(requestOptions) {
+		    // 查看参数
+		    console.log(requestOptions)
+		    // 修改参数
+		    requestOptions.timeout = 10000;
+		    // 返回参数
+		    return requestOptions;
+		});
+		
+		//用户向服务请求识别某张图中的所有文字
+		var fs = require('fs');
+		var image = fs.readFileSync("assets/example.jpg").toString("base64");
+		// 调用通用文字识别, 图片参数为本地图片
+		client.generalBasic(image).then(function(result) {
+		    console.log(JSON.stringify(result));
+			return callback(result);
+		}).catch(function(err) {
+		    // 如果发生网络错误
+		    console.log(err);
+		});
+	}
 }
 
 module.exports = FileModel;
