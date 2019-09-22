@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>通用文字</title>
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="/bootstrap/css/font-awesome.css">
+		<link rel="stylesheet" href="/bootstrap/css/myAdmin.css">
+		<link rel="stylesheet" href="/bootstrap/css/plugins/sweetalert/sweetalert.css">
+		<link href="/bootstrap/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link rel="stylesheet" href="/bootstrap/css/animate.css">
+		<link rel="stylesheet" href="/bootstrap/css/style.css">
+		<link rel="stylesheet" href="/bootstrap/css/switch.css">
+		
+		<link rel="stylesheet" href="/bootstrap/css/plugins/footable/footable.core.css">
+		<!-- 必须在jquery前引入 -->
+		<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=F9bfbeb26054d97898571a1df965d8af&services=&t=20190612100553"></script>
+		<script src="/bootstrap/js/jquery.min.js"></script>
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
+		
+		<script src="/javascripts/app/app.js"></script>
+		<script src="/javascripts/app/autoload.js"></script>
+		<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
+		<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+		
+		
+		<!-- 我的图标 -->
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_1221711_v60ac6662dg.css"/>
+		<style>
+		.replaceImg-label{
+		    border:0;
+		    width: 90%;
+		    padding: 0;
+		    margin : 0;
+		    display: inline-table;
+		    float: none;
+		}
+		.replaceImg-label label{margin-top: -5px;}
+		.replaceImg-label img{
+		    width: 130px;
+		    height: 130px;
+		    border:0;
+		    overflow:hidden;
+		    padding:0;
+		    margin: 0;
+		    margin-right: 10px;
+		    float: left;
+		}
+		.replaceImg-label .img-handl{
+		    display: table-cell;
+		    position: initial;
+		}
+		.replaceImg-label .fa-size{
+		    font-size: 45px;
+		    position: absolute;
+		    display: block;
+		    width: 130px;
+		    height: 130px;
+		    /* left: 0;
+		    margin-left:15px; */
+		    text-align: center;
+		    line-height: 130px;
+		    background: rgba(0,0,0,0.5);
+		    color: #fff;
+		    visibility: hidden;
+		}
+		.replaceImg-label .fa-size :hover{visibility:visible;}
+		.text-content{
+			border:1px solid #0074D9;
+			min-height: 300px;
+			width: 80%;
+			margin: auto;
+			margin-top:300px;
+		}
+		</style>
+	</head>
+	<body>
+		<form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
+			<div class="pic-box" data-limit="1" data-field='litpic'>
+				<div class="form-group col-xs-8">
+					<div class="replaceImg-label">
+						<label class="col-sm-2 control-label img-add" for="replaceImg">
+							<img src="/img/plus.png" />
+						</label>
+					</div>
+				</div>
+				<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+				
+			</div>
+			<div class="text-content">
+				
+			</div>
+			
+			<!-- 图片上传必要 -->
+			<input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+		</form>
+		<%- //print_r(locals) %>
+		<!-- 输出视图组件 -->
+		<%- cropperView %>
+		<!-- 输出视逻辑代码 -->
+		<%- cropperAsync %>
+		<script>
+		    /**
+		     * 图片上传处理器
+		     * */
+		     var uploader = {
+		        index: 0,
+		        picBox: ''
+		    }
+		    
+		    //定位picBox
+		    $("label.img-add").unbind('click').on('click',function(){
+		        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+		    });
+		
+		    //图片上传回调处理
+		    function upProcess(data){
+				console.log(data)
+		        var info = {
+		            error : 1,
+		            message : "上传失败，请重新上传！"
+		        };
+		        if(data.state != 1) return app.notice(info);
+		        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
+		            <span class="fa fa-close fa-size"></span>
+		            <!-- <img src="/` + data.url + `" /> -->
+		            </div>`;
+				var texts = data.results.words_result;
+				var textContents = $(".text-content")
+				for(var i = 0; i < texts.length; i ++){
+					textContents.append(texts[i].words + "<br/>");
+				}
+		           
+		        //$(uploader.picBox).find(".img-add").before($(addObj));
+		        //$(uploader.picBox).append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
+		        info.message = "恭喜您上传成功！";
+		        app.notice(info);
+		        uploader.index ++;
+		    
+		        //setEffect();
+		    }
+		    function setEffect(){
+		        $(".img-handl").unbind('mouseover').on("mouseover",function(e){
+		            $(this).find(".fa-size").css({
+		                visibility : 'visible'
+		            });
+		        })
+		        $(".img-handl").unbind('mouseout').on("mouseout",function(e){
+		            $(this).find(".fa-size").css({
+		                visibility : 'hidden'
+		            });
+		        })
+		        //删除上传的图片
+		        $(".img-handl").unbind('click').on("click",function(e){
+		            var dataImg = $(this).attr('data-img');
+		            $('[data-img='+ dataImg +']').remove();
+		            var arr = dataImg.split('-');
+		            var index = arr[arr.length - 1];
+		            delete j[index];
+		            if(j.length) j.length --;
+		            setEffect()
+		        })
+		
+		        //控制添加按钮显示与隐藏
+		        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+		        $(picBox).each(function(index,item){
+		            var limit = $(item).attr('data-limit');//设置显示张数
+		            $(item).find(".replaceImg-label").children().hide();
+		            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+		        });
+		    } 
+		    
+		    //效果初始化
+		    setEffect();
+		</script>
+	</body>
+</html>
