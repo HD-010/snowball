@@ -95,7 +95,7 @@ function ManageModel(){
         Group.getGroup({},function(res){
 			data.results = res.results;
 			data.id = that.GET("pid");
-			var sql = "select id,acount,userName,password,tel,groupId from #@sys_acount where id = "+data.id;
+			var sql = "select id,acount,userName,acountType,password,tel,groupId from #@sys_acount where id = "+data.id;
 			that.DB().query(sql,function(error,results){
 				if(results) data.manageInfo = results;
 				callback(data)
@@ -104,27 +104,86 @@ function ManageModel(){
    }
 
    /**
-    * 修改管理员信息
+    * 修改管理员主表信息
     */
    that.updateManage = function(callback){
        var data = {};
         data.id = this.POST('id');       
-        data.userName = this.POST('userName');    
+        data.userName = this.POST('userName');
+		if(!data.id || !data.userName) return callback({
+			error: 1,
+			message: "修改失败，参数错误！"
+		});
         data.groupId = this.POST('groupId');
         data.tel = this.POST('tel');
-        if(data){
-            var sql = "update #@sys_acount set userName = '"+data.userName+"',tel = "+data.tel+",groupId = "+data.groupId+" where id = "+data.id;          
-            that.DB().query(sql,function(error,results){
-                if(results.affectedRows){
-                    var obj={
-                        message:"用户修改加成功!",
-                        uri:"/admin/manage/listManage",
-                        error:0
-                    }
-                    callback(obj)
-                }
-            })
-        }
+		var conditions = {
+			table: "#@sys_acount",
+			fields: [],
+			where: []
+		}
+		var recode = {};
+		if(data.userName) recode.userName = data.userName;
+		if(data.tel) recode.tel = data.tel;
+		if(data.groupId) recode.groupId = data.groupId;
+		conditions.fields.push(recode);
+		conditions.where.push("id=" + data.id);
+		that.DB().set(conditions,function(error,results){
+			if(results.affectedRows){
+				var obj={
+					message:"用户修改加成功!",
+					uri:"/admin/manage/listManage",
+					error:0
+				}
+				callback(obj)
+			}
+		})
+   }
+   /**
+	* 保存帐户付加表信息
+	*/
+   that.saveAddon = function(params, callback){
+	   var conditions = {
+		   table: "#@sys_acount_" + params.atag,
+		   fields:[],
+		   where:[]
+	   }
+	   var recode = {
+		   nick: this.POST('userName') || "",
+		   mobile: this.POST('mobile') || "",
+		   effectiveTime: this.POST('effectiveTime') ,
+		   expirationTime: this.POST('expirationTime'),
+		   openid: this.POST('openid') || "",
+		   sex: this.POST('sex') || "0",
+		   realName: this.POST('realName') || "",
+		   IDNumber: this.POST('IDNumber') || "",
+	   }
+	   var birthday = this.POST('birthday');
+	   if(birthday) recode.birthday = birthday;
+	   conditions.fields.push(recode);
+	   conditions.where.push("acountid", params.acountid);
+	   that.DB().set(conditions, function(error, res, fields){
+		   return callback(data);
+	   })
+   }
+   
+   /**
+	* 获取账户信息付加表数据
+	* @param {Object} callback
+	*/
+   that.addonAcount = async function(params){
+	   var conditions = {
+		   table: ['#@sys_acount_'+ params.userInfo.acountType],
+		   fields:["*"],
+		   where: [],
+		   limit:[]
+	   }
+	   var results = [];
+	   if(!params.userInfo.id) return results;
+	   conditions.where.push("acountid = " + params.userInfo.id);
+	   conditions.limit.push('0', '1');
+	   results = await this.DB().log().syncGet(conditions);
+	   
+	   return results;
    }
 
    /**

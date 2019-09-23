@@ -41,10 +41,16 @@ function manageControler(){
     /**
      * 编辑管理员信息
      */
-    that.editManage = function(){
+    that.editManage = async function(){
+		var params = {};
         var manage = that.model("Manage");
-		log("@@@@@@@@@@@@@@@@@@@@@@@@:oid:", that.GET('oid'));
-        manage.editManage(function(res){
+        manage.editManage(async function(res){
+			params.userInfo = res.manageInfo[0];
+			res.atag = params.userInfo.acountType;
+			var addonInfo = await manage.addonAcount(params);
+			addonInfo = addonInfo.results.length ? addonInfo.results[0] : {};
+			res.manageInfo[0] = mergeObj([addonInfo,res.manageInfo[0]]);
+			log("@#################----------######################:::", res);
             that.render(res);
         })
     }
@@ -53,10 +59,23 @@ function manageControler(){
      * update管理员信息
      */
     that.updateManage = function(){
-        var Manage = that.model("Manage");
-        Manage.updateManage(function(res){
+		var ps = 1;
+		var params = {};
+        var manage = that.model("Manage");
+		params.atag = this.POST('atag');
+		params.acountid = this.POST("id");
+		
+		//保存主表信息
+        manage.updateManage(function(res){
             that.renderJson(res);
         })
+		//保存付加表信息
+		if(params.atag && params.acountid){
+			log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$:", params.acountid)
+			ps ++;
+			manage.saveAddon(params,(error, results)=>{
+			});
+		}
     }
 
     /**

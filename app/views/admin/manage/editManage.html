@@ -35,6 +35,7 @@
                 <div class="col-xs-10" style='height: 300px;margin-top: 2.2em'>              
                     <form class="form-horizontal" role="form"  data-form-async='json' action="/admin/Manage/updateManage" enctype="multipart/form-data" method="post">
                         <input type="hidden" name="id" value="<%= manageInfo[0].id %>">
+                        <input type="hidden" name="atag" value="<%= atag %>">
                         <div class="form-group">
                             <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i>登录邮箱:</label>
                             <div class="col-xs-4">
@@ -47,6 +48,39 @@
                                 <input type="text" class="form-control" placeholder="请输入用户名" required="required" name="userName" value="<%= manageInfo[0].userName %>"/>
                             </div>
                         </div>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 真实姓名:</label>
+						    <div class="col-xs-4">
+						        <input type="text" class="form-control" placeholder="请输入姓名" required="required" name="realName" value="<%= manageInfo[0].realName %>"/>
+						    </div>
+						</div>
+						
+						<div class="form-group">
+						    <label class="col-sm-2 control-label">性别：</label>
+						    <div class="col-sm-10">
+						        <div class="radio">
+						            <label>
+						                <input type="radio" <%= manageInfo[0].sex == 2 ? "checked" : "" %> value="2" id="optionsRadios1" name="sex">女</label>
+						        </div>
+						        <div class="radio">
+						            <label>
+						                <input type="radio" <%= manageInfo[0].sex == 1 ? "checked" : "" %> value="1" id="optionsRadios2" name="sex">男</label>
+						        </div>
+								<div class="radio">
+								    <label>
+								        <input type="radio" <%= manageInfo[0].sex == 0 ? "checked" : "" %> value="0" id="optionsRadios2" name="sex">保密</label>
+								</div>
+						    </div>
+						</div>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 身份证号:</label>
+						    <div class="col-xs-4">
+						        <input type="text" class="form-control" placeholder="请输入身份证号" name="IDNumber" value="<%= manageInfo[0].IDNumber %>"/>
+						    </div>
+						</div>
+						
                         <div class="form-group">
                             <label for="firstname" class="col-xs-2 control-label"></i> 密码重置:</label>
                             <div class="col-xs-4">
@@ -56,9 +90,9 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 联系手机:</label>
+                            <label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 注册手机号:</label>
                             <div class="col-xs-4">
-                                <input type="number" class="form-control" placeholder="请输入手机" required="required" name="tel" value="<%= manageInfo[0].tel %>"/>
+                                <input type="number" disabled="disabled" class="form-control" placeholder="注册手机号" required="required" name="tel" value="<%= manageInfo[0].tel %>"/>
                             </div>
                         </div>
 						<% if(results.length){ %>
@@ -77,6 +111,35 @@
                             </div>
                         </div>
 						<% } %>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 联系电话:</label>
+						    <div class="col-xs-4">
+						        <input type="mobile" class="form-control" placeholder="联系电话" required="required" name="mobile" value="<%= manageInfo[0].mobile %>"/>
+						    </div>
+						</div>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 生效时间:</label>
+						    <div class="col-xs-4">
+						        <input type="date" class="form-control" placeholder="生效时间" required="required" name="effectiveTime" value="<%= dateFormate("%Y-%m-%d",manageInfo[0].effectiveTime) %>"/>
+						    </div>
+						</div>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 过期时间:</label>
+						    <div class="col-xs-4">
+						        <input type="date" class="form-control" placeholder="过期时间" required="required" name="expirationTime" value="<%= dateFormate("%Y-%m-%d",manageInfo[0].expirationTime) %>"/>
+						    </div>
+						</div>
+						
+						<div class="form-group">
+						    <label for="firstname" class="col-xs-2 control-label"><!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> openid:</label>
+						    <div class="col-xs-4">
+						        <input type="text" class="form-control" placeholder="openid" name="openid" value="<%= manageInfo[0].openid %>"/>
+						    </div>
+						</div>
+						
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-info">提交编辑</button>
