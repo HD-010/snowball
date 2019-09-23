@@ -15,6 +15,7 @@
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/javascripts/app/app.js"></script>
     <script src="/javascripts/app/autoload.js"></script>
+	<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 </head>
 <body>
     <style>
@@ -104,7 +105,7 @@
                     <tr><td colspan=2><input class="infor" type="password" name="password" placeholder="密码" value="" /></td></tr>
                     <tr>
                         <td class="oper-text"><input type="checkbox" name="storePass" value="记住密码" />记住密码</td>
-                        <td class="oper-text"><a href="?">忘记密码</a></td>
+                        <td class="oper-text oper-forget"><a href="javascript:void(0)">忘记密码</a></td>
                     </tr>
                     <tr><td colspan=2 style="text-align:center"><button class="bt-login" type="submit">登 录</button></td></tr>
                 </tbody>
@@ -133,6 +134,31 @@
     jQuery(function($){
         app.load();
         //app.addonParams = {oid: getItem("OID")};
+		if(localStorage.getItem("UC8654664")){
+			$("input[name='storePass']").prop('checked', true);
+			var uif = localStorage.getItem("UC8654664");
+			uif = uif.split("00_00");
+			$("input[name='email']").val(uif[0]);
+			$("input[name='password']").val(uif[1])
+		}
+		
+		$(".bt-login").unbind('mouseover').on("mouseover",function(){
+			if($("input[name='storePass']").prop('checked')){
+				var uif = $("input[name='email']").val() + "00_00" +  $("input[name='password']").val();
+				localStorage.setItem("UC8654664", uif);
+			}
+		});
+		
+		$(".oper-forget").click(function(){
+			app.alert( {
+				title: "你确定要删除用户名及密吗？",
+				text: "删除密码后，下次登录需要输入用户名和密码！",
+				text_r: "你成功删除登录密码"
+			},function(){
+				localStorage.removeItem("UC8654664");
+				location.reload();
+			});
+		});
     })
     
     </script>

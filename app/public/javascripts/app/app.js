@@ -319,17 +319,28 @@ var app = {
         }, 2000);
     },
 
-    alert: function(callback){
+	/**
+	 * @param {object} params
+	 * @param {function} callback
+	 * 注需要引入<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
+	 */
+    alert: function(params, callback){
+		if(typeof params == "function"){
+			callback = params;
+			params = null;
+		}
+		if(!params) params = {};
         swal({
-            title: "您确定要删除这条信息吗",
-            text: "删除后将无法恢复，请谨慎操作！",
-            type: "warning",
+            title: params.title ? params.title : "您确定要删除这条信息吗",
+            text: params.text ? params.text : "删除后将无法恢复，请谨慎操作！",
+            type: params.type ? params.type : "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "删除",
             closeOnConfirm: false
         }, function (res) {
-            swal("删除成功！", "您已经永久删除了这条信息。", "success");
+            swal("删除成功！", 
+			params.text_r ? params.text_r : "您已经永久删除了这条信息。", "success");
             callback(res);
         });
     },
