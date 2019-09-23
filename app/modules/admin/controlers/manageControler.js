@@ -42,8 +42,9 @@ function manageControler(){
      * 编辑管理员信息
      */
     that.editManage = function(){
-        var Manage = that.model("Manage");
-        Manage.editManage(function(res){
+        var manage = that.model("Manage");
+		log("@@@@@@@@@@@@@@@@@@@@@@@@:oid:", that.GET('oid'));
+        manage.editManage(function(res){
             that.render(res);
         })
     }

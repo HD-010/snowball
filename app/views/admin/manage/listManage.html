@@ -45,7 +45,7 @@
         </div>
     </div>
     <!-- 折叠部分 -->
-    <div id="collapseTwo" class="panel-collapse collapse collapseTwo">
+<!--    <div id="collapseTwo" class="panel-collapse collapse collapseTwo">
         <div class="panel-body">
             <div class="admin_screenlist_box" style="display: block;"> 	    
                 <div class="admin_screenlist">
@@ -96,7 +96,7 @@
             </div>
         </div>
     </div>
-
+ -->
 
     <div class="row form">
         <div class="ibox-content">
@@ -167,10 +167,11 @@
  <!-- 全局js -->
  <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
  <script>
-     $(document).ready(function() {
-         $('.footable').footable();
-     });
-
+	 $(document).ready(function() {
+		app.addonParams = {oid: getItem('OID')}	
+		 $('.footable').footable();
+	 });
+	//console.log(app);
  </script>
  <script language="javascript">
      var listId = [];

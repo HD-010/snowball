@@ -90,7 +90,7 @@ function GroupModel(){
         if(id) condition.where.push("id=" + id );
         if(data.userInfo) condition.where.push(' pid= '+data.userInfo.id);
         condition.where.push("deleted = 0 ");//查询可用
-        that.DB().get(condition,function(error,results){
+        that.DB().log().get(condition,function(error,results){
             data.results = results;
           if(results) callback(data)
         });
