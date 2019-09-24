@@ -117,7 +117,13 @@
      * 登录处理方法
      */
     function _in(results){
-        console.log(results);
+		if(!results.infors.acountType){
+			results = {
+				error: 1,
+				message: '你不是管理员，不能登录当前系统！'
+			}
+			app.notice(results);
+		}
         if(results.error === 0){
             setItem("UIF",results.infors);
             setItem("UID",results.infors.id);

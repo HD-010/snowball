@@ -71,22 +71,19 @@ function ManageModel(){
     * 根据管理者ID删除管理者信息
     */
    that.delManage = function(callback){
-        var data = {};
-        data.id = that.GET("id");
-        data.id = data.id.split("_");
-        if(data){
-           var sql  = "delete from #@sys_acount where id in ("+data.id+")"; 
-            that.DB().query(sql,function(error,results){
-                if(results.affectedRows){
-                    var obj={
-                        message:"管理者删除成功!",
-                        uri:"/admin/manage/listManage",
-                        error:0
-                    }
-                    callback(obj)                
-                }
-            })
-        }
+        var userId = that.GET("uid").join(",");
+		var val = that.GET("v");
+	    var sql  = "update #@sys_acount set `enable` = '" + val + "' where id in (" + userId + ")"; 
+		that.DB().query(sql,function(error,results){
+			if(results.affectedRows){
+				var obj={
+					message:"修改成功!",
+					uri:"/admin/manage/listManage",
+					error:0
+				}
+				callback(obj)                
+			}
+		})
    }
 
    /**
@@ -144,7 +141,7 @@ function ManageModel(){
    /**
 	* 保存帐户付加表信息
 	*/
-   that.saveAddon = function(params, callback){
+   that.saveAddon = async function(params, callback){
 	   var data = {error: 1};
 	   var conditions = {
 		   table: "#@sys_acount_" + params.atag,
@@ -162,6 +159,7 @@ function ManageModel(){
 		   realName: this.POST('realName') || "",
 		   IDNumber: this.POST('IDNumber') || "",
 	   }
+	   
 	   if(params.insertId) recode.acountid = params.insertId;
 	   var birthday = this.POST('birthday');
 	   if(birthday) recode.birthday = birthday;
@@ -180,8 +178,9 @@ function ManageModel(){
 	* @param {Object} callback
 	*/
    that.addonAcount = async function(params){
+	   var acountType = params.userInfo.acountType || 'member';
 	   var conditions = {
-		   table: ['#@sys_acount_'+ params.userInfo.acountType],
+		   table: ['#@sys_acount_'+ acountType],
 		   fields:["*"],
 		   where: [],
 		   limit:[]

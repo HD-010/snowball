@@ -21,10 +21,7 @@ function permitControler (){
             }
 
             //查询到相应数据
-            if(!result.error) {
-                result.message = "查询成功"
-                return that.renderJson(result);
-            }
+            if(!result.error) return that.renderJson(result);
 
             //查询不到数据
             if(result.error == -1) {

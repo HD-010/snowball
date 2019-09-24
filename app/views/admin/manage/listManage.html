@@ -98,45 +98,39 @@
     </div>
  -->
 
-    <div class="row form">
+    <form class="row form form-list-user">
         <div class="ibox-content">
             <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="20" data-filter=#filter>
                 <caption>管理员列表</caption>
                 <thead>
                     <tr> 
-                        <th data-sort-ignore="true" style="width:82px;">
-                            <label class="checkbox-inline">
-                                <input class="perm-all perms" data-group="shop" id="perm_shop" type="checkbox"/>                             
-                            </label>
-                           
-                        </th>                      
                         <th data-toggle="true">用户ID</th>
                         <th data-sort-ignore="true">用户昵称</th>
                         <th data-sort-ignore="true">账号</th>                       
                         <th data-sort-ignore="true">手机</th>
                         <th data-sort-ignore="true">注册时间</th>
-                        <th data-sort-ignore="true">所具有权限组</th>
-                        <th data-sort-ignore="true">操作</th>
+                        <th data-sort-ignore="true">系统角色</th>
+                        <th data-sort-ignore="true">状态</th>
+                        <th data-sort-ignore="true" style="width:60px;">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    <% for(var i in list){ %>
+                    <% 
+					var state = ['停用', '启用', '禁用'];
+					var color = ['gray', 'green', 'red'];
+					for(var i in list){ %>
                     <tr>
                         <td>
-                            <label class="checkbox-inline">
-                                <input class="perm-all-item perms" data-group="shop" data-parent="adv" data-son="text" type="checkbox" value="<%=list[i].id%>"/>                                       
-                            </label>
-                        </td>   
-                        <td><%= list[i].id %></td>
+							<label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" name="uid" value="<%=list[i].id%>" /></label>
+							<%= list[i].id %></td>
                         <td><%= list[i].userName %></td>
                         <td><%= list[i].acount %></td>
                         <td><%= list[i].tel %></td>
                         <td><%= getStandardDate(list[i].addTime) %></td>
                         <td><%= list[i].groupName %></td> 
+                        <td style="color:<%= color[list[i].enable] %>" ><%= state[list[i].enable] %></td> 
                         <td class="project-actions">
                             <button class="btn btn-default " type="button"><i class="fa fa-pencil"  onclick = "go('/admin/manage/editManage?pid=<%=list[i].id%>')">编辑</i></button>
-                            <button class="btn btn-default " type="button"><i class="fa fa-trash" data-async="post" data-uri='/admin/manage/delManage?id=<%=list[i].id%>'>删除</i></button>
                         </td>
                     </tr>
                      <% } %>   
@@ -145,12 +139,12 @@
                 <tfoot>
                     <tr>
                         <th>
-                            <label class="checkbox-inline">
-                                <input class="perm-all perms" data-group="shop"  type="checkbox"/> 全选                            
-                            </label>
+							<label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
                         </th>                       
                         <th colspan="7">
-                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='delall'>删除全部</button>
+                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='ena-1'>启用</button>
+                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='ena-0'>停用</button>
+                            <button type="button" class="btn btn-info" data-async="post" data-uri='' id='ena-2'>禁用</button>
                         </th>
                     </tr>
                     <tr>
@@ -162,7 +156,7 @@
                 </tfoot>
             </table>    
         </div>        
-    </div>
+    </form>
 </div>
  <!-- 全局js -->
  <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
@@ -170,64 +164,21 @@
 	 $(document).ready(function() {
 		app.addonParams = {oid: getItem('OID')}	
 		 $('.footable').footable();
+		 effect.unionSelect()
 	 });
-	//console.log(app);
  </script>
- <script language="javascript">
-     var listId = [];
-        $(function () {        
-            //父级选中 全部选中
-            $('.perm-all').click(function () { 
-                var checked = $(this).get(0).checked;
-                var group = $(this).data('group');
-                $(".perm-item[data-group='" + group + "'],.perm-all-item[data-group='" + group + "']").each(function () {
-                    $(this).get(0).checked = checked;
-                    //获取全部选中的值
-                    if($(this).get(0).checked){
-                        listId.push($(this).get(0).value)
-                    }
-                    $('.perm-all').each(function(){
-                         $(this).get(0).checked = checked;
-                     })
-                })
-                console.log(listId)
-                if(listId.length){
-                    listId = listId.join("_")
-                    $("#delall").attr("data-uri","/admin/manage/delManage?id="+listId)
-                }else{
-                    $("#delall").attr("data-uri","")
-                }
-                listId = [];
-            })
-        
-        
-            //选中它子类选中
-            $('.perm-all-item').click(function(){
-                var check = false;
-                $('.perm-all-item').each(function (index, item) {
-                    if (item.checked) {//只有一为真，.perm-all它就是选择状态
-                        check = true;
-                        listId.push($(this).get(0).value)
-                    }
-                });
-                var group = $(".perm-all-item").eq(0).data('group');
-                $(".perm-all").each(function (index, item) {
-                   item.checked = check
-                });
-                if(listId.length){
-                    listId = listId.join("_")
-                    $("#delall").attr("data-uri","/admin/manage/delManage?id="+listId)
-                }else{
-                    $("#delall").attr("data-uri","")
-                }
-                listId = [];
-            });
-        });        
-       
-</script>
+ 
  <script language="javascript">
     app.load(".base_manage");
     app.addonParams = {oid: getItem('OID')};
+	
+	$("[id^=ena]").unbind("mouseover").on("mouseover", function(){
+		 var v = $(this).attr("id").replace("ena-",'');
+		 var parms = $(".form-list-user").serialize();
+		 if(!parms) return false;
+		 var uri = "/admin/manage/delManage?v=" + v + "&" + parms;
+		 $(this).attr("data-uri", uri);
+	}) 
 
     function delManage(results){
         console.log(results)

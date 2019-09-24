@@ -41,6 +41,11 @@ function UserInforModel() {
             data = (error || !results.length) ?
             {error  : 1,uri: '/admin/sign/_in',data:[], message: "帐号或者用户名错误"} : 
             {error: 0,data : results};
+			
+			if(results[0].enable != '1') {
+				data.error = 1;
+				data.message = "您的当前帐户不可用！";
+			}
             
             return callback(data);
         });

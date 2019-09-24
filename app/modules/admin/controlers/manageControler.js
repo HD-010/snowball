@@ -41,8 +41,8 @@ function manageControler(){
      * 删除管理者用户信息
      */
     that.delManage = function(){
-        var Manage = that.model("Manage");
-        Manage.delManage(function(res){
+        var manage = that.model("Manage");
+        manage.delManage(function(res){
             that.renderJson(res);
         })
     }
