@@ -260,7 +260,6 @@
             }
 
             function process(res){
-                alert()
                 var str = JSON.stringify(res, null, 4);
                 str = str.replace(/\n/g,'<br>').replace(/\s/g, '&nbsp;');
                 $(".details").html(str);
@@ -274,7 +273,7 @@
                 data:null,
                 connection:null,
                 resetState:function(){
-                    if(this.state) $(".ws-connect").prop('disabled',true);
+                    //if(this.state) $(".ws-connect").prop('disabled',true);
                 },
             };
 
@@ -286,7 +285,7 @@
             });
 
             $(".ws-connect").click(function(){
-                if(wsConnect.state) return;
+                //if(wsConnect.state) return;
                 wsConnect.connection = new WebSocket(wsConnect.ws,wsConnect.protocol);
                 if(wsConnect.connection) wsConnect.state = true;
                 wsConnect.connection.onopen = process;
