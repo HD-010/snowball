@@ -44,7 +44,8 @@ function TranceModel(){
         var data = {error:1, message:['参数有效，请继续填写...','参数错误']};
         var tab = this.POST('tab');
         var name = this.POST('name');
-        var val = this.POST('val');
+		var noValid = this.GET('nv') || 0;
+        var val = noValid ? this.POST('!val') : this.POST('val');
         if(!tab) return callback(data)
         var condition = {
             table: ['#@'+tab],

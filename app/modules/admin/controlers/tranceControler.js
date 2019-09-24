@@ -26,6 +26,7 @@ function tranceControler(){
             that.renderJson(res);
         })
     }
+	
 }
 
 module.exports = tranceControler;
