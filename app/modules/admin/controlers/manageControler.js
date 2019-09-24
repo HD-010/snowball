@@ -1,6 +1,18 @@
 //用户管理
 function manageControler(){
     var that = this;
+	
+	//个人中心
+	that.user = async function(){
+		var params = {};
+		var manage = that.model("Manage");
+		var res = await manage.user();
+		//获取上传文件组件信息
+		var oid = that.GET('oid') || that.POST('oid');
+		res = mergeObj([res, that.model("File").upload({oid: oid})]);
+		
+		this.render(res);
+	}
 
     //添加用户
     that.addManage = function(){

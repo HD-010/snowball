@@ -20,7 +20,7 @@ redis{
 
 session{
     "UIF" : '当前用户的所有信息'
-    "UID" : '请求验证成功时暂存的用户ID'
+    "UID" : '请求验证成功时暂存的用户ID'     //取法：process.getUserInfo("UID")
     "GID" : '请求验证成功时暂存的用户组ID'
 }
 

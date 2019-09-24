@@ -9,7 +9,7 @@ function GroupModel(){
     var that = this;
 
 
-      /**
+    /**
      * 获取管理员的所有类型
      */
     that.getAcountTypeAll = function(callback){

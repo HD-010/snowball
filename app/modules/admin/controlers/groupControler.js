@@ -20,8 +20,8 @@ function GroupControler(){
      * 保存管理组
      */
     that.saveGroup = function(){
-        var Group = that.model("Group");
-        Group.saveGroup(function(res){
+        var group = that.model("Group");
+        group.saveGroup(function(res){
             that.renderJson(res);
         })
         

@@ -1,0 +1,292 @@
+<style>
+	.memberform{
+	margin: 1em;
+	background-color: white;
+	/* height:300px; */
+  
+}
+.memberform .memberinfo{
+	border:1px solid #E6E6E6;
+	height: 35px;
+	background-color:#F0F6FB;
+}
+.memberform .memberinfo h4{
+	line-height: 25px;
+}
+.replaceImg-label{
+    border:0;
+    width: 90%;
+    padding: 0;
+    margin : 0;
+    display: inline-table;
+    float: none;
+}
+.replaceImg-label label{margin-top: -5px;}
+.replaceImg-label img{
+    width: 110px;
+    height: 110px;
+    border:0;
+	border-radius:50%;
+    overflow:hidden;
+    padding:0;
+    margin: 0;
+    margin-right: 10px;
+    float: left;
+}
+.replaceImg-label .img-handl{
+    display: table-cell;
+    position: initial;
+}
+.replaceImg-label .fa-size{
+    font-size: 45px;
+    position: absolute;
+    display: block;
+    width: 110px;
+    height: 110px;
+	border-radius:50%;
+    /* left: 0;
+    margin-left:15px; */
+    text-align: center;
+    line-height: 110px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    visibility: hidden;
+}
+.replaceImg-label .fa-size :hover{visibility:visible;}
+</style>
+<%- print_r(results) %>
+<div class="container-fluid base base_update_manage">
+	<div class="row head">
+		<div class="col-xs-12">
+			<span>系统管理-用户管理-编辑管理员</span>
+		</div>
+	</div>
+	<div class="row tips">
+		<div class="col-xs-12">
+			<p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+			<div class="col-xs-12">
+				<p class="indent">该页面展示了添加个人会员信息，可添加个人会员操作。</p>
+			</div>
+		</div>
+	</div>
+	<div class="row memberform">
+		<div class="col-xs-12 memberinfo">
+			<h4>我的资料</h4>
+		</div>
+		<div class="col-xs-10" style='margin-top: 2.2em'>
+			<form class="form-horizontal" role="form" data-form-async='json' action="/admin/Manage/updateManage" enctype="multipart/form-data"
+			 method="post">
+				<input type="hidden" name="id" value="<%= results[0].acountid %>">
+				<input type="hidden" name="atag" value="<%= results[0].atag %>">
+				<!-- 头像 -->
+				<div class="form-group">
+				    <!-- <label class="col-xs-2 control-label">头像：</label> -->
+				    <div class="col-xs-4 pic-box" data-limit="1" data-field='face'>
+				        <div class="form-group col-xs-8">
+				            <div class="replaceImg-label">
+								<%- results[0].face ? '<div class="img-handl" data-img="img-add-0"><span class="fa fa-close fa-size"></span><img src="' + results[0].face + '" /></div> ' : ''; %>
+				                <label class="col-sm-2 control-label img-add" for="replaceImg">
+				                    <img src="/img/plus.png" />
+				                </label>
+				            </div>
+				        </div>
+						<%- results[0].face ? '<input type="hidden" data-img="img-add-0" name="face"  value="' + results[0].face + '" />' : '' %>
+				    </div>              
+				</div>
+				
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i>登录邮箱:</label>
+					<div class="col-xs-4">
+						<input type="email" class="form-control" placeholder="请输入邮箱@" required="required" name="acount" value="<%= results[0].acount %>"
+						 disabled />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 用户昵称:</label>
+					<div class="col-xs-4">
+						<input type="text" class="form-control" placeholder="请输入用户名" required="required" name="userName" value="<%= results[0].userName %>" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 真实姓名:</label>
+					<div class="col-xs-4">
+						<input type="text" class="form-control" placeholder="请输入姓名" required="required" name="realName" value="<%= results[0].realName %>" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">性别：</label>
+					<div class="col-sm-10">
+						<div class="radio">
+							<label>
+								<input type="radio" <%=results[0].sex==2 ? "checked" : "" %> value="2" id="optionsRadios1" name="sex">女</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" <%=results[0].sex==1 ? "checked" : "" %> value="1" id="optionsRadios2" name="sex">男</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" <%=results[0].sex==0 ? "checked" : "" %> value="0" id="optionsRadios2" name="sex">保密</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 身份证号:</label>
+					<div class="col-xs-4">
+						<input type="text" class="form-control" placeholder="请输入身份证号" name="IDNumber" value="<%= results[0].IDNumber %>" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"></i> 密码重置:</label>
+					<div class="col-xs-4">
+						<button type="button" class="btn btn-danger" data-async='post' data-uri="/admin/manage/resetPassword?userId=<%= results[0].id %>">点击重置</button>
+						<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;重置后密码为"123456"</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label"><i class="fa fa-asterisk" style="color:#FF3352;"></i> 注册手机号:</label>
+					<div class="col-xs-4">
+						<input type="number" disabled="disabled" class="form-control" placeholder="注册手机号" required="required" name="tel"
+						 value="<%= results[0].tel %>" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label">
+						<!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 联系电话:</label>
+					<div class="col-xs-4">
+						<input type="mobile" class="form-control" placeholder="联系电话" required="required" name="mobile" value="<%= results[0].mobile %>" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label">
+						<!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 生效时间:</label>
+					<div class="col-xs-4">
+						<input type="date" class="form-control" placeholder="生效时间" required="required" name="effectiveTime" value="<%= dateFormate(" %Y-%m-%d",results[0].effectiveTime) %>"/>
+						
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label">
+						<!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> 过期时间:</label>
+					<div class="col-xs-4">
+						<input type="date" class="form-control" placeholder="过期时间" required="required" name="expirationTime" value="<%= dateFormate("%Y-%m-%d",results[0].expirationTime) %>"/>
+						 
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="col-xs-2 control-label">
+						<!-- <i class="fa fa-asterisk" style="color:#FF3352;"></i> --> openid:</label>
+					<div class="col-xs-4">
+						<input type="text" class="form-control" placeholder="openid" name="openid" value="<%= results[0].openid %>" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-info">保存修改</button>
+					</div>
+				</div>
+				<!-- 图片上传必要 -->
+				<input class="hidden" id="replaceImg" type="button" name="file" value="选择图片">
+			</form>
+		</div>
+	</div>
+</div>
+<!-- 输出视图组件 -->
+<%- cropperView %>
+
+<!-- 输出视逻辑代码 -->
+<%- cropperAsync %>
+<script>
+    /**
+     * 图片上传处理器
+     * */
+    var uploader = {
+        index: 0,
+        picBox: ''
+    }
+    
+    //定位picBox
+    $("label.img-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
+    });
+
+    //图片上传回调处理
+    function upProcess(data){
+        var info = {
+            error : 1,
+            message : "上传失败，请重新上传！"
+        };
+        if(data.state != 1) return app.notice(info);
+        var addObj =   `<div class="img-handl" data-img="img-add-`+ uploader.index +`">
+                <span class="fa fa-close fa-size"></span>
+                <img src="/` + data.url + `" />
+            </div>`;
+            
+        uploader.picBox.find(".img-add").before($(addObj));
+        uploader.picBox.append($('<input type="hidden" data-img="img-add-'+ uploader.index +'" name="'+ uploader.picBox.attr('data-field') +'"  value="/'+ data.url +'" />'));
+        info.message = "恭喜您上传成功！";
+        app.notice(info);
+        uploader.index ++;
+
+        setEffect();
+    }
+    function setEffect(){
+        $(".img-handl").unbind('mouseover').on("mouseover",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'visible'
+            });
+        })
+        $(".img-handl").unbind('mouseout').on("mouseout",function(e){
+            $(this).find(".fa-size").css({
+                visibility : 'hidden'
+            });
+        })
+        //删除上传的图片
+        $(".img-handl").unbind('click').on("click",function(e){
+            var dataImg = $(this).attr('data-img');
+            $('[data-img='+ dataImg +']').remove();
+            var arr = dataImg.split('-');
+            var index = arr[arr.length - 1];
+            delete j[index];
+            if(j.length) j.length --;
+            setEffect()
+        })
+        //控制添加按钮显示与隐藏
+        var picBox = uploader.picBox ? [uploader.picBox] : $('.pic-box');
+        $(picBox).each(function(index,item){
+            var limit = $(item).attr('data-limit');//设置显示张数
+            $(item).find(".replaceImg-label").children().hide();
+            $(item).find(".replaceImg-label").children(":lt(" + limit + ")").show();
+        });
+
+    } 
+    //效果初始化
+    setEffect();
+</script>
+
+<script language="javascript">
+	app.load(".base_update_manage");
+	app.addonParams = {
+		oid: getItem('OID')
+	};
+	function updateManage(results) {
+		app.notice(results, function() {
+			go(results.uri);
+		});
+	}
+
+	function resetPassword(results) {
+		delete results.uri;
+		app.notice(results);
+	}
+</script>

@@ -9,6 +9,25 @@
 function ManageModel(){
     var that = this;
 
+
+	/**
+	 * 查询当前用户的信息
+	 */
+	that.user = async function(){
+		var uid = that.model("DataProcess").getUserInfo("UID");
+		var sql = "select acountType from #@sys_acount where id = " + uid;
+		var res = await this.DB().syncSelect(sql);
+		if(res.error || !res.results.length) return {error: 1, uri: "/err404", message: "查询失败"}
+		var acountType = res.results[0].acountType
+		
+		sql = "select m.*, a.* from #@sys_acount m left join #@sys_acount_" + acountType + " a  on a.acountid=m.id where m.id = " + uid;
+		res = await this.DB().syncSelect(sql);
+		res.results[0].atag = acountType;
+		delete res.fields;
+		log(res);
+		
+		return res;
+	}
     /**
      * 获取当前登录用户下的所创建的用户信息及他子类与子类下所创建的用户信息
      */
@@ -125,6 +144,8 @@ function ManageModel(){
 		if(data.userName) recode.userName = data.userName;
 		if(data.tel) recode.tel = data.tel;
 		if(data.groupId) recode.groupId = data.groupId;
+		var face = this.POST('face');
+		if(face) recode.face = face;
 		conditions.fields.push(recode);
 		conditions.where.push("id=" + data.id);
 		that.DB().set(conditions,function(error,results){
