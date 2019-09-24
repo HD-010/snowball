@@ -31,24 +31,26 @@ function ManageModel(){
         var data = {};
         //获取当前登录用户ID
         var process =  that.model("DataProcess");
+		var passProcess = this.model("passport:DataProcess");
         data.pid = process.getUserInfo('UID');
         //获取插入信息    
        
         data.acount = this.POST('!acount');
         data.userName = this.POST('userName');
-        data.password = this.POST('!password');
-        data.groupId = this.POST('groupId');
+        data.groupId = this.POST('groupId') || 2000;
         data.tel = this.POST('tel');
+		var passOjb = passProcess.createPasswd();
         var condition = {
             table:["#@sys_acount"],                                 //查询的表名
             fields:[{
                 "pid":data.pid,
                 "acount": data.acount,
                 "userName":data.userName,
-                "password":data.password,
+                "password":passOjb.password,
                 "groupId":data.groupId,
                 "tel":data.tel,
-                "addTime":'NOW()',
+				"acountType": "manager",
+                "addTime":passOjb.time,
             }],           //被查询的字段名称（别名在此指定）
         
         };
@@ -56,10 +58,11 @@ function ManageModel(){
             if(results.insertId){
                 var obj={
                     message:"用户组组添加成功!",
-                    uri:"/admin/manage/listManage",
+                    //uri:"/admin/manage/listManage",
+					insertId: results.insertId,
                     error:0
                 }
-                callback(obj)
+                return callback(obj);
             }
         })
    }
@@ -142,26 +145,32 @@ function ManageModel(){
 	* 保存帐户付加表信息
 	*/
    that.saveAddon = function(params, callback){
+	   var data = {error: 1};
 	   var conditions = {
 		   table: "#@sys_acount_" + params.atag,
 		   fields:[],
 		   where:[]
 	   }
+	   var effectiveTime = this.POST('effectiveTime') || 'NOW()';
 	   var recode = {
 		   nick: this.POST('userName') || "",
 		   mobile: this.POST('mobile') || "",
-		   effectiveTime: this.POST('effectiveTime') ,
-		   expirationTime: this.POST('expirationTime'),
+		   effectiveTime: effectiveTime,
+		   expirationTime: this.POST('expirationTime') || "DATE_SUB(" + effectiveTime + ", INTERVAL -1 YEAR)" ,
 		   openid: this.POST('openid') || "",
 		   sex: this.POST('sex') || "0",
 		   realName: this.POST('realName') || "",
 		   IDNumber: this.POST('IDNumber') || "",
 	   }
+	   if(params.insertId) recode.acountid = params.insertId;
 	   var birthday = this.POST('birthday');
 	   if(birthday) recode.birthday = birthday;
 	   conditions.fields.push(recode);
-	   conditions.where.push("acountid", params.acountid);
+	   if(params.acountid) conditions.where.push("acountid = " + params.acountid);
 	   that.DB().set(conditions, function(error, res, fields){
+		   data.error = error ? 1 : 0;
+		   data.message = error ? "错误，保存失败！" : "恭喜您，保存成功！";
+		   data.results = res;
 		   return callback(data);
 	   })
    }

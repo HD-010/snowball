@@ -22,9 +22,18 @@ function manageControler(){
 
     //保存用户
     that.saveManage = function(){
-        var Manage = that.model("Manage");
-        Manage.saveManage(function(res){
-            that.renderJson(res);
+		var data = {error: 1, message: '数据保存失败'};
+        var manage = that.model("Manage");
+		var params = {};
+        manage.saveManage(function(res){
+			if(res.error) return that.renderJson(data);
+			//保存附加表信息
+			params.insertId = res.insertId;
+			params.atag = "manager";
+			manage.saveAddon(params, (results)=>{
+				data = mergeObj([data, results]);
+				return that.renderJson(data);
+			});
         })
     }
 
@@ -50,7 +59,6 @@ function manageControler(){
 			var addonInfo = await manage.addonAcount(params);
 			addonInfo = addonInfo.results.length ? addonInfo.results[0] : {};
 			res.manageInfo[0] = mergeObj([addonInfo,res.manageInfo[0]]);
-			log("@#################----------######################:::", res);
             that.render(res);
         })
     }
@@ -67,13 +75,13 @@ function manageControler(){
 		
 		//保存主表信息
         manage.updateManage(function(res){
-            that.renderJson(res);
+            ps = that.testRenderJson(res, ps);
         })
 		//保存付加表信息
 		if(params.atag && params.acountid){
-			log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$:", params.acountid)
 			ps ++;
-			manage.saveAddon(params,(error, results)=>{
+			manage.saveAddon(params,(res)=>{
+				ps = that.testRenderJson(res, ps);
 			});
 		}
     }
