@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-31 16:09:25
  * @LastEditors: Please set LastEditors
  -->
-<%- //print_r(addoninfos) %>
+<%- print_r(addoninfos) %>
 
 <%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
 <%- //'results:' + JSON.stringify(results,null,2)%>
@@ -326,7 +326,12 @@ var formCode = {
                                 effect = array2value(addoninfos, 'field', 'typeid', 'effect');
                                 typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
                                 listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
-                                attr = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'attr') : '';
+								attr = array2value(addoninfos, 'field', 'typeid', 'attr');
+                                attr = ((effect == 'main') && attr) ? 
+								array2value(addoninfos, 'field', 'typeid', 'attr') : 
+								((locals.enumtagVal && locals.enumtagName) ? 
+								' data-key='+ enumtagVal.join('-') + ' data-val=' + enumtagName.join('-'):'');
+								
                             %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
@@ -334,7 +339,7 @@ var formCode = {
                                     <div data-freemodal="state" data-name="<%= echo(listName) %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
                                     <input type="hidden" name="typeid" <%= echo(attr) %> value="" />
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选对应的栏目</span>
                             </td>              
                         </tr>
 
@@ -393,7 +398,7 @@ var formCode = {
                             <td>
                                 <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
                                     <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-                                        <input type="radio" data-key="<%= locals.enumtagVal ? enumtagVal.join('-'): '' %>" data-val="<%= locals.enumtagName ? enumtagName.join('-'): '' %>" name="state" <%= echo(attr) %>><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
+                                        <input type="radio" name="state" <%= echo(attr) %> ><i class="fa fa-check"></i><!--<i class="fa fa-times"></i>-->
                                     </label>
                                 </div>
                             </td>              
