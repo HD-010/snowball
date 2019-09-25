@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-21 10:06:43
  * @LastEditors: Please set LastEditors
  -->
-<%- //print_r(data[0]) %>
+<%- print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
 <%- //print_r(thirdList) %>
 <%
@@ -338,7 +338,12 @@
                             effect = array2value(addoninfos, 'field', 'typeid', 'effect');
                             typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
                             listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'attr') : '';
+                            //attr = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'attr') : '';
+							attr = array2value(addoninfos, 'field', 'typeid', 'attr');
+							attr = ((effect == 'main') && attr) ? 
+							array2value(addoninfos, 'field', 'typeid', 'attr') : 
+							((locals.enumtagVal && locals.enumtagName) ? 
+							' data-key='+ enumtagVal.join('-') + ' data-val=' + enumtagName.join('-'):'');
                             %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
