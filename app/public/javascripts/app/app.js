@@ -734,7 +734,7 @@ var addressPice = {
                 oid: getItem("OID"),
                 id: addrId,
                 type: $(item).attr('data-type')
-            },
+            };
             $.post(addressPice.iUrl, data, function(res)
                 {
                     if(res.error) return;
@@ -743,6 +743,7 @@ var addressPice = {
                     $(item).children(".address-province").attr('data-def',addr.provinceid);
                     //初始化省名称数据
                     data.reid = 0;
+					data.oid = getItem("OID");
                     $.post(addressPice.url, data, function(res){
                         $(".address-group .address-province").attr('data-val', res.name.join('-')).attr('data-key', res.id.join('-'));
                         effect.setSelect(".address-group");

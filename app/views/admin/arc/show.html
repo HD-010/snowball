@@ -96,7 +96,8 @@
                             <th data-sort-ignore="false">ID</th>                                                  
                             <th data-sort-ignore="false">名称</th>
                             <th data-sort-ignore="false">栏目</th>
-                            <th data-sort-ignore="false">发布人</th>
+                            <th data-sort-ignore="false">添加人</th>
+                            <th data-sort-ignore="false">状态人</th>
                             <th data-sort-ignore="false">创建时间</th>
                             <th data-sort-ignore="false">发布时间</th>
                             
@@ -111,7 +112,8 @@
                             <td>{{id}}</td>   
                             <td><img src="{{litpic}}"/>{{title}}</td>
                             <td>{{- return array2value(typePage,'id',typeid,'typename'); }}</td>   
-                            <td>{{writer}}</td> 
+                            <td>{{username}}</td> 
+                            <td>{{- return states[state]; }}</td> 
                             <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}</td> 
                             <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',senddate) }}</td>                           
                             <td class="project-actions">
@@ -122,13 +124,13 @@
                     </tbody>
                     <tfoot>     
                         <tr>
-                            <td colspan="8">
+                            <td colspan="9">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
                                 <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
-                            <td colspan="8">
+                            <td colspan="9">
                                 <ul class="pagination pull-right"></ul>
                             </td>
                         </tr>
@@ -142,6 +144,7 @@
     app.addonParams = {oid: getItem('OID')}
     effect.setCheckbox(".checkbox-content-state");
     app.load(".content-lists");
+	var states = ['停止','正常','播放','暂停'];
     DL({
         dev: 'on',
         listId: "#arc-lists",

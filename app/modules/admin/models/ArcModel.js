@@ -19,8 +19,8 @@ function ArcModel(){
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['#@archives'],
-            fields: ['#@archives.*', params.addonTab + '.*'],
-            joinOn: ' left join ' + params.addonTab + ' on #@archives.id=' + params.addonTab + '.aid',
+            fields: ['#@archives.*', params.addonTab + '.*', 'c.username'],
+            joinOn: ' left join ' + params.addonTab + ' on #@archives.id=' + params.addonTab + '.aid left join #@sys_acount as c on #@archives.mid=c.id',
             where: [],
             limit: []
         };
@@ -30,8 +30,8 @@ function ArcModel(){
         }
         if(params.SEDate.length){
             typeof params.SEDate[1] == 'number' ?
-            conditions.where.push('addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and subdate("' + params.SEDate[0] + '",interval -1 day)'):
-            conditions.where.push('addtime between "' + params.SEDate[0] + '" and subdate("' + params.SEDate[1] + '",interval -1 day)');
+            conditions.where.push('#@archives.addtime between subdate("' + params.SEDate[0] + '",interval ' + params.SEDate[1]+ ' day) and subdate("' + params.SEDate[0] + '",interval -1 day)'):
+            conditions.where.push('#@archives.addtime between "' + params.SEDate[0] + '" and subdate("' + params.SEDate[1] + '",interval -1 day)');
         }
         if(sky) conditions.where.push("( #@archives.title INSTR(" + sky + 
         ") or #@archives.shorttitle INSTR(" + sky + 

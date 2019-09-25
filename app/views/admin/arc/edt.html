@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-21 10:06:43
  * @LastEditors: Please set LastEditors
  -->
-<%- print_r(data[0]) %>
+<%- //print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
 <%- //print_r(thirdList) %>
 <%
@@ -314,7 +314,7 @@
                                 <div class="form-group col-xs-4">
                                     <input type="text" class="form-control" name="title" <%= echo(attr) %> value="{{title}}"/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
                             </td>              
                         </tr>
 
@@ -329,7 +329,7 @@
                                 <div class="form-group col-xs-4">
                                     <input type="text" class="form-control" name="shorttitle" <%= echo(attr) %> value="{{shorttitle}}"/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp; 给发布的内容写短标题，长度限制25字</span>
                             </td>              
                         </tr>
 
@@ -351,7 +351,7 @@
                                     <div data-freemodal="state" data-name="栏目列表" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"><%= treeValue(types,'id',data[0].typeid,'name'); %></div>
                                     <input type="hidden" name="typeid" <%= echo(attr) %> value="<%= data[0].typeid; %>" />
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择当前发布的内容所属的栏目</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选对应的栏目</span>
                             </td>              
                         </tr>
 
@@ -500,7 +500,6 @@
                         <tr>
                             <td></td>
                             <td>
-                                <a id="test">测试</a>
                                 <button type="submit" class="btn">确定</button>
                                 <button type="reset" class="btn">重置</button>
                             </td>
@@ -1049,13 +1048,13 @@
                     UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
                 },500)
 
-                initNestable();
                 
-                /**
-                 * 初始化地址输入框控制部分
-                 */
-                addressPice.initAddr();
             });
+			initNestable();
+			/**
+			 * 初始化地址输入框控制部分
+			 */
+			addressPice.initAddr();
         }
     });
 
