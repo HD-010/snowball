@@ -1,45 +1,21 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mysql_3306
+ Source Server         : local-mysql
  Source Server Type    : MySQL
  Source Server Version : 80012
  Source Host           : localhost:3306
- Source Schema         : youbang
+ Source Schema         : adpostingsys
 
  Target Server Type    : MySQL
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 11/09/2019 14:03:00
+ Date: 25/09/2019 17:21:40
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for test
--- ----------------------------
-DROP TABLE IF EXISTS `test`;
-CREATE TABLE `test`  (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `age` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of test
--- ----------------------------
-INSERT INTO `test` VALUES (1, '小明', 99);
-INSERT INTO `test` VALUES (2, '小明', 99);
-INSERT INTO `test` VALUES (3, '小明', 99);
-INSERT INTO `test` VALUES (4, '阿红', 18);
-INSERT INTO `test` VALUES (5, '阿红', 99);
-INSERT INTO `test` VALUES (6, '阿je ', 22);
-INSERT INTO `test` VALUES (7, '阿kj ', 22);
-INSERT INTO `test` VALUES (8, '阿kj ', 22);
-INSERT INTO `test` VALUES (9, '江颜', 22);
 
 -- ----------------------------
 -- Table structure for adv_acount_member
@@ -51,7 +27,7 @@ CREATE TABLE `adv_acount_member`  (
   `tel` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
   `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
   `openid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信openid',
-  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '建立时间',
+  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '建立时间',
   `nickname` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
   `credit1` tinyint(11) NULL DEFAULT NULL COMMENT '积分',
   `credit2` tinyint(11) NULL DEFAULT NULL COMMENT '余额',
@@ -82,8 +58,8 @@ CREATE TABLE `adv_addonadv`  (
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '广告内容（图片链接或文本）',
   `link` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '跳转链接',
   `isdel` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '是不删除，１已经删除',
-  `effectivetime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip生效时间',
-  `expirationtime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip过期时间',
+  `effectivetime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip生效时间',
+  `expirationtime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip过期时间',
   `advtype` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '广告类型',
   `enable` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '是否启用 0关闭 1启用',
   `flag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'h' COMMENT '广告位置',
@@ -232,6 +208,27 @@ INSERT INTO `adv_addoncommodities` VALUES (231, 33, 1, 0, 0, 0, ' 验证码设�
 INSERT INTO `adv_addoncommodities` VALUES (1869, 33, 0, 0, 0, 0, ' F E', '', '', '', ' ', 0, 0, NULL, '1', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
+-- Table structure for adv_addondevice
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_addondevice`;
+CREATE TABLE `adv_addondevice`  (
+  `address` varchar(72) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备地址',
+  `sn` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备识别号',
+  `ioversion` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '系统版本',
+  `viewtype` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '横竖屏',
+  `aid` bigint(13) NOT NULL DEFAULT 1,
+  `typeid` int(11) NOT NULL DEFAULT 1 COMMENT '栏目id',
+  `componentid` smallint(6) NOT NULL DEFAULT 1 COMMENT '组件id',
+  `arcrank` smallint(6) NOT NULL DEFAULT 0 COMMENT '排序',
+  `mid` mediumint(8) UNSIGNED NOT NULL COMMENT '发布人id'
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of adv_addondevice
+-- ----------------------------
+INSERT INTO `adv_addondevice` VALUES ('', 'sdfg13345dfsgds', '5.2', '1', 1918, 42, 1, 0, 195);
+
+-- ----------------------------
 -- Table structure for adv_addonimages
 -- ----------------------------
 DROP TABLE IF EXISTS `adv_addonimages`;
@@ -327,7 +324,7 @@ CREATE TABLE `adv_addonjobwanted`  (
   `job_education` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '4' COMMENT '求职者学历 与youabng_enum表中enumtag对应用',
   `job_experience` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '求职的经验 与youabng_enum表中enumtag对应用',
   `age` int(11) NULL DEFAULT NULL COMMENT '求职者年龄',
-  `updatetiem` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `updatetiem` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `delivery` tinyint(11) NULL DEFAULT NULL COMMENT '投递职位次数',
   `browse` tinyint(11) NULL DEFAULT NULL COMMENT '浏览次数',
   `job_salary` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '求职者要求薪资 与youabng_enum表中enumtag对应用',
@@ -414,7 +411,7 @@ CREATE TABLE `adv_addonspec`  (
 DROP TABLE IF EXISTS `adv_addresslist`;
 CREATE TABLE `adv_addresslist`  (
   `id` bigint(13) NOT NULL AUTO_INCREMENT,
-  `type` enum('member','orders','infos') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'member' COMMENT '地址类刑\r\nmember: 用户地址\r\norder: 订单地址\r\ninfos: 信息主体地址 ',
+  `type` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'member' COMMENT '地址类刑\r\nmember: 用户地址\r\norder: 订单地址\r\ninfos: 信息主体地址 ',
   `mainid` int(11) NULL DEFAULT NULL COMMENT '地址所属主体的id',
   `provinceid` int(255) NULL DEFAULT NULL COMMENT '省id',
   `cityid` int(255) NULL DEFAULT NULL COMMENT '市id',
@@ -484,6 +481,11 @@ INSERT INTO `adv_addresslist` VALUES (153, 'infos', NULL, 16, 264, NULL, NULL, '
 INSERT INTO `adv_addresslist` VALUES (156, 'infos', NULL, 18, 290, NULL, NULL, '2019-08-19 09:19:33', '1', NULL, NULL, NULL);
 INSERT INTO `adv_addresslist` VALUES (157, 'infos', NULL, 15, 253, 1683, '基材顶替顶替', '2019-08-19 09:20:26', '1', NULL, NULL, NULL);
 INSERT INTO `adv_addresslist` VALUES (158, 'infos', NULL, 3, 70, NULL, NULL, '2019-08-19 10:38:00', '1', NULL, NULL, NULL);
+INSERT INTO `adv_addresslist` VALUES (160, 'device', NULL, 24, 402, 2680, '兴义大道', '2019-09-25 11:45:30', '1', NULL, NULL, NULL);
+INSERT INTO `adv_addresslist` VALUES (161, 'device', NULL, 24, 402, 2680, '兴义大道888号', '2019-09-25 13:23:51', '1', NULL, NULL, NULL);
+INSERT INTO `adv_addresslist` VALUES (162, 'device', NULL, 24, 402, 2680, '兴义大道888号', '2019-09-25 13:28:48', '1', NULL, NULL, NULL);
+INSERT INTO `adv_addresslist` VALUES (163, 'device', NULL, 24, 402, 2680, '兴义大道888号', '2019-09-25 13:43:54', '1', NULL, NULL, NULL);
+INSERT INTO `adv_addresslist` VALUES (164, 'device', NULL, 24, 402, 2680, '兴义大道888号', '2019-09-25 16:27:11', '1', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for adv_arcatt
@@ -529,6 +531,8 @@ INSERT INTO `adv_arcclass` VALUES (65, 'jobwanted', 1, '1', '0', 'JTVCJTdCJTIydm
 INSERT INTO `adv_arcclass` VALUES (34, 'infos', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwNjUwODYlMjIsJTIybmFtZSUyMjolMjIlRTUlQjclQTUlRTclQTglOEIlRTQlQkYlQTElRTYlODElQUYlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTExMTAlMjIsJTIybmFtZSUyMjolMjIlRTQlQjglQUQlRTYlQTAlODclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTkzOTElMjIsJTIybmFtZSUyMjolMjIlRTYlOEIlOUIlRTYlQTAlODclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQzNjYwNzEzMTMlMjIsJTIybmFtZSUyMjolMjIlRTUlOUMlQTglRTclOTAlODYlMjIlN0QlNUQlN0QlNUQ=');
 INSERT INTO `adv_arcclass` VALUES (35, 'commodities', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwNjUwODYlMjIsJTIybmFtZSUyMjolMjIlRTUlOTUlODYlRTUlOTMlODElRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTExMTAlMjIsJTIybmFtZSUyMjolMjIlRTYlQjQlODElRTUlODUlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTkzOTElMjIsJTIybmFtZSUyMjolMjIlRTklOTklQjYlRTclOTMlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQzNjYwNzEzMTMlMjIsJTIybmFtZSUyMjolMjIlRTclQkIlOTMlRTYlOUUlODQlRTYlOUQlOTAlRTYlOTYlOTklMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNTA0NjklMjIsJTIybmFtZSUyMjolMjIlRTclQTAlODIlRTclOUYlQjMlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNjAyMDUlMjIsJTIybmFtZSUyMjolMjIlRTclQkIlODYlRTclQTAlODIlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNzMwNjklMjIsJTIybmFtZSUyMjolMjIlRTclQTIlOEUlRTclOUYlQjMlMjIlN0QlNUQlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxMzI0OTElMjIsJTIybmFtZSUyMjolMjIlRTYlQjYlODIlRTglODMlQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNDA2NTklMjIsJTIybmFtZSUyMjolMjIlRTUlOEUlQTglRTUlODUlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNDgyODMlMjIsJTIybmFtZSUyMjolMjIlRTklOTclQTglRTclQUElOTclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNTU4NzUlMjIsJTIybmFtZSUyMjolMjIlRTclOTMlQjclRTclQTAlOTYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNzA4OTAlMjIsJTIybmFtZSUyMjolMjIlRTklOTIlQTIlRTYlOUQlOTAlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTI4MDQlMjIsJTIybmFtZSUyMjolMjIlRTUlQkIlQkElRTYlOUQlOTAlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTg5MzIlMjIsJTIybmFtZSUyMjolMjIlRTQlQkElOTQlRTklODclOTElRTklODUlOEQlRTQlQkIlQjYlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0MTY5MDElMjIsJTIybmFtZSUyMjolMjIlRTUlODUlQjYlRTQlQkIlOTYlRTQlQkElOTQlRTklODclOTElMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0MzAwMzYlMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQjYlRTUlODUlQjclRTQlQkElOTQlRTklODclOTElMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0NDE5MzIlMjIsJTIybmFtZSUyMjolMjIlRTclQUElOTclRTUlQjglOTglRTklODUlOEQlRTQlQkIlQjYlMjIlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAzMDU3NDglMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQjYlRTglQTMlODUlRTQlQjglQkIlRTYlOUQlOTAlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyMTkyOTklMjIsJTIybmFtZSUyMjolMjIlRTklOUIlODYlRTYlODglOTAlRTUlOTAlOEElRTklQTElQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyMzAxMDclMjIsJTIybmFtZSUyMjolMjIlRTclOEUlQkIlRTclOTIlODMlRTglODMlQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyODIwNTklMjIsJTIybmFtZSUyMjolMjJwdmMlRTUlQTIlOTklRTclQkElQjglMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyNjY1OTYlMjIsJTIybmFtZSUyMjolMjIlRTglQTMlODUlRTklQTUlQjAlRTclQkElQkYlRTYlOUQlQkYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTg5MzIlMjIsJTIybmFtZSUyMjolMjIlRTQlQkElOTQlRTklODclOTElRTklODUlOEQlRTQlQkIlQjYlMjIlN0QlNUQlN0QlNUQlN0QlNUQlN0QlNUQ=');
 INSERT INTO `adv_arcclass` VALUES (66, 'perrecruit', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNDM3MzIwJTIyLCUyMm5hbWUlMjI6JTIyJUU2JThCJTlCJUU4JTgxJTk4JUU3JUIxJUJCJUU1JTlFJThCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTQ2NjIyJTIyLCUyMm5hbWUlMjI6JTIyJUU2JThCJTlCJUU4JTgxJTk4JUU3JUIxJUJCJUU1JTlFJThCMSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE1NTU2NCUyMiwlMjJuYW1lJTIyOiUyMiVFNiU4QiU5QiVFOCU4MSU5OCVFNyVCMSVCQiVFNSU5RSU4QjIlMjIlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNDM3MzIxJTIyLCUyMm5hbWUlMjI6JTIyJUU4JTk2JUFBJUU4JUI1JTg0JUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTYxMjQ5JTIyLCUyMm5hbWUlMjI6JTIyJUU4JTk2JUFBJUU4JUI1JTg0JUU1JTg4JTg2JUU3JUIxJUJCMSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE2NjI1JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUE3JTg0JUU2JUEwJUJDJUU1JTkwJThEJUU3JUE3JUIwMiUyMiU3RCU1RCU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE0MzczMjIlMjIsJTIybmFtZSUyMjolMjIlRTUlQUQlQTYlRTUlOEUlODYlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNzI2ODMlMjIsJTIybmFtZSUyMjolMjIlRTUlQUQlQTYlRTUlOEUlODYlRTUlODglODYlRTclQjElQkIxJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTc2ODklMjIsJTIybmFtZSUyMjolMjIlRTglQTclODQlRTYlQTAlQkMlRTUlOTAlOEQlRTclQTclQjAyJTIyJTdEJTVEJTdEJTVE');
+INSERT INTO `adv_arcclass` VALUES (67, 'device', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzgzNjMyNTYwJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUJCJTg0JTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU1RCU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2OTM3ODM2MzI1NjElMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzg0NDA4NzglMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlRTQlQjglODAlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzg0NDI3NTklMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlRTQlQkElOEMlMjIlN0QlNUQlN0QlNUQ=');
+INSERT INTO `adv_arcclass` VALUES (68, 'device', 195, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzODE1MzgzOTMwJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTQzMjc3JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUI4JTgwJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTUwOTk2JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUJBJThDJTIyJTdEJTVEJTdEJTVE');
 
 -- ----------------------------
 -- Table structure for adv_archives
@@ -548,7 +552,7 @@ CREATE TABLE `adv_archives`  (
   `title` char(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '标题',
   `shorttitle` char(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '短标题',
   `color` char(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `writer` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '拥有者',
+  `groupid` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '拥有者',
   `source` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `litpic` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '缩略图',
   `pubdate` int(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -579,70 +583,74 @@ CREATE TABLE `adv_archives`  (
 -- ----------------------------
 -- Records of adv_archives
 -- ----------------------------
-INSERT INTO `adv_archives` VALUES (202, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-23 10:22:12', NULL);
-INSERT INTO `adv_archives` VALUES (210, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' f', ' d', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 3', 0, 0, 0, 0, 0, 0, ' 4', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-27 10:22:01', NULL);
-INSERT INTO `adv_archives` VALUES (201, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228708', '2019-07-30 10:22:17', NULL);
-INSERT INTO `adv_archives` VALUES (200, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-30 10:22:17', NULL);
-INSERT INTO `adv_archives` VALUES (190, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' adsf', ' dfs', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' dsf', 0, 0, 0, 0, 0, 0, ' df', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-27 10:22:01', NULL);
-INSERT INTO `adv_archives` VALUES (187, 33, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' fgdfg', ' fdgd', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' dfgdf', 0, 0, 0, 0, 0, 0, ' fdgd f', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-23 10:22:12', NULL);
-INSERT INTO `adv_archives` VALUES (238, 14, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', '', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-08 15:28:47', '0');
-INSERT INTO `adv_archives` VALUES (239, 14, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, '789789', ' 地枯', '', '', '', '', 0, 0, 1, ' 时代复分枯枯', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 16:08:33', '0');
-INSERT INTO `adv_archives` VALUES (1858, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 兴义市市政市政照明工程', ' 市政照明工程', '', '', '', '/img/2019/8/12/57e53cfe6354ff1ebb3c4cab67dab395.png', 0, 0, 1, ' 工程信息发布关键词', 0, 0, 0, 0, 0, 0, ' 中国电建河南工程公司华润沧州运东项目部华润沧州运东钢材材料采购项目成交公示', '', 0, 0, 0, 1, 'classify_1562310099391', '2019-08-12 17:06:40', '0');
-INSERT INTO `adv_archives` VALUES (231, 33, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '', '', '', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564640132491', '2019-08-02 14:55:17', '0');
-INSERT INTO `adv_archives` VALUES (235, 15, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, ' 验证码设置', ' 发布的内容写标题，长度限制15字', '', '', '', '/img/2019/8/6/16840d34bf7d0c2ef280a411d729f463.png', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-06 16:43:44', '0');
-INSERT INTO `adv_archives` VALUES (211, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' f', ' d', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 3', 0, 0, 0, 0, 0, 0, ' 4', '', 0, 0, 0, 0, 'classify_1563245228707', '2019-07-24 10:22:08', NULL);
-INSERT INTO `adv_archives` VALUES (1859, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:24:37', '0');
-INSERT INTO `adv_archives` VALUES (232, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', '', '', '', '', 'NaN-0NaN-0NaN NaN:NaN:NaN', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:53:29', '0');
-INSERT INTO `adv_archives` VALUES (1, 2, '0', 1270603757, 'c,h', 1, -8, 0, 0, 0, '学习HTML 4.0事件属性', '', '', 'admin', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 1270603757, 1270603757, 1, '学习HTML,4.0事件属性', 0, 0, 0, 0, 0, 0, 'HTML 4.0的新特性之一是使HTML事件触发浏览器中的行为，比方说当用户点击一个HTML元素时启动一段JavaScript。以下就是可被插入HTML标签以定义事件行为的一系列属性。假如你希望学习如何使用这些事件进行编程，那么你应该学习我们的JavaScript教程和DHTML教程', '', 0, 0, 0, 0, NULL, '2019-07-27 10:22:01', NULL);
-INSERT INTO `adv_archives` VALUES (215, 31, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' fg', ' df', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1564642160205', '2019-07-27 10:22:01', NULL);
-INSERT INTO `adv_archives` VALUES (216, 31, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' sd', ' dsf', '', '', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 1', 0, 0, 0, 0, 0, 0, ' 234', '', 0, 0, 0, 2314, 'classify_1563245228709', '2019-07-24 10:22:08', NULL);
-INSERT INTO `adv_archives` VALUES (217, 31, '0', 0, '', 0, 1, 0, 0, 0, ' dsfsdf', ' sdfsdf', '', '', '', '/img/2019/7/20/78528902594ec2abdb60e42398630e6c.png', 0, 0, 0, ' sadfdsf', 0, 0, 0, 0, 0, 0, ' sdfsdf', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-24 10:22:08', NULL);
-INSERT INTO `adv_archives` VALUES (236, 0, '0', 0, 'home-recomend', 0, 1, 0, 0, 0, '触发器测试', ' 发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, ' 脂肪酸', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 15:16:07', '0');
-INSERT INTO `adv_archives` VALUES (237, 12, '0', 0, 'home', 0, 1, 0, 0, 0, ' 验证码设置', ' 发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 15:24:30', '0');
-INSERT INTO `adv_archives` VALUES (233, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '', '', '', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:55:12', '0');
-INSERT INTO `adv_archives` VALUES (234, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '', '', '', 0, 0, 1, ' 时代复分枯枯', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:59:29', '0');
-INSERT INTO `adv_archives` VALUES (1860, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:24:50', '0');
-INSERT INTO `adv_archives` VALUES (1861, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:15', '0');
-INSERT INTO `adv_archives` VALUES (1862, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:34', '0');
-INSERT INTO `adv_archives` VALUES (1863, 1, '0', 0, 'h-c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:52', '0');
-INSERT INTO `adv_archives` VALUES (1864, 39, '0', 0, 'c-h-z-r', 0, 1, 0, 0, 0, '0806测试委托招标公告', '0806测试委托招标公告', '', '', '', '/img/2019/8/13/dd9e74b09ab19b327abe087dd9019663.png', 0, 0, 1, '0806测试委托招标公告', 0, 0, 0, 0, 0, 0, '业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
-INSERT INTO `adv_archives` VALUES (1865, 39, '0', 0, 'h,z', 0, 1, 0, 0, 0, ' 0806测试委托招标公告', ' 0806测试委托招标公告', '', '', '', '/img/2019/8/13/dd9e74b09ab19b327abe087dd9019663.png', 0, 0, 1, ' 0806测试委托招标公告', 0, 0, 0, 0, 0, 0, ' 业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
-INSERT INTO `adv_archives` VALUES (1866, 1, '0', 0, 'c-h-z-r', 0, 1, 0, 0, 0, '永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '0806测试委托招标公告', '', '', '', '/img/2019/8/14/fcef959cf046a2be98cfd131652cdd20.png', 0, 0, 1, '0806测试委托招标公告', 0, 0, 0, 0, 0, 0, '业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
-INSERT INTO `adv_archives` VALUES (1867, 31, '0', 0, '', 0, 1, 0, 0, 0, '商品1名称', '商品1短标题', '', '', '', '/img/2019/8/13/cb6aae1ed81bb3622ed3ebc5c63b4027.png', 0, 0, 1, '碎石关键词', 0, 0, 0, 0, 0, 0, '碎石描述', '', 0, 0, 0, 100, 'classify_1564642173069', '2019-08-13 17:21:38', '0');
-INSERT INTO `adv_archives` VALUES (1868, 36, '0', 0, '', 0, 1, 0, 0, 0, '求职者1', '求职者1短标题', '', '', '', '', 0, 0, 1, ' 求职者1关键词', 0, 0, 0, 0, 0, 0, ' 求职者1描述', '', 0, 0, 0, 100, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-13 17:45:48', '0');
-INSERT INTO `adv_archives` VALUES (1869, 33, '0', 0, '', 0, 1, 0, 0, 0, ' F E', ' DF S', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564640155875', '2019-08-14 09:26:30', '0');
-INSERT INTO `adv_archives` VALUES (1872, 36, '0', 0, '', 0, 1, 0, 0, 0, 'dfs', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, -1, 'classify_1565147772779', '2019-08-17 09:56:45', '2');
-INSERT INTO `adv_archives` VALUES (1873, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 09:59:10', '0');
-INSERT INTO `adv_archives` VALUES (1870, 38, '0', 0, 'z-r', 0, 1, 0, 0, 0, '15985499999', '发布的内容写标题，长度限制15字', '', '', '', '/img/2019/8/14/3dd254cd118371209ed8fec5c2f41b0a.png', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '蜕入入教条 视如粪土', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-14 12:47:53', '2');
-INSERT INTO `adv_archives` VALUES (1871, 39, '0', 0, 'z', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-16 09:04:44', '1');
-INSERT INTO `adv_archives` VALUES (1874, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 09:59:49', '0');
-INSERT INTO `adv_archives` VALUES (1875, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 10:01:08', '0');
-INSERT INTO `adv_archives` VALUES (1876, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 10:08:34', '0');
-INSERT INTO `adv_archives` VALUES (1877, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 10:11:30', '0');
-INSERT INTO `adv_archives` VALUES (1878, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 10:32:11', '0');
-INSERT INTO `adv_archives` VALUES (1879, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:20:23', '0');
-INSERT INTO `adv_archives` VALUES (1880, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:21:44', '0');
-INSERT INTO `adv_archives` VALUES (1881, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:23:50', '0');
-INSERT INTO `adv_archives` VALUES (1882, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:26:23', '0');
-INSERT INTO `adv_archives` VALUES (1883, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:29:43', '0');
-INSERT INTO `adv_archives` VALUES (1884, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:31:09', '0');
-INSERT INTO `adv_archives` VALUES (1885, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:33:16', '0');
-INSERT INTO `adv_archives` VALUES (1886, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:36:02', '0');
-INSERT INTO `adv_archives` VALUES (1887, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:36:18', '0');
-INSERT INTO `adv_archives` VALUES (1888, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 11:40:53', '0');
-INSERT INTO `adv_archives` VALUES (1889, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:00:28', '0');
-INSERT INTO `adv_archives` VALUES (1890, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:02:04', '0');
-INSERT INTO `adv_archives` VALUES (1891, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:03:58', '0');
-INSERT INTO `adv_archives` VALUES (1892, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设sedfw置', '脾我', '', '', '', '', 0, 0, 1, '工佣人腺体e', 0, 0, 0, 0, 0, 0, '仍人仍撒指示符有佣兵', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 14:08:48', '0');
-INSERT INTO `adv_archives` VALUES (1893, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 14:14:07', '0');
-INSERT INTO `adv_archives` VALUES (1894, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '0', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '在夺棋 枯', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 14:15:45', '0');
-INSERT INTO `adv_archives` VALUES (1895, 36, '0', 0, '', 0, 1, 0, 0, 0, '棋模样有东西', '苛苛dzx', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 14:19:22', '0');
-INSERT INTO `adv_archives` VALUES (1897, 40, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '顶戴', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '', 0, 0, 0, 0, 'classify_1566181155564', '2019-08-19 10:24:39', '0');
-INSERT INTO `adv_archives` VALUES (1907, 36, '0', 0, '', 0, 1, 0, 0, 0, '求职简历', '发布的内容写标题，长度限制15字', '', '', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '夺sa', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-19 14:23:07', '0');
-INSERT INTO `adv_archives` VALUES (1899, 12, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-19 10:35:53', '0');
-INSERT INTO `adv_archives` VALUES (1900, 12, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-19 10:35:55', '0');
-INSERT INTO `adv_archives` VALUES (1901, 32, '0', 0, 'h-z', 0, 1, 0, 0, 0, '789879', 'sdfsdf', '', '', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, '4', '2019-08-19 10:36:24', '0');
-INSERT INTO `adv_archives` VALUES (1903, 41, '0', 0, '', 0, 1, 0, 0, 0, '验证码设8496', 'sdfsdf', '', '', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '', 0, 0, 0, 0, 'classify_1566181155564', '2019-08-19 10:43:49', '0');
+INSERT INTO `adv_archives` VALUES (202, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-23 10:22:12', NULL);
+INSERT INTO `adv_archives` VALUES (210, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' f', ' d', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 3', 0, 0, 0, 0, 0, 0, ' 4', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-27 10:22:01', NULL);
+INSERT INTO `adv_archives` VALUES (201, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228708', '2019-07-30 10:22:17', NULL);
+INSERT INTO `adv_archives` VALUES (200, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' 霜朋有有 有有', ' 压标', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-30 10:22:17', NULL);
+INSERT INTO `adv_archives` VALUES (190, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' adsf', ' dfs', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' dsf', 0, 0, 0, 0, 0, 0, ' df', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-27 10:22:01', NULL);
+INSERT INTO `adv_archives` VALUES (187, 33, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' fgdfg', ' fdgd', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' dfgdf', 0, 0, 0, 0, 0, 0, ' fdgd f', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-23 10:22:12', NULL);
+INSERT INTO `adv_archives` VALUES (238, 14, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', '', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-08 15:28:47', '0');
+INSERT INTO `adv_archives` VALUES (239, 14, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, '789789', ' 地枯', '', '1', '', '', 0, 0, 1, ' 时代复分枯枯', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 16:08:33', '0');
+INSERT INTO `adv_archives` VALUES (1858, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 兴义市市政市政照明工程', ' 市政照明工程', '', '1', '', '/img/2019/8/12/57e53cfe6354ff1ebb3c4cab67dab395.png', 0, 0, 1, ' 工程信息发布关键词', 0, 0, 0, 0, 0, 0, ' 中国电建河南工程公司华润沧州运东项目部华润沧州运东钢材材料采购项目成交公示', '', 0, 0, 0, 1, 'classify_1562310099391', '2019-08-12 17:06:40', '0');
+INSERT INTO `adv_archives` VALUES (231, 33, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '1', '', '', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564640132491', '2019-08-02 14:55:17', '0');
+INSERT INTO `adv_archives` VALUES (235, 15, '0', 0, 'hot-home-recomend', 0, 1, 0, 0, 0, ' 验证码设置', ' 发布的内容写标题，长度限制15字', '', '1', '', '/img/2019/8/6/16840d34bf7d0c2ef280a411d729f463.png', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-06 16:43:44', '0');
+INSERT INTO `adv_archives` VALUES (211, 31, '0', 0, 'h,c', 0, -8, 0, 0, 0, ' f', ' d', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 3', 0, 0, 0, 0, 0, 0, ' 4', '', 0, 0, 0, 0, 'classify_1563245228707', '2019-07-24 10:22:08', NULL);
+INSERT INTO `adv_archives` VALUES (1859, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '1', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:24:37', '0');
+INSERT INTO `adv_archives` VALUES (232, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', '', '', '1', '', 'NaN-0NaN-0NaN NaN:NaN:NaN', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:53:29', '0');
+INSERT INTO `adv_archives` VALUES (1, 2, '0', 1270603757, 'c,h', 1, -8, 0, 0, 0, '学习HTML 4.0事件属性', '', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 1270603757, 1270603757, 1, '学习HTML,4.0事件属性', 0, 0, 0, 0, 0, 0, 'HTML 4.0的新特性之一是使HTML事件触发浏览器中的行为，比方说当用户点击一个HTML元素时启动一段JavaScript。以下就是可被插入HTML标签以定义事件行为的一系列属性。假如你希望学习如何使用这些事件进行编程，那么你应该学习我们的JavaScript教程和DHTML教程', '', 0, 0, 0, 0, NULL, '2019-07-27 10:22:01', NULL);
+INSERT INTO `adv_archives` VALUES (215, 31, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' fg', ' df', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'classify_1564642160205', '2019-07-27 10:22:01', NULL);
+INSERT INTO `adv_archives` VALUES (216, 31, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' sd', ' dsf', '', '1', '', 'http://www.dedecms.com/demoimg/uploads/allimg/c100407/12F603932K20-31036_lit.gif', 0, 0, 0, ' 1', 0, 0, 0, 0, 0, 0, ' 234', '', 0, 0, 0, 2314, 'classify_1563245228709', '2019-07-24 10:22:08', NULL);
+INSERT INTO `adv_archives` VALUES (217, 31, '0', 0, '', 0, 1, 0, 0, 0, ' dsfsdf', ' sdfsdf', '', '1', '', '/img/2019/7/20/78528902594ec2abdb60e42398630e6c.png', 0, 0, 0, ' sadfdsf', 0, 0, 0, 0, 0, 0, ' sdfsdf', '', 0, 0, 0, 0, 'classify_1563245228709', '2019-07-24 10:22:08', NULL);
+INSERT INTO `adv_archives` VALUES (236, 0, '0', 0, 'home-recomend', 0, 1, 0, 0, 0, '触发器测试', ' 发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, ' 脂肪酸', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 15:16:07', '0');
+INSERT INTO `adv_archives` VALUES (237, 12, '0', 0, 'home', 0, 1, 0, 0, 0, ' 验证码设置', ' 发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' 在夺棋 枯', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-08 15:24:30', '0');
+INSERT INTO `adv_archives` VALUES (233, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '1', '', '', 0, 0, 1, ' 上传图片测试', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:55:12', '0');
+INSERT INTO `adv_archives` VALUES (234, 36, '0', 0, '', 0, 1, 0, 0, 0, ' 验证码设置梵蒂冈第三方', ' sdfsdf', '', '1', '', '', 0, 0, 1, ' 时代复分枯枯', 0, 0, 0, 0, 0, 0, ' 上传图片测试', '', 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-06 15:59:29', '0');
+INSERT INTO `adv_archives` VALUES (1860, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '1', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:24:50', '0');
+INSERT INTO `adv_archives` VALUES (1861, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '1', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:15', '0');
+INSERT INTO `adv_archives` VALUES (1862, 1, '0', 0, 'h,c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '1', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:34', '0');
+INSERT INTO `adv_archives` VALUES (1863, 1, '0', 0, 'h-c', 0, 1, 0, 0, 0, ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', ' 永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '', '1', '', '/img/2019/8/13/d100323436304c5e51087726161ef8ce.png', 0, 0, 1, ' 综合活动场所建设项目竞争性谈判公告', 0, 0, 0, 0, 0, 0, ' 永和县桑壁镇人民政府联系方式署益村委南寨村委村级综合活动场所建设项目竞争性谈判公告  永和县政府采购中心联系方式受桑壁镇人民政府委托，对桑壁镇署益村委南寨村委村级综合活动场所建设项目组织竞争性谈判采购，欢迎具有承担本项目能力、资信良好的供应商参加谈判。', '', 0, 0, 0, 2, 'classify_1562310091110', '2019-08-13 09:25:52', '0');
+INSERT INTO `adv_archives` VALUES (1864, 39, '0', 0, 'c-h-z-r', 0, 1, 0, 0, 0, '0806测试委托招标公告', '0806测试委托招标公告', '', '1', '', '/img/2019/8/13/dd9e74b09ab19b327abe087dd9019663.png', 0, 0, 1, '0806测试委托招标公告', 0, 0, 0, 0, 0, 0, '业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
+INSERT INTO `adv_archives` VALUES (1865, 39, '0', 0, 'h,z', 0, 1, 0, 0, 0, ' 0806测试委托招标公告', ' 0806测试委托招标公告', '', '1', '', '/img/2019/8/13/dd9e74b09ab19b327abe087dd9019663.png', 0, 0, 1, ' 0806测试委托招标公告', 0, 0, 0, 0, 0, 0, ' 业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
+INSERT INTO `adv_archives` VALUES (1866, 1, '0', 0, 'c-h-z-r', 0, 1, 0, 0, 0, '永和县桑壁镇人民政府署益村委南寨村委村级综合活动场所建设项目谈判公告', '0806测试委托招标公告', '', '1', '', '/img/2019/8/14/fcef959cf046a2be98cfd131652cdd20.png', 0, 0, 1, '0806测试委托招标公告', 0, 0, 0, 0, 0, 0, '业主委托比比招标采购网为该项目征集供应商。针对符合要求的供应商，我们会将其资料提交给业主方供选择。您可拨打免费客服热线咨询报名事宜400-000-0388', '', 0, 0, 0, 1, 'classify_1564366071313', '2019-08-13 09:30:40', '0');
+INSERT INTO `adv_archives` VALUES (1867, 31, '0', 0, '', 0, 1, 0, 0, 0, '商品1名称', '商品1短标题', '', '1', '', '/img/2019/8/13/cb6aae1ed81bb3622ed3ebc5c63b4027.png', 0, 0, 1, '碎石关键词', 0, 0, 0, 0, 0, 0, '碎石描述', '', 0, 0, 0, 100, 'classify_1564642173069', '2019-08-13 17:21:38', '0');
+INSERT INTO `adv_archives` VALUES (1868, 36, '0', 0, '', 0, 1, 0, 0, 0, '求职者1', '求职者1短标题', '', '1', '', '', 0, 0, 1, ' 求职者1关键词', 0, 0, 0, 0, 0, 0, ' 求职者1描述', '', 0, 0, 0, 100, 'NaN-0NaN-0NaN NaN:NaN:NaN', '2019-08-13 17:45:48', '0');
+INSERT INTO `adv_archives` VALUES (1869, 33, '0', 0, '', 0, 1, 0, 0, 0, ' F E', ' DF S', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, ' ', '', 0, 0, 0, 0, 'classify_1564640155875', '2019-08-14 09:26:30', '0');
+INSERT INTO `adv_archives` VALUES (1872, 36, '0', 0, '', 0, 1, 0, 0, 0, 'dfs', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, -1, 'classify_1565147772779', '2019-08-17 09:56:45', '2');
+INSERT INTO `adv_archives` VALUES (1873, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 09:59:10', '0');
+INSERT INTO `adv_archives` VALUES (1870, 38, '0', 0, 'z-r', 0, 1, 0, 0, 0, '15985499999', '发布的内容写标题，长度限制15字', '', '1', '', '/img/2019/8/14/3dd254cd118371209ed8fec5c2f41b0a.png', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '蜕入入教条 视如粪土', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-14 12:47:53', '2');
+INSERT INTO `adv_archives` VALUES (1871, 39, '0', 0, 'z', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-16 09:04:44', '1');
+INSERT INTO `adv_archives` VALUES (1874, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 09:59:49', '0');
+INSERT INTO `adv_archives` VALUES (1875, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 10:01:08', '0');
+INSERT INTO `adv_archives` VALUES (1876, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 10:08:34', '0');
+INSERT INTO `adv_archives` VALUES (1877, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 10:11:30', '0');
+INSERT INTO `adv_archives` VALUES (1878, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 10:32:11', '0');
+INSERT INTO `adv_archives` VALUES (1879, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:20:23', '0');
+INSERT INTO `adv_archives` VALUES (1880, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:21:44', '0');
+INSERT INTO `adv_archives` VALUES (1881, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:23:50', '0');
+INSERT INTO `adv_archives` VALUES (1882, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:26:23', '0');
+INSERT INTO `adv_archives` VALUES (1883, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:29:43', '0');
+INSERT INTO `adv_archives` VALUES (1884, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:31:09', '0');
+INSERT INTO `adv_archives` VALUES (1885, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:33:16', '0');
+INSERT INTO `adv_archives` VALUES (1886, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:36:02', '0');
+INSERT INTO `adv_archives` VALUES (1887, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 11:36:18', '0');
+INSERT INTO `adv_archives` VALUES (1888, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 11:40:53', '0');
+INSERT INTO `adv_archives` VALUES (1889, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:00:28', '0');
+INSERT INTO `adv_archives` VALUES (1890, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:02:04', '0');
+INSERT INTO `adv_archives` VALUES (1891, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147778851', '2019-08-17 14:03:58', '0');
+INSERT INTO `adv_archives` VALUES (1892, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设sedfw置', '脾我', '', '1', '', '', 0, 0, 1, '工佣人腺体e', 0, 0, 0, 0, 0, 0, '仍人仍撒指示符有佣兵', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 14:08:48', '0');
+INSERT INTO `adv_archives` VALUES (1893, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147755910', '2019-08-17 14:14:07', '0');
+INSERT INTO `adv_archives` VALUES (1894, 36, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '0', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '在夺棋 枯', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 14:15:45', '0');
+INSERT INTO `adv_archives` VALUES (1895, 36, '0', 0, '', 0, 1, 0, 0, 0, '棋模样有东西', '苛苛dzx', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '上传图片测试', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-17 14:19:22', '0');
+INSERT INTO `adv_archives` VALUES (1897, 40, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', '顶戴', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '', 0, 0, 0, 0, 'classify_1566181155564', '2019-08-19 10:24:39', '0');
+INSERT INTO `adv_archives` VALUES (1907, 36, '0', 0, '', 0, 1, 0, 0, 0, '求职简历', '发布的内容写标题，长度限制15字', '', '1', '', '', 0, 0, 1, '时代复分枯枯', 0, 0, 0, 0, 0, 0, '夺sa', '', 0, 0, 0, 0, 'classify_1565147772779', '2019-08-19 14:23:07', '0');
+INSERT INTO `adv_archives` VALUES (1899, 12, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1562310099391', '2019-08-19 10:35:53', '0');
+INSERT INTO `adv_archives` VALUES (1900, 12, '0', 0, '', 0, 1, 0, 0, 0, '验证码设置梵蒂冈第三方', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1564366071313', '2019-08-19 10:35:55', '0');
+INSERT INTO `adv_archives` VALUES (1901, 32, '0', 0, 'h-z', 0, 1, 0, 0, 0, '789879', 'sdfsdf', '', '1', '', '', 0, 0, 1, '上传图片测试', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, '4', '2019-08-19 10:36:24', '0');
+INSERT INTO `adv_archives` VALUES (1903, 41, '0', 0, '', 0, 1, 0, 0, 0, '验证码设8496', 'sdfsdf', '', '1', '', '', 0, 0, 1, '', 0, 0, 0, 0, 0, 0, 'NaN-0NaN-0NaN NaN:NaN:NaN', '', 0, 0, 0, 0, 'classify_1566181155564', '2019-08-19 10:43:49', '0');
+INSERT INTO `adv_archives` VALUES (1908, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '宽屏', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1569378440878', '2019-09-25 11:47:27', '1');
+INSERT INTO `adv_archives` VALUES (1909, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '大商汇B座201宽屏', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1569378442759', '2019-09-25 13:24:03', '1');
+INSERT INTO `adv_archives` VALUES (1911, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '大商汇B座201宽屏', 0, 0, 0, 0, 0, 0, '大商汇B座201宽屏', '', 0, 0, 0, 2, 'classify_1569378442759', '2019-09-25 13:43:58', '1');
+INSERT INTO `adv_archives` VALUES (1918, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B2座201宽屏', '原梓菲村基本面f', '', '', '', '', 0, 0, 195, '模压苛大哥大', 0, 0, 0, 0, 0, 0, '阿斯蒂芬', '', 0, 0, 0, 0, 'classify_1569381550996', '2019-09-25 17:12:31', '0');
 
 -- ----------------------------
 -- Table structure for adv_arctype
@@ -692,6 +700,7 @@ INSERT INTO `adv_arctype` VALUES (15, -8, 12, 3, 'Dreamweaver', 1, 0, 1, -1, 0, 
 INSERT INTO `adv_arctype` VALUES (41, 12, 0, 50, '特招', 0, 0, 1, 234, 0, 0, '', '', '', '21 顶替', 0, '', '', 0);
 INSERT INTO `adv_arctype` VALUES (2, -8, 1, 50, '招标公告', 0, 0, 1, -1, 0, 100, '', '工程信息招标公告描述', '工程信息招标公告关键词', '招标公告seo标题', 0, '不管', '不管', 1);
 INSERT INTO `adv_arctype` VALUES (14, -8, 1, 2, '隧道建设', 1, 1, 1, -1, 0, 0, 'default', '', '', '', 0, '', '', 1);
+INSERT INTO `adv_arctype` VALUES (42, 52, 1, 50, '栏目一', 0, 0, 1, 1, 0, 0, '', '', '', '', 0, '', '', 0);
 
 -- ----------------------------
 -- Table structure for adv_commidity_spec
@@ -892,6 +901,7 @@ INSERT INTO `adv_components` VALUES (-8, 'infos', '分类信息', 'adv_archives'
 INSERT INTO `adv_components` VALUES (1, 'commodities', '商品信息', 'adv_archives', 'adv_addoncommodities', 'W3siYXR0ciI6ICIgZGlzYWJsZWQgZGF0YS1kZWY9NCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAiaW50IiwgImZpZWxkIjogImNvbXBvbmVudGlkIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogdHJ1ZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDEsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLnu4Tku7ZpZCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjEwIn0sIHsiYXR0ciI6ICJkYXRhLWNvbW1lbnQ95qCH6aKY6ZW/5bqm5pyA5aSaMTXkuKrlrZfnrKYiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogInRpdGxlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAwLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5qCH6aKYIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMjUifSwgeyJ0eXBlIjogInRleHQiLCAiZmllbGQiOiAiY2xhc3NpZnkiLCAiZWZmZWN0IjogIm1haW4iLCAiaXNsaXN0IjogIuWVhuWTgeWIhuexuyIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDAsICJpdGVtbmFtZSI6ICLllYblk4HliIbnsbsiLCAiaW5wdXR0eXBlIjogIm5lc21vZGFsIiwgIm1heGxlbmd0aCI6ICIxMDI0In0sIHsiYXR0ciI6ICJkYXRhLWNvbW1lbnQ957yp55Wl5Zu+77yM6ZmQMeW8oCIsICJ0eXBlIjogInRleHQiLCAiZmllbGQiOiAibGl0cGljIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogdHJ1ZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAwLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi57yp55Wl5Zu+IiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAwfSwgeyJhdHRyIjogImRhdGEtY29tbWVudD3nq6/lj6PkuLvlm77vvIzmnIDlpJo15bygIiwgInR5cGUiOiAidGV4dCIsICJmaWVsZCI6ICJtYWlucGljIiwgImxpbWl0IjogNSwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogdHJ1ZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5ZWG5ZOB5Li75Zu+IiwgImlucHV0dHlwZSI6ICJ1cGxvYWRlciIsICJtYXhsZW5ndGgiOiAwfSwgeyJhdHRyIjogImRhdGEtY29tbWVudD3mmK/lkKbkvb/nlKjoh6rlrprkuYnllYblk4Hop4TmoLwiLCAiZmllbGQiOiAidXNlc3BlYyIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMCwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaYr+WQpuWQr+eUqOinhOagvCIsICJpbnB1dHR5cGUiOiAic3BlYyIsICJtYXhsZW5ndGgiOiAwfSwgeyJhdHRyIjogImRhdGEtY29tbWVudD3loavlhpnllYblk4HliIbnsbsiLCAiZmllbGQiOiAic3BlYyIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMCwgIml0ZW1uYW1lIjogIuWVhuWTgeinhOagvCIsICJpbnB1dHR5cGUiOiAic3BlYyIsICJtYXhsZW5ndGgiOiAwfSwgeyJhdHRyIjogImRhdGEtY29tbWVudD3nq6/lj6Por6bmg4XlhoXlrrkiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogImJvZHkiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiB0cnVlLCAiZGVmYXVsdCI6ICIiLCAibm92YWlsZCI6IDEsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLor6bmg4XlhoXlrrkiLCAiaW5wdXR0eXBlIjogInVlZGl0ZXIiLCAibWF4bGVuZ3RoIjogMH1d', -1, 1, 1, -1, '', 0, 0, 0, 1, '商城系统', 0, 1, '/img/sys/admin/5.png');
 INSERT INTO `adv_components` VALUES (11, 'jobwanted', '人才信息管理', 'adv_archives', 'adv_addonjobwanted', 'W3siYXR0ciI6ICIgZGlzYWJsZWQgZGF0YS1kZWY9NCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAiaW50IiwgImZpZWxkIjogImNvbXBvbmVudGlkIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogdHJ1ZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDEsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLnu4Tku7ZpZCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjEwIn0sIHsiYXR0ciI6ICJkYXRhLWNvbW1lbnQ95qCH6aKY6ZW/5bqm5pyA5aSaMTXkuKrlrZfnrKYiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogInRpdGxlIiwgImlzbGlzdCI6IDAsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLmoIfpopgiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICIyNSJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogInVuYW1lIiwgImxpbWl0IjogNCwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5aeT5ZCNIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMjAifSwgeyJhdHRyIjogIiBkYXRhLWRlZj0xIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogImxpdHBpYyIsICJsaW1pdCI6IDEsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMCwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuWktOWDjyIsICJpbnB1dHR5cGUiOiAidXBsb2FkZXIiLCAibWF4bGVuZ3RoIjogIjI1NSJ9LCB7ImF0dHIiOiAiIGRhdGEtdmFsPSfnlLct5aWzJyBkYXRhLWtleT0nMC0xJyBkYXRhLWRlZj0wIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImdlbmRlciIsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaAp+WIqyIsICJpbnB1dHR5cGUiOiAicmFkaW8iLCAibWF4bGVuZ3RoIjogIjIifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2JfZXhwZXJpZW5jZSIsICJpc2xpc3QiOiAi5rGC6IGM6ICF57uP6aqMIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaxguiBjOiAhee7j+mqjCIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJhZ2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLlubTpvoQiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICIyIn0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJpbnQiLCAiZmllbGQiOiAiY2xhc3NpZnkiLCAiZWZmZWN0IjogIm1haW4iLCAiaXNsaXN0IjogIuiBjOS9jeWIhuexuyIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDAsICJpdGVtbmFtZSI6ICLogYzkvY0iLCAiaW5wdXR0eXBlIjogIm5lc21vZGFsIiwgIm1heGxlbmd0aCI6ICI3In0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJqb2Jfc2FsYXJ5IiwgImlzbGlzdCI6ICLmnJ/mnJvolqrotYQiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5pyf5pyb6Jaq6LWEIiwgImlucHV0dHlwZSI6ICJuZXNtb2RhbCIsICJtYXhsZW5ndGgiOiAiNyJ9LCB7ImF0dHIiOiAiIHR5cGU9dGV4dCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2JfaW5kdXN0cnkiLCAiaXNsaXN0IjogIuS7juS6i+ihjOS4miIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLku47kuovooYzkuJoiLCAiaW5wdXR0eXBlIjogIm5lc21vZGFsIiwgIm1heGxlbmd0aCI6ICIxMjgifSwgeyJhdHRyIjogIiB0eXBlPXRleHQgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiam9iX05hdHVyZSIsICJpc2xpc3QiOiAi5bel5L2c5oCn6LSoIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuW3peS9nOaAp+i0qCIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjEyOCJ9LCB7ImF0dHIiOiAiIHR5cGU9dGVsbCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAiaW50IiwgImZpZWxkIjogInBob25lIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6IGU57O755S16K+dIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiNyJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJpbnQiLCAiZmllbGQiOiAiYWRkcmVzcyIsICJsaW1pdCI6IDMsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuacn+acm+W3peS9nOWfjuW4giIsICJpbnB1dHR5cGUiOiAiYWRkcmVzcyIsICJtYXhsZW5ndGgiOiAiMTEifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c6L+H55qE5YWs5Y+45ZCN56ewIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjb21wYW55IiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuWFrOWPuOWQjeensCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjMyIn0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeabvue7j+W3peS9nOS4reeahOiBjOS9jSIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAicG9zaXRpb24iLCAiZWZmZWN0IjogInRhYl95b3ViYW5nX2pvYmV4cGVyaWVuY2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6IGM5L2NIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMzIifSwgeyJhdHRyIjogIiB0eXBlPW51bWJlciBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c5pe255qE6Jaq6LWEIiwgInR5cGUiOiAiZmxvYXQiLCAiZmllbGQiOiAic2FsYXJ5IiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuiWqui1hCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3loavlhpnmoLzlvI/lpoI6MjAxOOW5tDHmnIgxLTIwMTnlubQxMuW5tDMx5pelIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2J0aW1lIiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuWcqOiBjOaXtumXtCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjM2In0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3loavlhpnmm77nu4/lt6XkvZzkuK3nmoTogYzotKMiLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImR1dHkiLCAiZWZmZWN0IjogInRhYl95b3ViYW5nX2pvYmV4cGVyaWVuY2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiaXRlbW5hbWUiOiAi5bel5L2c6IGM6LSjIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMTEifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c55qE5Zyw54K5IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjaXR5IiwgImxpbWl0IjogNCwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuW3peS9nOWcsOeCuSIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeabvue7j+W3peS9nOS4reeahOS6rueCuSIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiYnJpZ2h0c3BvdCIsICJlZmZlY3QiOiAidGFiX3lvdWJhbmdfam9iZXhwZXJpZW5jZSIsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6ICIiLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJpdGVtbmFtZSI6ICLmiJHnmoTkuq7ngrkiLCAiaW5wdXR0eXBlIjogInRleHRhcmVhIiwgIm1heGxlbmd0aCI6ICIyNTUifV0=', 0, 1, 0, -1, '', 10, 0, 1, 1, '劳务人才', 0, 0, '/img/sys/admin/4.png');
 INSERT INTO `adv_components` VALUES (12, 'perrecruit', '劳务信息管理', 'adv_archives', 'adv_addonperrecruit', 'W3siYXR0ciI6ICIgZGF0YS1jb21tZW50Peivt+mAieaLqeaLm+iBmOexu+WeiyIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiY2xhc3NpZnkiLCAiZWZmZWN0IjogIm1haW4iLCAiaXNsaXN0IjogIuaLm+iBmOexu+WeiyIsICJpc251bGwiOiB0cnVlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMCwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaLm+iBmOexu+WeiyIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjY0In0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50Peivt+Whq+WGmeaLm+iBmOS/oeaBryIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAidGl0bGUiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLmi5vogZjmoIfpopgiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICI2NCJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3pgInmi6nolqrotYTmiYDnrYnnuqciLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImNsYXNzc2FsYXJ5IiwgImlzbGlzdCI6ICLolqrotYTliIbnsbsiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6Jaq6LWE562J57qnIiwgImlucHV0dHlwZSI6ICJuZXNtb2RhbCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiBkYXRhLXZhbD3kupTpmankuIDph5Et5YyF5L2PLeWMhemkkCBkYXRhLWtleT14ai1iei1iYyBkYXRhLWNvbW1lbnQ96YCJ5oup5L+x5pyJ55qE54m554K5IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2xhYmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5qCH562+5YiG57G7IiwgImlucHV0dHlwZSI6ICJjaGVja2JveCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiB0eXBlPW51bWJlciBkYXRhLWNvbW1lbnQ95aGr5YaZ5pyA5aSa5oub6IGY5aSa5bCR5Lq6IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2xhYmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5oub6IGY5Lq65pWwIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ96YCJ5oup5pyA5L2O5a2m5Y6G6KaB5rGCIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2VkdWNhdGlvbiIsICJpc2xpc3QiOiAi5a2m5Y6G5YiG57G7IiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuacgOWtpuWOhuimgeaxgiIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjY0In0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeiBjOS9jeimgeaxgiIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiZGVzY3JpcHRpb24iLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLogYzkvY3mj4/ov7AiLCAiaW5wdXR0eXBlIjogInVlZGl0ZXIiLCAibWF4bGVuZ3RoIjogIjI1NSJ9LCB7ImF0dHIiOiAiIHR5cGU9bnVtYmVyIGRhdGEtY29tbWVudD3opoHmsYLkuI3kvY7kuo7nrYnnuqfnmoTnlKjmiLflj6/ku6Xmn6XnnIvkv6Hmga8iLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImxldmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6ZiF6K+76KaB5rGCIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMjU1In0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeimgeaxguS4jeS9juS6juetiee6p+eahOeUqOaIt+WPr+S7peafpeeci+S/oeaBryIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJtaWQiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLlj5HluIPogIVpZCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn1d', 0, 1, 0, -1, '', 10, 0, 1, 1, '劳务信息', 0, 0, '/img/sys/admin/3.png');
+INSERT INTO `adv_components` VALUES (52, 'device', '广告屏', 'adv_archives', 'adv_addondevice', 'W3siZmllbGQiOiJhZGRyZXNzIiwiaXRlbW5hbWUiOiLorr7lpIflnLDlnYAiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjcyIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6IjEiLCJmaWVsZHNldCI6IjEiLCJsaW1pdCI6IjQiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJhZGRyZXNzIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95aGr5YaZ6K6+5aSH5omA5Zyo5Zyw5Z2AIn0seyJmaWVsZCI6ImNsYXNzaWZ5IiwiaXRlbW5hbWUiOiLorr7lpIfliIbnsbsiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEyOCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiLorr7lpIfmiYDlsZ7liIbnsbsiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ96YCJ5oup6K6+5aSH5omA5bGe5YiG57G7In0seyJmaWVsZCI6InNuIiwiaXRlbW5hbWUiOiLorr7lpIfor4bliKvlj7ciLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEyOCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOiIxIiwiZmllbGRzZXQiOiIxIiwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoiIGRhdGEtY29tbWVudD3loavlhpnorr7lpIfllK/kuIDor4bliKvlj7cifSx7ImZpZWxkIjoic3RhdGUiLCJpdGVtbmFtZSI6IuiuvuWkh+eKtuaAgSIsInR5cGUiOiJjaGFyIiwibWF4bGVuZ3RoIjoiMSIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6InJhZGlvIiwiYXR0ciI6ImRhdGEtdmFsPeWBnOatoi3mraPluLgt5pKt5pS+LeaaguWBnCAgZGF0YS1rZXk9MC0xLTItMyJ9LHsiZmllbGQiOiJpb3ZlcnNpb24iLCJpdGVtbmFtZSI6Iuezu+e7n+eJiOacrCIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMzIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6ImlucHV0IiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95aGr5YaZ5a6i5oi356uv57O757uf54mI5pys5Y+3In0seyJmaWVsZCI6InZpZXd0eXBlIiwiaXRlbW5hbWUiOiLmqKrnq5blsY8iLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IjAiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6IjEiLCJmaWVsZHNldCI6IjEiLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJzZWxlY3QiLCJhdHRyIjoiIGRhdGEta2V5PTAtMS0yICBkYXRhLXZhbD3ml6DmlYgt5qiq5bGPLeerluWxjyJ9XQ==', 0, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0, '/img/2019/9/25/0f18390b8692f1c9a5861f863c9c5232.png');
 
 -- ----------------------------
 -- Table structure for adv_enum
@@ -987,7 +997,7 @@ CREATE TABLE `adv_member_favorite`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mid` int(11) NULL DEFAULT NULL COMMENT '用户id',
   `favoriteid` int(11) NULL DEFAULT NULL COMMENT '收藏id',
-  `createtime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '收藏时间',
+  `createtime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '收藏时间',
   `deleted` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '删除 0删除1删除',
   `componentsid` int(11) NULL DEFAULT NULL COMMENT '收藏类型id',
   `openid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信openid',
@@ -1013,7 +1023,7 @@ CREATE TABLE `adv_member_level`  (
   `ordermoney` float(255, 0) NULL DEFAULT NULL COMMENT '订单总额',
   `ordercount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单次数',
   `enabled` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT ' 启用 0关闭1启用',
-  `createtime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `createtime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `createuserid` int(255) NULL DEFAULT NULL COMMENT '创建的用户id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
@@ -1045,23 +1055,23 @@ CREATE TABLE `adv_sys_acount`  (
   `face` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `userName` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
   `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码',
-  `acountType` enum('','agent','manager') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账户类别(后台管理员或代理商)',
+  `acountType` enum('','agent','manager','merchat') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账户类别(后台管理员或代理商)',
   `groupId` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '角色id',
   `loginTime` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
   `loginIp` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '最后登录ip',
   `enable` enum('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '0停用1启用２禁用(表示删除状态)',
-  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `tel` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '注册时绑定手机号',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE,
   UNIQUE INDEX `acount`(`acount`) USING BTREE,
   INDEX `enable`(`enable`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 197 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 219 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_acount
 -- ----------------------------
-INSERT INTO `adv_sys_acount` VALUES (1, 0, '1@qq.com', '/snowSys/images/avatars/user.jpg', '总管理员', 'e2b5036c89d7ba03c0ce8e2093c7af2b', 'manager', 1, NULL, NULL, '1', '2019-06-24 17:47:00', '13339690812');
+INSERT INTO `adv_sys_acount` VALUES (1, 0, '1@qq.com', '/img/sys/admin/defaultface.jpg', '总管理员', 'e2b5036c89d7ba03c0ce8e2093c7af2b', 'manager', 1, NULL, NULL, '1', '2019-06-24 17:47:00', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (185, 2000, '2@qq.com', NULL, '小郑', '2f15a866c441882fe31be926f0279180', 'agent', 2, NULL, NULL, '1', '2019-06-24 17:47:00', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (186, 2000, '3@qq.com', NULL, '省代理商', '1c95702fd611444a9290d2411ca64022', 'agent', 2016, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (189, 2000, '100@qq.com', NULL, '测试代理商', '083a71490a2429aa4835bccac99257f2', 'agent', 2016, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
@@ -1070,8 +1080,17 @@ INSERT INTO `adv_sys_acount` VALUES (191, 1, '102@qq.com', NULL, '账户1下代�
 INSERT INTO `adv_sys_acount` VALUES (192, 1, '4@qq.com', NULL, '张三', '25e2ce67543fff07ac94e591f9152d85', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (193, 192, '5@qq.com', NULL, '张三', 'd2e957a2ebfdf133bbc2b6e11a5333ad', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (194, 192, '6@qq.com', NULL, '附三', '422adaaa1574eff0bda51d68a3693d14', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
-INSERT INTO `adv_sys_acount` VALUES (195, 194, '123@qq.com', NULL, 'qwe', '283bb52a0fdc0d28264bf0bb396c954b', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
-INSERT INTO `adv_sys_acount` VALUES (196, 195, '1234@qq.com', NULL, '1234', 'f177cbb9ea8185eee6ff24078d7bf17a', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
+INSERT INTO `adv_sys_acount` VALUES (195, 194, '123@qq.com', '/img/sys/admin/defaultface.jpg', 'qwe', 'c0d78fb3576e77ad61364e8aceec8abd', 'manager', 2000, NULL, NULL, '1', '2019-09-19 14:27:54', '1598549646');
+INSERT INTO `adv_sys_acount` VALUES (209, 195, '20@qq.com', NULL, '测试用户20', '505f682435143b578ffc09fcdea21698', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:35:07', '15985499920');
+INSERT INTO `adv_sys_acount` VALUES (210, 195, '21@qq.com', NULL, '测试用户21', 'ccbf661c5b4ef944641bdc4f6f1d23d7', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:36:43', '15985499921');
+INSERT INTO `adv_sys_acount` VALUES (211, 195, '22@qq.com', NULL, '测试用户22', 'f1e3c95ba284b4598c4077b84b83248c', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:38:29', '15985499922');
+INSERT INTO `adv_sys_acount` VALUES (212, 195, '23@qq.com', NULL, '测试用户23', 'fd8c4e49609d05da2917802736e1445c', 'manager', 2000, NULL, NULL, '0', '2019-09-24 09:51:48', '15985499923');
+INSERT INTO `adv_sys_acount` VALUES (213, 195, '24@qq.com', NULL, '测试用户24', '5f62382733f6e1cd4903189ed913198f', 'manager', 2000, NULL, NULL, '0', '2019-09-24 09:52:24', '15985499924');
+INSERT INTO `adv_sys_acount` VALUES (214, 195, '25@qq.com', NULL, '测试用户25', '6daf0c5521e519444452df4b7d7f392a', 'manager', 2000, NULL, NULL, '1', '2019-09-24 09:53:36', '15985499925');
+INSERT INTO `adv_sys_acount` VALUES (215, 195, '26@qq.com', NULL, '测试用户26', '939ef54398681a424f090aac3f631733', 'manager', 2000, NULL, NULL, '0', '2019-09-24 09:55:40', '15985499926');
+INSERT INTO `adv_sys_acount` VALUES (216, 195, '27@qq.com', NULL, '测试用户27', '36c2fbcb23ef9d9a49c3814295aa47e7', '', 2017, NULL, NULL, '1', '2019-09-24 09:57:39', '15985499927');
+INSERT INTO `adv_sys_acount` VALUES (217, 195, '28@qq.com', NULL, '测试用户28', '890e95f6b9aa8b486d57cec36b60fc77', 'manager', 2000, NULL, NULL, '1', '2019-09-24 09:58:38', '15985499928');
+INSERT INTO `adv_sys_acount` VALUES (218, 195, '29@qq.com', NULL, '测试用户29', '38f7fc4035ca3f641a89035691899341', 'manager', 2017, NULL, NULL, '1', '2019-09-24 15:21:38', '15985499929');
 
 -- ----------------------------
 -- Table structure for adv_sys_acount_agent
@@ -1093,12 +1112,12 @@ CREATE TABLE `adv_sys_acount_agent`  (
   `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '手机号',
   `status` enum('1','2','3','4') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态 1 待审核 2 入驻中 3 暂停 4 即将到期',
   `accountTime` int(11) NULL DEFAULT 1 COMMENT '代理时长（默认1年）',
-  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生效时间',
-  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '过期时间',
-  `applyTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '审核时间',
+  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '生效时间',
+  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '过期时间',
+  `applyTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '审核时间',
   `accountTotal` int(11) NULL DEFAULT 0 COMMENT '可以开多少子帐号,默认0表示不可以招下级代理，-1不限制个数',
   `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
-  `joinTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
+  `joinTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '加入时间',
   `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '标志',
   `payopenid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '收款人openid',
   `payrate` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '抽成利率',
@@ -1135,11 +1154,11 @@ CREATE TABLE `adv_sys_acount_group`  (
   `type` varchar(72) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户类别',
   `status` tinyint(3) NULL DEFAULT 0 COMMENT '当前组是否启用',
   `deleted` tinyint(3) NULL DEFAULT 0 COMMENT '是否可用(用户是否被删除)',
-  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
+  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
   INDEX `idx_deleted`(`deleted`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2017 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2019 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of adv_sys_acount_group
@@ -1148,6 +1167,8 @@ INSERT INTO `adv_sys_acount_group` VALUES (1, 0, '超级管理员', 'manager', 1
 INSERT INTO `adv_sys_acount_group` VALUES (2, 1, '代理商管理员', 'manager', 1, 0, '2019-06-19 11:21:21');
 INSERT INTO `adv_sys_acount_group` VALUES (2016, 1, '省代理', 'agent', 1, 0, '2019-06-04 11:21:25');
 INSERT INTO `adv_sys_acount_group` VALUES (2000, 1, '普通管理员', 'manager', 1, 0, '2019-07-02 17:36:26');
+INSERT INTO `adv_sys_acount_group` VALUES (2017, 195, '广告发布', 'manager', 1, 0, '2019-09-24 15:14:47');
+INSERT INTO `adv_sys_acount_group` VALUES (2018, 195, '审核组', 'manager', 1, 0, '2019-09-24 15:15:38');
 
 -- ----------------------------
 -- Table structure for adv_sys_acount_manager
@@ -1158,8 +1179,8 @@ CREATE TABLE `adv_sys_acount_manager`  (
   `nick` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '昵称',
   `acountid` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账户',
   `mobile` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
-  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip生效时间',
-  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip过期时间',
+  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip生效时间',
+  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip过期时间',
   `openid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信openid',
   `sex` enum('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '0未指定1女2男',
   `realName` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '真实姓名',
@@ -1171,22 +1192,26 @@ CREATE TABLE `adv_sys_acount_manager`  (
   INDEX `mobile`(`mobile`) USING BTREE,
   INDEX `realName`(`realName`) USING BTREE,
   INDEX `IDNumber`(`IDNumber`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4408 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4412 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_acount_manager
 -- ----------------------------
-INSERT INTO `adv_sys_acount_manager` VALUES (1, '小郑', '1', NULL, '2019-02-12 18:05:30', '2029-01-30 21:05:30', NULL, '1', '小郑', NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4396, '小郑', '185', NULL, '2019-02-12 18:05:30', '2019-02-12 18:05:30', NULL, '1', '小郑', '522321498540102513', '2019-02-17 00:00:00');
-INSERT INTO `adv_sys_acount_manager` VALUES (4397, NULL, '186', NULL, '2019-02-12 18:16:26', '2019-02-12 18:16:26', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4400, NULL, '189', NULL, '2019-02-12 22:35:38', '2019-02-12 22:35:38', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4401, NULL, '190', NULL, '2019-02-12 22:50:38', '2019-02-12 22:50:38', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4402, NULL, '191', NULL, '2019-02-12 23:07:29', '2019-02-12 23:07:29', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4403, NULL, '192', NULL, '2019-04-17 22:20:00', '2019-04-17 22:20:00', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4404, NULL, '193', NULL, '2019-04-17 22:21:00', '2019-04-17 22:21:00', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4405, NULL, '194', NULL, '2019-04-17 22:24:34', '2019-04-17 22:24:34', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4406, NULL, '195', NULL, '2019-04-22 07:09:25', '2019-04-22 07:09:25', NULL, '0', NULL, NULL, NULL);
-INSERT INTO `adv_sys_acount_manager` VALUES (4407, NULL, '196', NULL, '2019-04-25 22:54:31', '2019-04-25 22:54:31', NULL, '0', NULL, NULL, NULL);
+INSERT INTO `adv_sys_acount_manager` VALUES (1, '总管理员', '1', '15985499929', '2019-09-16 00:00:00', '2021-03-09 00:00:00', '125468785', '1', '罟厅', '522321198804444444', NULL);
+INSERT INTO `adv_sys_acount_manager` VALUES (4408, '测试用户26', NULL, '', '2019-09-24 09:55:40', '2020-09-18 09:55:40', '', '0', '', '', NULL);
+INSERT INTO `adv_sys_acount_manager` VALUES (4409, 'qwe', '195', '15985499927', '2019-09-01 00:00:00', '2020-09-24 00:00:00', '125468785在', '2', '长霜', '522321198804444446', NULL);
+INSERT INTO `adv_sys_acount_manager` VALUES (4410, '测试用户28', '217', '15985499928', '2019-09-24 00:00:00', '2020-09-24 00:00:00', '125468785', '1', '奏城', '522321198804444449', NULL);
+INSERT INTO `adv_sys_acount_manager` VALUES (4411, '测试用户29', '218', '15985499929', '2019-09-24 00:00:00', '2020-09-24 00:00:00', '125468785', '2', '宜春', '522321198804444444', NULL);
+
+-- ----------------------------
+-- Table structure for adv_sys_acount_member
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_sys_acount_member`;
+CREATE TABLE `adv_sys_acount_member`  (
+  `id` int(11) NOT NULL,
+  `acountid` int(11) NOT NULL COMMENT '会员帐户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Table structure for adv_sys_acount_merchant
@@ -1208,11 +1233,11 @@ CREATE TABLE `adv_sys_acount_merchant`  (
   `mobile` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '手机号',
   `status` enum('1','2','3','4') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态 1 待审核 2 入驻中 3 暂停 4 即将到期',
   `accountTime` int(11) NULL DEFAULT 1 COMMENT '时长（默认1年）',
-  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生效时间',
-  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '过期时间',
-  `applyTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '审核时间',
+  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '生效时间',
+  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '过期时间',
+  `applyTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '审核时间',
   `remark` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
-  `joinTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
+  `joinTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '加入时间',
   `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '标志',
   `payopenid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '收款人openid',
   `payrate` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '抽成利率',
@@ -1238,7 +1263,7 @@ CREATE TABLE `adv_sys_acount_type`  (
   `typeName` varchar(72) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '账户类别(后台管理员或代理商)',
   `alias` varchar(72) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '别名',
   `enable` enum('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '0停用1启用２禁用(表示删除状态)',
-  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `addTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE,
   UNIQUE INDEX `acount`(`typeName`) USING BTREE,
@@ -4913,14 +4938,15 @@ INSERT INTO `adv_sys_menu` VALUES (205, 2, 'icon', '栏目管理', 0, '', '1', '
 INSERT INTO `adv_sys_menu` VALUES (206, 2, 'icon', '原数据管理', 0, NULL, '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (207, 2, 'icon', '应用', 0, '', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (301, 3, 'icon', '工程信息', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (302, 3, 'icon', '企业信息', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (303, 3, 'icon', '劳务信息管理', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (304, 3, 'icon', '装饰装修', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (305, 3, 'icon', '金融合作', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (306, 3, 'icon', '工程机械', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (307, 3, 'icon', '租房售房', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (308, 3, 'icon', '店铺管理', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (309, 3, 'icon', '人才信息管理', 0, '', '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (302, 3, 'icon', '企业信息', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (303, 3, 'icon', '劳务信息管理', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (304, 3, 'icon', '装饰装修', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (305, 3, 'icon', '金融合作', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (306, 3, 'icon', '工程机械', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (307, 3, 'icon', '租房售房', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (308, 3, 'icon', '店铺管理', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (309, 3, 'icon', '人才信息管理', 0, '', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (310, 3, 'icon', '广告屏', 0, '', '1', '1', 'device');
 INSERT INTO `adv_sys_menu` VALUES (20101, 201, 'icon', '基本设置', 0, '/admin/sys/bases', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20102, 201, 'icon', '安全设置', 0, '/admin/sys/securitySet', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20103, 201, 'icon', '验证码设置', 0, '/admin/sys/code', '1', '1', NULL);
@@ -4933,6 +4959,7 @@ INSERT INTO `adv_sys_menu` VALUES (20201, 202, 'icon', '添加用户组', 0, '/a
 INSERT INTO `adv_sys_menu` VALUES (20202, 202, 'icon', '管理用户组', 0, '/admin/group/groupList', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20301, 203, 'icon', '添加用户', 0, '/admin/manage/addManage', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20302, 203, 'icon', '管理用户', 0, '/admin/manage/listManage', '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (20303, 203, 'icon', '个人中心', 1, '/admin/manage/user', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20401, 204, 'icon', '组权限', 0, '/admin/permit/getGroupAll', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20402, 204, 'icon', '用户权限', 0, '/admin/permit/getAcountAll', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20501, 205, 'icon', '添加栏目 ', 0, '/admin/type/add', '1', '1', NULL);
@@ -4947,28 +4974,33 @@ INSERT INTO `adv_sys_menu` VALUES (30103, 301, 'icon', '添加栏目', 0, '/admi
 INSERT INTO `adv_sys_menu` VALUES (30104, 301, 'icon', '查看栏目', 0, '/admin/type/index/ctag/infos', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (30105, 301, 'icon', '管理分类', 0, '/admin/classify/index/ctag/infos', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (30106, 301, 'icon', '信息概览', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30201, 302, 'icon', '发布企业信息', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30202, 302, 'icon', '查看信息', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30203, 302, 'icon', '信息概览', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30301, 303, 'icon', '发布劳务信息', 0, '/admin/arc/add/ctag/perrecruit', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30302, 303, 'icon', '查看劳务信息', 0, '/admin/arc/show/ctag/perrecruit', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30303, 303, 'icon', '添加栏目', 0, '/admin/type/add/ctag/perrecruit', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30304, 303, 'icon', '查看栏目', 0, '/admin/type/index/ctag/perrecruit', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30305, 303, 'icon', '管理分类', 0, '/admin/classify/index/ctag/perrecruit', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30306, 303, 'icon', '信息概览', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30801, 308, 'icon', '添加商品', 0, '/admin/arc/add/ctag/commodities', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30802, 308, 'icon', '所有商品', 0, '/admin/arc/show/ctag/commodities', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30803, 308, 'icon', '添加栏目', 0, '/admin/type/add/ctag/commodities', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30804, 308, 'icon', '查看栏目', 0, '/admin/type/index/ctag/commodities', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30805, 308, 'icon', '管理分类', 0, '/admin/classify/index/ctag/commodities', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30806, 308, 'icon', '商城概览', 0, NULL, '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30807, 308, 'icon', '管理订单', 0, '/admin/order/index', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30901, 309, 'icon', '发布求职信息', 0, '/admin/arc/add/ctag/jobwanted', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30902, 309, 'icon', '查看求职信息', 0, '/admin/arc/show/ctag/jobwanted', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30903, 309, 'icon', '添加栏目', 0, '/admin/type/add/ctag/jobwanted', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30904, 309, 'icon', '查看栏目', 0, '/admin/type/index/ctag/jobwanted', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30905, 309, 'icon', '管理分类', 0, '/admin/classify/index/ctag/jobwanted', '1', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (30906, 309, 'icon', '信息概览', 0, NULL, '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30201, 302, 'icon', '发布企业信息', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30202, 302, 'icon', '查看信息', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30203, 302, 'icon', '信息概览', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30301, 303, 'icon', '发布劳务信息', 0, '/admin/arc/add/ctag/perrecruit', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30302, 303, 'icon', '查看劳务信息', 0, '/admin/arc/show/ctag/perrecruit', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30303, 303, 'icon', '添加栏目', 0, '/admin/type/add/ctag/perrecruit', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30304, 303, 'icon', '查看栏目', 0, '/admin/type/index/ctag/perrecruit', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30305, 303, 'icon', '管理分类', 0, '/admin/classify/index/ctag/perrecruit', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30306, 303, 'icon', '信息概览', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30801, 308, 'icon', '添加商品', 0, '/admin/arc/add/ctag/commodities', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30802, 308, 'icon', '所有商品', 0, '/admin/arc/show/ctag/commodities', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30803, 308, 'icon', '添加栏目', 0, '/admin/type/add/ctag/commodities', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30804, 308, 'icon', '查看栏目', 0, '/admin/type/index/ctag/commodities', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30805, 308, 'icon', '管理分类', 0, '/admin/classify/index/ctag/commodities', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30806, 308, 'icon', '商城概览', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30807, 308, 'icon', '管理订单', 0, '/admin/order/index', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30901, 309, 'icon', '发布求职信息', 0, '/admin/arc/add/ctag/jobwanted', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30902, 309, 'icon', '查看求职信息', 0, '/admin/arc/show/ctag/jobwanted', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30903, 309, 'icon', '添加栏目', 0, '/admin/type/add/ctag/jobwanted', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30904, 309, 'icon', '查看栏目', 0, '/admin/type/index/ctag/jobwanted', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30905, 309, 'icon', '管理分类', 0, '/admin/classify/index/ctag/jobwanted', '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (30906, 309, 'icon', '信息概览', 0, NULL, '0', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (31001, 310, '', '查看广告屏', 0, '/admin/arc/show/ctag/device', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (31002, 310, '', '添加广告屏', 0, '/admin/arc/add/ctag/device', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (31003, 310, '', '添加栏目', 0, '/admin/type/add/ctag/device', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (31004, 310, '', '查看栏目', 0, '/admin/type/index/ctag/device', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (31005, 310, '', '管理分类', 0, '/admin/classify/index/ctag/device', '1', '1', 'device');
 
 -- ----------------------------
 -- Table structure for adv_sys_option
@@ -4993,7 +5025,7 @@ INSERT INTO `adv_sys_option` VALUES (3, 'SYS_MAP', '地图配置', '{\"urlMap\":
 INSERT INTO `adv_sys_option` VALUES (4, 'SYS_LOGO', 'logo配置', '{\"pcImage\":\"files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe\",\"menberImage\":\"files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe\",\"merchantImage\":\"files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe\",\"mobelImage\":\"files/2019/7/8/8b99f4257c74aff6650f3036cecb6910.jpe\",\"wapImage\":\"files/2019/7/8/c128703829266e744e4f0b16afb807c4.png\"}', '1');
 INSERT INTO `adv_sys_option` VALUES (5, 'SYS_CODE', '验证码配置', '{\"codeSwitch\":[\"reg\",\"index\",\"admin\"],\"codeType\":\"english\",\"codeImgType\":\"png\",\"codeImgFize\":\"200*50\",\"codeLength\":\"4\"}', '1');
 INSERT INTO `adv_sys_option` VALUES (6, 'SYS_SECUR', '安全配置', '{\"securityCode\":\"pykjpykj\",\"filterKey\":\"撒大声地实打实\",\"repKey\":\"萨达\",\"prohibitIP\":\"127.0.0.1\"}', '1');
-INSERT INTO `adv_sys_option` VALUES (7, 'SYS_BASIC', '基本配置', '{\"webName\":\"友邦拉拉工程信息平台\",\"webAddress\":\"https://www/youbanglala.com\",\"webSwitch\":\"1\",\"webList\":\"10\",\"closeReason\":\"网站升级中，请联系管理员！\",\"webCopyright\":\"Copyright C 2019 All Rights Reserved 版权所有 友邦拉拉，拉拉友邦\",\"webkeyWords\":\"友邦拉拉工程信息平台\",\"webDiscripts\":\"友邦拉拉工程信息平台\",\"webEmail\":\"88888888@qq.com\",\"webPhone\":\"188888888888\",\"webFxa\":\"0859-88888888\",\"recordNo\":\"黔ICP备4549413号-3\",\"serviceMobel\":\"0859-8888888\",\"workTime\":\"9:00-18:00\",\"serviceQQ\":\"123456789\",\"compAddress\":\"黔西南兴义市某某街道某某号\",\"statisticalCcode\":\"\"}', '1');
+INSERT INTO `adv_sys_option` VALUES (7, 'SYS_BASIC', '基本配置', '{\"webName\":\"昱达广告发布管理系统\",\"webAddress\":\"\",\"webSwitch\":\"1\",\"webList\":\"10\",\"closeReason\":\"网站升级中，请联系管理员！\",\"webCopyright\":\"Copyright C 2019 All Rights Reserved 版权所有 友邦拉拉，拉拉友邦\",\"webkeyWords\":\"友邦拉拉工程信息平台\",\"webDiscripts\":\"友邦拉拉工程信息平台\",\"webEmail\":\"88888888@qq.com\",\"webPhone\":\"188888888888\",\"webFxa\":\"0859-88888888\",\"recordNo\":\"黔ICP备4549413号-3\",\"serviceMobel\":\"0859-8888888\",\"workTime\":\"9:00-18:00\",\"serviceQQ\":\"123456789\",\"compAddress\":\"黔西南兴义市某某街道某某号\"}', '1');
 
 -- ----------------------------
 -- Table structure for adv_sys_permit
@@ -5010,7 +5042,7 @@ CREATE TABLE `adv_sys_permit`  (
   `show` enum('-1','0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '-1无相关操作0禁查看页面1允许查看页面',
   `enable` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '是否为id对应的用户开放权限,0禁止所有权限',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_permit
@@ -5084,6 +5116,39 @@ INSERT INTO `adv_sys_permit` VALUES (67, NULL, 1, 30305, '1', '1', '1', '1', '1'
 INSERT INTO `adv_sys_permit` VALUES (68, NULL, 1, 30306, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (69, NULL, 1, 20701, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (70, NULL, 1, 20702, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (108, NULL, 2017, 1, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (109, NULL, 2017, 101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (110, NULL, 2017, 102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (111, NULL, 2017, 2, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (112, NULL, 2017, 205, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (113, NULL, 2017, 20501, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (114, NULL, 2017, 20502, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (115, NULL, 2017, 20503, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (126, NULL, 1, 20303, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (127, NULL, 1, 310, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (128, NULL, 1, 31001, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (129, NULL, 1, 31002, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (130, NULL, 1, 31003, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (131, NULL, 1, 31004, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (132, NULL, 1, 31005, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (150, 195, 2000, 1, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (151, 195, 2000, 101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (152, 195, 2000, 102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (153, 195, 2000, 2, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (154, 195, 2000, 202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (155, 195, 2000, 20201, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (156, 195, 2000, 20202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (157, 195, 2000, 203, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (158, 195, 2000, 20301, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (159, 195, 2000, 20302, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (160, 195, 2000, 20303, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (161, 195, 2000, 3, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (162, 195, 2000, 310, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (163, 195, 2000, 31001, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (164, 195, 2000, 31002, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (165, 195, 2000, 31003, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (166, 195, 2000, 31004, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (167, 195, 2000, 31005, '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for adv_sys_template
@@ -5115,8 +5180,8 @@ CREATE TABLE `adv_sys_template_users`  (
   `userId` int(11) NULL DEFAULT NULL COMMENT '用户id',
   `enable` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '是否启用，１启用',
   `isdel` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '是不删除，１已经删除',
-  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip生效时间',
-  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'vip过期时间',
+  `effectiveTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip生效时间',
+  `expirationTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'vip过期时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
@@ -5124,5 +5189,29 @@ CREATE TABLE `adv_sys_template_users`  (
 -- Records of adv_sys_template_users
 -- ----------------------------
 INSERT INTO `adv_sys_template_users` VALUES (1, 1, 1, '1', '0', '2019-04-19 23:34:57', '2038-05-31 21:34:57');
+
+-- ----------------------------
+-- Table structure for test
+-- ----------------------------
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test`  (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `age` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of test
+-- ----------------------------
+INSERT INTO `test` VALUES (1, '小明', 99);
+INSERT INTO `test` VALUES (2, '小明', 99);
+INSERT INTO `test` VALUES (3, '小明', 99);
+INSERT INTO `test` VALUES (4, '阿红', 18);
+INSERT INTO `test` VALUES (5, '阿红', 99);
+INSERT INTO `test` VALUES (6, '阿je ', 22);
+INSERT INTO `test` VALUES (7, '阿kj ', 22);
+INSERT INTO `test` VALUES (8, '阿kj ', 22);
+INSERT INTO `test` VALUES (9, '江颜', 22);
 
 SET FOREIGN_KEY_CHECKS = 1;
