@@ -86,7 +86,7 @@
             
         </div>
         <div class="col-xs-12">              
-            <div class="ibox-content">
+            <form class="form-list ibox-content">
                 <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="20" data-filter=#filter>
                     <thead>
                         <tr>    
@@ -107,7 +107,7 @@
                     <tbody id="arc-lists">
                         <tr>
                             <td data-sort-ignore="true">
-                                <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" value="{{id}}" /></label>
+                                <label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" name="id" value="{{id}}" /></label>
                             </td> 
                             <td>{{id}}</td>   
                             <td><img src="{{litpic}}"/>{{title}}</td>
@@ -116,7 +116,7 @@
                             <td>{{- return states[state]; }}</td> 
                             <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',addtime) }}</td> 
                             <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',senddate) }}</td>                           
-                            <td class="project-actions show-del">
+                            <td class="project-actions show-oper">
                                 <a href="javascript:go('/admin/arc/edt/ctag/{{- return ctag; }}?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
                                 <a href="" class="btn btn-white btn-sm" data-async="post" uri="/admin/arc/del/ctag/{{- return ctag; }}?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
@@ -124,9 +124,9 @@
                     </tbody>
                     <tfoot>     
                         <tr>
-                            <td class="show-del" colspan="9">
+                            <td class="show-opers" colspan="9">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
-                                <button type="button" class="btn btn-info" data-async="post" uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
+                                <button type="button" class="btn btn-info" data-async="post" uri='/admin/arc/del/ctag/<%= ctag %>?' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
@@ -136,7 +136,7 @@
                         </tr>
                     </tfoot>
                 </table>    
-            </div>     
+            </form>     
         </div>        
     </div>
 </div>
@@ -161,11 +161,22 @@
     });
     
 	//删除提醒
-	$('.show-del [data-async="post"]').click(function(){
+	$('.show-oper [data-async="post"]').click(function(){
 		var item = $(this);
 		app.alert(function(res){
 			if(!res) return;
 			item.attr('data-uri',item.attr('uri'));
+			item.click();
+		});
+	});
+	$('.show-opers [data-async="post"]').click(function(){
+		var params = $(".form-list").serialize();
+		if(!params) return app.notice({error:1, message:"请选择要删除的项"});
+		var item = $(this);
+		app.alert(function(res){
+			if(!res) return;
+			
+			item.attr('data-uri',item.attr('uri') + params);
 			item.click();
 		});
 	});
