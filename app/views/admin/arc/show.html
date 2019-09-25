@@ -118,7 +118,7 @@
                             <td>{{- return dateFormate('%Y-%m-%d %H:%M:%S',senddate) }}</td>                           
                             <td class="project-actions">
                                 <a href="javascript:go('/admin/arc/edt/ctag/{{- return ctag; }}?id={{id}}')" class="btn btn-white btn-sm"><i class="fa fa-pencil" style="color:#44ABF7" ></i> 编辑 </a>
-                                <a href="" class="btn btn-white btn-sm" data-async="post" data-uri="/admin/arc/del/ctag/{{- return ctag; }}?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
+                                <a href="" class="btn btn-white btn-sm" data-async="post" uri="/admin/arc/del/ctag/{{- return ctag; }}?id={{id}}"><i class="fa fa-trash" style="color:#44ABF7"></i> 删除 </a>
                             </td>
                         </tr>
                     </tbody>
@@ -126,7 +126,7 @@
                         <tr>
                             <td colspan="9">
                                 <label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
-                                <button type="button" class="btn btn-info" data-async="post" data-uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
+                                <button type="button" class="btn btn-info" data-async="post" uri='/admin/arc/del/ctag/<%= ctag %>?id=' id='del-records'>删除</button>
                             </td>
                         </tr>                  
                         <tr>                           
@@ -160,6 +160,14 @@
         }
     });
     
+	$('[data-async="post"]').click(function(){
+		var item = $(this);
+		app.alert(function(res){
+			if(!res) return;
+			item.attr('data-uri',item.attr('uri'));
+			item.click();
+		});
+	});
     
 
     /**

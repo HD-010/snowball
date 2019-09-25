@@ -71,6 +71,7 @@ var app = {
         event.preventDefault(); //默认阻止提交
         var meched = $(obj).attr('data-async').toLowerCase($(obj).attr('data-async'));  //获取提交方式
         var dataUri = $(obj).attr('data-uri');
+		if(!dataUri) return;
         
         app.initAction(dataUri);
         var uri = app.host + dataUri;
@@ -325,6 +326,7 @@ var app = {
 	 * 注需要引入<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 	 */
     alert: function(params, callback){
+		if(app.await) return false;
 		if(typeof params == "function"){
 			callback = params;
 			params = null;
@@ -339,9 +341,13 @@ var app = {
             confirmButtonText: "删除",
             closeOnConfirm: false
         }, function (res) {
+			app.await = true;
+			setTimeout(function(){
+				app.await = false;
+			}, 2000)
             swal("删除成功！", 
 			params.text_r ? params.text_r : "您已经永久删除了这条信息。", "success");
-            callback(res);
+            if(typeof callback == 'function') callback(res);
         });
     },
     /**
