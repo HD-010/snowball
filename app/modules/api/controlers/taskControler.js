@@ -12,12 +12,12 @@ function taskControler() {
 		var	data = {
 			error: 0,
 			message: "成功获取任务列表",
-			msgType: "task_list",
+			type: "task_list",
 			list: [
 				//一区播放任务
 				{
 					type: 'img', //播放图片
-					taskTag: 't-1',
+					taskTag: 't1',
 					style: '',
 					list: [
 						{url:'/img/01.jpg'},
@@ -28,7 +28,7 @@ function taskControler() {
 				//二区播放任务
 				{
 					type: 'video', //播放图片
-					taskTag: 't-2',
+					taskTag: 't2',
 					style: '',
 					list: [
 						{url:'/video/01.mp4'},
@@ -39,12 +39,12 @@ function taskControler() {
 				//三区播放任务
 				{
 					type: 'notice', //播放图片
-					taskTag: 't-3',
+					taskTag: 't3',
 					style: '',
 					list: [
-						{url:'/video/01.mp4}',
-						{url:'/video/02.mp4}',
-						{url:'/video/03.mp4}'
+						{url:'/video/01.mp4'},
+						{url:'/video/02.mp4'},
+						{url:'/video/03.mp4'}
 					]
 				}
 			]
