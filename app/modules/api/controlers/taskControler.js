@@ -9,20 +9,74 @@ function taskControler() {
 	 * 客户端请求分发（适应但不限于设备连接成功后，首次请求的任务列表）
 	 */
 	this.list = function() {
+		//任务列表数据模型说明：
 		var	data = {
-			error: 0,
-			message: "成功获取任务列表",
-			type: "task_list",
-			list: [
+			error: 0,					//任务请求状态0，成功；1失败
+			message: "成功获取任务列表",  //任务请求状态描述
+			type: "task_list",			//请求类型标识
+			persistent: true,			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); fals 插播任务
+			list: [						//任务列表
 				//一区播放任务
 				{
 					type: 'img', //播放图片
 					taskTag: 't1',
 					style: '',
+					enable: true,
 					list: [
-						{url:'/img/01.jpg'},
-						{url:'/img/02.jpg'},
-						{url:'/img/03.jpg'}
+						{
+							url:'/img/01.png',		//资源地址
+							duration: 6  			//播放时长（单位：秒）
+						},
+						{
+							url:'/img/02.png',
+							duration: 5  			
+						},
+						{
+							url:'/img/03.png',
+							duration: 5
+						}
+					]
+				},
+				//一区播放任务
+				{
+					type: 'img', //播放图片
+					taskTag: 't4',
+					style: '',
+					enable: true,
+					list: [
+						{
+							url:'/img/03.png',
+							duration: 5
+						},
+						{
+							url:'/img/01.png',		//资源地址
+							duration: 6  			//播放时长（单位：秒）
+						},
+						{
+							url:'/img/02.png',
+							duration: 5  			
+						}
+					]
+				},
+				//一区播放任务
+				{
+					type: 'img', //播放图片
+					taskTag: 't5',
+					style: '',
+					enable: true,
+					list: [
+						{
+							url:'/img/02.png',
+							duration: 5  			
+						},
+						{
+							url:'/img/01.png',		//资源地址
+							duration: 6  			//播放时长（单位：秒）
+						},
+						{
+							url:'/img/03.png',
+							duration: 5
+						}
 					]
 				},
 				//二区播放任务
@@ -30,10 +84,20 @@ function taskControler() {
 					type: 'video', //播放图片
 					taskTag: 't2',
 					style: '',
+					enable: true,
 					list: [
-						{url:'/video/01.mp4'},
-						{url:'/video/02.mp4'},
-						{url:'/video/03.mp4'}
+						{
+							url:'/video/01.mp4',
+							duration: 10
+						},
+						{
+							url:'/video/02.mp4',
+							duration: 8
+						},
+						{
+							url:'/video/03.mp4',
+							duration: 12
+						}
 					]
 				},
 				//三区播放任务
@@ -41,10 +105,23 @@ function taskControler() {
 					type: 'notice', //播放图片
 					taskTag: 't3',
 					style: '',
+					enable: true,
 					list: [
-						{url:'/video/01.mp4'},
-						{url:'/video/02.mp4'},
-						{url:'/video/03.mp4'}
+						{
+							title:'祝70周年国庆',
+							content:'中华人民共和国万岁！中华人民共和国万岁！',
+							duration: 20
+						},
+						{
+							title:'祝70周年国庆2',
+							content:'中华人民共和国万岁,万岁！',
+							duration: 20
+						},
+						{
+							title:'祝70周年国庆3',
+							content:'中华人民共和国万岁,万岁,万万岁！',
+							duration: 20
+						}
 					]
 				}
 			]
