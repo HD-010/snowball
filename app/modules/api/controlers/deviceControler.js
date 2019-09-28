@@ -1,5 +1,14 @@
 function deviceControler(){
+	/**
+	 * 设备错误上报
+	 */
+	this.err = function(){
+		
+	}
 	
+	/**
+	 * 设备注册
+	 */
 	this.reg = function(){
 		var process = `{
 	//所有任务主体，访问任务主体：$(process.tasks['t1'])。 't1' 为 'taskTag'
