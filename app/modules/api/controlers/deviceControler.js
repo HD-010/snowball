@@ -8,52 +8,49 @@ function deviceControler(){
 	
 	/**
 	 * 设备注册
+	 * 1 将设备的以下信息写入表
+	 * device_model	设备型号
+	 * device_vendor 设备厂商
+	 * device_imei  设备IMEI
+	 * device_uuid	设备UUID
+	 * device_sn	设备序列号（以上信息的md5串）
 	 */
 	this.reg = function(){
-		var process = `{
+		var process = `/**
+ * 视频播放器控制对象
+ */
+var player = {
+	self: null,	  //video对象
+	state: false, //当前播放状态
+	/**
+	 * 实例化播放器
+	 */
+	init: function() {
+		player.self = new plus.video.VideoPlayer('video', {
+			src: "",
+			loop: true,
+			autoplay: true,
+			objectFit: "cover"
+		});
+		//监听播放事件
+		player.self.addEventListener('play', function() {
+			//updatePlaying(true);
+		}, false);
+		//监听暂停事件
+		player.self.addEventListener('pause', function() {
+			//updatePlaying(false);
+		}, false)
+		return player;
+	}
+}
+
+/**
+ * 业务逻辑处理器
+ */
+var process = {
 	//所有任务主体，访问任务主体：$(process.tasks['t1'])。 't1' 为 'taskTag'
 	tasks:{},  
-	//视频任务执行成员
-	video: {
-		//初始化播放器
-		init: function() {
-			// 创建视频播放控件
-			player.init();
-			return process.video;
-		},
-		//播放列表
-		play: function(obj) {
-			//alert("正在播放..."+JSON.stringify(obj))
-			//视频播放列表
-			var url = obj[0].url;
-			//alert(url)
-			if (url && url.length > 0) {
-				if (!url.match(/(http:)|(https:)/)) url = conf.host + url;
-				player.self.setOptions({
-					src: url
-				});
-				player.self.play();
-			}
-		}
-	},
-	//图片任务执行成员
-	img: {
-		init: function(){
-			return process.img;
-		},
-		play: function(obj){
-			
-		}
-	},
-	//消息任务执行成员
-	notice: {
-		init: function(){
-			return process.img;
-		},
-		play: function(obj){
-			
-		}
-	},
+	
 	/**
 	 * 暂存数据
 	 * 被暂存的数据需要有 persistent = true 标识
@@ -70,6 +67,7 @@ function deviceControler(){
 	readTask: function(){
 		var taskList = getItem('task_list') || {};
 		return taskList.list;
+		
 	},
 
 	/**
@@ -80,7 +78,7 @@ function deviceControler(){
 	task_list: function(data) {
 		//任务主体
 		var task;	
-		data = process.readTask() || data;
+		data = data || process.readTask(); //优先执行插播任务的任务列表
 		if(!data){
 			setTimeout(function(){
 				app.notice({error: 1, message:"播放任务为空！"});
@@ -89,20 +87,116 @@ function deviceControler(){
 		} 
 		$("#contents").html('');
 		for (var i = 0; i < data.length; i++) {
+			if (!data[i].enable) continue;
+			!data[i].type in process
+			eval(('var typeFunc = ' + data[i].type))
+			if(typeof typeFunc != 'function') continue;
 			//将任务内容装到任务主体
-			task = $(views[data[i].type]);
+			task = $(views[data[i].type])[0].outerHTML;
+			//加载附加样式
+			task= $(task).attr('data-tag', data[i].taskTag); 
+			if(data[i].style) task.css(data[i].style);
 			//将任务主体索引到任务主体对象列表
-			process.tasks[data[i].taskTag] = task;  
 			$("#contents").append(task);
 			//实现媒体功能
-			if (data[i].type in process) process[data[i].type].init({}).play(data[i].list);
+			process.tasks[data[i].taskTg] = new typeFunc();
+			process.tasks[data[i].taskTg].lists = data[i];
+			process.tasks[data[i].taskTg].play();
+		}  
+	}
+};
+
+/**
+ * 消息任务执行成员
+ */
+function notice(){
+	var me = this;
+	this.lists ={};
+	//节目序号
+	this.num = 0;
+
+	this.play = function(){
+		var obj = this.lists;
+		//视频播放列表
+		var title = obj.list[this.num].title;
+		var content = obj.list[this.num].content;
+		$('[data-tag=' + obj.taskTag + ']').find('.icon-notice').html(title);
+		$('[data-tag=' + obj.taskTag + ']').find('.noticeText').html(content);
+		setTimeout(function(){
+			me.play(obj);
+		},obj.list[this.num].duration * 1000);
+		if(this.num == obj.list.length-1){
+			//如果当前执行的不是循环任务列表，则重新执行循环任务列表的任务
+			if(!process.persistent) return process.task_list();
+			return this.num = 0;
 		}
-		
+		this.num ++;
+	}
+}
+
+/**
+ * 视频任务执行成员
+ */
+function video(){
+	var me = this;
+	player.init();
+	this.lists = {};
+	//节目序号
+	this.num = 0;
+	//播放列表
+	this.play = function() {
+		//视频播放列表
+		var obj = this.lists;
+		var url = obj.list[this.num].url;
+		if (url && url.length > 0) {
+			if (!url.match(/(http:)|(https:)/)) url = conf.host + url;
+			player.self.setOptions({
+				src: url
+			});
+			player.self.play();
+		}
+		setTimeout(function(){
+			me.play(obj);
+		},obj.list[this.num].duration * 1000);
+		if(this.num == obj.list.length-1){
+			//如果当前执行的不是循环任务列表，则重新执行循环任务列表的任务
+			if(!process.persistent) return process.task_list();
+			return this.num = 0;
+		} 
+		this.num ++;
+	}
+}
+
+/**
+ * 图片任务执行成员
+ */
+function img(){
+	var me = this;
+	this.lists = {};
+	//节目序号
+	this.num = 0;
+	this.play = function(){
+		var obj = this.lists;
+		//视频播放列表
+		var url = obj.list[this.num].url;
+		if (url && url.length > 0) {
+			if (!url.match(/(http:)|(https:)/)) url = conf.host + url;
+			$('[data-tag=' + obj.taskTag + ']').find('img').attr('src',url);
+		}
+		setTimeout(function(){
+			me.play(obj);
+		},obj.list[me.num].duration * 1000);
+		if(this.num == obj.list.length-1){
+			//如果当前执行的不是循环任务列表，则重新执行循环任务列表的任务
+			if(!process.persistent) return process.task_list();
+			return this.num = 0;
+		} 
+		this.num ++;
 	}
 }`;
 		var data = {
-			error: 0,
-			message: "设备注册成功！",
+			error: 0,			//代号说明：0注册成，1注册失败，2已经注册过
+			message: ["设备注册成功！","设备注册失败，尝试重新启动设备再次注册","访问受权成功"],
 			data:{
 				id: 1598,
 				sn: this.POST('id'),
