@@ -1278,18 +1278,18 @@ function xhr5(){
 		console.log("this is xhr5:::",this.xhr)
 		this.xhr.onreadystatechange = function() {
 			switch (that.xhr.readyState) {
-				case 0:
-					console.log("xhr请求已初始化");
-					break;
-				case 1:
-					console.log("xhr请求已打开");
-					break;
-				case 2:
-					console.log("xhr请求已发送");
-					break;
-				case 3:
-					console.log("xhr请求已响应");
-					break;
+				// case 0:
+				// 	console.log("xhr请求已初始化");
+				// 	break;
+				// case 1:
+				// 	console.log("xhr请求已打开");
+				// 	break;
+				// case 2:
+				// 	console.log("xhr请求已发送");
+				// 	break;
+				// case 3:
+				// 	console.log("xhr请求已响应");
+				// 	break;
 				case 4:
 					console.log("xhr请求已完成");
 					callback({
@@ -1368,7 +1368,8 @@ function setFrame(id){
 function getItem(tag){
     var query_params = $.md5(location.pathname);
     tag = tag || query_params;
-    var str = sessionStorage.getItem(tag);
+    var storage = plus ? plus.storage : sessionStorage;
+    var str = storage.getItem(tag);
     try{
         str = JSON.parse(str);
     } catch (e){}
@@ -1383,7 +1384,8 @@ function setItem(name,data){
         data = JSON.stringify(data);
     }catch(e){}
     //if(typeof data === 'object') data = JSON.stringify(data);
-    sessionStorage.setItem(name,data);
+    var storage = plus ? plus.storage : sessionStorage;
+    storage.setItem(name,data);
 }
 
 /**

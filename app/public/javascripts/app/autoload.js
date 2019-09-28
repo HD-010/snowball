@@ -124,6 +124,8 @@ Array.prototype.remove = function(val) {
 //window.Hosts = ['http://192.168.1.115:8086'];
 
 function ViewData(params){
+    var that = this;
+	params = params || {};
     this.dev = params.dev;
     //默认接口服务器
     this.host = params.host ? params.host : ((window.Hosts) ? Hosts[0] : "");
@@ -165,6 +167,9 @@ function ViewData(params){
     this.clearCode = params.clearCode || false;
     this.result = {};
     
+    this.exit = function(){
+		that.dev = 'exit;'
+	}
 
     this.log = function(){
         console.log("==uri：：：",this.host + this.uri,"======data：：：",this.data, "======返回数据：：：",this.results);
@@ -227,7 +232,7 @@ function ViewData(params){
 				
 				(new xhr5()).req({
 					uri: that.host + that.uri,
-					method: "GET"
+					method: "POST"
 				},function(results){
 					if(results.status == 200){
 						results = results.response;
