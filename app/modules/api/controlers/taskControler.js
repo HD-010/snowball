@@ -23,7 +23,7 @@ function taskControler() {
 			//任务持久标识persistent 可有以下值
 			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
 			//false 插播任务,任务列表不会被保存到客户端
-			persistent: true,	false,
+			persistent: true,
 			//任务分区表
 			list: [						
 				//一区播放任务
