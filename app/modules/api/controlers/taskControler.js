@@ -113,16 +113,16 @@ function taskControler() {
 					enable: true,
 					list: [
 						{
-							url:'/video/01.mp4',
-							duration: 180
+							url:'/video/04.mp4',
+							duration: 10
 						},
 						{
 							url:'/video/02.mp4',
-							duration: 180
+							duration: 5
 						},
 						{
 							url:'/video/03.mp4',
-							duration: 180
+							duration: 5
 						}
 					]
 				},
