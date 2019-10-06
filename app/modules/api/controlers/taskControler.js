@@ -114,15 +114,15 @@ function taskControler() {
 					list: [
 						{
 							url:'/video/04.mp4',
-							duration: 10
+							duration: 180
 						},
 						{
 							url:'/video/02.mp4',
-							duration: 5
+							duration: 180
 						},
 						{
 							url:'/video/03.mp4',
-							duration: 5
+							duration: 180
 						}
 					]
 				},
@@ -149,31 +149,7 @@ function taskControler() {
 							duration: 20
 						}
 					]
-				},
-				//三区播放任务
-				// {
-				// 	type: 'notice', //播放图片
-				// 	taskTag: 't6',
-				// 	style: '',
-				// 	enable: true,
-				// 	list: [
-				// 		{
-				// 			title:'祝70周年国庆4',
-				// 			content:'中华人民共和国万岁！中华人民共和国万岁！',
-				// 			duration: 20
-				// 		},
-				// 		{
-				// 			title:'祝70周年国庆5',
-				// 			content:'中华人民共和国万岁,万岁！',
-				// 			duration: 20
-				// 		},
-				// 		{
-				// 			title:'祝70周年国庆6',
-				// 			content:'中华人民共和国万岁,万岁,万万岁！',
-				// 			duration: 20
-				// 		}
-				// 	]
-				// }
+				}
 			]
 		}
 		this.renderJson(data);
