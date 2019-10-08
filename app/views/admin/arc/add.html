@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-31 16:09:25
  * @LastEditors: Please set LastEditors
  -->
-<%- //print_r(addoninfos) %>
+<%- print_r(addoninfos) %>
 
 <%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
 <%- //'results:' + JSON.stringify(results,null,2)%>
@@ -188,7 +188,7 @@ var formCode = {
 }
 %>
 <!-- 主表控件变量 -->
-<% var typeNme,effect,listName,attr;%>
+<% var typeNme,effect,listName,attr,fieldget;%>
 <style>
 .add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
@@ -291,12 +291,14 @@ var formCode = {
                         </tr>
                     </thead>
                     <tbody class="page-struct">
+						<% 
+						effect = array2value(addoninfos, 'field', 'title', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'itemname') : '标题'; 
+						fieldget = array2value(addoninfos, 'field', 'title', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'title', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'itemname') : '标题'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'attr') : '';
-                            %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -305,13 +307,16 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写标题，长度限制15字</span>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'shorttitle', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'itemname') : '短标题'; 
+						fieldget = array2value(addoninfos, 'field', 'shorttitle', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'shorttitle', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'itemname') : '短标题'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'attr') : '';
-                            %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -320,19 +325,22 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;给发布的内容写短标题，长度限制25字</span>
                             </td>              
                         </tr>
+						<% } %>
 
-                        <tr>
-                            <% 
-                                effect = array2value(addoninfos, 'field', 'typeid', 'effect');
-                                typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
-                                listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
-								attr = array2value(addoninfos, 'field', 'typeid', 'attr');
-                                attr = ((effect == 'main') && attr) ? 
+						<% 
+							effect = array2value(addoninfos, 'field', 'typeid', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
+							listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
+							attr = array2value(addoninfos, 'field', 'typeid', 'attr');
+							fieldget = array2value(addoninfos, 'field', 'typeid', 'fieldget');
+							if(fieldget !== 0){
+								attr = ((effect == 'main') && attr) ? 
 								array2value(addoninfos, 'field', 'typeid', 'attr') : 
 								((locals.enumtagVal && locals.enumtagName) ? 
 								' data-key='+ enumtagVal.join('-') + ' data-val=' + enumtagName.join('-'):'');
-								
-                            %>
+							
+						%>
+                        <tr>
                             <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -342,14 +350,17 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选对应的栏目</span>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'classify', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
+						listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
+						fieldget = array2value(addoninfos, 'field', 'classify', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'classify', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
-                            listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'attr') : '';
-                            %>
                             <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -359,26 +370,32 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;选择内容所属的分类</span>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'component', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'itemname') : '推荐'; 
+						fieldget = array2value(addoninfos, 'field', 'component', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'component', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'itemname') : '推荐'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'attr') : '';
-                            %>
                             <td><%= echo(typeName) %>：</td>
                             <td style="padding-left:26px;">
                                 <label class="mui-switch-em"><input class="mui-switch mui-switch-anim" type="checkbox" name="component" data-stat="" <%= echo(attr) %> value="" /><em></em></label>
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;设置栏目是否显示在网站栏目列表</span>
                             </td>    
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'keywords', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'itemname') : '关键字'; 
+						fieldget = array2value(addoninfos, 'field', 'keywords', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'keywords', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'itemname') : '关键字'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'attr') : '';
-                            %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -387,13 +404,16 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
                         </tr>
+						<% } %>
                         
+						<% 
+						effect = array2value(addoninfos, 'field', 'state', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'itemname') : '状态'; 
+						fieldget = array2value(addoninfos, 'field', 'state', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'state', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'itemname') : '状态'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'attr') : '';
-                            %>
                             <td><%= echo(typeName) %>：</td>
                             <td>
                                 <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
@@ -403,13 +423,16 @@ var formCode = {
                                 </div>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'description', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'itemname') : '描述'; 
+						fieldget = array2value(addoninfos, 'field', 'description', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'description', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'itemname') : '描述'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'attr') : '';
-                            %>
                             <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -418,13 +441,16 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'weight', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'itemname') : '权重'; 
+						fieldget = array2value(addoninfos, 'field', 'weight', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'weight', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'itemname') : '权重'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'attr') : '';
-                            %>
                             <td><%= typeName; %>：</td>
                             <td>
                                 <div class="form-group col-xs-4">
@@ -433,13 +459,16 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
                             </td>              
                         </tr>
+						<% } %>
 
+						<% 
+						effect = array2value(addoninfos, 'field', 'litpic', 'effect');
+						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
+						fieldget = array2value(addoninfos, 'field', 'litpic', 'fieldget');
+						if(fieldget !== 0){
+							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'attr') : '';
+						%>
                         <tr>
-                            <% 
-                            effect = array2value(addoninfos, 'field', 'litpic', 'effect');
-                            typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
-                            attr = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'attr') : '';
-                            %>
                             <td><%= typeName; %>：</td>
                             <td class="pic-box" data-limit="1" data-field='litpic'>
                                 <div class="form-group col-xs-8">
@@ -452,7 +481,7 @@ var formCode = {
                                 <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
                             </td>              
                         </tr>
-
+						<% } %>
                         
                     </tbody>
                     <tfoot>

@@ -5,7 +5,7 @@
  * @LastEditTime: 2019-08-28 11:12:05
  * @LastEditors: Please set LastEditors
  -->
-<%- //print_r(results[0].addoninfos)%>
+<%- print_r(results[0].addoninfos)%>
 <link href="/bootstrap/css/plugins/footable/footable.core.css" rel="stylesheet">
 <style>
     .base .form td {
@@ -306,8 +306,9 @@
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">采集数据:</div>
                                     <div class="footable-row-detail-value">
+										<input type="hidden" name="fieldget" value="{{- return fieldget?1:0; }}"  />
                                         <input class="mui-switch mui-switch-anim is-get" type="checkbox" {{- return fieldget?'checked':''; }}
-                                            name="fieldget"  value="1"><em
+                                             value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -321,16 +322,18 @@
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">写入数据:</div>
                                     <div class="footable-row-detail-value">
+										<input type="hidden" name="fieldset" value="{{- return fieldset?1:0; }}"  />
                                         <input class="mui-switch mui-switch-anim is-set" type="checkbox" {{- return fieldset?'checked':''; }}
-                                            name="fieldset" value="1"><em
+                                             value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
                                 <div class="footable-row-detail-row">
                                     <div class="footable-row-detail-name">不过滤数据:</div>
                                     <div class="footable-row-detail-value">
+										<input type="hidden" name="novaild" value="{{- return novaild?1:0; }}"  />
                                         <input class="mui-switch mui-switch-anim is-novaild" type="checkbox" {{- return novaild?'checked':''; }}
-                                            name="novaild" value="1"><em
+                                             value="1"><em
                                             style="color: rgb(255, 255, 255); margin-left: 0px;">是</em>
                                     </div>
                                 </div>
@@ -410,10 +413,21 @@
             $(".component-edit tbody tr").unbind('mouseout').on('mouseout', function () {
                 oper.hadHidden(this)
             })
-            effect.switch('.is-null', '是', '否');
-            effect.switch('.is-get', '是', '否');
-            effect.switch('.is-set', '是', '否');
-            effect.switch('.is-novaild', '是', '否');
+            effect.switch('.is-null', '是', '否', function(e){
+	            $(e).val($(e).prop('checked') ? 1: 0);
+	        });
+            effect.switch('.is-get', '是', '否', function(e){
+	            $(e).val($(e).prop('checked') ? 1: 0);
+	            $(e).prev().val($(e).prop('checked') ? 1: 0);
+	        });
+            effect.switch('.is-set', '是', '否', function(e){
+	            $(e).val($(e).prop('checked') ? 1: 0);
+				 $(e).prev().val($(e).prop('checked') ? 1: 0);
+	        });
+            effect.switch('.is-novaild', '是', '否', function(e){
+	            $(e).val($(e).prop('checked') ? 1: 0);
+				 $(e).prev().val($(e).prop('checked') ? 1: 0);
+	        });
             effect.setSelect('.component-edit');
             app.load(".component-edit");
         }

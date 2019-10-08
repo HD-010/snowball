@@ -94,6 +94,7 @@ function ComponentModel(){
         fields = this.POST('field');
         if(typeof fields != "object") fields = [fields];
         addonInfos = [];
+		console.log("===============================================addonInfos)))))):",this.POST() );
         for(var i = 0; i < fields.length; i ++ ){
             if(!fields[i]) continue;
             if(!names) names  = Object.keys(originData);
@@ -107,6 +108,10 @@ function ComponentModel(){
                     temField[names[j]] = temData[i].replace(/\s/g,'');  //字段名称不能有空格
                     continue;
                 }
+				if(names[j] == 'fieldget' || names[j] == 'fieldset' || names[j] == 'novaild'){
+					temField[names[j]] = parseInt(temData[i]);  //这三个字段要求int
+					continue;
+				}
                 if((names[j] == 'effect') && 
                 (temData[i] != 'main' && temData[i] != 'addon' && temData[i])){
                     temData[i] = temData[i].replace(/(tab_#@)|(\s)/g, '');
@@ -118,7 +123,7 @@ function ComponentModel(){
             }
             addonInfos.push(mergeObj([originData, temField]));
         }
-        
+		console.log("===============================================addonInfos)))))):",addonInfos );
         if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);
