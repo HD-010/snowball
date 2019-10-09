@@ -94,7 +94,6 @@ function ComponentModel(){
         fields = this.POST('field');
         if(typeof fields != "object") fields = [fields];
         addonInfos = [];
-		console.log("===============================================addonInfos)))))):",this.POST() );
         for(var i = 0; i < fields.length; i ++ ){
             if(!fields[i]) continue;
             if(!names) names  = Object.keys(originData);
@@ -123,7 +122,6 @@ function ComponentModel(){
             }
             addonInfos.push(mergeObj([originData, temField]));
         }
-		console.log("===============================================addonInfos)))))):",addonInfos );
         if(!addonInfos.length) return callback(data);
         var nid = that.POST('nid');
         if(!nid) return callback(data);

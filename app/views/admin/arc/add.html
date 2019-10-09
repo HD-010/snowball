@@ -112,10 +112,10 @@ var formCode = {
     uploader: function(index){
         return '<tr>' + 
             '<td>'+ echo(addoninfos[index].itemname) + '：</td>' + 
-            '<td class="pic-box" data-limit="5" data-field='+ addoninfos[index].field +'>' + 
+            '<td class="pic-box" data-limit="'+ addoninfos[index].limit +'" data-field='+ addoninfos[index].field +'>' + 
                 '<div class="form-group col-xs-8">' + 
                     '<div class="replaceImg-label">' + 
-                        '<label class="col-sm-2 control-label img-add" for="replaceImg">' + 
+                        '<label class="col-sm-2 control-label img-add" for="replaceImg" '+ echo(addoninfos[index].attr) + '>' + 
                             '<img src="/img/plus.png" />' + 
                         '</label>' + 
                     '</div>' + 
@@ -292,10 +292,10 @@ var formCode = {
                     </thead>
                     <tbody class="page-struct">
 						<% 
-						effect = array2value(addoninfos, 'field', 'title', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'itemname') : '标题'; 
 						fieldget = array2value(addoninfos, 'field', 'title', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'title', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'itemname') : '标题'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'title', 'attr') : '';
 						%>
                         <tr>
@@ -310,10 +310,10 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'shorttitle', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'itemname') : '短标题'; 
 						fieldget = array2value(addoninfos, 'field', 'shorttitle', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'shorttitle', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'itemname') : '短标题'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'shorttitle', 'attr') : '';
 						%>
                         <tr>
@@ -328,12 +328,12 @@ var formCode = {
 						<% } %>
 
 						<% 
-							effect = array2value(addoninfos, 'field', 'typeid', 'effect');
-							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
-							listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
-							attr = array2value(addoninfos, 'field', 'typeid', 'attr');
 							fieldget = array2value(addoninfos, 'field', 'typeid', 'fieldget');
 							if(fieldget !== 0){
+								effect = array2value(addoninfos, 'field', 'typeid', 'effect');
+								typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'itemname') : '所属栏目'; 
+								listName = (effect == 'main') ? array2value(addoninfos, 'field', 'typeid', 'islist') : '栏目列表'; 
+								attr = array2value(addoninfos, 'field', 'typeid', 'attr');
 								attr = ((effect == 'main') && attr) ? 
 								array2value(addoninfos, 'field', 'typeid', 'attr') : 
 								((locals.enumtagVal && locals.enumtagName) ? 
@@ -353,11 +353,11 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'classify', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
-						listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
 						fieldget = array2value(addoninfos, 'field', 'classify', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'classify', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'itemname') : '所属分类'; 
+							listName = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'islist') : '所属分类'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'classify', 'attr') : '';
 						%>
                         <tr>
@@ -373,10 +373,10 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'component', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'itemname') : '推荐'; 
 						fieldget = array2value(addoninfos, 'field', 'component', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'component', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'itemname') : '推荐'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'component', 'attr') : '';
 						%>
                         <tr>
@@ -389,10 +389,10 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'keywords', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'itemname') : '关键字'; 
 						fieldget = array2value(addoninfos, 'field', 'keywords', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'keywords', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'itemname') : '关键字'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'keywords', 'attr') : '';
 						%>
                         <tr>
@@ -407,10 +407,10 @@ var formCode = {
 						<% } %>
                         
 						<% 
-						effect = array2value(addoninfos, 'field', 'state', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'itemname') : '状态'; 
 						fieldget = array2value(addoninfos, 'field', 'state', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'state', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'itemname') : '状态'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'state', 'attr') : '';
 						%>
                         <tr>
@@ -426,10 +426,10 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'description', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'itemname') : '描述'; 
 						fieldget = array2value(addoninfos, 'field', 'description', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'description', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'itemname') : '描述'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'description', 'attr') : '';
 						%>
                         <tr>
@@ -444,10 +444,10 @@ var formCode = {
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'weight', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'itemname') : '权重'; 
 						fieldget = array2value(addoninfos, 'field', 'weight', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'weight', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'itemname') : '权重'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'weight', 'attr') : '';
 						%>
                         <tr>
@@ -456,16 +456,16 @@ var formCode = {
                                 <div class="form-group col-xs-4">
                                     <input type="number" class="form-control" name="weight" <%= echo(attr) %> value=" "/>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;如：填写数字，数字越大越靠前排列</span>
                             </td>              
                         </tr>
 						<% } %>
 
 						<% 
-						effect = array2value(addoninfos, 'field', 'litpic', 'effect');
-						typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
 						fieldget = array2value(addoninfos, 'field', 'litpic', 'fieldget');
 						if(fieldget !== 0){
+							effect = array2value(addoninfos, 'field', 'litpic', 'effect');
+							typeName = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'itemname') : '缩略图'; 
 							attr = (effect == 'main') ? array2value(addoninfos, 'field', 'litpic', 'attr') : '';
 						%>
                         <tr>
@@ -478,7 +478,7 @@ var formCode = {
                                         </label>
                                     </div>
                                 </div>
-                                <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张）</span>
+                                <span style="line-height: 40px;"><!-- <i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;上传缩略图（限1张） --></span>
                             </td>              
                         </tr>
 						<% } %>
@@ -1010,6 +1010,7 @@ var formCode = {
     effect.setRadio(".radio-content-state");
     effect.setRadio(".auto-radio");
     effect.setSelect(".auto-select");
+	effect.setJavascript('#add-infor');
     
     function save(res){
         if(!res.error) res.uri = '/admin/arc/show/ctag/<%= ctag %>';

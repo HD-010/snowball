@@ -969,6 +969,24 @@ var effect = {
 			if (typeof comment != 'undefined') $(item).parent().siblings().find('.comment').after(comment);
 		});
 	},
+	
+	/**
+	 * 设置javascript代码
+	 * html代码结构：
+	 *  <parent>
+	        <div class="form-group col-xs-4">
+	            <tag type="text" class="form-control" name="title" data-js="js代码"/>
+	        </div>
+	        <span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i>&nbsp;如：新闻</span>
+	    </parent>
+	 */
+	setJavascript: function(selecter) {
+		selecter = selecter || document;
+		$(selecter).find('[data-js]').each(function(index, item) {
+			var js = $(item).attr('data-js');
+			if (typeof js != 'undefined') $(item).after('<script>' + js + '</script>');
+		});
+	},
 
 	/**
 	 * 设置checkbox选项
