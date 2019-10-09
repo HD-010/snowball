@@ -1532,33 +1532,33 @@ function mergeObj(objs) {
 function treeValue(array, key1, value, key2, all) {
 	array = array || [];
 	all = all || false;
-	if (!array.length) return '';
-	if (typeof key2 == 'boolean') {
-		all = key2;
-		key2 = undefined;
+	if(!array.length) return '';
+	if(typeof key2 == 'boolean') {
+	    all = key2;
+	    key2 = undefined;
 	}
 	var temObj = [];
 	var valStr = value + '';
 	var tag = valStr.match(/(^[!=<>]{1,3})/g);
-	if (tag) value = valStr.substr(tag.length + 1);
+	if(tag) value = valStr.substr(tag.length + 1);
 	tag = tag ? tag[0] : '==';
-	for (var i in array) {
+	for(var i in array){
 		var item = array[i];
-		for (var k in item) {
-			if (item[k].constructor.name == 'Array') {
-				var values = treeValue(item[k], key1, value, key2, all);
+		for(var k in item){
+			if(item[k].constructor.name == 'Array'){
+				var values = treeValue(item[k],key1,value,key2,all);
 				(values.constructor.name == 'Array') ?
-				mergeObj([temObj, values]):
-					temObj = values;
-			} else {
-				eval(('temB = (array[i][key1]' + tag + 'value)'));
-				if (!temB) continue;
-				if (!all) return key2 ? array[i][key2] : array[i];
+				mergeObj([temObj,values]) :
+				temObj = values;
+			}else{
+				eval(('temB = (array[i][key1]' + tag  + 'value)'));
+				if(!temB) continue;
+				if(!all) return key2 ? array[i][key2] : array[i];
 				key2 ? temObj.push(array[i][key2]) : temObj.push(array[i]);
 			}
 		}
 	}
-
+	
 	return temObj;
 }
 

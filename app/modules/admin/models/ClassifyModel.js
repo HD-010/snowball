@@ -19,8 +19,7 @@ function ClassifyModel(){
         conditions.where.push("comtag='" + params.ctag + "'");
         conditions.where.push("macid='" + params.macid + "'");
         conditions.where.push("enable='" + params.enable + "'");  //按分类是否启用为条件查找
-
-        this.DB().get(conditions,function(error,results){
+        this.DB().log().get(conditions,function(error,results){
             var data = {};
             //data.error =  (error || !results.length) ? 1 : 0;
             data.error =  error ? 1 : 0;
@@ -45,7 +44,8 @@ function ClassifyModel(){
             where: []
         }
         var data = {};
-        var macid = this.POST('macid');
+		var process = this.model("DataProcess");
+        var macid = process.getUserInfo()[0].groupId;    //商户id用组id表示
         if(macid) data.macid = macid;
         var classify = this.POST('classify');
         if(classify) data.classify = classify;

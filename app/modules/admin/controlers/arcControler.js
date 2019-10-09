@@ -43,7 +43,7 @@ function arcControler(){
         var classify = this.model("Classify");
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
-        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        params.macid = process.getUserInfo()[0].groupId;    //商户id，暂以登录用户id表示
         data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
@@ -296,6 +296,7 @@ function arcControler(){
                 name: "栏目列表",
                 children:treeStrcut(res.data)
             }]; 
+			
             ps = that.testRender(data,ps);
         });
         
@@ -303,7 +304,7 @@ function arcControler(){
         var classify = this.model("Classify");
         //查询分类需要参数：ctag,macid,enable
         params.ctag = ctag;
-        params.macid = process.getUserInfo('UID');    //商户id，暂以登录用户id表示
+        params.macid = process.getUserInfo()[0].groupId;    //商户id，暂以登录用户id表示
         data.mid = process.getUserInfo('UID');    //登录用户id表示
         params.enable = '1';
         classify.get(params, function(res){
@@ -333,7 +334,7 @@ function arcControler(){
             }
 
             data.addoninfos = res.results[0].addoninfos;              //附加表字段信息
-            params.addoninfos = res.results[0].addoninfos;
+			params.addoninfos = res.results[0].addoninfos;
             arc.lists(params,(res)=>{
                 if(res.error) {
                     res.message = "查询数据失败，请稍后重试";
@@ -362,7 +363,7 @@ function arcControler(){
 
                 //获取第三类表数据
                 params.effectTabs = arrayDistinct(queryresultKeyValue(data.addoninfos,"effect"));
-                if(params.effectTabs.length){
+				if(params.effectTabs.length){
                     ps ++;
                     arc.thirdList(params,function(res){
                         data = mergeObj([data,res]);

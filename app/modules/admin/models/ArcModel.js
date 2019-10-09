@@ -15,7 +15,6 @@ function ArcModel(){
         params.SEDate = this.POST('SEDate',{default:this.GET('SEDate')}) || params.SEDate || [];
         if(typeof params.SEDate != 'object') callback({error: 1, message: '时间参数错误!'});
         var sky = this.POST('sky');
-		log(params.addoninfos);
         var noVAlid = array2value(params.addoninfos,'novaild',1,'field',true); //定义的字段会被base64编码
         var conditions = {
             table: ['#@archives'],
@@ -40,7 +39,6 @@ function ArcModel(){
         ") or #@archives.keywords INSTR(" + sky + ")");
         conditions.where.push(params.addonTab + '.aid is not null');
         this.DB().get(conditions,(error,results)=>{
-			log("=========================", results);
             var data = {};
             data.error = results.length ? 0 : 1;
             data.results = error ? [] : recodeBase64decode(results,noVAlid);

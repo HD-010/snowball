@@ -8,6 +8,8 @@
 <%- //print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
 <%- //print_r(thirdList) %>
+<%- print_r(thirdList) %>
+
 <%
     var formCode = {
         //uediter选项
@@ -159,6 +161,7 @@
         *   nesmodal树型结构列表输入
         **/
         nesmodal: function(index){
+			console.log("thisis results======================================", results);
             var fieldName = addoninfos[index].field;
             var typeName = array2value(addoninfos, 'field', fieldName, 'itemname') || '所属分类'; 
             var listName = array2value(addoninfos, 'field', fieldName, 'islist') || '所属分类'; 
@@ -166,7 +169,9 @@
                 <td>` + typeName + `：</td>
                 <td>
                     <div class="form-group col-xs-4">
-                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;"></div>
+                        <div data-freemodal="state" data-name="` + listName + `" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;">
+						` + echo(treeValue(JSON.parse(results),'val',data[0][fieldName],'name')) + `
+						</div>
                         <input type="hidden" name="`+ fieldName +`" value="` +echo(data[0][fieldName]) + `"/>
                     </div>
                     <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i></span>
@@ -198,10 +203,11 @@
         }
     }
 %>
+
 <!-- 主表控件变量 -->
 <% var typeNme,effect,listName,attr,fieldget;%>
 <style>
-	.add-infor .active{background-color:#FFF;}
+.add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
 .full-screen{
     position: fixed;
@@ -384,7 +390,9 @@
 								<%= typeName; %>：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<% var classify = JSON.parse(results); %>
+									<% 
+									var classify = results.length ? JSON.parse(results) : []; 
+									%>
 									<div data-freemodal="state" data-name="<%= listName %>" style="height:3em;line-height:3em;border:1px solid #CFDADD;padding-left:1em;">
 										<%= treeValue(classify,'val',data[0].classify,'name'); %>
 									</div>
@@ -540,7 +548,7 @@
 						<% 
                         for(var i in addoninfos){ 
                             if(!addoninfos[i].fieldget || (addoninfos[i].effect && (addoninfos[i].effect != 'addon'))) continue;
-                        %>
+						%>
 						<%- formCode.get(i); %>
 						<% } %>
 						<script> var UE = <%- JSON.stringify({uediterFields: formCode.uediterFields}) %></script>
