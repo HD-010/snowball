@@ -133,8 +133,14 @@ var formCode = {
             <td>`+ echo(addoninfos[index].itemname) +`</td>
             <td>
                 <label class="col-xs-8 normal-add">
-                    <input id="fileInput" type="file" name="image" size="50" `+ echo(addoninfos[index].attr) + `/>
-					<input type="hidden" name="`+addoninfos[index].field+`" value="" />
+					<div class="input-group">
+						<input type="text" id='showFileName' style="border:0;" class="form-control"  value='还没有上传文件！' /> 
+						<span class="input-group-btn"> 
+							<button type="button" class="btn btn-primary" onClick='javascript:$("#fileInput").click();'>浏览文件</button> 						
+						</span>
+						<input id="fileInput" type="file" name="image" style="display:none" size="50" `+ echo(addoninfos[index].attr) + ` />
+						<input type="hidden" name="`+addoninfos[index].field+`" value="" />
+					</div>
 				</label>
             </td>       
         </tr>`;
@@ -1080,6 +1086,13 @@ var formCode = {
 	function normalProcess(data){
 		if(!data.state) return;
 		uploader.picBox.find('[type="hidden"]').val("/" + data.url);
+		uploader.picBox.find('#showFileName').val("/" + data.url);
+		$("button[type=submit]").removeAttr("disabled");
+	}
+	//通用上传中信息提示
+	function normalUploading(obj){
+		uploader.picBox.find('#showFileName').val("正在上传文件,请稍等...");
+		$("button[type=submit]").attr("disabled", "disabled");
 	}
 	
     function setEffect(){
