@@ -92,15 +92,18 @@ function expControler(){
                 <br />
                 <input type="submit" value="上传文件" />
             </form>
-            <%- jqueryUpload %>
-        */ 
-        // data.normalAsync = this.plug('Uploads',{
-        //     url:'/dome/index/file?a=b&c=d#sd',      //上传文件的服务端地址
-        //     control:'#fileInput',                   //载入文件的input框id
-        //     form:'#testForm',                       //承载input框的form元素的id
-        //     successCallback:'',
-        //     faileCallback:'',
-        // }).normalAsync;
+            <%- normalAsync %>
+        */
+	    var data = {};
+        data.normalAsync = this.plug('Uploads',{
+            url:'/admin/upload/video?oid=d1bd6324581a1722a880b9f54315dd3e53',      //上传文件的服务端地址
+            control:'#fileInput',                   //载入文件的input框id
+            form:'#testForm',                       //承载input框的form元素的id
+            successCallback:'',
+            faileCallback:'',
+        }).normalAsync;
+		
+		this.render(data);
     }
 
     this.useJqueryCropperUpload = function(){

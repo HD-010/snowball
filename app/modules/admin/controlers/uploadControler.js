@@ -8,6 +8,15 @@ function uploadControler(){
             typeDir: true        //需要分类管理文件（按日期分类）
         });
     }
+	
+	this.video = function (){
+	    that.upload({
+	        req    : that.req,
+	        res    : that.res,
+	        path   : 'video/',   //上传文件大分类名称
+	        typeDir: true        //需要分类管理文件（按日期分类）
+	    });
+	}
 
     this.doc = function (){
         that.upload({

@@ -41,6 +41,16 @@ function FileModel(){
             },
             url: '/admin/upload/img?oid='+params.oid,   //上传图片的服务地址
         }).cropperAsync;
+		
+		// 通用上传插件获取前端逻辑处理代码
+		data.normalAsync = that.plug('Uploads',{
+		    url:'/admin/upload/video?oid='+params.oid,  //上传文件的服务端地址
+		    control:'#fileInput',                   	//载入文件的input框id
+		    form:params.formId,                       //承载input框的form元素的id
+			uploading:'normalUploading',
+		    successCallback:'normalProcess',
+		    faileCallback:'normalProcess'
+		}).normalAsync;
         return data;
     }
 }

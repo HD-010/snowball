@@ -8,7 +8,6 @@
 <%- //print_r(data[0]) %>
 <%- //print_r(addoninfos) %>
 <%- //print_r(thirdList) %>
-<%- print_r(thirdList) %>
 
 <%
     var formCode = {
@@ -133,6 +132,22 @@
                 '</td>' +            
             '</tr>';
         },
+		
+		/**
+		 * 视频上传控件参数说明
+		 * @param {Object} index
+		 */
+		normalUpload: function(index){
+			return `<tr>
+		        <td>`+ echo(addoninfos[index].itemname) +`</td>
+		        <td>
+		            <label class="col-xs-8 normal-add">
+		                <input id="fileInput" type="file" name="image" size="50" value="{{` + addoninfos[index].field + `}}" `+ echo(addoninfos[index].attr) + `/>
+						<input type="hidden" name="`+addoninfos[index].field+`" value="{{` + addoninfos[index].field + `}}" />
+					</label>
+		        </td>       
+		    </tr>`;
+		},
 
         /**
         *   规格项参数说明：
@@ -1149,6 +1164,9 @@
 </script>
 
 <!-- 输出视逻辑代码 -->
+<!-- 通用上传逻辑代码 -->
+<%- normalAsync %>
+<!-- cropper上传逻辑代码 -->
 <%- cropperAsync %>
 <script>
 	/**
@@ -1186,6 +1204,16 @@
 		uploader.index++;
 
 		setEffect();
+	}
+	
+	//通用上传处理
+	function normalProcess(data){
+		if(!data.state) return;
+		uploader.picBox.find('[type="hidden"]').val("/" + data.url);
+	}
+	//通用上传中信息提示
+	function normalUploading(obj){
+		console.log(obj);
 	}
 
 	function setEffect() {

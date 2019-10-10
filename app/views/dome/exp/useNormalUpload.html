@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>通用上传测试</title>
+    <script src="/javascripts/lib/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <form id="testForm" action="/admin/upload/video?oid=d1bd6324581a1722a880b9f54315dd3e53" method="post" enctype="multipart/form-data">
+        <input id="fileInput" type="file" name="image" size="50" />
+		<input type=hidden name=a value="dksd" />
+        <input type="submit" value="上传文件" />
+		<ul id="list">
+			
+		</ul>
+    </form>
+    <%- //normalAsync %>
+	<script>
+		var cropperData = JSON.parse('{"url":"/admin/upload/video?oid=d1bd6324581a1722a880b9f54315dd3e53","control":"#fileInput","form":"#testForm","successCallback":"","faileCallback":""}');
+		var normalData = cropperData;
+		var uploading = false;
+		$(normalData.control).on("change", function(){
+			if(uploading){
+				alert("文件正在上传中，请稍候");
+				return false;
+			}
+			var files = this.files;
+			if(!files)return;
+			var fileArr = []
+			var fileEntity = {};
+			var reader = new FileReader();
+			reader.onload = function() {
+				  //处理 android 4.1 兼容问题
+				var base64 = reader.result.split(',')[1];
+				var dataUrl = 'data:image/png;base64,' + base64;
+
+				var blob = dataURLtoBlob(dataURL);
+			}
+			//chrome，firefox并且safari浏览器不能正常工作,必须重新将对象组织
+			fileEntity.name = files[0].name;
+			fileEntity.type = files[0].type;
+			fileEntity.size = files[0].size;
+			fileEntity.lastModified = files[0].lastModified;
+			fileEntity.lastModifiedDate = files[0].lastModifiedDate;
+			fileEntity.webkitRelativePath = files[0].webkitRelativePath;
+			fileArr.push(fileEntity);
+			var data = JSON.stringify(fileArr);
+			console.log("ddsfffffffffffffffffffff:", data)
+			//sessionStorage.setItem('arr',data);
+			var List = document.getElementById('list');
+			var oLi = '<li><img src="'+URL.createObjectURL(files[0])+'"><span class="close" onclick="closeli(this)" >&times;</span></li>';    
+			List.innerHTML+=oLi;
+			
+			$.ajax({
+				url: normalData.url,
+				type: 'POST',
+				cache: false,
+				data: data,
+				processData: false,
+				contentType: false,
+				dataType:"json",
+				beforeSend: function(){
+					uploading = true;
+				},
+				success : function(data) {
+					console.log("上传文件信息：",data);
+					try{
+						data.state ? 
+						eval((normalData.successCallback + '(data)')) :
+						eval((normalData.faileCallback + '(data)'));
+					}catch(err){throw(err)}
+					uploading = false;
+				}
+			});
+		});
+		        
+	</script>
+  </body>
+</html>

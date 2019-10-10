@@ -74,7 +74,8 @@ function arcControler(){
             //获取上传文件组件信息
             var oid = that.GET('oid') || that.POST('oid');
             data = mergeObj([data, that.model("File").upload({
-                oid: oid
+                oid: oid,
+				formId: "#add-infor"			//使用通用上传控件时的表单
             })]);
             ps = that.testRender(data,ps);
         });
@@ -372,7 +373,7 @@ function arcControler(){
                     });
                 }
 
-                // 上传插件获取前端逻辑处理代码
+                // cropper上传插件获取前端逻辑处理代码
                 data.cropperView = that.plug('Uploads',{
                     accept         : 'image/jpg,image/jpeg,image/png',     //在弹窗中可以选择的文件类型
                     cropper_css    : '/stylesheets/lib/cropper.min.css',

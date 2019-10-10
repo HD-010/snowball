@@ -5,8 +5,7 @@
  * @LastEditTime: 2019-08-31 16:09:25
  * @LastEditors: Please set LastEditors
  -->
-<%- print_r(addoninfos) %>
-
+<%- //print_r(addoninfos) %>
 <%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
 <%- //'results:' + JSON.stringify(results,null,2)%>
 <%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
@@ -124,6 +123,22 @@ var formCode = {
             '</td>' +            
         '</tr>';
     },
+	
+	/**
+	 * 视频上传控件参数说明
+	 * @param {Object} index
+	 */
+	normalUpload: function(index){
+		return `<tr>
+            <td>`+ echo(addoninfos[index].itemname) +`</td>
+            <td>
+                <label class="col-xs-8 normal-add">
+                    <input id="fileInput" type="file" name="image" size="50" `+ echo(addoninfos[index].attr) + `/>
+					<input type="hidden" name="`+addoninfos[index].field+`" value="" />
+				</label>
+            </td>       
+        </tr>`;
+	},
 
     /**
     *   规格项参数说明：
@@ -1021,6 +1036,9 @@ var formCode = {
 </script>
 
 <!-- 输出视逻辑代码 -->
+<!-- 通用上传逻辑代码 -->
+<%- normalAsync %>
+<!-- cropper上传逻辑代码 -->
 <%- cropperAsync %>
 <script>
     /**
@@ -1035,7 +1053,9 @@ var formCode = {
     $("label.img-add").unbind('click').on('click',function(){
         uploader.picBox = $(this).parentsUntil('.pic-box').parent().eq(0);
     });
-
+	$("label.normal-add").unbind('click').on('click',function(){
+        uploader.picBox = $(this).parent();
+    });
     //图片上传回调处理
     function upProcess(data){
         var info = {
@@ -1056,6 +1076,12 @@ var formCode = {
     
         setEffect();
     }
+	//通用上传处理
+	function normalProcess(data){
+		if(!data.state) return;
+		uploader.picBox.find('[type="hidden"]').val("/" + data.url);
+	}
+	
     function setEffect(){
         $(".img-handl").unbind('mouseover').on("mouseover",function(e){
             $(this).find(".fa-size").css({

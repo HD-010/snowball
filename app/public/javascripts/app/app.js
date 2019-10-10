@@ -295,6 +295,7 @@ var app = {
 	 * obj.message 提示消息
 	 * obj.uri 跳转的url
 	 * obj.error 显示对应提示的信息样式 错误编号notice_0 notice_1 notice_2 notice_3
+	 * obj.duration 显示多长时间(毫秒)
 	 * function callback 
 	 */
 	notice: function(obj, callback) {
@@ -314,6 +315,7 @@ var app = {
 			'width': '100%',
 			'z-index': 999999999999,
 		}));
+
 		setTimeout(function() {
 			$("#" + notice).remove();
 			if (typeof callback === 'function') return callback();
@@ -325,7 +327,7 @@ var app = {
 				location.href = obj.uri;
 			}
 			if (!obj.uri && ('uri' in obj)) location.reload();
-		}, 2000);
+		}, obj.duration || 2000);
 	},
 
 	/**
