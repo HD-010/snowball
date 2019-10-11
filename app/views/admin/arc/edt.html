@@ -638,7 +638,6 @@
 <!-- 输出视图组件 -->
 <%- cropperView %>
 
-
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
 	//初始化nestbale
@@ -682,29 +681,31 @@
 
 
 		//规格相关
-		//初始化nestable数据结构
-		effect.nestable(specData, spec.stat, '#oper-spec-nes', spec.id);
-		//初始化数据到规格项明细表
-		if (specData.length) spec.initData(specoption);
-		$('#nestable-spec').nestable({
-			group: 1
-		}).on('change', updateOutput);
-		$('#nestable-spec .dd').nestable('collapseAll');
-		$("#nestable-spec handel-nestable-spec").remove();
-		//处理规格项操作相关的值
-		(function() {
-			$("#oper-spec").click(function() {
-				$("#oper-spec-nes").fadeToggle();
-				$("#spec-table").fadeToggle();
-			})
-			$("#" + spec.id).nestable({
+		if(allInputtypes.indexOf('spec')+1){
+			//初始化nestable数据结构
+			effect.nestable(specData, spec.stat, '#oper-spec-nes', spec.id);
+			//初始化数据到规格项明细表
+			if (specData.length) spec.initData(specoption);
+			$('#nestable-spec').nestable({
 				group: 1
-			}).on('change', function(e) {
-				spec.data = updateOutput(e);
-				spec.readData();
-			});
-			spec.reset();
-		})()
+			}).on('change', updateOutput);
+			$('#nestable-spec .dd').nestable('collapseAll');
+			$("#nestable-spec handel-nestable-spec").remove();
+			//处理规格项操作相关的值
+			(function() {
+				$("#oper-spec").click(function() {
+					$("#oper-spec-nes").fadeToggle();
+					$("#spec-table").fadeToggle();
+				})
+				$("#" + spec.id).nestable({
+					group: 1
+				}).on('change', function(e) {
+					spec.data = updateOutput(e);
+					spec.readData();
+				});
+				spec.reset();
+			})()
+		}
 	}
 	/**
 	 * 规格项相关
@@ -1101,54 +1102,60 @@
 		clearCode: true,
 		after: function() {
 			//加载ueditor
-			$("iframe").attr('src', '/admin/arc/ueditor');
+			if(allInputtypes.indexOf('uediter')+1){
+				$("iframe").attr('src', '/admin/arc/ueditor');
 
-			$("iframe").load(function() {
-				UE.frame = $("iframe").eq(0);
-				//读取UE内容
-				UE.contents = function() {
-					var ue = UE.frame[0] ? UE.frame[0].contentWindow.ue : {
-						getContent: function() {}
-					};
-					return ue.getContent();
-				}
-				//标识UE是否全屏
-				UE.full = false;
-
-				//绑定ue全屏件事
-				UE.frame.contents().find("#edui3_body").click(function() {
-					UE.full ? $(".ueditor-box").removeClass('full-screen') :
-						$(".ueditor-box").addClass('full-screen');
-					UE.full = UE.full ? false : true;
-				});
-
-				//绑定ue获取内容事件
-				$('button[type="submit"]').mouseover(function() {
-					$("#ue-contents").val(UE.contents());
-				});
-
-				var wt = setInterval(function() {
-					(typeof UE.time == 'number') ? UE.time++: UE.time = 0;
-					if (UE.time > 4) {
-						app.notice({
-							error: 1,
-							message: 'UEditor 加载超时！'
-						});
-						return clearInterval(wt);
+				$("iframe").load(function() {
+					UE.frame = $("iframe").eq(0);
+					//读取UE内容
+					UE.contents = function() {
+						var ue = UE.frame[0] ? UE.frame[0].contentWindow.ue : {
+							getContent: function() {}
+						};
+						return ue.getContent();
 					}
-					if (!UE.frame[0].contentWindow.ue.body) return;
-					clearInterval(wt);
-					var field = UE.uediterFields[0];
-					UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
-				}, 500)
+					//标识UE是否全屏
+					UE.full = false;
+
+					//绑定ue全屏件事
+					UE.frame.contents().find("#edui3_body").click(function() {
+						UE.full ? $(".ueditor-box").removeClass('full-screen') :
+							$(".ueditor-box").addClass('full-screen');
+						UE.full = UE.full ? false : true;
+					});
+
+					//绑定ue获取内容事件
+					$('button[type="submit"]').mouseover(function() {
+						$("#ue-contents").val(UE.contents());
+					});
+
+					var wt = setInterval(function() {
+						(typeof UE.time == 'number') ? UE.time++: UE.time = 0;
+						if (UE.time > 4) {
+							app.notice({
+								error: 1,
+								message: 'UEditor 加载超时！'
+							});
+							return clearInterval(wt);
+						}
+						if (!UE.frame[0].contentWindow.ue.body) return;
+						clearInterval(wt);
+						var field = UE.uediterFields[0];
+						UE.frame[0].contentWindow.ue.setContent(recodData.data[field]); //将字段对应的值展示到ueditor中
+					}, 500)
 
 
-			});
+				});
+			}
+			/**
+			 * 初始化nestable
+			 */
 			initNestable();
 			/**
 			 * 初始化地址输入框控制部分
 			 */
-			addressPice.initAddr();
+			if(allInputtypes.indexOf('address')+1) addressPice.initAddr();
+			
 		}
 	});
 </script>
