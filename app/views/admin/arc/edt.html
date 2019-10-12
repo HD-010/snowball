@@ -21,11 +21,13 @@
         },
 
         input: function(index){
-            var str = '<tr>' +
+			var isDate = addoninfos[index].attr && addoninfos[index].attr.match(/type=date/) ? true : false;
+			var outField = isDate ? "{{- return dateFormate(\'%Y-%m-%d\', " + addoninfos[index].field + "); }}" : "{{" + addoninfos[index].field + "}}";
+			var str = '<tr>' +
                     '<td>' + echo(addoninfos[index].itemname) + '：</td>' +
                     '<td>' +
                         '<div class="form-group col-xs-4">' +
-                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value="{{' + addoninfos[index].field + '}}"/>' +
+                            '<input class="form-control" name="' + addoninfos[index].field + '"  '+ echo(addoninfos[index].attr) + ' value="' + outField + '"/>' +
                         '</div>' +
                         '<span style="line-height: 40px;"><i class="iconfont icon-tishi comment" style="color: #1C66A7;"></i></span>' +
                     '</td>' +           
