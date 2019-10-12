@@ -475,9 +475,10 @@
 
     //数据保存时的回调
     function save(res) {
-        app.notice(res, function(){
-            if(!res.error) go('/admin/component/index');
-        });
+		app.notice(res);
+        // app.notice(res, function(){
+        //     if(!res.error) go('/admin/component/index');
+        // });
     }
 </script>
 
