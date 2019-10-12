@@ -12,6 +12,7 @@ function FileModel(){
      * 上传图片
      */
     this.upload = function(params){
+		params.uri = params.uri || "/admin/upload/img";
         var data = {};
         // 获取前端逻辑处理代码
         data.cropperView = that.plug('Uploads',{
@@ -39,7 +40,7 @@ function FileModel(){
             crop          : function(e) {
                 console.log(e)// 输出结果数据裁剪图像。
             },
-            url: '/admin/upload/img?oid='+params.oid,   //上传图片的服务地址
+            url: params.uri + '?oid='+params.oid,   //上传图片的服务地址
         }).cropperAsync;
 		
 		// 通用上传插件获取前端逻辑处理代码

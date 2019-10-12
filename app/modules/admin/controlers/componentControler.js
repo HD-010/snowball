@@ -20,7 +20,10 @@ function componentControler(){
     this.add = function(){
         var data = {error: 0};
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").upload({oid: oid})]);
+        data = mergeObj([data, this.model("File").upload({
+			oid: oid,
+			uri: '/admin/upload/sys-icon'
+		})]);
         
         return that.render(data);
     }
@@ -36,7 +39,10 @@ function componentControler(){
         
         //获取上传文件组件信息
         var oid = that.GET('oid') || that.POST('oid');
-        data = mergeObj([data, this.model("File").upload({oid: oid})]);
+        data = mergeObj([data, this.model("File").upload({
+			oid: oid,
+			uri: '/admin/upload/sys-icon'
+		})]);
          
         //获取组件信息
         component.list(param,function(res){
