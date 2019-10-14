@@ -22,7 +22,6 @@ function permitControler(){
      that.editGlist = function(){
         var permit = that.model("permit"); 
         permit.listPermits({},function(res){
-            console.log("data====",res)
             that.render(res);
         })     
         

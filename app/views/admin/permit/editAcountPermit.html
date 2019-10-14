@@ -35,7 +35,8 @@
                         <td>用户组权限：</td>
                         <td>
                             <div class="page-content">                              
-                                <input name="groupId" type="hidden" value="<%=id%>"/>
+                                <input name="groupId" type="hidden" value="<%=groupId%>"/>
+                                <input name="userId" type="hidden" value="<%=id%>"/>
                                 <div class="form-group" style="margin-bottom:20px;">
                                     <label class="col-lg control-label must">
                                        权限组名称
@@ -53,7 +54,7 @@
                                     <div class="col-sm-9 col-xs-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                               
+                                                <%- //print_r(loginUserPermit); %>
                                                 <% for(var i in loginUserPermit){
                                                     var list = array2value(listPermits,'id',loginUserPermit[i].id);
                                                     %>
@@ -186,10 +187,8 @@ $(function () {
             }
         });
 
-        console.log(perms)
         if(perms.length){
             var database64 = btoa(JSON.stringify(perms));
-            
             $("#database64").val(database64);
         }
     });

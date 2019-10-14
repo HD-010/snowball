@@ -45,11 +45,12 @@ function PermitModel(){
     }
 
     /**
-     * 获取当前登录用户有那些权限查单
+     * 获取当前登录用户有那些权限菜单
      * 条件 根据用户id去查询有那些权限
      * 所取字段：id,userId,m.name,menuId,add,delete,edit,show
      */
     that.loginUserPermit = function(callback){
+		var data = {error: 1, message: "参数错误"}
         //获取当前用户id
         var process =  that.model("DataProcess");
         var uid = process.getUserInfo('UID'); 
@@ -65,24 +66,19 @@ function PermitModel(){
         };
 
         //判断管理组id 
-        if(uid){ 
-            condition.where.push("userId ="+uid);
-            condition.where.push("enable = '1'");
-            that.DB().get(condition,function(error,results){
-                
-                if(results.length){
-                    callback(results);
-                    return;
-                }else{//userId没有查询到用户信息,第二次根据组权限查询
-                    condition.where.shift();
-                    condition.where.push("groupId = "+userInfo.groupId);
-                    that.DB().get(condition,function(error,res){
-                        if(res.length) callback(res);
-                        return;
-                    })
-                } 
-            });
-        }       
+		if(!uid) return callback(data);
+		condition.where.push(" p.userId ="+uid);
+		condition.where.push(" p.groupId = "+userInfo.groupId);
+		condition.where.push(" p.`enable` = '1'");
+		that.DB().get(condition,function(error,results){
+			if(results.length) return callback(results);
+			//userId没有查询到用户信息,第二次根据组权限查询
+			condition.where.shift();
+			condition.where.push(" p.userId is null ");
+			that.DB().get(condition,function(error,res){
+				if(res.length) return callback(res);
+			})
+		});
     }
 
     /***
@@ -108,14 +104,12 @@ function PermitModel(){
                 fields:data.base64           //被查询的字段名称（别名在此指定）                       
             };
             that.DB().set(condition,function(error,results){
-               if(results.affectedRows){
                 var obj={
                     message:"组权限修改成功!",
                     uri:"/admin/permit/getGroupAll",
-                    error:0
+                    error: results.affectedRows ? 0 : 1
                 }
-                callback(obj)
-               }
+                return callback(obj)
             })
         })       
     }
@@ -127,9 +121,9 @@ function PermitModel(){
         var dataProcess = that.model('DataProcess'); 
         var data = {};
         data.userInfo = params;
-        data.id = data.userInfo.id;
-        data.name = data.userInfo.userName;
-        data.groupId = data.userInfo.groupId;
+        data.id = params.id;
+        data.name = params.userName;
+        data.groupId = params.groupId;
         //获取登录用户的权限
         that.loginUserPermit(function(res){
             data.loginUserPermit = dataProcess.structMenu(res);
@@ -197,24 +191,21 @@ function PermitModel(){
         }catch(error){
             return callback({error:0})
         }
-
         var groupId = data.base64[0].groupId;
         var userId = data.base64[0].userId;
         var sql  = "delete from #@sys_permit where userId = "+userId+" and groupId = "+groupId;
         that.DB().query(sql,function(error,res){
             var condition = {
                 table:["#@sys_permit"],                                 //查询的表名
-                fields:data.base64           //被查询的字段名称（别名在此指定）                       
+                fields:data.base64           							//被查询的字段名称（别名在此指定）                       
             };
             that.DB().set(condition,function(error,results){
-               if(results.affectedRows){
                 var obj={
                     message:"用户权限修改成功!",
                     uri:"/admin/permit/getAcountAll",
-                    error:0
+                    error: results.affectedRows ? 0 : 1
                 }
                 callback(obj)
-               }
             })
         })       
     }
