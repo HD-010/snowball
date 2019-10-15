@@ -1,4 +1,4 @@
-function GroupControler(){
+function groupControler(){
     var that = this;
 
     /**
@@ -83,4 +83,4 @@ function GroupControler(){
     }
 }
 
-module.exports = GroupControler;
+module.exports = groupControler;

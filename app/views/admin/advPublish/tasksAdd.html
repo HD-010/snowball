@@ -1,0 +1,299 @@
+<%- //print_r(addoninfos) %>
+<%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
+<%- //'results:' + JSON.stringify(results,null,2)%>
+<%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
+<%- //'types:' + JSON.stringify(types,null,2)%>
+<%- //'comname:' + comname %>
+
+<%- //include(path('widgets') + '/admin/footer/footer.html'); %>
+<%- //include(path('admin') + '/arc/addTagTemplate.js', addoninfos); %>
+<style>
+.add-infor .active{background-color:#FFF;}
+.table .active{background-color:#23AD44;}
+.full-screen{
+    position: fixed;
+    z-index: 99999999999;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+#nestable-type .dd-item>button {
+    font-family: FontAwesome;
+    height: 34px;
+    width: 33px;
+    color: #c1c1c1;
+}
+.hidden{display:none;}
+#nestable-type .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-type .dd-item>button:before {content: "\f067";}
+#nestable-type .dd-handle{line-height:28px;}
+#nestable-spec .dd-item>button[data-action="collapse"]:before {content: "\f068";}
+#nestable-spec .dd-item>button:before {content: "\f067";}
+#nestable-spec .dd-handle{line-height:28px;}
+.screen-pice{border:0;}
+.screen-pice-1{background-color: #00625A;position:absolute;}
+.screen-pice-2{float:right; background-color:#00E8D7;position:absolute;}
+.screen-pice-3{ background-color:#199D82;position:absolute;}
+.screen-pice-3-low{ line-height: 8px;}
+.screen-pice-2-1{background-color:#00E8D7;position:absolute;}
+.screen-pice-2-2{background-color:#00FFFF;position:absolute;}
+
+</style>
+
+<div class="container-fluid base">
+    <div class="row head">
+        <div class="col-xs-12">
+            <span>系统管理-栏目管理-编辑栏目</span>
+        </div>
+    </div>
+    
+    <div class="add-infor">
+        <div class="row tips">
+            <div class="col-xs-12">
+                <p class="ti"><i class="iconfont icon-yiliaohangyedeICON-">&nbsp;</i>操作提示</p>
+               <div class="col-xs-12">
+                    <p class="indent">基本设置由：“安全设置、验证码设置、网站LOGO、地图设置、缓存设置、”组成。</p>     
+               </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" style="background-color:#fff;margin-left:13px;margin-right:13px;">
+            <li class="active"><a data-toggle="tab" data-target="#tab-1"><i class="fa fa-user"></i> 基本</a>
+            </li>
+            <li class=""><a data-toggle="tab" data-target="#tab-2"><i class="fa fa-briefcase"></i>详细</a>
+            </li>
+            <!-- <li class=""><a data-toggle="tab" data-target="#tab-3"><i class="fa fa-briefcase"></i>其他</a>
+            </li> -->
+        </ul>
+        <div class="row form tab-content">
+            <form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
+                <input type="hidden" name='tag' value="add" />
+                
+				<!-- tab-1的表单是固定的 -->
+                <table class="table" id="tab-1">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">参数说明</th>
+                            <th>参数值</th>
+                        </tr>
+                    </thead>
+                    <tbody class="page-struct">
+						<tr>
+						    <td>任务名称：</td>
+						    <td>
+						        <div class="form-group col-xs-4">
+						            <input type="text" class="form-control" name="title"  value=" "/>
+						        </div>
+						        <span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;任务名称，长度限制15字</span>
+						    </td>              
+						</tr>
+						
+						<tr>
+						    <td>执行方式：</td>
+						    <td style="padding-left:15px;">
+						        <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch task-mode">
+						                <input type="radio" name="mode" data-key="now-time-fool" data-val="立即-定时-循环" data-def="time" value="time" />
+						            </label>
+						        </div>
+						    </td>              
+						</tr>
+                        
+						<!-- 定时任务时间 -->
+						<tr class="hidden" name="task-run-time">
+						    <td>任务执行时间：</td>
+						    <td>
+						        <div class="form-group col-xs-4">
+						            <input type="text" class="form-control" name="title" placeholder="输入执行时间"  value=""/>
+						        </div>
+						        <span style="line-height: 40px;">
+									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
+									&nbsp;输入格式如：2019/10/14 14:10:00
+								</span>
+						    </td>              
+						</tr>
+						
+						<!-- 循环任务起止时间 -->
+						<tr class="hidden" name="task-run-fool">
+						    <td>任务起止时间：</td>
+						    <td>
+						        <div>
+									<div class="col-md-4">
+										<input type="text" placeholder="开始时间" class="form-control">
+									</div>
+									<div class="col-md-4">
+										<input type="text" placeholder="结束时间" class="form-control">
+									</div>
+								</div>
+								<span style="line-height: 40px;">
+									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
+									&nbsp;输入格式如：2019/10/14 14:10:00
+								</span>
+						    </td>              
+						</tr>
+                        
+						<!-- 选择设备类型 -->
+						<tr>
+						    <td>广告屏尺寸：</td>
+						    <td style="padding-left:15px;">
+						        <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch screenpice">
+						                <input type="radio" name="screenpice" data-key="1920*1080-1080*1920" data-val="1920*1080-1080*1920" data-def="1920*1080" value="1920*1080"/><!-- <i class="fa fa-check"></i> --><!--<i class="fa fa-times"></i>-->
+						            </label>
+						        </div>
+						    </td>              
+						</tr>
+						
+						<!-- 选择屏幕分区方式 -->
+						<tr>
+						    <td>屏幕分区：</td>
+						    <td style="padding-left:15px;" class="screen-picees">
+								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+										<!-- 屏幕分区 -->
+									    <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-pice screen-pice-1" style="width:100%; height:85%;top:0; left:0;">1</div>
+										   <div class="screen-pice screen-pice-3 screen-pice-3-low" style="width:100%; height:15%; bottom:0;right:0;">3</div>
+									    </div>
+								    </label>
+								</div>
+						        <div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+										<!-- 屏幕分区 -->
+									    <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-pice screen-pice-2" data-media="img" style="width:30%; height:100%; top:0; right:0;">2</div>
+										   <div class="screen-pice screen-pice-1" data-media="video" style="width:70%; height:70%; left:0; top:0;">1</div>
+										   <div class="screen-pice screen-pice-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
+									    </div>
+						            </label>
+						        </div>
+								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+						                <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-pice screen-pice-2-1" data-media="img" style="width:30%; height:50%; top:0; right:0;">2-1</div>
+										   <div class="screen-pice screen-pice-2-2" data-media="img" style="width:30%; height:50%; top:50%; right:0;">2-2</div>
+						                   <div class="screen-pice screen-pice-1" data-media="video" style="width:70%; height:70%; top:0; left:0;">1</div>
+						                   <div class="screen-pice screen-pice-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
+						                </div>
+						            </label>
+						        </div>
+								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+								        <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
+								           <div class="screen-pice screen-pice-2" data-media="video" style="width:55.5729%; height:100%; top:0; left:0;">2</div>
+								           <div class="screen-pice screen-pice-1" data-media="img" style="width:44.4271%; height:100%; top:0; right:0;">1</div>
+								        </div>
+								    </label>
+								</div>
+								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
+								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+								        <div class="screen-pice" style="width: 56px;height: 100px;border:0;position:relative;">
+								           <div class="screen-pice screen-pice-1" data-media="video" style="height:44.4271%; width:100%; top:0; left:0;">1</div>
+								           <div class="screen-pice screen-pice-2" data-media="img" style="height:55.5729%; width:100%;bottom:0; left:0;">2</div>
+								        </div>
+								    </label>
+								</div>
+								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
+								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+								        <div class="screen-pice" style="width: 56px;height: 100px;border:0;position:relative;">
+								           <div class="screen-pice screen-pice-1" data-media="img" style="height:55.5729%; width:100%; left:0; top:0;">2</div>
+								           <div class="screen-pice screen-pice-2" data-media="video" style="height:44.4271%; width:100%; left:0; bottom:0;">1</div>
+								        </div>
+								    </label>
+								</div>
+						    </td>              
+						</tr>
+						
+						<!-- 载入分区素材 -->
+						<tr class="load-pice hidden">
+						    <td>载入分区素材：</td>
+						    <td style="padding-left:15px;">
+								<label class="btn btn-outline btn-success" data-device="1920-1080">
+									<div class="screen-pice" style="width: 300px;height: 168px;border:0;position:relative;">
+									</div>
+								</label>
+						    </td>              
+						</tr>
+						
+						<tr>
+						    <td>任务状态：</td>
+						    <td style="padding-left:15px;">
+						        <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
+						                <input type="radio" name="state" data-key="1-0" data-val="启用-禁用" data-def="0" value="0" /><!-- <i class="fa fa-check"></i> --><!--<i class="fa fa-times"></i>-->
+						            </label>
+						        </div>
+						    </td>              
+						</tr>
+						
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn">确定</button>
+                                <button type="reset" class="btn">重置</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <!-- tab-2的表单由系统生成 -->
+                <table class="table hidden" id="tab-2">
+                    
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+	$(document).ready(function(){
+		effect.setRadio(".radio-content-state");
+		
+		$(".screenpice").on("click",function(){
+			$(".load-pice").addClass('hidden');
+			var screenTag = $(this).children('input').val().replace('*','-');
+			//标注设备属性
+			$("[data-device]").attr('data-device', screenTag);
+			//控制可选分屏显示效果
+			$(".screen-picees").children().addClass('hidden');
+			$(".screen-" + screenTag).removeClass('hidden');
+			var screenSize = screenTag.split('-');
+			$(".load-pice").find(".screen-pice").css({
+				width: screenSize[0] > screenSize[1] ? 200 : 200*screenSize[0]/screenSize[1],
+				height: screenSize[0] > screenSize[1] ? 200*screenSize[1]/screenSize[0] : 200
+			})
+		});
+		
+		$(".screen-picees").children('div').unbind('click').on("click",function(){
+			var loadpice = $(this).find(".screen-pice")[0].outerHTML;
+			loadpice = $(loadpice);
+			//给子元素添加属性
+			loadpice.children().each(function(i, o){
+				var width,height,style,device,size,inf;
+				style = $(o).attr('style');
+				style = '{'+ style.replace(/;/g,'",') +'}';
+				style = style.replace(',}', '}');
+				style = style.replace(/:/g, ':"');
+				eval('style=' + style);
+				width = style.width.match(/%/) ? parseFloat(style.width) / 100 : style.width;
+				
+				height = style.height.match(/%/) ? parseFloat(style.height) / 100 : style.height;
+				device = $("[data-device]").attr("data-device").split('-');
+				if(!device.length) return app.notice({error: 1, message:"还没有选择设备尺寸，请选择..."});
+				size = parseInt(device[0] * width) + "px * " + parseInt(device[1] * height) + "px";
+				$(o).attr("data-size", size);
+				
+			})
+			
+			$(".load-pice").removeClass('hidden');
+			$(".load-pice").find(".screen-pice").html($(loadpice).html());
+		})
+		
+		$('.task-mode').on('click',function(){
+			var val = $(this).children("input").val();
+			$("[name^=task-run-]").addClass('hidden');
+			$("[name=task-run-" + val + "]").removeClass("hidden");
+		})
+		
+	});
+</script>
