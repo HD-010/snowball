@@ -31,14 +31,25 @@
 #nestable-spec .dd-item>button[data-action="collapse"]:before {content: "\f068";}
 #nestable-spec .dd-item>button:before {content: "\f067";}
 #nestable-spec .dd-handle{line-height:28px;}
-.screen-pice{border:0;}
-.screen-pice-1{background-color: #00625A;position:absolute;}
-.screen-pice-2{float:right; background-color:#00E8D7;position:absolute;}
-.screen-pice-3{ background-color:#199D82;position:absolute;}
-.screen-pice-3-low{ line-height: 8px;}
-.screen-pice-2-1{background-color:#00E8D7;position:absolute;}
-.screen-pice-2-2{background-color:#00FFFF;position:absolute;}
-
+.solid1{border:1px solid #0000CC;}
+.screen-piece{border:0;}
+.screen-piece-1{background-color: #00625A;position:absolute;}
+.screen-piece-2{float:right; background-color:#00E8D7;position:absolute;}
+.screen-piece-3{ background-color:#199D82;position:absolute;}
+.screen-piece-3-low{ line-height: 8px;}
+.screen-piece-2-1{background-color:#00E8D7;position:absolute;}
+.screen-piece-2-2{background-color:#00FFFF;position:absolute;}
+.screen-piece-task ol{
+	padding-top:0.5em;
+}
+.screen-piece-task ol li{
+	line-height:2em;
+	/* list-style-type: none; */
+}
+.modal-body{
+	overflow: auto;
+	height: 620px;
+}
 </style>
 
 <div class="container-fluid base">
@@ -137,8 +148,8 @@
 						    <td>广告屏尺寸：</td>
 						    <td style="padding-left:15px;">
 						        <div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
-						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch screenpice">
-						                <input type="radio" name="screenpice" data-key="1920*1080-1080*1920" data-val="1920*1080-1080*1920" data-def="1920*1080" value="1920*1080"/><!-- <i class="fa fa-check"></i> --><!--<i class="fa fa-times"></i>-->
+						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch screenpiece">
+						                <input type="radio" name="screenpiece" data-key="1920*1080-1080*1920" data-val="1920*1080-1080*1920" data-def="1920*1080" value="1920*1080"/><!-- <i class="fa fa-check"></i> --><!--<i class="fa fa-times"></i>-->
 						            </label>
 						        </div>
 						    </td>              
@@ -147,57 +158,57 @@
 						<!-- 选择屏幕分区方式 -->
 						<tr>
 						    <td>屏幕分区：</td>
-						    <td style="padding-left:15px;" class="screen-picees">
+						    <td style="padding-left:15px;" class="screen-piecees">
 								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
 								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<!-- 屏幕分区 -->
-									    <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
-										   <div class="screen-pice screen-pice-1" style="width:100%; height:85%;top:0; left:0;">1</div>
-										   <div class="screen-pice screen-pice-3 screen-pice-3-low" style="width:100%; height:15%; bottom:0;right:0;">3</div>
+									    <div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-piece screen-piece-1" data-media="video" style="width:100%; height:85%;top:0; left:0;">1</div>
+										   <div class="screen-piece screen-piece-3 screen-piece-3-low" data-media="notice" style="width:100%; height:15%; bottom:0;right:0;">3</div>
 									    </div>
 								    </label>
 								</div>
 						        <div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
 						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<!-- 屏幕分区 -->
-									    <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
-										   <div class="screen-pice screen-pice-2" data-media="img" style="width:30%; height:100%; top:0; right:0;">2</div>
-										   <div class="screen-pice screen-pice-1" data-media="video" style="width:70%; height:70%; left:0; top:0;">1</div>
-										   <div class="screen-pice screen-pice-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
+									    <div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-piece screen-piece-2" data-media="img" style="width:30%; height:100%; top:0; right:0;">2</div>
+										   <div class="screen-piece screen-piece-1" data-media="video" style="width:70%; height:70%; left:0; top:0;">1</div>
+										   <div class="screen-piece screen-piece-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
 									    </div>
 						            </label>
 						        </div>
 								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
 						            <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-						                <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
-										   <div class="screen-pice screen-pice-2-1" data-media="img" style="width:30%; height:50%; top:0; right:0;">2-1</div>
-										   <div class="screen-pice screen-pice-2-2" data-media="img" style="width:30%; height:50%; top:50%; right:0;">2-2</div>
-						                   <div class="screen-pice screen-pice-1" data-media="video" style="width:70%; height:70%; top:0; left:0;">1</div>
-						                   <div class="screen-pice screen-pice-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
+						                <div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
+										   <div class="screen-piece screen-piece-2-1" data-media="img" style="width:30%; height:50%; top:0; right:0;">2-1</div>
+										   <div class="screen-piece screen-piece-2-2" data-media="img" style="width:30%; height:50%; top:50%; right:0;">2-2</div>
+						                   <div class="screen-piece screen-piece-1" data-media="video" style="width:70%; height:70%; top:0; left:0;">1</div>
+						                   <div class="screen-piece screen-piece-3" data-media="notice" style="width:70%; height:30%; left:0; bottom:0;">3</div>
 						                </div>
 						            </label>
 						        </div>
 								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
 								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-								        <div class="screen-pice" style="width: 100px;height: 56px;border:0;position:relative;">
-								           <div class="screen-pice screen-pice-2" data-media="video" style="width:55.5729%; height:100%; top:0; left:0;">2</div>
-								           <div class="screen-pice screen-pice-1" data-media="img" style="width:44.4271%; height:100%; top:0; right:0;">1</div>
+								        <div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
+								           <div class="screen-piece screen-piece-1" data-media="video" style="width:44.4271%; height:100%; top:0; left:0;">1</div>
+								           <div class="screen-piece screen-piece-2" data-media="img" style="width:55.5729%; height:100%; top:0; right:0;">2</div>
 								        </div>
 								    </label>
 								</div>
 								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
 								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-								        <div class="screen-pice" style="width: 56px;height: 100px;border:0;position:relative;">
-								           <div class="screen-pice screen-pice-1" data-media="video" style="height:44.4271%; width:100%; top:0; left:0;">1</div>
-								           <div class="screen-pice screen-pice-2" data-media="img" style="height:55.5729%; width:100%;bottom:0; left:0;">2</div>
+								        <div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
+								           <div class="screen-piece screen-piece-1" data-media="video" style="height:44.4271%; width:100%; top:0; left:0;">1</div>
+								           <div class="screen-piece screen-piece-2" data-media="img" style="height:55.5729%; width:100%;bottom:0; left:0;">2</div>
 								        </div>
 								    </label>
 								</div>
 								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
 								    <label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-								        <div class="screen-pice" style="width: 56px;height: 100px;border:0;position:relative;">
-								           <div class="screen-pice screen-pice-1" data-media="img" style="height:55.5729%; width:100%; left:0; top:0;">2</div>
-								           <div class="screen-pice screen-pice-2" data-media="video" style="height:44.4271%; width:100%; left:0; bottom:0;">1</div>
+								        <div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
+								           <div class="screen-piece screen-piece-1" data-media="img" style="height:55.5729%; width:100%; left:0; top:0;">2</div>
+								           <div class="screen-piece screen-piece-2" data-media="video" style="height:44.4271%; width:100%; left:0; bottom:0;">1</div>
 								        </div>
 								    </label>
 								</div>
@@ -205,13 +216,31 @@
 						</tr>
 						
 						<!-- 载入分区素材 -->
-						<tr class="load-pice hidden">
+						<tr class="load-piece hidden">
 						    <td>载入分区素材：</td>
 						    <td style="padding-left:15px;">
-								<label class="btn btn-outline btn-success" data-device="1920-1080">
-									<div class="screen-pice" style="width: 300px;height: 168px;border:0;position:relative;">
-									</div>
-								</label>
+								<dl class="col-xs-6" style="position:absolute;margin-left:350px;">
+									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;分区任务清单：</dd>
+									<dd class="screen-piece-task col-xs-12">
+										<ol>
+										<!-- <li class="col-xs-4"><span name="title" data-uri="">开始懂了加格达奇</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
+										</ol>
+									</dd>
+									<dt class="col-xs-12 hidden" style="margin-top:0.5em;">
+										<button type="button" class="btn btn-primary event-add-task">添加任务</button>
+									</dt>
+								</dl>
+								<div class="" style="margin-left:10px;">
+									<label class="btn btn-outline btn-success" data-device="1920-1080">
+										<div class="screen-piece screen-piece-res" style="width: 300px;height: 168px;border:0;position:relative;">
+										</div>
+									</label>
+								</div>
+								<dl class="col-xs-3" >
+									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;分区信息：</dt>
+									<dd class="screen-piece-info"></dd>
+								</dl>
+								
 						    </td>              
 						</tr>
 						
@@ -245,48 +274,69 @@
         </div>
     </div>
 </div>
+<script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script>
 	$(document).ready(function(){
+		//添加附加参数
+		app.addonParams = {oid: getItem("OID")};
+		
+		//初始化效果
 		effect.setRadio(".radio-content-state");
 		
-		$(".screenpice").on("click",function(){
-			$(".load-pice").addClass('hidden');
+		$(".screenpiece").on("click",function(){
+			$(".load-piece").addClass('hidden');
 			var screenTag = $(this).children('input').val().replace('*','-');
 			//标注设备属性
 			$("[data-device]").attr('data-device', screenTag);
 			//控制可选分屏显示效果
-			$(".screen-picees").children().addClass('hidden');
+			$(".screen-piecees").children().addClass('hidden');
 			$(".screen-" + screenTag).removeClass('hidden');
 			var screenSize = screenTag.split('-');
-			$(".load-pice").find(".screen-pice").css({
+			$(".load-piece").find(".screen-piece").css({
 				width: screenSize[0] > screenSize[1] ? 200 : 200*screenSize[0]/screenSize[1],
 				height: screenSize[0] > screenSize[1] ? 200*screenSize[1]/screenSize[0] : 200
 			})
+			//清除设备信息
+			cleanpieceInfo();
 		});
 		
-		$(".screen-picees").children('div').unbind('click').on("click",function(){
-			var loadpice = $(this).find(".screen-pice")[0].outerHTML;
-			loadpice = $(loadpice);
+		//选择屏幕分区方式
+		$(".screen-piecees").children('div').unbind('click').on("click",function(){
+			var loadpiece = $(this).find(".screen-piece")[0].outerHTML;
+			loadpiece = $(loadpiece);
 			//给子元素添加属性
-			loadpice.children().each(function(i, o){
-				var width,height,style,device,size,inf;
+			loadpiece.children().each(function(i, o){
+				var width,height,style,device,size,dataMedia;
+				
 				style = $(o).attr('style');
 				style = '{'+ style.replace(/;/g,'",') +'}';
 				style = style.replace(',}', '}');
 				style = style.replace(/:/g, ':"');
 				eval('style=' + style);
 				width = style.width.match(/%/) ? parseFloat(style.width) / 100 : style.width;
-				
 				height = style.height.match(/%/) ? parseFloat(style.height) / 100 : style.height;
 				device = $("[data-device]").attr("data-device").split('-');
 				if(!device.length) return app.notice({error: 1, message:"还没有选择设备尺寸，请选择..."});
+				//媒体类型
+				dataMedia = $(o).attr("data-media");
+				//分区尺寸
 				size = parseInt(device[0] * width) + "px * " + parseInt(device[1] * height) + "px";
+				//参数设置到属性
 				$(o).attr("data-size", size);
-				
+				$(o).attr("data-sn", "sn_" + i);		//分区标识
+				$(o).attr("data-media", dataMedia);
 			})
 			
-			$(".load-pice").removeClass('hidden');
-			$(".load-pice").find(".screen-pice").html($(loadpice).html());
+			$(".load-piece").removeClass('hidden');
+			$(".load-piece").find(".screen-piece").html($(loadpiece).html());
+			//清除设备信息
+			cleanpieceInfo();
+			//加载设备信息读取事件
+			showpieceInfo();
+			//清空分区域任务清单
+			cleanPieceTasks();
+			//清除任务添加按钮
+			cleanAddTaskBtn();
 		})
 		
 		$('.task-mode').on('click',function(){
@@ -294,6 +344,101 @@
 			$("[name^=task-run-]").addClass('hidden');
 			$("[name=task-run-" + val + "]").removeClass("hidden");
 		})
+		
+		//控制删除按钮是否显示
+		 function showDelBtn(){
+			$(".screen-piece-task").find("span[name='title']").unbind('mouseover').on("mouseover", function(){
+				$(this).parent().parent().find(".task-icon-del").addClass('hidden');
+				$(this).next().removeClass('hidden')
+			})
+		 }
+		 //删除按钮的动作
+		 function actionCdelBtn(){
+			 $(".task-icon-del").unbind("click").on("click", function(){
+				 var that = this;
+				 app.alert({title: "您确定要删除当前任吗"}, function(res){
+					 //获取需要删除的数据
+					 var delData = $(that).prev();
+					 //删除元素
+					 //alert(that.outerHTML);
+					 $(that).parent().remove();
+				 });
+			 })
+		 }
+		
+		//添加设备信息读取事件
+		function showpieceInfo(){
+			$(".screen-piece-res").children().unbind("click").on("click", function(){
+				var dataMedia = "媒体类型：" + $(this).attr("data-media");
+				var dataSize = "<br/>分区尺寸：" + $(this).attr("data-size");
+				$(".screen-piece-info").html(dataMedia+dataSize);
+				//加载分区域任务清单
+				loadPieceTasks(this);
+				//显示删除按钮
+				showDelBtn();
+				//加载按钮的动作
+				actionCdelBtn();
+			});
+		}
+		//清除设备信息
+		function cleanpieceInfo(){
+			$(".screen-piece-info").html("");
+		}
+		//加载分区域任务清单
+		function loadPieceTasks(o){
+			//清空分区域任务清单
+			cleanPieceTasks()
+			var dataSn = $(o).attr("data-sn");
+			var dataTastsTitle = $(o).attr("data-tasks-title") || ['清单一','清单 2','清单3'];
+			var dataTastsUri = $(o).attr("data-tasks-uri") || ['sdfsf','dsfsdfsdf','sdfwdfw'];
+			var dataTastsId = $(o).attr("data-tasks-id") || ['sdfsf','dsfsdfsdf','sdfwdfw'];
+			var li;
+			dataTastsTitle.forEach(function(o, i){
+				li = '<li class="col-xs-4"><span name="title" data-uri="' + dataTastsUri[i] + '">' + o + 
+				'</span><span class="task-icon-del hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li>';
+				$(".screen-piece-task ol").append(li);	
+			})
+			$(".screen-piece-task").attr("data-sn", dataSn);
+			$(".screen-piece-task").next().removeClass("hidden");
+			//将标识放到 event-add-task 按钮
+			$(".event-add-task").attr("data-sn", dataSn);
+		}
+		//清空分区域任务清单
+		function cleanPieceTasks(){
+			$(".screen-piece-task").removeAttr("data-sn");
+			$(".screen-piece-task ol").html("");
+		}
+		//清除任务添加按钮
+		function cleanAddTaskBtn(){
+			$(".screen-piece-task").next().addClass("hidden");
+		}
+		//添加任务
+		$(".event-add-task").unbind("click").on("click", function(){
+			//按钮sn
+			var dataSn = $(this).attr('data-sn');
+			//获取data-sn对应的资源属性
+			var dataRes = $("div[data-sn=" + dataSn + "]");
+			var dataMedia = dataRes.attr("data-media");
+			var dataSize = dataRes.attr("data-size");
+			//获取与属性相关的资源
+			DL({
+				uri: "/admin/adv-publish/task-res?oid=" + getItem("OID") ,
+				data: {
+					mdeia: dataMedia,
+					size: dataSize.split('*')
+				},
+				befor: function(that){
+					var res = that.results;
+					
+					effect.modal({title:"请选择需要添加到任务的项"});
+					$("#modal-body").html("<pre>" + JSON.stringify(res,null,'\t') + "</pre>");
+					
+					// 停止后续步骤
+					that.exit = true;
+				}
+			});
+			
+		});
 		
 	});
 </script>
