@@ -1252,7 +1252,7 @@ var effect = {
 	modal: function(params) {
 		params = params || {};
 		var attr = {
-			type: params.type || 'normal', //模态框样式，暂提供 normalType
+			type: params.type || 'normal', //模态框样式，暂提供 normalType 和 largerype
 			title: params.title || '请选择相关操作', //副标题
 			detail: params.detail || '', //副标题
 			confirm: params.confirm || function() {}, //成功时回调处理  
@@ -1260,7 +1260,7 @@ var effect = {
 		}
 
 		var model = {
-			normal_type: '<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true">' +
+			normal_type: '<div class="modal inmodal" id="normalModal" tabindex="-1" role="dialog" aria-hidden="true" style="background:radial-gradient(black, transparent);">' +
 				'<div class="modal-dialog">' +
 				'<div class="modal-content animated bounceInRight">' +
 				'<div class="modal-header">' +
@@ -1278,22 +1278,43 @@ var effect = {
 				'</div>' +
 				'</div>' +
 				'</div>' +
-				'</div>'
+				'</div>',
+				
+			larger_type: '<div class="modal inmodal" id="largerModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: block; padding-right: 6px;background:radial-gradient(black, transparent);">'+
+				'<div class="modal-dialog modal-lg">' +
+					'<div class="modal-content">' +
+						'<div class="modal-header">' +
+							'<button type="button" class="close" data-dismiss="largerModal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>' +
+							'<h4 class="modal-title">' + attr.title + '</h4>' +
+							'<small class="font-bold">' + attr.detail  +
+						'</small></div><small class="font-bold">' +
+						'<div class="modal-body" id="modal-body">' +
+							'<p><strong>H+</strong> 是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题</p>' +
+						'</div>' +
+
+						'<div class="modal-footer">' +
+						    '<button type="button" class="btn btn-white" data-dismiss="largerModal">关闭</button>' +
+							'<button type="button" class="btn btn-primary submit" data-confirm="largerModal">确定</button>' +
+						'</div>' +
+					'</small></div><small class="font-bold">' +
+				'</small></div><small class="font-bold">' +
+            '</small></div>'
 		}
 
 		if (!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
+		
 		$('body #freeMode').html(model[attr.type + '_type']);
-		$("button[data-dismiss]").unbind("click").on("click", function() {
+		$("button[data-dismiss]").unbind("click").on("click", function(){
 			var modalId = $(this).attr('data-dismiss');
 			attr['close']($("#" + modalId));
-			$("#" + modalId).toggle();
+			$("#" + modalId).fadeOut();
 		});
 		$("button[data-confirm]").unbind("click").on("click", function() {
 			var modalId = $(this).attr('data-confirm');
 			attr['confirm']($("#" + modalId));
-			$("#" + modalId).toggle();
+			$("#" + modalId).fadeOut();
 		});
-		$("#" + attr.type + "Modal").toggle();
+		$("#" + attr.type + "Modal").fadeIn();
 
 	},
 

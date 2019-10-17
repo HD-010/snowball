@@ -274,6 +274,56 @@
         </div>
     </div>
 </div>
+<code id="temp-code" class="hidden">
+	<div class="col-xs-12" style="margin-top:10px;">
+		<input type="text" class="input-sm m-b-xs" id="filter" placeholder="搜索你想要的..." style="border:1px solid rgb(98, 179, 255)" name="sky" value="">
+		开始：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="2019-010-16">
+		结束：<input type="date" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" name="SEDate" value="2019-010-17">
+		<input type="submit" class="input-sm m-b-xs" style="border:1px solid rgb(98, 179, 255)" value="搜索">
+	</div>
+	<table class="footable table table-stripped toggle-arrow-tiny no-paging footable-loaded" data-page-size="20" data-filter="#filter">
+		<thead>
+			<tr>    
+				<td data-sort-ignore="true" style="width:15px;">
+					<label class="checkbox-inline"><input type="checkbox" class="union-top" data-union="union-child"></label>
+				</td>                                           
+				<th data-sort-ignore="false" class="footable-sortable">ID<span class="footable-sort-indicator"></span></th>                                                  
+				<th data-sort-ignore="false" class="footable-sortable">名称<span class="footable-sort-indicator"></span></th>
+				<th data-sort-ignore="false" class="footable-sortable">栏目<span class="footable-sort-indicator"></span></th>
+				<th data-sort-ignore="false" class="footable-sortable footable-sorted-desc">添加人<span class="footable-sort-indicator"></span></th>
+				<th data-sort-ignore="false" class="footable-sortable">状态人<span class="footable-sort-indicator"></span></th>
+				<th data-sort-ignore="false" class="footable-sortable">创建时间<span class="footable-sort-indicator"></span></th>
+				<th data-sort-ignore="false" class="footable-sortable">发布时间<span class="footable-sort-indicator"></span></th>
+			</tr>
+		</thead>
+		<tbody id="lists-code">
+			<tr class="footable-even" style="display: table-row;">
+				<td data-sort-ignore="true"><span class="footable-toggle"></span>
+					<label class="checkbox-inline"><input type="checkbox" class="union-child" data-union="union-top" name="id" value="1939"></label>
+				</td> 
+				<td>1939</td>   
+				<td><img src="/img/2019/10/17/45e5a27d0b09ffe4f3b35550d1902cb3.png">离开地方撒地方</td>
+				<td></td>   
+				<td>qwe</td> 
+				<td>停止</td> 
+				<td>2019-10-17 14:26:39</td> 
+				<td>1970-01-01 8:0:0</td>                           
+			</tr></tbody>
+		<tfoot>     
+			<tr>
+				<td class="show-opers" colspan="8">
+					<label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child"> 全选</label>
+					<button type="button" class="btn btn-info" data-async="post" uri="/admin/arc/del/ctag/programsvideo?" id="del-records">删除</button>
+				</td>
+			</tr>                  
+			<tr>                           
+				<td colspan="8">
+					<ul class="pagination pull-right"><li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li><li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li><li class="footable-page active"><a data-page="0" href="#">1</a></li><li class="footable-page-arrow disabled"><a data-page="next" href="#next">›</a></li><li class="footable-page-arrow disabled"><a data-page="last" href="#last">»</a></li></ul>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</code>
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script>
 	$(document).ready(function(){
@@ -420,18 +470,24 @@
 			var dataRes = $("div[data-sn=" + dataSn + "]");
 			var dataMedia = dataRes.attr("data-media");
 			var dataSize = dataRes.attr("data-size");
+			var data = {
+					mdeia: dataMedia,
+					size: dataSize.replace('*', '-')
+				}
+				console.log(data);
 			//获取与属性相关的资源
 			DL({
+				listId: '#lists-code',
 				uri: "/admin/adv-publish/task-res?oid=" + getItem("OID") ,
-				data: {
-					mdeia: dataMedia,
-					size: dataSize.split('*')
-				},
+				data: data,
 				befor: function(that){
 					var res = that.results;
 					
-					effect.modal({title:"请选择需要添加到任务的项"});
-					$("#modal-body").html("<pre>" + JSON.stringify(res,null,'\t') + "</pre>");
+					effect.modal({
+						title: "请选择需要添加到任务的项",
+						type: "larger"
+					});
+					$("#modal-body").html($("#temp-code").html());
 					
 					// 停止后续步骤
 					that.exit = true;

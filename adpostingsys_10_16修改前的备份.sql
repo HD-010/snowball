@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 25/09/2019 17:21:40
+ Date: 16/10/2019 16:33:38
 */
 
 SET NAMES utf8mb4;
@@ -64,7 +64,7 @@ CREATE TABLE `adv_addonadv`  (
   `enable` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '是否启用 0关闭 1启用',
   `flag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'h' COMMENT '广告位置',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_addonadv
@@ -226,7 +226,7 @@ CREATE TABLE `adv_addondevice`  (
 -- ----------------------------
 -- Records of adv_addondevice
 -- ----------------------------
-INSERT INTO `adv_addondevice` VALUES ('', 'sdfg13345dfsgds', '5.2', '1', 1918, 42, 1, 0, 195);
+INSERT INTO `adv_addondevice` VALUES ('', '', '', '1', 1936, 0, 1, 0, 195);
 
 -- ----------------------------
 -- Table structure for adv_addonimages
@@ -255,6 +255,24 @@ INSERT INTO `adv_addonimages` VALUES (93, 6, 2, '[{\"img\":\"http://www.dedecms.
 INSERT INTO `adv_addonimages` VALUES (94, 6, 2, '[{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51624.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51625.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51626.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51627.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51628.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G51629.jpg\",\"text\":\"武夷山的美景真是不错\",\"redirectrul\":\"http://www.baidu.com\"}]', '', '127.0.0.1', '武夷山的美景真是不错');
 INSERT INTO `adv_addonimages` VALUES (95, 6, 2, '[{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G52636.jpg\",\"text\":\"原创风景图片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G52637.jpg\",\"text\":\"原创风景图片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G52638.jpg\",\"text\":\"原创风景图片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G52639.jpg\",\"text\":\"原创风景图片\",\"redirectrul\":\"http://www.baidu.com\"}]', '', '127.0.0.1', '原创风景图片');
 INSERT INTO `adv_addonimages` VALUES (96, 6, 2, '[{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G53038.jpg\",\"text\":\"花的照片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G53039.jpg\",\"text\":\"花的照片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G53040.jpg\",\"text\":\"花的照片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G53041.jpg\",\"text\":\"花的照片\",\"redirectrul\":\"http://www.baidu.com\"},{\"img\":\"http://www.dedecms.com/demoimg/uploads/allimg/100407/1-10040G53041-50.jpg\",\"text\":\"花的照片\",\"redirectrul\":\"http://www.baidu.com\"}]', '', '127.0.0.1', '我的眼界-一些关于花的照片');
+
+-- ----------------------------
+-- Table structure for adv_addonimgprograms
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_addonimgprograms`;
+CREATE TABLE `adv_addonimgprograms`  (
+  `business` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商户名称',
+  `views` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分屏适配',
+  `url` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '上传图片',
+  `effecttime` timestamp(0) NULL DEFAULT NULL COMMENT '生效时间',
+  `overduetime` timestamp(0) NULL DEFAULT NULL COMMENT '过期时间',
+  `duration` smallint(4) NULL DEFAULT NULL COMMENT '广告播放时长',
+  `aid` bigint(13) NOT NULL DEFAULT 1,
+  `typeid` int(11) NOT NULL DEFAULT 1 COMMENT '栏目id',
+  `componentid` smallint(6) NOT NULL DEFAULT 1 COMMENT '组件id',
+  `arcrank` smallint(6) NOT NULL DEFAULT 0 COMMENT '排序',
+  `mid` mediumint(8) UNSIGNED NOT NULL COMMENT '发布人id'
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for adv_addoninfos
@@ -391,6 +409,42 @@ INSERT INTO `adv_addonperrecruit` VALUES (1897, 40, NULL, 1, NULL, '验证码设
 INSERT INTO `adv_addonperrecruit` VALUES (1903, 41, NULL, 1, NULL, '验证码设8496', '0', '0', NULL, NULL, '0', '-', 0);
 
 -- ----------------------------
+-- Table structure for adv_addonprogramsnotice
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_addonprogramsnotice`;
+CREATE TABLE `adv_addonprogramsnotice`  (
+  `business` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商户名称',
+  `views` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分屏适配',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '消息内容',
+  `effecttime` timestamp(0) NULL DEFAULT NULL COMMENT '生效时间',
+  `overduetime` timestamp(0) NULL DEFAULT NULL COMMENT '过期时间',
+  `duration` smallint(4) NULL DEFAULT NULL COMMENT '消息播放时长',
+  `aid` bigint(13) NOT NULL DEFAULT 1,
+  `typeid` int(11) NOT NULL DEFAULT 1 COMMENT '栏目id',
+  `componentid` smallint(6) NOT NULL DEFAULT 1 COMMENT '组件id',
+  `arcrank` smallint(6) NOT NULL DEFAULT 0 COMMENT '排序',
+  `mid` mediumint(8) UNSIGNED NOT NULL COMMENT '发布人id'
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for adv_addonprogramsvideo
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_addonprogramsvideo`;
+CREATE TABLE `adv_addonprogramsvideo`  (
+  `views` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分屏适配',
+  `business` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商户名称',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '上传视频',
+  `effecttime` timestamp(0) NULL DEFAULT NULL COMMENT '生效时间',
+  `overduetime` timestamp(0) NULL DEFAULT NULL COMMENT '过期时间',
+  `duration` smallint(6) NULL DEFAULT NULL COMMENT '广告播放时长',
+  `aid` bigint(13) NOT NULL DEFAULT 1,
+  `typeid` int(11) NOT NULL DEFAULT 1 COMMENT '栏目id',
+  `componentid` smallint(6) NOT NULL DEFAULT 1 COMMENT '组件id',
+  `arcrank` smallint(6) NOT NULL DEFAULT 0 COMMENT '排序',
+  `mid` mediumint(8) UNSIGNED NOT NULL COMMENT '发布人id'
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for adv_addonspec
 -- ----------------------------
 DROP TABLE IF EXISTS `adv_addonspec`;
@@ -423,7 +477,7 @@ CREATE TABLE `adv_addresslist`  (
   `realname` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `tel` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 160 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 164 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_addresslist
@@ -522,7 +576,7 @@ CREATE TABLE `adv_arcclass`  (
   `isdel` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '0没有删除1已经删除',
   `classify` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 67 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 75 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of adv_arcclass
@@ -531,8 +585,11 @@ INSERT INTO `adv_arcclass` VALUES (65, 'jobwanted', 1, '1', '0', 'JTVCJTdCJTIydm
 INSERT INTO `adv_arcclass` VALUES (34, 'infos', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwNjUwODYlMjIsJTIybmFtZSUyMjolMjIlRTUlQjclQTUlRTclQTglOEIlRTQlQkYlQTElRTYlODElQUYlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTExMTAlMjIsJTIybmFtZSUyMjolMjIlRTQlQjglQUQlRTYlQTAlODclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTkzOTElMjIsJTIybmFtZSUyMjolMjIlRTYlOEIlOUIlRTYlQTAlODclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQzNjYwNzEzMTMlMjIsJTIybmFtZSUyMjolMjIlRTUlOUMlQTglRTclOTAlODYlMjIlN0QlNUQlN0QlNUQ=');
 INSERT INTO `adv_arcclass` VALUES (35, 'commodities', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwNjUwODYlMjIsJTIybmFtZSUyMjolMjIlRTUlOTUlODYlRTUlOTMlODElRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTExMTAlMjIsJTIybmFtZSUyMjolMjIlRTYlQjQlODElRTUlODUlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjIzMTAwOTkzOTElMjIsJTIybmFtZSUyMjolMjIlRTklOTklQjYlRTclOTMlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQzNjYwNzEzMTMlMjIsJTIybmFtZSUyMjolMjIlRTclQkIlOTMlRTYlOUUlODQlRTYlOUQlOTAlRTYlOTYlOTklMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNTA0NjklMjIsJTIybmFtZSUyMjolMjIlRTclQTAlODIlRTclOUYlQjMlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNjAyMDUlMjIsJTIybmFtZSUyMjolMjIlRTclQkIlODYlRTclQTAlODIlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDIxNzMwNjklMjIsJTIybmFtZSUyMjolMjIlRTclQTIlOEUlRTclOUYlQjMlMjIlN0QlNUQlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxMzI0OTElMjIsJTIybmFtZSUyMjolMjIlRTYlQjYlODIlRTglODMlQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNDA2NTklMjIsJTIybmFtZSUyMjolMjIlRTUlOEUlQTglRTUlODUlQjclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNDgyODMlMjIsJTIybmFtZSUyMjolMjIlRTklOTclQTglRTclQUElOTclMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNTU4NzUlMjIsJTIybmFtZSUyMjolMjIlRTclOTMlQjclRTclQTAlOTYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxNzA4OTAlMjIsJTIybmFtZSUyMjolMjIlRTklOTIlQTIlRTYlOUQlOTAlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTI4MDQlMjIsJTIybmFtZSUyMjolMjIlRTUlQkIlQkElRTYlOUQlOTAlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTg5MzIlMjIsJTIybmFtZSUyMjolMjIlRTQlQkElOTQlRTklODclOTElRTklODUlOEQlRTQlQkIlQjYlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0MTY5MDElMjIsJTIybmFtZSUyMjolMjIlRTUlODUlQjYlRTQlQkIlOTYlRTQlQkElOTQlRTklODclOTElMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0MzAwMzYlMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQjYlRTUlODUlQjclRTQlQkElOTQlRTklODclOTElMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDA0NDE5MzIlMjIsJTIybmFtZSUyMjolMjIlRTclQUElOTclRTUlQjglOTglRTklODUlOEQlRTQlQkIlQjYlMjIlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAzMDU3NDglMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQjYlRTglQTMlODUlRTQlQjglQkIlRTYlOUQlOTAlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyMTkyOTklMjIsJTIybmFtZSUyMjolMjIlRTklOUIlODYlRTYlODglOTAlRTUlOTAlOEElRTklQTElQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyMzAxMDclMjIsJTIybmFtZSUyMjolMjIlRTclOEUlQkIlRTclOTIlODMlRTglODMlQjYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyODIwNTklMjIsJTIybmFtZSUyMjolMjJwdmMlRTUlQTIlOTklRTclQkElQjglMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAyNjY1OTYlMjIsJTIybmFtZSUyMjolMjIlRTglQTMlODUlRTklQTUlQjAlRTclQkElQkYlRTYlOUQlQkYlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjQ2NDAxOTg5MzIlMjIsJTIybmFtZSUyMjolMjIlRTQlQkElOTQlRTklODclOTElRTklODUlOEQlRTQlQkIlQjYlMjIlN0QlNUQlN0QlNUQlN0QlNUQlN0QlNUQ=');
 INSERT INTO `adv_arcclass` VALUES (66, 'perrecruit', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNDM3MzIwJTIyLCUyMm5hbWUlMjI6JTIyJUU2JThCJTlCJUU4JTgxJTk4JUU3JUIxJUJCJUU1JTlFJThCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTQ2NjIyJTIyLCUyMm5hbWUlMjI6JTIyJUU2JThCJTlCJUU4JTgxJTk4JUU3JUIxJUJCJUU1JTlFJThCMSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE1NTU2NCUyMiwlMjJuYW1lJTIyOiUyMiVFNiU4QiU5QiVFOCU4MSU5OCVFNyVCMSVCQiVFNSU5RSU4QjIlMjIlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNDM3MzIxJTIyLCUyMm5hbWUlMjI6JTIyJUU4JTk2JUFBJUU4JUI1JTg0JUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTYxMjQ5JTIyLCUyMm5hbWUlMjI6JTIyJUU4JTk2JUFBJUU4JUI1JTg0JUU1JTg4JTg2JUU3JUIxJUJCMSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE2NjI1JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUE3JTg0JUU2JUEwJUJDJUU1JTkwJThEJUU3JUE3JUIwMiUyMiU3RCU1RCU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2NjE4MTE0MzczMjIlMjIsJTIybmFtZSUyMjolMjIlRTUlQUQlQTYlRTUlOEUlODYlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjYxODExNzI2ODMlMjIsJTIybmFtZSUyMjolMjIlRTUlQUQlQTYlRTUlOEUlODYlRTUlODglODYlRTclQjElQkIxJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY2MTgxMTc2ODklMjIsJTIybmFtZSUyMjolMjIlRTglQTclODQlRTYlQTAlQkMlRTUlOTAlOEQlRTclQTclQjAyJTIyJTdEJTVEJTdEJTVE');
-INSERT INTO `adv_arcclass` VALUES (67, 'device', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzgzNjMyNTYwJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUJCJTg0JTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU1RCU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU2OTM3ODM2MzI1NjElMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlMjIsJTIyY2hpbGRyZW4lMjI6JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzg0NDA4NzglMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlRTQlQjglODAlMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzNzg0NDI3NTklMjIsJTIybmFtZSUyMjolMjIlRTglQUUlQkUlRTUlQTQlODclRTYlODklODAlRTUlQjElOUUlRTUlODglODYlRTclQjElQkIlRTQlQkElOEMlMjIlN0QlNUQlN0QlNUQ=');
-INSERT INTO `adv_arcclass` VALUES (68, 'device', 195, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzODE1MzgzOTMwJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTQzMjc3JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUI4JTgwJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTUwOTk2JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUJBJThDJTIyJTdEJTVEJTdEJTVE');
+INSERT INTO `adv_arcclass` VALUES (71, 'programsvideo', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA1OTAyMDA3MzMwJTIyLCUyMm5hbWUlMjI6JTIyJUU1JTg4JTg2JUU1JUIxJThGJUU5JTgwJTgyJUU5JTg1JThEJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODQ5NjcyODQ5JTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFFJUJEMTkyMColRTklQUIlOTgxMjgwcHglMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4NDk2NDM2NjglMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQkQxMjgwKiVFOSVBQiU5ODE5MjBweCUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDU5MDI1NjM0MSUyMiwlMjJuYW1lJTIyOiUyMiVFNSVBRSVCRDEyODAqJUU5JUFCJTk4ODUzcHgoJUU2JUJBJTkwOiVFNSVBRSVCRDE5MjAlRTklQUIlOTgxMjgwKSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDg0OTkxMjE4JTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFFJUJEODUzKiVFOSVBQiU5ODEyODBweCglRTYlQkElOTA6JUU1JUFFJUJEMTI4MCVFOSVBQiU5ODE5MjApJTIyJTdEJTVEJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwNTkwMjAwNzMzMSUyMiwlMjJuYW1lJTIyOiUyMiVFNSVCOSVCRiVFNSU5MSU4QSVFNSU4OCU4NiVFNyVCMSVCQiUyMiwlMjJjaGlsZHJlbiUyMjolNUIlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDU5MjI3NzQwNSUyMiwlMjJuYW1lJTIyOiUyMiVFNiVCNiU4OCVFOSU5OCVCMiVFNSVCOSVCRiVFNSU5MSU4QSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDU5MjMxMDQyMCUyMiwlMjJuYW1lJTIyOiUyMiVFNiU4OCVCRiVFNSU5QyVCMCVFNCVCQSVBNyVFNSVCOSVCRiVFNSU5MSU4QSUyMiU3RCU1RCU3RCU1RA==');
+INSERT INTO `adv_arcclass` VALUES (68, 'device', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NjkzODE1MzgzOTMwJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTQzMjc3JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUI4JTgwJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTY5MzgxNTUwOTk2JTIyLCUyMm5hbWUlMjI6JTIyJUU4JUFFJUJFJUU1JUE0JTg3JUU2JTg5JTgwJUU1JUIxJTlFJUU1JTg4JTg2JUU3JUIxJUJCJUU0JUJBJThDJTIyJTdEJTVEJTdEJTVE');
+INSERT INTO `adv_arcclass` VALUES (69, 'programs', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA1MDc5NDgzNjkwJTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFBJTkyJUU0JUJEJTkzJUU3JUIxJUJCJUU1JTlFJThCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwNTA3OTUyNjkxJTIyLCUyMm5hbWUlMjI6JTIyJUU4JUE3JTg2JUU5JUEyJTkxJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwNTA3OTU1NTEwJTIyLCUyMm5hbWUlMjI6JTIyJUU1JTlCJUJFJUU3JTg5JTg3JTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwNTA3OTU2ODklMjIsJTIybmFtZSUyMjolMjIlRTYlQjYlODglRTYlODElQUYlMjIlN0QlNUQlN0QlNUQ=');
+INSERT INTO `adv_arcclass` VALUES (73, 'imgprograms', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4NTA0MDQwMzgwJTIyLCUyMm5hbWUlMjI6JTIyJUU1JTg4JTg2JUU1JUIxJThGJUU5JTgwJTgyJUU5JTg1JThEJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODUwNDM5NzE2JTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFFJUJEMTkyMColRTklQUIlOTgxMDgwcHglMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4NTA1MTE2NTclMjIsJTIybmFtZSUyMjolMjIlRTUlQUUlQkQxMDgwKiVFOSVBQiU5ODE5MjBweCUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDg1MDY2NDgwNSUyMiwlMjJuYW1lJTIyOiUyMiVFNSVBRSVCRDEwODAqJUU5JUFCJTk4MTA2N3B4JTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODUwODMxOTE4JTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFFJUJEMTA2NyolRTklQUIlOTgxMDgwcHglMjIlN0QlNUQlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4NTA0MDQwMzgxJTIyLCUyMm5hbWUlMjI6JTIyJUU1JUI5JUJGJUU1JTkxJThBJUU1JTg4JTg2JUU3JUIxJUJCJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODUwOTQ5MTczJTIyLCUyMm5hbWUlMjI6JTIyJUU2JUI2JTg4JUU5JTk4JUIyJUU1JUI5JUJGJUU1JTkxJThBJTIyJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODUwOTczOTg4JTIyLCUyMm5hbWUlMjI6JTIyJUU2JTg4JUJGJUU0JUJBJUE3JUU1JUI5JUJGJUU1JTkxJThBJTIyJTdEJTVEJTdEJTVE');
+INSERT INTO `adv_arcclass` VALUES (74, 'programsnotice', 1, '1', '0', 'JTVCJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4Njg2OTQyNTcwJTIyLCUyMm5hbWUlMjI6JTIyJUU1JTg4JTg2JUU1JUIxJThGJUU5JTgwJTgyJUU5JTg1JThEJTIyLCUyMmNoaWxkcmVuJTIyOiU1QiU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODY4NzM0NzQ4JTIyLCUyMm5hbWUlMjI6JTIyJUU1JUFFJUJEMTkyMColRTklQUIlOTgxMjgwcHglMjIlN0QsJTdCJTIydmFsJTIyOiUyMmNsYXNzaWZ5XzE1NzA4Njg4MDYxOCUyMiwlMjJuYW1lJTIyOiUyMiVFNSVBRSVCRDEyODAqJUU5JUFCJTk4MTkyMHB4JTIyJTdEJTVEJTdELCU3QiUyMnZhbCUyMjolMjJjbGFzc2lmeV8xNTcwODY4Njk0MjU3MSUyMiwlMjJuYW1lJTIyOiUyMiVFNiVCNiU4OCVFNiU4MSVBRiVFNSU4OCU4NiVFNyVCMSVCQiUyMiwlMjJjaGlsZHJlbiUyMjolNUIlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDg2ODgzMDUyOCUyMiwlMjJuYW1lJTIyOiUyMiVFNiVCNiU4OCVFOSU5OCVCMiVFNSU4NSVBQyVFNSU5MSU4QSUyMiU3RCwlN0IlMjJ2YWwlMjI6JTIyY2xhc3NpZnlfMTU3MDg2ODg4NjE5MyUyMiwlMjJuYW1lJTIyOiUyMiVFNiU5NyVCNiVFNCVCQSU4QiVFNCVCQyVBMCVFOCVCRSVCRSUyMiU3RCU1RCU3RCU1RA==');
 
 -- ----------------------------
 -- Table structure for adv_archives
@@ -578,7 +635,7 @@ CREATE TABLE `adv_archives`  (
   INDEX `sortrank`(`sortrank`) USING BTREE,
   INDEX `mainindex`(`arcrank`, `typeid`, `component`, `flag`, `mid`) USING BTREE,
   INDEX `lastpost`(`lastpost`, `scores`, `goodpost`, `badpost`, `notpost`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1908 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 1937 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of adv_archives
@@ -650,7 +707,21 @@ INSERT INTO `adv_archives` VALUES (1903, 41, '0', 0, '', 0, 1, 0, 0, 0, '验证�
 INSERT INTO `adv_archives` VALUES (1908, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '宽屏', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1569378440878', '2019-09-25 11:47:27', '1');
 INSERT INTO `adv_archives` VALUES (1909, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '大商汇B座201宽屏', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1569378442759', '2019-09-25 13:24:03', '1');
 INSERT INTO `adv_archives` VALUES (1911, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B座201宽屏', '大商汇B座201宽屏', '', '', '', '', 0, 0, 1, '大商汇B座201宽屏', 0, 0, 0, 0, 0, 0, '大商汇B座201宽屏', '', 0, 0, 0, 2, 'classify_1569378442759', '2019-09-25 13:43:58', '1');
-INSERT INTO `adv_archives` VALUES (1918, 42, '0', 0, '', 0, 1, 0, 0, 0, '大商汇B2座201宽屏', '原梓菲村基本面f', '', '', '', '', 0, 0, 195, '模压苛大哥大', 0, 0, 0, 0, 0, 0, '阿斯蒂芬', '', 0, 0, 0, 0, 'classify_1569381550996', '2019-09-25 17:12:31', '0');
+INSERT INTO `adv_archives` VALUES (1920, 0, '0', 0, '', 0, 1, 0, 0, 0, '械', '厅', '', '', '', '/img/2019/10/9/40e01b0c6c501126f707e095edc77f82.png', 0, 0, 195, '夺', 0, 0, 0, 0, 0, 0, '人有', '', 0, 0, 0, 0, 'classify_1570592310420', '2019-10-09 12:14:42', '1');
+INSERT INTO `adv_archives` VALUES (1921, 0, '0', 0, '', 0, 1, 0, 0, 0, 'ds', 'd', '', '', '', '/img/2019/10/9/5b840cd1d17dcb7de50e35d40e5aa3d7.png', 0, 0, 1, 'sdf', 0, 0, 0, 0, 0, 0, 'sd', '', 0, 0, 0, 0, 'classify_1570596660419', '2019-10-09 12:52:10', '0');
+INSERT INTO `adv_archives` VALUES (1922, 0, '0', 0, '', 0, 1, 0, 0, 0, '夺', '顶替', '', '', '', '/img/2019/10/9/1818a0d3320f1058d740a8dc45b74285.png', 0, 0, 195, '枯干', 0, 0, 0, 0, 0, 0, '地', '', 0, 0, 0, 23, 'classify_1570592277405', '2019-10-09 12:57:57', '1');
+INSERT INTO `adv_archives` VALUES (1925, 0, '0', 0, '', 0, 1, 0, 0, 0, 'asddf', 'dfsa', '', '', '', '/img/2019/10/9/324446a6882027698b1c3b43d5bf6c05.png', 0, 0, 1, 'asdf', 0, 0, 0, 0, 0, 0, 'asd', '', 0, 0, 0, 3453, 'classify_1570592277405', '2019-10-09 18:15:40', '1');
+INSERT INTO `adv_archives` VALUES (1926, 0, '0', 0, '', 0, 1, 0, 0, 0, '夺奇才', '在', '', '', '', '/img/2019/10/10/91f0f06ac7a8b121e14f863fd13f1b2e.png', 0, 0, 195, '夺', 0, 0, 0, 0, 0, 0, '456压下', '', 0, 0, 0, 0, 'classify_1570592277405', '2019-10-10 17:36:24', '1');
+INSERT INTO `adv_archives` VALUES (1927, 0, '0', 0, '', 0, 1, 0, 0, 0, 'dfas', 'sdf s', '', '', '', '/img/2019/10/12/0df5364e0abd2d98f5fc4021e28c1d14.png', 0, 0, 195, 'sdf', 0, 0, 0, 0, 0, 0, 'sdf', '', 0, 0, 0, 3234, 'classify_1570592277405', '2019-10-12 09:52:03', '1');
+INSERT INTO `adv_archives` VALUES (1928, 0, '0', 0, '', 0, 1, 0, 0, 0, '英雄不问出路', '英雄不问出路', '', '', '', '/img/2019/10/12/a7480902045224641441843f99f26e06.png', 0, 0, 195, '', 0, 0, 0, 0, 0, 0, '一位民间消防英雄的缩影', '', 0, 0, 0, 999, 'classify_1570592277405', '2019-10-12 10:06:36', '1');
+INSERT INTO `adv_archives` VALUES (1929, 0, '0', 0, '', 0, 1, 0, 0, 0, 'ert', 'ert', '', '', '', '/img/2019/10/12/182ed9a3402cbdaad5292eedc0c5b7a8.png', 0, 0, 195, 'er', 0, 0, 0, 0, 0, 0, 'er', '', 0, 0, 0, 33, 'classify_1570592310420', '2019-10-12 10:12:24', '1');
+INSERT INTO `adv_archives` VALUES (1930, 0, '0', 0, '', 0, 1, 0, 0, 0, '胜多负少', '城有', '', '', '', '/img/2019/10/12/f9520e8e5613283f1ab2212551f72fa1.png', 0, 0, 195, '顶替', 0, 0, 0, 0, 0, 0, '某', '', 0, 0, 0, 32, 'classify_1570850973988', '2019-10-12 11:49:05', '1');
+INSERT INTO `adv_archives` VALUES (1931, 0, '0', 0, '', 0, 1, 0, 0, 0, '厅大款', '震天', '', '', '', '/img/2019/10/12/f4fd7c49374b96d31b0f3e2f5461fb29.png', 0, 0, 195, '摇篮', 0, 0, 0, 0, 0, 0, '遥遥', '', 0, 0, 0, 322, 'classify_1570850973988', '2019-10-12 12:04:34', '0');
+INSERT INTO `adv_archives` VALUES (1932, 0, '0', 0, '', 0, 1, 0, 0, 0, '文章', '和', '', '', '', '', 0, 0, 195, '手', 0, 0, 0, 0, 0, 0, '手', '', 0, 0, 0, 345, 'classify_1570850973988', '2019-10-12 12:07:41', '0');
+INSERT INTO `adv_archives` VALUES (1933, 0, '0', 0, '', 0, 1, 0, 0, 0, '1wr5', 'sdf s', '', '', '', '/img/2019/10/12/571d9fa50a61e50da7e691944b381e29.png', 0, 0, 195, 'sadf s d', 0, 0, 0, 0, 0, 0, 'da  f', '', 0, 0, 0, 1231, 'classify_1570868886193', '2019-10-12 16:47:01', '1');
+INSERT INTO `adv_archives` VALUES (1934, 0, '0', 0, '', 0, 1, 0, 0, 0, 'dfs', 'dsaf sad', '', '', '', '/img/2019/10/12/079e33ba508366f8c6d1c1f0e0bfe0f5.png', 0, 0, 195, 'sad f', 0, 0, 0, 0, 0, 0, 'sadaf', '', 0, 0, 0, 2342, 'classify_1570868886193', '2019-10-12 16:49:24', '0');
+INSERT INTO `adv_archives` VALUES (1935, 0, '0', 0, '', 0, 1, 0, 0, 0, 'dfaer', 'df a', '', '', '', '/img/2019/10/12/d4d43e548aa12f23f1b9f4e9182dbc3e.png', 0, 0, 195, 'sad s', 0, 0, 0, 0, 0, 0, 'asdf s', '', 0, 0, 0, 234, 'classify_1570868886193', '2019-10-12 16:52:46', '0');
+INSERT INTO `adv_archives` VALUES (1936, 0, '0', 0, '', 0, 1, 0, 0, 0, '', '', '', '', '', '', 0, 0, 195, '', 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 'classify_1569381550996', '2019-10-14 17:03:36', '0');
 
 -- ----------------------------
 -- Table structure for adv_arctype
@@ -679,7 +750,7 @@ CREATE TABLE `adv_arctype`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sortrank`(`sortrank`) USING BTREE,
   INDEX `reid`(`componentid`, `isdefault`, `comtype`, `ispart`, `corank`, `topid`, `ishidden`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of adv_arctype
@@ -701,6 +772,7 @@ INSERT INTO `adv_arctype` VALUES (41, 12, 0, 50, '特招', 0, 0, 1, 234, 0, 0, '
 INSERT INTO `adv_arctype` VALUES (2, -8, 1, 50, '招标公告', 0, 0, 1, -1, 0, 100, '', '工程信息招标公告描述', '工程信息招标公告关键词', '招标公告seo标题', 0, '不管', '不管', 1);
 INSERT INTO `adv_arctype` VALUES (14, -8, 1, 2, '隧道建设', 1, 1, 1, -1, 0, 0, 'default', '', '', '', 0, '', '', 1);
 INSERT INTO `adv_arctype` VALUES (42, 52, 1, 50, '栏目一', 0, 0, 1, 1, 0, 0, '', '', '', '', 0, '', '', 0);
+INSERT INTO `adv_arctype` VALUES (43, 59, 1, 50, 'ds', 0, 0, 1, 1, 0, 0, '', '', '', '', 0, '', '', 0);
 
 -- ----------------------------
 -- Table structure for adv_commidity_spec
@@ -892,7 +964,7 @@ CREATE TABLE `adv_components`  (
   `icon` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `nid`(`nid`, `isshow`, `arcsta`, `sendrank`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of adv_components
@@ -902,6 +974,9 @@ INSERT INTO `adv_components` VALUES (1, 'commodities', '商品信息', 'adv_arch
 INSERT INTO `adv_components` VALUES (11, 'jobwanted', '人才信息管理', 'adv_archives', 'adv_addonjobwanted', 'W3siYXR0ciI6ICIgZGlzYWJsZWQgZGF0YS1kZWY9NCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAiaW50IiwgImZpZWxkIjogImNvbXBvbmVudGlkIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogdHJ1ZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDEsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLnu4Tku7ZpZCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjEwIn0sIHsiYXR0ciI6ICJkYXRhLWNvbW1lbnQ95qCH6aKY6ZW/5bqm5pyA5aSaMTXkuKrlrZfnrKYiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogInRpdGxlIiwgImlzbGlzdCI6IDAsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLmoIfpopgiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICIyNSJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogInVuYW1lIiwgImxpbWl0IjogNCwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5aeT5ZCNIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMjAifSwgeyJhdHRyIjogIiBkYXRhLWRlZj0xIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ0ZXh0IiwgImZpZWxkIjogImxpdHBpYyIsICJsaW1pdCI6IDEsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMCwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuWktOWDjyIsICJpbnB1dHR5cGUiOiAidXBsb2FkZXIiLCAibWF4bGVuZ3RoIjogIjI1NSJ9LCB7ImF0dHIiOiAiIGRhdGEtdmFsPSfnlLct5aWzJyBkYXRhLWtleT0nMC0xJyBkYXRhLWRlZj0wIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImdlbmRlciIsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaAp+WIqyIsICJpbnB1dHR5cGUiOiAicmFkaW8iLCAibWF4bGVuZ3RoIjogIjIifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2JfZXhwZXJpZW5jZSIsICJpc2xpc3QiOiAi5rGC6IGM6ICF57uP6aqMIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaxguiBjOiAhee7j+mqjCIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJhZ2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLlubTpvoQiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICIyIn0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJpbnQiLCAiZmllbGQiOiAiY2xhc3NpZnkiLCAiZWZmZWN0IjogIm1haW4iLCAiaXNsaXN0IjogIuiBjOS9jeWIhuexuyIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDAsICJpdGVtbmFtZSI6ICLogYzkvY0iLCAiaW5wdXR0eXBlIjogIm5lc21vZGFsIiwgIm1heGxlbmd0aCI6ICI3In0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJqb2Jfc2FsYXJ5IiwgImlzbGlzdCI6ICLmnJ/mnJvolqrotYQiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5pyf5pyb6Jaq6LWEIiwgImlucHV0dHlwZSI6ICJuZXNtb2RhbCIsICJtYXhsZW5ndGgiOiAiNyJ9LCB7ImF0dHIiOiAiIHR5cGU9dGV4dCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2JfaW5kdXN0cnkiLCAiaXNsaXN0IjogIuS7juS6i+ihjOS4miIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLku47kuovooYzkuJoiLCAiaW5wdXR0eXBlIjogIm5lc21vZGFsIiwgIm1heGxlbmd0aCI6ICIxMjgifSwgeyJhdHRyIjogIiB0eXBlPXRleHQgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiam9iX05hdHVyZSIsICJpc2xpc3QiOiAi5bel5L2c5oCn6LSoIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuW3peS9nOaAp+i0qCIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjEyOCJ9LCB7ImF0dHIiOiAiIHR5cGU9dGVsbCBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIiwgInR5cGUiOiAiaW50IiwgImZpZWxkIjogInBob25lIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6IGU57O755S16K+dIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiNyJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oiLCAidHlwZSI6ICJpbnQiLCAiZmllbGQiOiAiYWRkcmVzcyIsICJsaW1pdCI6IDMsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuacn+acm+W3peS9nOWfjuW4giIsICJpbnB1dHR5cGUiOiAiYWRkcmVzcyIsICJtYXhsZW5ndGgiOiAiMTEifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c6L+H55qE5YWs5Y+45ZCN56ewIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjb21wYW55IiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuWFrOWPuOWQjeensCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjMyIn0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeabvue7j+W3peS9nOS4reeahOiBjOS9jSIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAicG9zaXRpb24iLCAiZWZmZWN0IjogInRhYl95b3ViYW5nX2pvYmV4cGVyaWVuY2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6IGM5L2NIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMzIifSwgeyJhdHRyIjogIiB0eXBlPW51bWJlciBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c5pe255qE6Jaq6LWEIiwgInR5cGUiOiAiZmxvYXQiLCAiZmllbGQiOiAic2FsYXJ5IiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuiWqui1hCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3loavlhpnmoLzlvI/lpoI6MjAxOOW5tDHmnIgxLTIwMTnlubQxMuW5tDMx5pelIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJqb2J0aW1lIiwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuWcqOiBjOaXtumXtCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjM2In0sIHsiYXR0ciI6ICIgdHlwZT10ZXh0IGRhdGEtY29tbWVudD3loavlhpnmm77nu4/lt6XkvZzkuK3nmoTogYzotKMiLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImR1dHkiLCAiZWZmZWN0IjogInRhYl95b3ViYW5nX2pvYmV4cGVyaWVuY2UiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAiIiwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiaXRlbW5hbWUiOiAi5bel5L2c6IGM6LSjIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMTEifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ95aGr5YaZ5pu+57uP5bel5L2c55qE5Zyw54K5IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjaXR5IiwgImxpbWl0IjogNCwgImVmZmVjdCI6ICJ0YWJfeW91YmFuZ19qb2JleHBlcmllbmNlIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogIiIsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgIml0ZW1uYW1lIjogIuW3peS9nOWcsOeCuSIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeabvue7j+W3peS9nOS4reeahOS6rueCuSIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiYnJpZ2h0c3BvdCIsICJlZmZlY3QiOiAidGFiX3lvdWJhbmdfam9iZXhwZXJpZW5jZSIsICJpc2xpc3QiOiAiIiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6ICIiLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJpdGVtbmFtZSI6ICLmiJHnmoTkuq7ngrkiLCAiaW5wdXR0eXBlIjogInRleHRhcmVhIiwgIm1heGxlbmd0aCI6ICIyNTUifV0=', 0, 1, 0, -1, '', 10, 0, 1, 1, '劳务人才', 0, 0, '/img/sys/admin/4.png');
 INSERT INTO `adv_components` VALUES (12, 'perrecruit', '劳务信息管理', 'adv_archives', 'adv_addonperrecruit', 'W3siYXR0ciI6ICIgZGF0YS1jb21tZW50Peivt+mAieaLqeaLm+iBmOexu+WeiyIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiY2xhc3NpZnkiLCAiZWZmZWN0IjogIm1haW4iLCAiaXNsaXN0IjogIuaLm+iBmOexu+WeiyIsICJpc251bGwiOiB0cnVlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMCwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuaLm+iBmOexu+WeiyIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjY0In0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50Peivt+Whq+WGmeaLm+iBmOS/oeaBryIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAidGl0bGUiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLmi5vogZjmoIfpopgiLCAiaW5wdXR0eXBlIjogImlucHV0IiwgIm1heGxlbmd0aCI6ICI2NCJ9LCB7ImF0dHIiOiAiIGRhdGEtY29tbWVudD3pgInmi6nolqrotYTmiYDnrYnnuqciLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImNsYXNzc2FsYXJ5IiwgImlzbGlzdCI6ICLolqrotYTliIbnsbsiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6Jaq6LWE562J57qnIiwgImlucHV0dHlwZSI6ICJuZXNtb2RhbCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiBkYXRhLXZhbD3kupTpmankuIDph5Et5YyF5L2PLeWMhemkkCBkYXRhLWtleT14ai1iei1iYyBkYXRhLWNvbW1lbnQ96YCJ5oup5L+x5pyJ55qE54m554K5IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2xhYmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5qCH562+5YiG57G7IiwgImlucHV0dHlwZSI6ICJjaGVja2JveCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiB0eXBlPW51bWJlciBkYXRhLWNvbW1lbnQ95aGr5YaZ5pyA5aSa5oub6IGY5aSa5bCR5Lq6IiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2xhYmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi5oub6IGY5Lq65pWwIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiNjQifSwgeyJhdHRyIjogIiBkYXRhLWNvbW1lbnQ96YCJ5oup5pyA5L2O5a2m5Y6G6KaB5rGCIiwgInR5cGUiOiAidmFyY2hhciIsICJmaWVsZCI6ICJjbGFzc2VkdWNhdGlvbiIsICJpc2xpc3QiOiAi5a2m5Y6G5YiG57G7IiwgImlzbnVsbCI6IGZhbHNlLCAiZGVmYXVsdCI6IDAsICJub3ZhaWxkIjogMCwgImZpZWxkZ2V0IjogMSwgImZpZWxkc2V0IjogMSwgIml0ZW1uYW1lIjogIuacgOWtpuWOhuimgeaxgiIsICJpbnB1dHR5cGUiOiAibmVzbW9kYWwiLCAibWF4bGVuZ3RoIjogIjY0In0sIHsiYXR0ciI6ICIgZGF0YS1jb21tZW50PeWhq+WGmeiBjOS9jeimgeaxgiIsICJ0eXBlIjogInZhcmNoYXIiLCAiZmllbGQiOiAiZGVzY3JpcHRpb24iLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDEsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLogYzkvY3mj4/ov7AiLCAiaW5wdXR0eXBlIjogInVlZGl0ZXIiLCAibWF4bGVuZ3RoIjogIjI1NSJ9LCB7ImF0dHIiOiAiIHR5cGU9bnVtYmVyIGRhdGEtY29tbWVudD3opoHmsYLkuI3kvY7kuo7nrYnnuqfnmoTnlKjmiLflj6/ku6Xmn6XnnIvkv6Hmga8iLCAidHlwZSI6ICJ2YXJjaGFyIiwgImZpZWxkIjogImxldmVsIiwgImlzbGlzdCI6ICIiLCAiaXNudWxsIjogZmFsc2UsICJkZWZhdWx0IjogMCwgIm5vdmFpbGQiOiAwLCAiZmllbGRnZXQiOiAxLCAiZmllbGRzZXQiOiAxLCAiaXRlbW5hbWUiOiAi6ZiF6K+76KaB5rGCIiwgImlucHV0dHlwZSI6ICJpbnB1dCIsICJtYXhsZW5ndGgiOiAiMjU1In0sIHsiYXR0ciI6ICIgdHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeimgeaxguS4jeS9juS6juetiee6p+eahOeUqOaIt+WPr+S7peafpeeci+S/oeaBryIsICJ0eXBlIjogImludCIsICJmaWVsZCI6ICJtaWQiLCAiaXNsaXN0IjogIiIsICJpc251bGwiOiBmYWxzZSwgImRlZmF1bHQiOiAwLCAibm92YWlsZCI6IDAsICJmaWVsZGdldCI6IDAsICJmaWVsZHNldCI6IDEsICJpdGVtbmFtZSI6ICLlj5HluIPogIVpZCIsICJpbnB1dHR5cGUiOiAiaW5wdXQiLCAibWF4bGVuZ3RoIjogIjExIn1d', 0, 1, 0, -1, '', 10, 0, 1, 1, '劳务信息', 0, 0, '/img/sys/admin/3.png');
 INSERT INTO `adv_components` VALUES (52, 'device', '广告屏', 'adv_archives', 'adv_addondevice', 'W3siZmllbGQiOiJhZGRyZXNzIiwiaXRlbW5hbWUiOiLorr7lpIflnLDlnYAiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjcyIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6IjEiLCJmaWVsZHNldCI6IjEiLCJsaW1pdCI6IjQiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJhZGRyZXNzIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95aGr5YaZ6K6+5aSH5omA5Zyo5Zyw5Z2AIn0seyJmaWVsZCI6ImNsYXNzaWZ5IiwiaXRlbW5hbWUiOiLorr7lpIfliIbnsbsiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEyOCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiLorr7lpIfmiYDlsZ7liIbnsbsiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ96YCJ5oup6K6+5aSH5omA5bGe5YiG57G7In0seyJmaWVsZCI6InNuIiwiaXRlbW5hbWUiOiLorr7lpIfor4bliKvlj7ciLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEyOCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOiIxIiwiZmllbGRzZXQiOiIxIiwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoiIGRhdGEtY29tbWVudD3loavlhpnorr7lpIfllK/kuIDor4bliKvlj7cifSx7ImZpZWxkIjoic3RhdGUiLCJpdGVtbmFtZSI6IuiuvuWkh+eKtuaAgSIsInR5cGUiOiJjaGFyIiwibWF4bGVuZ3RoIjoiMSIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6InJhZGlvIiwiYXR0ciI6ImRhdGEtdmFsPeWBnOatoi3mraPluLgt5pKt5pS+LeaaguWBnCAgZGF0YS1rZXk9MC0xLTItMyJ9LHsiZmllbGQiOiJpb3ZlcnNpb24iLCJpdGVtbmFtZSI6Iuezu+e7n+eJiOacrCIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMzIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoiMSIsImZpZWxkc2V0IjoiMSIsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6ImlucHV0IiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95aGr5YaZ5a6i5oi356uv57O757uf54mI5pys5Y+3In0seyJmaWVsZCI6InZpZXd0eXBlIiwiaXRlbW5hbWUiOiLmqKrnq5blsY8iLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjEiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IjAiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6IjEiLCJmaWVsZHNldCI6IjEiLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJzZWxlY3QiLCJhdHRyIjoiIGRhdGEta2V5PTAtMS0yICBkYXRhLXZhbD3ml6DmlYgt5qiq5bGPLeerluWxjyJ9XQ==', 0, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0, '/img/2019/9/25/0f18390b8692f1c9a5861f863c9c5232.png');
+INSERT INTO `adv_components` VALUES (59, 'programsvideo', '视频广告节目', 'adv_archives', 'adv_addonprogramsvideo', 'W3siZmllbGQiOiJsaXRwaWMiLCJpdGVtbmFtZSI6IuW5v+WRiuWwgemdouWbviIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMjU1IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJ1cGxvYWRlciIsImF0dHIiOiIgZGF0YS1jb21tZW50PeivpeWbvueJh+aYvuekuuWcqOWQjuWPsOWIl+ihqOS4rSJ9LHsiZmllbGQiOiJ0eXBlaWQiLCJpdGVtbmFtZSI6InR5cGVpZCIsInR5cGUiOiJcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludCIsIm1heGxlbmd0aCI6IjQiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6Im1haW4iLCJmaWVsZGdldCI6MCwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95a6a5LmJ5b2T5YmN5bm/5ZGK5piv6KeG6aKR44CQdmlkZW/jgJEs5Zu+54mH44CQaW1n44CRLOaIluWFrOWRiuOAkG5vdGljZeOAkSJ9LHsiZmllbGQiOiJjb21wb25lbnQiLCJpdGVtbmFtZSI6ImNvbXBvbmVudCIsInR5cGUiOiJcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludCIsIm1heGxlbmd0aCI6IjEiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6Im1haW4iLCJmaWVsZGdldCI6MCwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6ImNoZWNrYm94IiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95a6a5LmJ5b2T5YmN5bm/5ZGK5piv6KeG6aKR44CQdmlkZW/jgJEs5Zu+54mH44CQaW1n44CRLOaIluWFrOWRiuOAkG5vdGljZeOAkSJ9LHsiZmllbGQiOiJ2aWV3cyIsIml0ZW1uYW1lIjoi5YiG5bGP6YCC6YWNIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiIxMjgiLCJpc251bGwiOiIxIiwiaXNsaXN0Ijoi5YiG5bGP6YCC6YWNIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoibmVzbW9kYWwiLCJhdHRyIjoiIGRhdGEtY29tbWVudD3pgInmi6nop4bpopHlnKjlsY/luZXkuIrmmL7npLrnmoTlrr3lkozpq5gifSx7ImZpZWxkIjoiY2xhc3NpZnkiLCJpdGVtbmFtZSI6IuW5v+WRiuWIhuexuyIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiNjQiLCJpc251bGwiOiIxIiwiaXNsaXN0Ijoi5bm/5ZGK5YiG57G7IiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6Im1haW4iLCJmaWVsZGdldCI6MSwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95a6a5LmJ5b2T5YmN5bm/5ZGK5piv6KeG6aKR44CQdmlkZW/jgJEs5Zu+54mH44CQaW1n44CRLOaIluWFrOWRiuOAkG5vdGljZeOAkSJ9LHsiZmllbGQiOiJidXNpbmVzcyIsIml0ZW1uYW1lIjoi5ZWG5oi35ZCN56ewIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiI2NCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJpbnB1dCIsImF0dHIiOiJkYXRhLWNvbW1lbnQ95bm/5ZGK5bGe5Li75ZCN56ewIn0seyJmaWVsZCI6InVybCIsIml0ZW1uYW1lIjoi5LiK5Lyg6KeG6aKRIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiIyNTUiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoibm9ybWFsVXBsb2FkIiwiYXR0ciI6ImRhdGEtY29tbWVudD3mjIflkJHotYTmupDnmoR1cmwgIGFjY2VwdD12aWRlby9tcDQsdmlkZW8vZmx2In0seyJmaWVsZCI6InN0YXRlIiwiaXRlbW5hbWUiOiLmmK/lkKblkK/nlKgiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6Im1haW4iLCJmaWVsZGdldCI6MSwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6InJhZGlvIiwiYXR0ciI6ImRhdGEta2V5PTAtMSBkYXRhLXZhbD3npoHnlKgt5ZCv55SoIGRhdGEtY29tbWVudD3lkK/nlKjnmoTlub/lkYrkvJrlnKjlrqLmiLfnq6/mmL7npLoifSx7ImZpZWxkIjoiZWZmZWN0dGltZSIsIml0ZW1uYW1lIjoi55Sf5pWI5pe26Ze0IiwidHlwZSI6InRpbWVzdGFtcCIsIm1heGxlbmd0aCI6IiIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJpbnB1dCIsImF0dHIiOiJ0eXBlPWRhdGUgZGF0YS1jb21tZW50PeW5v+WRiueUn+aViOaXtumXtO+8jOaKleaUvueahOW5v+WRiuWPquS8muWcqOacieaViOacn+WGheaSreaUviJ9LHsiZmllbGQiOiJvdmVyZHVldGltZSIsIml0ZW1uYW1lIjoi6L+H5pyf5pe26Ze0IiwidHlwZSI6InRpbWVzdGFtcCIsIm1heGxlbmd0aCI6IiIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJpbnB1dCIsImF0dHIiOiJ0eXBlPWRhdGUgZGF0YS1jb21tZW50PeW5v+WRiui/h+acn+aXtumXtO+8jOaKleaUvueahOW5v+WRiui/h+acn+WQjuS4jeWGjeaSreaUviJ9LHsiZmllbGQiOiJkdXJhdGlvbiIsIml0ZW1uYW1lIjoi5bm/5ZGK5pKt5pS+5pe26ZW/IiwidHlwZSI6InNtYWxsaW50IiwibWF4bGVuZ3RoIjoiIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6MSwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6ImlucHV0IiwiYXR0ciI6InR5cGU9bnVtYmVyIGRhdGEtY29tbWVudD3lub/lkYrmkq3mlL7ml7bplb/vvIjljZXkvY3vvJrnp5LvvIkifV0=', 0, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0, '/img/sys/2019/10/12/64df9d69764d2b3fa04d279177bf28a6.png');
+INSERT INTO `adv_components` VALUES (61, 'programsnotice', '消息通知管理', 'adv_archives', 'adv_addonprogramsnotice', 'W3siZmllbGQiOiJsaXRwaWMiLCJpdGVtbmFtZSI6IuW5v+WRiuWwgemdouWbviIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMjU1IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJ1cGxvYWRlciIsImF0dHIiOiIgZGF0YS1jb21tZW50PeivpeWbvueJh+aYvuekuuWcqOWQjuWPsOWIl+ihqOS4rSJ9LHsiZmllbGQiOiJ0eXBlaWQiLCJpdGVtbmFtZSI6InR5cGVpZCIsInR5cGUiOiJiaWdpbnQiLCJtYXhsZW5ndGgiOiI0IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjAsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJuZXNtb2RhbCIsImF0dHIiOiIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiJ9LHsiZmllbGQiOiJjb21wb25lbnQiLCJpdGVtbmFtZSI6ImNvbXBvbmVudCIsInR5cGUiOiJiaWdpbnQiLCJtYXhsZW5ndGgiOiIxIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjAsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJjaGVja2JveCIsImF0dHIiOiIgZGF0YS1jb21tZW50PeWmgu+8mui/meaYr+azqOmHiiJ9LHsiZmllbGQiOiJidXNpbmVzcyIsIml0ZW1uYW1lIjoi5ZWG5oi35ZCN56ewIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiI2NCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJpbnB1dCIsImF0dHIiOiIgZGF0YS1jb21tZW50PeW5v+WRiuWxnuS4u+WQjeensCJ9LHsiZmllbGQiOiJ2aWV3cyIsIml0ZW1uYW1lIjoi5YiG5bGP6YCC6YWNIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiI2NCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiLliIblsY/pgILphY0iLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJuZXNtb2RhbCIsImF0dHIiOiIgZGF0YS1jb21tZW50PemAieaLqeinhumikeWcqOWxj+W5leS4iuaYvuekuueahOWuveWSjOmrmCJ9LHsiZmllbGQiOiJjbGFzc2lmeSIsIml0ZW1uYW1lIjoi5raI5oGv5YiG57G7IiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiI2NCIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiLmtojmga/liIbnsbsiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoibmVzbW9kYWwiLCJhdHRyIjoiZGF0YS1jb21tZW50PemAieaLqeihjOW9k+a2iOaBr+aJgOWxnueahOWIhuexuyJ9LHsiZmllbGQiOiJjb250ZW50IiwiaXRlbW5hbWUiOiLmtojmga/lhoXlrrkiLCJ0eXBlIjoidGV4dCIsIm1heGxlbmd0aCI6IiIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJ0ZXh0YXJlYSIsImF0dHIiOiIgZGF0YS1jb21tZW50PeWcqOi/memHjOWGmeWFpeWFt+S9k+eahOa2iOaBr+WGheWuuSJ9LHsiZmllbGQiOiJzdGF0ZSIsIml0ZW1uYW1lIjoi5piv5ZCm5ZCv55SoIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiIyIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJyYWRpbyIsImF0dHIiOiJkYXRhLWtleT0wLTEgZGF0YS12YWw956aB55SoLeWQr+eUqCBkYXRhLWNvbW1lbnQ95ZCv55So55qE5bm/5ZGK5Lya5Zyo5a6i5oi356uv5pi+56S6In0seyJmaWVsZCI6ImVmZmVjdHRpbWUiLCJpdGVtbmFtZSI6IueUn+aViOaXtumXtCIsInR5cGUiOiJ0aW1lc3RhbXAiLCJtYXhsZW5ndGgiOiIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1kYXRlIGRhdGEtY29tbWVudD3lub/lkYrnlJ/mlYjml7bpl7TvvIzmipXmlL7nmoTlub/lkYrlj6rkvJrlnKjmnInmlYjmnJ/lhoXmkq3mlL4ifSx7ImZpZWxkIjoib3ZlcmR1ZXRpbWUiLCJpdGVtbmFtZSI6Iui/h+acn+aXtumXtCIsInR5cGUiOiJ0aW1lc3RhbXAiLCJtYXhsZW5ndGgiOiIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1kYXRlIGRhdGEtY29tbWVudD3lub/lkYrov4fmnJ/ml7bpl7TvvIzmipXmlL7nmoTlub/lkYrov4fmnJ/lkI7kuI3lho3mkq3mlL4ifSx7ImZpZWxkIjoiZHVyYXRpb24iLCJpdGVtbmFtZSI6Iua2iOaBr+aSreaUvuaXtumVvyIsInR5cGUiOiJzbWFsbGludCIsIm1heGxlbmd0aCI6IjQiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeW5v+WRiuaSreaUvuaXtumVv++8iOWNleS9je+8muenku+8iSJ9XQ==', 0, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0, '/img/sys/2019/10/12/c2bb0f9b2f449fd1a6a743e32cab6501.png');
+INSERT INTO `adv_components` VALUES (60, 'imgprograms', '图片广告节目', 'adv_archives', 'adv_addonimgprograms', 'W3siZmllbGQiOiJsaXRwaWMiLCJpdGVtbmFtZSI6IuW5v+WRiuWwgemdouWbviIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMjU1IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJ1cGxvYWRlciIsImF0dHIiOiIgZGF0YS1jb21tZW50PeivpeWbvueJh+aYvuekuuWcqOWQjuWPsOWIl+ihqOS4rSJ9LHsiZmllbGQiOiJ0eXBlaWQiLCJpdGVtbmFtZSI6InR5cGVpZCIsInR5cGUiOiJcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludCIsIm1heGxlbmd0aCI6IjQiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6Im1haW4iLCJmaWVsZGdldCI6MCwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ95aaC77ya6L+Z5piv5rOo6YeKIn0seyJmaWVsZCI6ImNvbXBvbmVudCIsIml0ZW1uYW1lIjoiY29tcG9uZW50IiwidHlwZSI6IlxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgaW50IiwibWF4bGVuZ3RoIjoiMSIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoibWFpbiIsImZpZWxkZ2V0IjowLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiY2hlY2tib3giLCJhdHRyIjoiIGRhdGEtY29tbWVudD3lpoLvvJrov5nmmK/ms6jph4oifSx7ImZpZWxkIjoiYnVzaW5lc3MiLCJpdGVtbmFtZSI6IuWVhuaIt+WQjeensCIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiNjQiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoiIGRhdGEtY29tbWVudD3lub/lkYrlsZ7kuLvlkI3np7AifSx7ImZpZWxkIjoidmlld3MiLCJpdGVtbmFtZSI6IuWIhuWxj+mAgumFjSIsInR5cGUiOiJ2YXJjaGFyIiwibWF4bGVuZ3RoIjoiMTI4IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IuWIhuWxj+mAgumFjSIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiIiLCJmaWVsZGdldCI6MSwiZmllbGRzZXQiOjEsImxpbWl0IjoiMSIsIm5vdmFpbGQiOjAsImlucHV0dHlwZSI6Im5lc21vZGFsIiwiYXR0ciI6IiBkYXRhLWNvbW1lbnQ96YCJ5oup6KeG6aKR5Zyo5bGP5bmV5LiK5pi+56S655qE5a695ZKM6auYIn0seyJmaWVsZCI6ImNsYXNzaWZ5IiwiaXRlbW5hbWUiOiLlub/lkYrliIbnsbsiLCJ0eXBlIjoidmFyY2hhciIsIm1heGxlbmd0aCI6IjY0IiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IuW5v+WRiuWIhuexuyIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJuZXNtb2RhbCIsImF0dHIiOiIgZGF0YS1jb21tZW50PeWumuS5ieW9k+WJjeW5v+WRiuaYr+inhumikeOAkHZpZGVv44CRLOWbvueJh+OAkGltZ+OAkSzmiJblhazlkYrjgJBub3RpY2XjgJEifSx7ImZpZWxkIjoidXJsIiwiaXRlbW5hbWUiOiLkuIrkvKDlm77niYciLCJ0eXBlIjoidGV4dCIsIm1heGxlbmd0aCI6IiIsImlzbnVsbCI6IjEiLCJpc2xpc3QiOiIiLCJkZWZhdWx0IjoiIiwiZWZmZWN0IjoiIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjIwIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoidXBsb2FkZXIiLCJhdHRyIjoiZGF0YS1jb21tZW50PeWPr+S7peS8oOWkmuW8oOWbvueJh++8jOavj+W8oOWbvueJh+Wdh+S8muS7peebuOWQjOeahOaSreaUvuaXtumVv+S+neWbvueJh+S4iuS8oOmhuuWIh+aNouaSreaUviBvbm1vdXNlb3Zlcj1zZXRTaXplKHRoaXMpIGRhdGEtanM9XCJmdW5jdGlvbiBzZXRTaXplKCl7XHJcbnZhciBzaXplID0gJCgnaW5wdXRbbmFtZT12aWV3c10nKS5wcmV2KCkuaHRtbCgpLnRyaW0oKTtcclxuaWYoIXNpemUubGVuZ3RoKSByZXR1cm4gYXBwLm5vdGljZSh7ZXJyb3I6MSwgbWVzc2FnZTon6K+36YCJ5oup6YCg6YWN55qE5bGP5bmVJ30pO1xyXG5zaXplID0gc2l6ZS5zdWJzdHIoMCxzaXplLmluZGV4T2YoJ3B4JykpO1xyXG5zaXplID0gc2l6ZS5zcGxpdCgvW1xcKlxceFxcWF0vKTtcclxuaWYoc2l6ZS5sZW5ndGg8MikgcmV0dXJuIGFwcC5ub3RpY2Uoe2Vycm9yOjEsIG1lc3NhZ2U6J+aCqOmAieaLqeeahOWIhuWxj+mAgumFjeWPguaVsOaXoOaViCd9KTtcclxub3B0aW9uLmFzcGVjdFJhdGlvID0gc2l6ZVswXS5yZXBsYWNlKC9cXEQvZywnJykvc2l6ZVsxXS5yZXBsYWNlKC9cXEQvZywnJyk7XHJcbn1cIiJ9LHsiZmllbGQiOiJzdGF0ZSIsIml0ZW1uYW1lIjoi5piv5ZCm5ZCv55SoIiwidHlwZSI6InZhcmNoYXIiLCJtYXhsZW5ndGgiOiIyIiwiaXNudWxsIjoiMSIsImlzbGlzdCI6IiIsImRlZmF1bHQiOiIiLCJlZmZlY3QiOiJtYWluIiwiZmllbGRnZXQiOjEsImZpZWxkc2V0IjoxLCJsaW1pdCI6IjEiLCJub3ZhaWxkIjowLCJpbnB1dHR5cGUiOiJyYWRpbyIsImF0dHIiOiJkYXRhLWtleT0wLTEgZGF0YS12YWw956aB55SoLeWQr+eUqCBkYXRhLWNvbW1lbnQ95ZCv55So55qE5bm/5ZGK5Lya5Zyo5a6i5oi356uv5pi+56S6In0seyJmaWVsZCI6ImVmZmVjdHRpbWUiLCJpdGVtbmFtZSI6IueUn+aViOaXtumXtCIsInR5cGUiOiJ0aW1lc3RhbXAiLCJtYXhsZW5ndGgiOiIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1kYXRlIGRhdGEtY29tbWVudD3lub/lkYrnlJ/mlYjml7bpl7TvvIzmipXmlL7nmoTlub/lkYrlj6rkvJrlnKjmnInmlYjmnJ/lhoXmkq3mlL4ifSx7ImZpZWxkIjoib3ZlcmR1ZXRpbWUiLCJpdGVtbmFtZSI6Iui/h+acn+aXtumXtCIsInR5cGUiOiJ0aW1lc3RhbXAiLCJtYXhsZW5ndGgiOiIiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1kYXRlIGRhdGEtY29tbWVudD3lub/lkYrov4fmnJ/ml7bpl7TvvIzmipXmlL7nmoTlub/lkYrov4fmnJ/lkI7kuI3lho3mkq3mlL4ifSx7ImZpZWxkIjoiZHVyYXRpb24iLCJpdGVtbmFtZSI6IuW5v+WRiuaSreaUvuaXtumVvyIsInR5cGUiOiJzbWFsbGludCIsIm1heGxlbmd0aCI6IjQiLCJpc251bGwiOiIxIiwiaXNsaXN0IjoiIiwiZGVmYXVsdCI6IiIsImVmZmVjdCI6IiIsImZpZWxkZ2V0IjoxLCJmaWVsZHNldCI6MSwibGltaXQiOiIxIiwibm92YWlsZCI6MCwiaW5wdXR0eXBlIjoiaW5wdXQiLCJhdHRyIjoidHlwZT1udW1iZXIgZGF0YS1jb21tZW50PeW5v+WRiuaSreaUvuaXtumVv++8iOWNleS9je+8muenku+8iSJ9XQ==', 0, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0, '/img/sys/2019/10/12/96ff69657844ac01c0d1f8fabdc12187.png');
 
 -- ----------------------------
 -- Table structure for adv_enum
@@ -956,7 +1031,7 @@ CREATE TABLE `adv_flink`  (
   `addtime` datetime(0) NULL DEFAULT NULL,
   `enable` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_flink
@@ -982,12 +1057,24 @@ CREATE TABLE `adv_jobexperience`  (
   `brightspot` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '我的亮点',
   `classexperience` float NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_jobexperience
 -- ----------------------------
 INSERT INTO `adv_jobexperience` VALUES (18, 1907, '模压股份有限公司24铃声 公司', '唪顶替实得分和3人w', '30555', '2012年3月-2018年13月', '使用权rw', '仍rWQ TJTY 6', '爱你的人微任务倗白脸32 32 23他', NULL);
+
+-- ----------------------------
+-- Table structure for adv_m
+-- ----------------------------
+DROP TABLE IF EXISTS `adv_m`;
+CREATE TABLE `adv_m`  (
+  `litpic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '广告封面图',
+  `id` bigint(13) NOT NULL AUTO_INCREMENT,
+  `aid` bigint(13) NOT NULL DEFAULT 1,
+  `mid` mediumint(8) UNSIGNED NOT NULL COMMENT '发布人id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for adv_member_favorite
@@ -1002,7 +1089,7 @@ CREATE TABLE `adv_member_favorite`  (
   `componentsid` int(11) NULL DEFAULT NULL COMMENT '收藏类型id',
   `openid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信openid',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_member_favorite
@@ -1036,7 +1123,7 @@ CREATE TABLE `adv_route`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '真实url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_route
@@ -1080,7 +1167,7 @@ INSERT INTO `adv_sys_acount` VALUES (191, 1, '102@qq.com', NULL, '账户1下代�
 INSERT INTO `adv_sys_acount` VALUES (192, 1, '4@qq.com', NULL, '张三', '25e2ce67543fff07ac94e591f9152d85', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (193, 192, '5@qq.com', NULL, '张三', 'd2e957a2ebfdf133bbc2b6e11a5333ad', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
 INSERT INTO `adv_sys_acount` VALUES (194, 192, '6@qq.com', NULL, '附三', '422adaaa1574eff0bda51d68a3693d14', 'manager', 2000, NULL, NULL, '1', '2019-06-24 17:47:01', '13339690812');
-INSERT INTO `adv_sys_acount` VALUES (195, 194, '123@qq.com', '/img/sys/admin/defaultface.jpg', 'qwe', 'c0d78fb3576e77ad61364e8aceec8abd', 'manager', 2000, NULL, NULL, '1', '2019-09-19 14:27:54', '1598549646');
+INSERT INTO `adv_sys_acount` VALUES (195, 194, '123@qq.com', '/img/sys/admin/defaultface.jpg', 'qwe', 'c0d78fb3576e77ad61364e8aceec8abd', 'manager', 1, NULL, NULL, '1', '2019-09-19 14:27:54', '1598549646');
 INSERT INTO `adv_sys_acount` VALUES (209, 195, '20@qq.com', NULL, '测试用户20', '505f682435143b578ffc09fcdea21698', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:35:07', '15985499920');
 INSERT INTO `adv_sys_acount` VALUES (210, 195, '21@qq.com', NULL, '测试用户21', 'ccbf661c5b4ef944641bdc4f6f1d23d7', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:36:43', '15985499921');
 INSERT INTO `adv_sys_acount` VALUES (211, 195, '22@qq.com', NULL, '测试用户22', 'f1e3c95ba284b4598c4077b84b83248c', 'manager', 2000, NULL, NULL, '2', '2019-09-24 09:38:29', '15985499922');
@@ -1192,7 +1279,7 @@ CREATE TABLE `adv_sys_acount_manager`  (
   INDEX `mobile`(`mobile`) USING BTREE,
   INDEX `realName`(`realName`) USING BTREE,
   INDEX `IDNumber`(`IDNumber`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4412 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4411 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_acount_manager
@@ -1268,7 +1355,7 @@ CREATE TABLE `adv_sys_acount_type`  (
   UNIQUE INDEX `id`(`id`) USING BTREE,
   UNIQUE INDEX `acount`(`typeName`) USING BTREE,
   INDEX `enable`(`enable`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 251 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 250 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_acount_type
@@ -4888,7 +4975,7 @@ CREATE TABLE `adv_sys_logo`  (
   `enabled` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '高度',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for adv_sys_map
@@ -4902,7 +4989,7 @@ CREATE TABLE `adv_sys_map`  (
   `Location` varchar(13) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT 'IP跳转到当前城市',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for adv_sys_menu
@@ -4920,7 +5007,7 @@ CREATE TABLE `adv_sys_menu`  (
   `comid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31006 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 314034 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_menu
@@ -4946,7 +5033,11 @@ INSERT INTO `adv_sys_menu` VALUES (306, 3, 'icon', '工程机械', 0, NULL, '0',
 INSERT INTO `adv_sys_menu` VALUES (307, 3, 'icon', '租房售房', 0, NULL, '0', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (308, 3, 'icon', '店铺管理', 0, NULL, '0', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (309, 3, 'icon', '人才信息管理', 0, '', '0', '1', NULL);
-INSERT INTO `adv_sys_menu` VALUES (310, 3, 'icon', '广告屏', 0, '', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (310, 3, 'icon', '广告屏管理', 0, '', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (311, 3, 'icon', '视频广告管理', 0, '', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (312, 3, 'icon', '图片广告管理', 0, '', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (313, 3, 'icon', '消息通知管理', 0, '', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (314, 3, 'icon', '广告发布管理', 0, NULL, '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20101, 201, 'icon', '基本设置', 0, '/admin/sys/bases', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20102, 201, 'icon', '安全设置', 0, '/admin/sys/securitySet', '1', '1', NULL);
 INSERT INTO `adv_sys_menu` VALUES (20103, 201, 'icon', '验证码设置', 0, '/admin/sys/code', '1', '1', NULL);
@@ -5001,6 +5092,25 @@ INSERT INTO `adv_sys_menu` VALUES (31002, 310, '', '添加广告屏', 0, '/admin
 INSERT INTO `adv_sys_menu` VALUES (31003, 310, '', '添加栏目', 0, '/admin/type/add/ctag/device', '1', '1', 'device');
 INSERT INTO `adv_sys_menu` VALUES (31004, 310, '', '查看栏目', 0, '/admin/type/index/ctag/device', '1', '1', 'device');
 INSERT INTO `adv_sys_menu` VALUES (31005, 310, '', '管理分类', 0, '/admin/classify/index/ctag/device', '1', '1', 'device');
+INSERT INTO `adv_sys_menu` VALUES (31101, 311, '', '查看视频广告', 0, '/admin/arc/show/ctag/programsvideo', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (31102, 311, '', '添加视频广告', 0, '/admin/arc/add/ctag/programsvideo', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (31103, 311, '', '添加栏目', 0, '/admin/type/add/ctag/programsvideo', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (31104, 311, '', '查看栏目', 0, '/admin/type/index/ctag/programsvideo', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (31105, 311, '', '管理分类', 0, '/admin/classify/index/ctag/programsvideo', '1', '1', 'programsvideo');
+INSERT INTO `adv_sys_menu` VALUES (31201, 312, '', '查看图片广告', 0, '/admin/arc/show/ctag/imgprograms', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (31202, 312, '', '添加图片广告', 0, '/admin/arc/add/ctag/imgprograms', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (31203, 312, '', '添加栏目', 0, '/admin/type/add/ctag/imgprograms', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (31204, 312, '', '查看栏目', 0, '/admin/type/index/ctag/imgprograms', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (31205, 312, '', '管理分类', 0, '/admin/classify/index/ctag/imgprograms', '1', '1', 'imgprograms');
+INSERT INTO `adv_sys_menu` VALUES (31301, 313, '', '查看消息通知', 0, '/admin/arc/show/ctag/programsnotice', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (31302, 313, '', '添加消息通知', 0, '/admin/arc/add/ctag/programsnotice', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (31303, 313, '', '添加栏目', 0, '/admin/type/add/ctag/programsnotice', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (31304, 313, '', '查看栏目', 0, '/admin/type/index/ctag/programsnotice', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (31305, 313, '', '管理分类', 0, '/admin/classify/index/ctag/programsnotice', '1', '1', 'programsnotice');
+INSERT INTO `adv_sys_menu` VALUES (31401, 314, 'icon', '查看计划任务', 0, '/admin/adv-publish/tasks', '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (31402, 314, 'icon', '添加计划任务', 0, '/admin/adv-publish/tasks-add', '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (31403, 314, 'icon', '编辑计划任务', 0, '/admin/adv-publish/tasks-edt', '1', '1', NULL);
+INSERT INTO `adv_sys_menu` VALUES (31404, 314, 'icon', '任务状态管理', 0, '/admin/adv-publish/tasks-state', '1', '1', NULL);
 
 -- ----------------------------
 -- Table structure for adv_sys_option
@@ -5042,7 +5152,7 @@ CREATE TABLE `adv_sys_permit`  (
   `show` enum('-1','0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '-1无相关操作0禁查看页面1允许查看页面',
   `enable` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '是否为id对应的用户开放权限,0禁止所有权限',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5788 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of adv_sys_permit
@@ -5101,7 +5211,6 @@ INSERT INTO `adv_sys_permit` VALUES (52, NULL, 1, 30804, '1', '1', '1', '1', '1'
 INSERT INTO `adv_sys_permit` VALUES (53, NULL, 1, 30805, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (54, NULL, 1, 30806, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (55, NULL, 1, 30807, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (56, NULL, 1, 309, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (57, NULL, 1, 30901, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (58, NULL, 1, 30902, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (59, NULL, 1, 30903, '1', '1', '1', '1', '1');
@@ -5125,30 +5234,98 @@ INSERT INTO `adv_sys_permit` VALUES (113, NULL, 2017, 20501, '1', '1', '1', '1',
 INSERT INTO `adv_sys_permit` VALUES (114, NULL, 2017, 20502, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (115, NULL, 2017, 20503, '1', '1', '1', '1', '1');
 INSERT INTO `adv_sys_permit` VALUES (126, NULL, 1, 20303, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (127, NULL, 1, 310, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (128, NULL, 1, 31001, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (129, NULL, 1, 31002, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (130, NULL, 1, 31003, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (131, NULL, 1, 31004, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (132, NULL, 1, 31005, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (150, 195, 2000, 1, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (151, 195, 2000, 101, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (152, 195, 2000, 102, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (153, 195, 2000, 2, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (154, 195, 2000, 202, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (155, 195, 2000, 20201, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (156, 195, 2000, 20202, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (157, 195, 2000, 203, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (158, 195, 2000, 20301, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (159, 195, 2000, 20302, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (160, 195, 2000, 20303, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (161, 195, 2000, 3, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (162, 195, 2000, 310, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (163, 195, 2000, 31001, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (164, 195, 2000, 31002, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (165, 195, 2000, 31003, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (166, 195, 2000, 31004, '1', '1', '1', '1', '1');
-INSERT INTO `adv_sys_permit` VALUES (167, 195, 2000, 31005, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (264, NULL, 1, 311, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (265, NULL, 1, 31101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (266, NULL, 1, 31102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (267, NULL, 1, 31103, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (268, NULL, 1, 31104, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (269, NULL, 1, 31105, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (271, NULL, 1, 310, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (272, NULL, 1, 31001, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (273, NULL, 1, 31002, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (274, NULL, 1, 31003, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (275, NULL, 1, 31004, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (276, NULL, 1, 31005, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5001, 195, 2000, 1, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5002, 195, 2000, 101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5003, 195, 2000, 102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5004, 195, 2000, 2, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5005, 195, 2000, 202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5006, 195, 2000, 20201, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5007, 195, 2000, 20202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5008, 195, 2000, 203, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5009, 195, 2000, 20301, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5010, 195, 2000, 20302, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5011, 195, 2000, 3, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5012, 195, 2000, 310, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5013, 195, 2000, 31001, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5014, 195, 2000, 31002, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5015, 195, 2000, 31003, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5016, 195, 2000, 31004, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5017, 195, 2000, 31005, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5018, 195, 2000, 311, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5019, 195, 2000, 31101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5020, 195, 2000, 31102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5021, 195, 2000, 31103, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5022, 195, 2000, 31104, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5023, 195, 2000, 31105, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5024, NULL, 1, 312, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5025, NULL, 1, 31201, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5026, NULL, 1, 31202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5027, NULL, 1, 31203, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5028, NULL, 1, 31204, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5029, NULL, 1, 31205, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5059, NULL, 1, 313, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5060, NULL, 1, 31301, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5061, NULL, 1, 31302, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5062, NULL, 1, 31303, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5063, NULL, 1, 31304, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5064, NULL, 1, 31305, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5129, NULL, 1, 314, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5130, NULL, 1, 31401, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5131, NULL, 1, 31402, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5132, NULL, 1, 31403, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5133, NULL, 1, 31404, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5748, 195, 1, 1, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5749, 195, 1, 101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5750, 195, 1, 102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5751, 195, 1, 2, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5752, 195, 1, 202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5753, 195, 1, 20201, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5754, 195, 1, 20202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5755, 195, 1, 203, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5756, 195, 1, 20301, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5757, 195, 1, 20302, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5758, 195, 1, 3, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5759, 195, 1, 310, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5760, 195, 1, 31001, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5761, 195, 1, 31002, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5762, 195, 1, 31003, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5763, 195, 1, 31004, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5764, 195, 1, 31005, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5765, 195, 1, 311, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5766, 195, 1, 31101, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5767, 195, 1, 31102, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5768, 195, 1, 31103, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5769, 195, 1, 31104, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5770, 195, 1, 31105, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5771, 195, 1, 312, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5772, 195, 1, 31201, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5773, 195, 1, 31202, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5774, 195, 1, 31203, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5775, 195, 1, 31204, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5776, 195, 1, 31205, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5777, 195, 1, 313, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5778, 195, 1, 31301, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5779, 195, 1, 31302, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5780, 195, 1, 31303, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5781, 195, 1, 31304, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5782, 195, 1, 31305, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5783, 195, 1, 314, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5784, 195, 1, 31401, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5785, 195, 1, 31402, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5786, 195, 1, 31403, '1', '1', '1', '1', '1');
+INSERT INTO `adv_sys_permit` VALUES (5787, 195, 1, 31404, '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for adv_sys_template
@@ -5199,7 +5376,7 @@ CREATE TABLE `test`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `age` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of test

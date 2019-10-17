@@ -34,24 +34,39 @@ function advPublishControler(){
 	 */
 	this.taskRes = async function(){
 		var media = this.POST('mdeia');
+		var size = this.POST('size');
 		var params = {};
 		var data = {
 			error: 1,
 			message: '参数错误'
 		}
-		if(!media) return this.renderJson(data) ;
+		if(!media || !size) return this.renderJson(data) ;
+		size = cleanNull(size.match(/(\d*)/g));	
+		if(size.length<2) return this.renderJson(data) ;
 		params.ctag = "programs" + media;
 		params.macid = this.model("DataProcess").getUserInfo()[0].groupId;
 		params.enable = 1;
+		params.media = media;
 		
 		this.model("Classify").get(params, async function(results){
-			if(results.error) that.renderJson(mergeObj([data, results]));
+			if(results.error) return that.renderJson(mergeObj([data, results]));
+			//分类信息
 			var classsify = JSON.parse(recodeBase64decode(results.results, 'classify'));
-			log("=====================classsify==", classsify);
-			//params
+			//分类标识
+			params.classify = treeValue(classsify, 'name', function(str){
+				var reg = new RegExp(size[0]+"\\D*[\*x]\\D*"+size[1]);
+				return str.match(reg) ? true : false;
+			} , 'val');
+			//如查分类标不存在，终止查询
+			if(!params.classify.length) return that.renderJson(data);
+			//查看符合分类的资源
 			var publishModel = that.model('AdvPublish');
-			var res = await publishModel.resList();
-			that.renderJson(classsify)
+			results = await publishModel.resList(params);
+			
+			return that.renderJson({
+				error: results.error || !results.results.length ? 1: 0,
+				data: results.results
+			});
 		});
 	}
 	

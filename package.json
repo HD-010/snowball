@@ -1,7 +1,7 @@
 {
   "name": "node_snowball",
   "version": "1.0.0",
-  "description": "友邦拉拉1.0",
+  "description": "snowball1.0",
   "main": "index.js",
   "dependencies": {
     "compressing": "^1.4.0",
