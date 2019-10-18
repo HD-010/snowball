@@ -402,6 +402,8 @@
 							error: 1,
 							message: '页面出错，请刷新页面...'
 						});
+						//删除正在预览的内容
+						$(taskAdder.currentPiece).html("");
 						//将数据装载到元素的属性
 						taskAdder.load2attr();
 						//重载分区域任务清单
@@ -410,8 +412,18 @@
 						taskAdder.showDelBtn();
 						//加载按钮的动作
 						taskAdder.actionCdelBtn();
+						taskAdder.actionPreView();
 					});
 				})
+			},
+			
+			//预览按钮动作
+			actionPreView: function(){
+				$(".oper-task-preview").unbind("click").on("click", function(){
+					var type=$(taskAdder.currentPiece).attr("data-media");
+					if(type in taskAdder.pre) return taskAdder.pre[type](this);
+					app.notice({error: 1, message:"预览出错！"});
+				});
 			},
 		
 			//添加设备信息读取事件
@@ -427,6 +439,7 @@
 					taskAdder.showDelBtn();
 					//加载按钮的动作
 					taskAdder.actionCdelBtn();
+					taskAdder.actionPreView();
 				});
 			},
 		
@@ -444,7 +457,7 @@
 				var dataTastsTitle = $(o).attr("data-tasks-title") ? $(o).attr("data-tasks-title").split('-') : [];
 				var li;
 				dataTastsTitle.forEach(function(o, i) {
-					li = '<li class="col-xs-4"><span name="title">' + o +
+					li = '<li class="col-xs-4"><span name="title" data-id="' + dataTastsId[i] + '" class="oper-task-preview">' + o +
 						'</span><span class="task-icon-del hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li>';
 					$(".screen-piece-task ol").append(li);
 				})
@@ -485,6 +498,7 @@
 						taskAdder.showDelBtn();
 						//加载按钮的动作
 						taskAdder.actionCdelBtn();
+						taskAdder.actionPreView();
 					})
 				})
 			},
@@ -527,6 +541,11 @@
 				return true;
 			},
 			
+			//获取对象数据属性的值
+			getAttVal: function(id, key){
+				return array2value(getItem("TASKS"), 'id', id, key);
+			},
+			
 			//将数据装载到元素的属性
 			load2attr: function(){
 				$(this.currentPiece).attr("data-tasks-id", getItem("TASKS_ID").join("-"));
@@ -542,6 +561,38 @@
 					attrArr.push($("#"+o).attr(attr));
 				})
 				return attrArr;
+			}, 
+			
+			//预览方法组
+			pre:{
+				video: function(o){
+					var vId = $(o).attr("data-id");
+					var url = taskAdder.getAttVal(vId, 'url');
+					url = url.substr(0,url.lastIndexOf('.'));
+					var vCode = `<video width="320" height="240" autoplay controls>
+  <source src="` + url + `.mp4" type="video/mp4">
+  <source src="` + url + `.ogg" type="video/ogg">
+  <source src="` + url + `.webm" type="video/webm">
+  <object data="movie.mp4" width="320" height="240">
+    <embed src="` + url + `.swf" width="320" height="240">
+  </object>
+</video>`;
+					$(taskAdder.currentPiece).html(vCode);
+				},
+				img: function(o){
+					app.notice({error: 0, message:"预览图片！"});
+					var vId = $(o).attr("data-id");
+					var url = taskAdder.getAttVal(vId, 'url');
+					var iCode = `<img src="` + url + `" />`;
+					$(taskAdder.currentPiece).html(iCode);
+				},
+				notice: function(o){
+					var nCode = '<div class="notice-box">' +
+						'<i class="icon-notice"></i>' +
+						'<marquee class="noticeText" direction="left" behavior="" scrollamount="1" scrolldelay="50" loop="0" width="100%" onmouseover="this.stop();" onmouseout="this.start();"  style="width: 100%;"></marquee>' +
+						'</div>';
+					$(taskAdder.currentPiece).html(nCode);
+				},
 			}
 		}
 
