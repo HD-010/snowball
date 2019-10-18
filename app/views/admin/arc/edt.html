@@ -145,7 +145,7 @@
 		        <td>
 		            <label class="col-xs-8 normal-add">
 						<div class="input-group">
-							<input type="text" id='showFileName' style="border:0;" class="form-control"  value='{{- return ` + addoninfos[index].field + `|| "还没有上传文件！"; }}' /> 
+							<input type="text" id='showFileName' style="border:0;" class="form-control"  value="{{- return ` + addoninfos[index].field + `|| \"还没有上传文件！\"; }}" /> 
 							<span class="input-group-btn"> 
 								<button type="button" class="btn btn-primary" onClick='javascript:$("#fileInput").click();'>{{- return ` + addoninfos[index].field + `.length?'重新上传':'浏览文件'; }}</button> 						
 							</span>

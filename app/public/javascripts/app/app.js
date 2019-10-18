@@ -436,6 +436,7 @@ var app = {
 	},
 
 	/**
+	 * 将请求参数转为对象
 	 * 调用：
 	    parseQuery("userID=JeoOrCXxyiOFxbYaGL40kw==&userPwd=sdFo2ziUw8HyLRKd4i6GAQ==&userName=高聪")
 	    返回:{}
@@ -1939,7 +1940,7 @@ if (typeof Object.values == 'undefined') {
 }
 
 /**
- * 删除数据元素，从第一个val开始的n个元素
+ * 删除数组元素，从第一个val开始的n个元素
  */
 if (typeof Array.remove == 'undefined') {
 	Array.prototype.remove = function(val,n) {
