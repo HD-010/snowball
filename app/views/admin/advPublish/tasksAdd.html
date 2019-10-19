@@ -36,7 +36,7 @@
 .screen-piece{border:0;}
 .screen-piece-1{background-color: #00625A;position:absolute;}
 .screen-piece-2{float:right; background-color:#00E8D7;position:absolute;}
-.screen-piece-3{ background-color:#199D82;position:absolute;}
+.screen-piece-3{ background-color:red;position:absolute;}
 .screen-piece-3-low{ line-height: 8px;}
 .screen-piece-2-1{background-color:#00E8D7;position:absolute;}
 .screen-piece-2-2{background-color:#00FFFF;position:absolute;}
@@ -47,13 +47,20 @@
 	line-height:2em;
 	/* list-style-type: none; */
 }
+.screen-piece-res img{width:100%;overflow:hidden}
 .modal-body{
 	overflow: auto;
 	height: 620px;
 }
+.screen-piece-res .notice-box{margin-top:2px;color:#F0FFFF;}
+.screen-piece-res .notice-box i{display:block; text-align:left;}
+.screen-piece-res .notice-box marquee{margin-top: 3px;}
 /* 模态框样式 */
 #lists-code img{width:64px;height:64px;}
 .modal-content{top:50px}
+.screen-piecees .active{background-color:snow !important;border:1px #FFFFFF !important;}
+.load-piece label:hover{background-color:snow !important;border:0 !important;}
+.screen-piecees label:hover{background-color:snow !important;border:0 !important;}
 </style>
 
 <div class="container-fluid base">
@@ -282,8 +289,6 @@
 	</div>
 </div>
 
-<!-- 以下是模态框内容 -->
-<div id="freeMode"></div>
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
 
@@ -307,7 +312,7 @@
 		</div>
 		<div class="ibox-content">
 			<input type="text" class="form-control input-sm m-b-xs" id="filter"
-				   placeholder="可搜索标题/商家名称/任务时长/添加时间...">
+				   placeholder="输入标题/商家名称/任务时长/添加时间...">
 
 			<table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
 				<thead>
@@ -430,10 +435,15 @@
 			//添加设备信息读取事件
 			showpieceInfo: function() {
 				$(".screen-piece-res").children().unbind("click").on("click", function() {
-					taskAdder.prePiece = taskAdder.currentPiece;
+					//点击分区时,清除上一分区的预览及缓存数据
 					taskAdder.currentPiece = this;
-					//点击分区时,清除上一分区的预览
-					if(taskAdder.prePiece) taskAdder.cleanPreView(taskAdder.prePiece);
+					if(taskAdder.prePiece){
+						taskAdder.cleanLocalData();
+					} 
+					if(taskAdder.prePiece != taskAdder.currentPiece){
+						taskAdder.cleanPreView(taskAdder.prePiece);
+						taskAdder.prePiece = taskAdder.currentPiece;
+					}
 					var dataMedia = "媒体类型：" + $(this).attr("data-media");
 					var dataSize = "<br/>分区尺寸：" + $(this).attr("data-size");
 					$(".screen-piece-info").html(dataMedia + dataSize);
@@ -462,7 +472,7 @@
 				taskAdder.cleanPieceTasks()
 				var dataSn = $(o).attr("data-sn");
 				var dataTastsId = $(o).attr("data-tasks-id") ? $(o).attr("data-tasks-id").split('-') : [];
-				var dataTastsTitle = $(o).attr("data-tasks-title") ? $(o).attr("data-tasks-title").split('-') : [];
+				var dataTastsTitle = taskAdder.getAttVal(dataTastsId, 'title');
 				var li;
 				dataTastsTitle.forEach(function(o, i) {
 					li = '<li class="col-xs-4"><span name="title" data-id="' + dataTastsId[i] + '" class="oper-task-preview">' + o +
@@ -532,6 +542,13 @@
 				return true;
 			},
 			
+			//清空缓存数据
+			cleanLocalData: function(){
+				setItem("TASKS_ID", []);
+				setItem("TASKS_NAME", []);
+				setItem("TASKS_URL", []);
+			},
+			
 			//根据索引删除对象对应的数据
 			removeElData: function(index){
 				try{
@@ -586,17 +603,27 @@
 					$(taskAdder.currentPiece).html(vCode);
 				},
 				img: function(o){
-					app.notice({error: 0, message:"预览图片！"});
 					var vId = $(o).attr("data-id");
 					var url = taskAdder.getAttVal(vId, 'url');
 					var iCode = `<img src="` + url + `" />`;
 					$(taskAdder.currentPiece).html(iCode);
 				},
 				notice: function(o){
-					var nCode = '<div class="notice-box">' +
-						'<i class="icon-notice"></i>' +
-						'<marquee class="noticeText" direction="left" behavior="" scrollamount="1" scrolldelay="50" loop="0" width="100%" onmouseover="this.stop();" onmouseout="this.start();"  style="width: 100%;"></marquee>' +
-						'</div>';
+					var vId = $(o).attr("data-id");
+					var title = taskAdder.getAttVal(vId, 'title');
+					var content = taskAdder.getAttVal(vId, 'content');
+					var nCode = `<div class="notice-box">
+<i class="icon-notice">`+title+`</i>
+<marquee class="noticeText" 
+direction="left" 
+behavior="" 
+scrollamount="1" 
+scrolldelay="50" 
+loop="0" 
+width="100%" 
+onmouseover="this.stop();" 
+onmouseout="this.start();"  
+style="width: 100%;">`+content+`</marquee></div>`;
 					$(taskAdder.currentPiece).html(nCode);
 				},
 			}
@@ -685,20 +712,21 @@
 				mdeia: dataMedia,
 				size: dataSize.replace('*', '-')
 			}
-			var uri = "/admin/adv-publish/task-res?oid=" + getItem("OID");
 			//获取与属性相关的资源
 			DL({
 				dev: 'on',
 				listId: '#lists-code',
-				uri: uri,
+				uri: "/admin/adv-publish/task-res?oid=" + getItem("OID"),
 				data: data,
 				befor: function(that) {
-					//将任务据缓存起来,供后续使用
-					if (!that.results.error && !(taskAdder.history.indexOf(uri) + 1)){
+					//根据任务标识tag,将任务数据缓存起来,供后续使用
+					var tag = $.md5(JSON.stringify(data));
+					if (!that.results.error && !(taskAdder.history.indexOf(tag) + 1)){
 						var tasks = getItem("TASKS") || [];
 						tasks = tasks.concat(that.results.data);
+						//缓存任务数据
 						setItem("TASKS", tasks);
-						taskAdder.history.push(uri);
+						taskAdder.history.push(tag);
 					}
 					//显示模态框
 					effect.modal({
