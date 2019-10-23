@@ -186,9 +186,9 @@
 							<td>设备：</td>
 							<td style="padding-left:15px;">
 								<dl class="col-xs-6">
-									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;当前分区任务清单：</dd>
-									<dd id="dragslot" class="screen-piece-task  col-xs-12">
-										<ol class="slot-list">
+									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;执行任务的设备清单：</dd>
+									<dd class="screen-device-list col-xs-12">
+										<ol class="device-list">
 											<!-- <li class="col-xs-4"><span name="title" data-uri="">开始懂了加格达奇</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
 										</ol>
 									</dd>
@@ -328,7 +328,8 @@
 <script src="/javascripts/app/dragslot.js"></script>
 
 <script>
-	var code =
+	var deviceSizeVal = <%- deviceSizeVal ? JSON.stringify(deviceSizeVal) : []; %>
+	var codeTaskList =
 		`<form id="add-to-tasks" class="ibox float-e-margins">
 		<div class="ibox-title">
 			<h5>有以下任务可以加入任务列表</h5>
@@ -358,6 +359,68 @@
 						</tr>
 					</thead>
 					<tbody id="lists-code">
+						<tr class="gradeX union-child" data-union="union-top">
+							<td>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="union-child" data-union="union-top" 
+										name="id" 
+										id="{{id}}"
+										value="{{id}}" />
+									<img src="{{litpic}}"/>&nbsp;
+									<span style="display:inline-table"><b>{{title}}</b></br>{{shorttitle}}</span>	
+								</label>
+							</td>
+							<td>{{business}}</td>
+							<td class="center">{{duration}}(秒)</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td class="show-opers" colspan="3">
+								<label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
+								<button type="button" id="btn-add-to-task" class="btn btn-info">添加到任务列表</button>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<ul class="pagination pull-right"></ul>
+							</td>
+						</tr>
+					</tfoot>
+			</table>
+		</div>
+	</form>`;
+	
+	var codeDeviceList =
+		`<form id="add-to-tasks" class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5>有以下任务可以加入任务列表</h5>
+	
+			<div class="ibox-tools">
+				<a class="collapse-link">
+					<i class="fa fa-chevron-up"></i>
+				</a>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="fa fa-wrench"></i>
+				</a>
+				<a class="close-link">
+					<i class="fa fa-times"></i>
+				</a>
+			</div>
+		</div>
+		<div class="ibox-content">
+			<input type="text" class="form-control input-sm m-b-xs" id="filter"
+				   placeholder="输入标题/商家名称/任务时长/添加时间...">
+	
+			<table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+				<thead>
+						<tr>
+							<th>标题</th>
+							<th>商家名称</th>
+							<th>播放时长</th>
+						</tr>
+					</thead>
+					<tbody id="device-code">
 						<tr class="gradeX union-child" data-union="union-top">
 							<td>
 								<label class="checkbox-inline">
@@ -835,7 +898,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 						title: "请选择需要添加到任务的项",
 						type: "larger"	//加载的模态框类型
 					});
-					$("#modal-body").html(code)
+					$("#modal-body").html(codeTaskList)
 				},
 				after: function(that) {
 					effect.unionSelect();
@@ -849,22 +912,18 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		
 		//添加设备
 		$(".event-add-device").unbind("click").on("click", function() {
-			//按钮sn
-			var dataSn = $(this).attr('data-sn');
-			//获取data-sn对应的资源属性
-			var dataRes = $("div[data-sn=" + dataSn + "]");
-			var dataMedia = dataRes.attr("data-media");
-			var dataSize = dataRes.attr("data-size");
+			var deviceIndex = $(".screenpiece input[name='screenpiece']:checked").attr('data-index');
+			var classify = deviceSizeVal[deviceIndex];
+			
 			//请求参数表
 			var data = {
-				mdeia: dataMedia,
-				size: dataSize.replace('*', '-')
+				classify: classify
 			}
 			//获取与属性相关的资源
 			DL({
 				dev: 'on',
-				listId: '#lists-code',
-				uri: "/admin/adv-publish/task-res?oid=" + getItem("OID"),
+				listId: '#device-code',
+				uri: "/admin/adv-publish/device-list?oid=" + getItem("OID"),
 				data: data,
 				befor: function(that) {
 					//根据任务标识tag,将任务数据缓存起来,供后续使用
@@ -881,7 +940,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 						title: "请选择需要添加到任务的项",
 						type: "larger"	//加载的模态框类型
 					});
-					$("#modal-body").html(code)
+					$("#modal-body").html(codeDeviceList)
 				},
 				after: function(that) {
 					effect.unionSelect();

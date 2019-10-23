@@ -93,6 +93,19 @@ function advPublishControler(){
 		});
 	}
 	
+	/**
+	 * 设备列表 
+	 */
+	this.deviceList = async function(){
+		var params = {};
+		var publishModel = that.model('AdvPublish');
+		var process = this.model('DataProcess');
+		params.macid = process.getUserInfo()[0].groupId;
+		var device = await publishModel.deviceList(params);
+		delete device.fields;
+		return this.renderJson(device);
+	}
+	
 	
 }
 

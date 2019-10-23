@@ -70,6 +70,29 @@ function AdvPublishModel(){
 		
 		return await this.DB().syncSet(conditions);
 	}
+	
+	/**
+	 * 设备列表 
+	 */
+	this.deviceList = async function(params){
+		var classify = this.POST('classify');
+		if(!classify) return err("错误：ex01 ");
+		var conditions = {
+			table: ["#@archives as h"],
+			fields: [],
+			where: [],
+			joinOn: ''
+		}
+		
+		conditions.where.push("a.devicesize = '" + classify + "'");
+		conditions.where.push("h.state = 1");
+		conditions.where.push("h.groupid = " +  params.macid);
+		conditions.joinOn = " left join #@addondevice as a on a.aid = h.id";
+		var res = await this.DB().syncGet(conditions);
+		res.error = (res.erro || !res.results.length) ? 1 : 0;
+		
+		return res;
+	}
 }
 
 module.exports = AdvPublishModel;

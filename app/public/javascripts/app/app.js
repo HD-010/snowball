@@ -1054,6 +1054,7 @@ var effect = {
 			for (var i = 0; i < key.length; i++) {
 				var curCode = $(htmlCode);
 				if (defVal == key[i]) curCode.find("input[type='radio']").attr('checked', 'checked').parent().addClass('active');
+				curCode.find("input[type='radio']").attr("data-index", i);
 				curCode.find("input[type='radio']").val(key[i]);
 				curCode.find("input[type='radio']").after(val[i]);
 
@@ -1549,7 +1550,8 @@ function mergeObj(objs) {
  * array array 被查找的多个对象的数组
  * key1 用于匹配的键
  * value 用于匹配的键对应的值,格式为：'比较运算符值',如：'>=10'。表示查找value为大于等于10的项，
- * 可用比较运算符有：>、<、=、<>、>=、<=、!=
+ * 可用比较运算符有：>、<、=、<>、>=、<=、!=  也可以是一个返回boolen值的函数，传入参数为当前被
+ * 比较的值，
  * key2 string  null | key2  null 返回匹配对象， key2 返回匹配对象中 key2 的值
  * all boolean true 返回所有匹配的集合，false 返回第一次匹配               
  */
@@ -1563,9 +1565,13 @@ function treeValue(array, key1, value, key2, all) {
 	}
 	var temObj = [];
 	var valStr = value + '';
-	var tag = valStr.match(/(^[!=<>]{1,3})/g);
-	if(tag) value = valStr.substr(tag.length + 1);
-	tag = tag ? tag[0] : '==';
+	var valueIsFunc = true;  		//标识value是否为函数
+	if(typeof value != 'function'){
+		valueIsFunc = false;
+		var tag = valStr.match(/(^[!=<>]{1,3})/g);
+		if(tag) value = valStr.substr(tag.length + 1);
+		tag = tag ? tag[0] : '==';
+	}
 	for(var i in array){
 		var item = array[i];
 		for(var k in item){
@@ -1575,6 +1581,8 @@ function treeValue(array, key1, value, key2, all) {
 				mergeObj([temObj,values]) :
 				temObj = values;
 			}else{
+				valueIsFunc ? 
+				temB = value(array[i][key1]) :
 				eval(('temB = (array[i][key1]' + tag  + 'value)'));
 				if(!temB) continue;
 				if(!all) return key2 ? array[i][key2] : array[i];
