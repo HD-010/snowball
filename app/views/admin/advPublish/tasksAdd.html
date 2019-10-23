@@ -8,8 +8,9 @@
 <%- //include(path('widgets') + '/admin/footer/footer.html'); %>
 <%- //include(path('admin') + '/arc/addTagTemplate.js', addoninfos); %>
 <link rel="stylesheet" href="/bootstrap/css/v3.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/dragslot.css">
 <style>
-	.add-infor .active{background-color:#FFF;}
+.add-infor .active{background-color:#FFF;}
 .table .active{background-color:#23AD44;}
 .full-screen{
     position: fixed;
@@ -41,11 +42,16 @@
 .screen-piece-2-1{background-color:#00E8D7;position:absolute;}
 .screen-piece-2-2{background-color:#00FFFF;position:absolute;}
 .screen-piece-task ol{
+	width: 80% !important;
 	padding-top:0.5em;
+	border:0;
 }
 .screen-piece-task ol li{
+	width: 100% !important;
 	line-height:2em;
-	/* list-style-type: none; */
+	font-size:12px;
+	border: 0 !important;
+	border-bottom: 1px solid #eeeeee !important;
 }
 .screen-piece-res img{width:100%;overflow:hidden}
 .modal-body{
@@ -88,8 +94,9 @@
             </li> -->
 		</ul>
 		<div class="row form tab-content">
-			<form id="add-infor" data-form-async='json' action="/admin/arc/save" method="post" novalidate="novalidate">
+			<form id="add-infor" data-form-async='json' action="/admin/adv-publish/tasks-save" method="post" novalidate="novalidate">
 				<input type="hidden" name='tag' value="add" />
+				<input type="hidden" name='tasklist' value="" />
 
 				<!-- tab-1的表单是固定的 -->
 				<table class="table" id="tab-1">
@@ -104,7 +111,7 @@
 							<td>任务名称：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<input type="text" class="form-control" name="title" value=" " />
+									<input type="text" class="form-control" name="title" value="" />
 								</div>
 								<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;任务名称，长度限制15字</span>
 							</td>
@@ -115,7 +122,7 @@
 							<td style="padding-left:15px;">
 								<div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch task-mode">
-										<input type="radio" name="mode" data-key="now-time-fool" data-val="立即-定时-循环" data-def="time" value="time" />
+										<input type="radio" name="mode" data-key="current-time-fool" data-val="立即-定时-循环" data-def="current" value="current" />
 									</label>
 								</div>
 							</td>
@@ -126,7 +133,7 @@
 							<td>任务执行时间：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<input type="text" class="form-control" name="title" placeholder="输入执行时间" value="" />
+									<input type="text" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
 								</div>
 								<span style="line-height: 40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
@@ -141,10 +148,10 @@
 							<td>
 								<div>
 									<div class="col-md-4">
-										<input type="text" placeholder="开始时间" class="form-control">
+										<input type="text" placeholder="开始时间" class="form-control init-date" disabled=true name="starttime">
 									</div>
 									<div class="col-md-4">
-										<input type="text" placeholder="结束时间" class="form-control">
+										<input type="text" placeholder="结束时间" class="form-control init-date" disabled=true name="endtime">
 									</div>
 								</div>
 								<span style="line-height: 40px;">
@@ -167,21 +174,40 @@
 								</div>
 							</td>
 						</tr>
+						
+						<!-- 选择设备 -->
+						<tr>
+							<td>设备：</td>
+							<td style="padding-left:15px;">
+								<dl class="col-xs-6">
+									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;当前分区任务清单：</dd>
+									<dd id="dragslot" class="screen-piece-task  col-xs-12">
+										<ol class="slot-list">
+											<!-- <li class="col-xs-4"><span name="title" data-uri="">开始懂了加格达奇</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
+										</ol>
+									</dd>
+									<dt class="col-xs-12" style="margin-top:0.5em;">
+										<button type="button" class="btn btn-primary event-add-device">添加设备</button>
+									</dt>
+								</dl>
+							</td>
+						</tr>
 
 						<!-- 选择屏幕分区方式 -->
 						<tr>
 							<td>屏幕分区：</td>
 							<td style="padding-left:15px;" class="screen-piecees">
-								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								<input type="hidden" name="piecesn" />
+								<div class="btn-group screen-1920-1080" data-sn="sn-1" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<!-- 屏幕分区 -->
-										<div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
+										<div class="screen-piece"  style="width: 100px;height: 56px;border:0;position:relative;">
 											<div class="screen-piece screen-piece-1" data-media="video" style="width:100%; height:85%;top:0; left:0;"></div>
 											<div class="screen-piece screen-piece-3 screen-piece-3-low" data-media="notice" style="width:100%; height:15%; bottom:0;right:0;"></div>
 										</div>
 									</label>
 								</div>
-								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								<div class="btn-group screen-1920-1080" data-sn="sn-2" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<!-- 屏幕分区 -->
 										<div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
@@ -191,7 +217,7 @@
 										</div>
 									</label>
 								</div>
-								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								<div class="btn-group screen-1920-1080" data-sn="sn-3" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
 											<div class="screen-piece screen-piece-2-1" data-media="img" style="width:20%; height:50%; top:0; right:0;"></div>
@@ -201,7 +227,7 @@
 										</div>
 									</label>
 								</div>
-								<div class="btn-group screen-1920-1080" data-toggle="buttons" style="margin-left:10px;">
+								<div class="btn-group screen-1920-1080" data-sn="sn-4" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
 											<div class="screen-piece screen-piece-1" data-media="video" style="width:44.4271%; height:100%; top:0; left:0;"></div>
@@ -209,7 +235,7 @@
 										</div>
 									</label>
 								</div>
-								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
+								<div class="btn-group screen-1080-1920 hidden" data-sn="sn-5" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
 											<div class="screen-piece screen-piece-1" data-media="video" style="height:44.4271%; width:100%; top:0; left:0;"></div>
@@ -217,7 +243,7 @@
 										</div>
 									</label>
 								</div>
-								<div class="btn-group screen-1080-1920 hidden" data-toggle="buttons" style="margin-left:10px;">
+								<div class="btn-group screen-1080-1920 hidden" data-sn="sn-6" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
 											<div class="screen-piece screen-piece-1" data-media="img" style="height:55.5729%; width:100%; left:0; top:0;"></div>
@@ -231,11 +257,24 @@
 						<!-- 载入分区素材 -->
 						<tr class="load-piece hidden">
 							<td>载入分区素材：</td>
-							<td style="padding-left:15px;">
-								<dl class="col-xs-6" style="position:absolute;margin-left:350px;">
-									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;分区任务清单：</dd>
-									<dd class="screen-piece-task col-xs-12">
-										<ol>
+							<td style="padding-left:15px;min-height:350px;">
+								<div class="col-xs-5">
+									<div class="" style="margin-left:10px;">
+										<label class="" data-device="1920-1080">
+											<div class="screen-piece screen-piece-res" style="width: 300px;height: 168px;border:0;position:relative;">
+												<!--  -->
+											</div>
+										</label>
+									</div>
+									<dl class="col-xs-12">
+										<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;分区信息：</dt>
+										<dd class="screen-piece-info"></dd>
+									</dl>
+								</div>
+								<dl class="col-xs-6">
+									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;当前分区任务清单：</dd>
+									<dd id="dragslot" class="screen-piece-task  col-xs-12">
+										<ol class="slot-list">
 											<!-- <li class="col-xs-4"><span name="title" data-uri="">开始懂了加格达奇</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
 										</ol>
 									</dd>
@@ -243,17 +282,6 @@
 										<button type="button" class="btn btn-primary event-add-task">添加任务</button>
 									</dt>
 								</dl>
-								<div class="" style="margin-left:10px;">
-									<label class="btn btn-outline btn-success" data-device="1920-1080">
-										<div class="screen-piece screen-piece-res" style="width: 300px;height: 168px;border:0;position:relative;">
-										</div>
-									</label>
-								</div>
-								<dl class="col-xs-3">
-									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;分区信息：</dt>
-									<dd class="screen-piece-info"></dd>
-								</dl>
-
 							</td>
 						</tr>
 
@@ -291,6 +319,7 @@
 
 <script src="/bootstrap/js/plugins/footable/footable.all.min.js"></script>
 <script src="/bootstrap/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="/javascripts/app/dragslot.js"></script>
 
 <script>
 	var code =
@@ -354,14 +383,14 @@
 			</table>
 		</div>
 	</form>`;
+	
+	
 
 	$(document).ready(function() {
 		$('.footable').footable();
+		app.load(".add-infor");
 		//添加附加参数
-		app.addonParams = {
-			oid: getItem("OID")
-		};
-
+		app.addonParams = {oid: getItem('OID')};
 		//初始化效果
 		effect.setRadio(".radio-content-state");
 		
@@ -383,8 +412,8 @@
 			//控制删除按钮是否显示
 			showDelBtn: function() {
 				$(".screen-piece-task").find("span[name='title']").unbind('mouseover').on("mouseover", function() {
-					$(this).parent().parent().find(".task-icon-del").addClass('hidden');
-					$(this).next().removeClass('hidden')
+					$(".task-icon-del").addClass('hidden');
+					$(this).siblings(".task-icon-del").removeClass('hidden');
 				})
 			},
 		
@@ -473,10 +502,21 @@
 				var dataSn = $(o).attr("data-sn");
 				var dataTastsId = $(o).attr("data-tasks-id") ? $(o).attr("data-tasks-id").split('-') : [];
 				var dataTastsTitle = taskAdder.getAttVal(dataTastsId, 'title');
+				var dataTastshorttitle = taskAdder.getAttVal(dataTastsId, 'shorttitle');
+				var dataTastDuration = taskAdder.getAttVal(dataTastsId, 'duration');
 				var li;
 				dataTastsTitle.forEach(function(o, i) {
-					li = '<li class="col-xs-4"><span name="title" data-id="' + dataTastsId[i] + '" class="oper-task-preview">' + o +
-						'</span><span class="task-icon-del hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li>';
+					li = `<li class="slot-item">
+<span  class="slot-handler">
+	<span name="title" data-id="` + dataTastsId[i] + `" class="oper-task-preview">` + o +`&nbsp;
+		<span>`+dataTastshorttitle[i]+`</span>&nbsp;
+		<span><i>[`+dataTastDuration[i]+`s]</i></span>&nbsp;
+	</span>
+	<span class="task-icon-del hidden">&nbsp;
+		<i class="fa fa-trash" style="color:#44ABF7"></i>
+	</span>
+</span>
+</li>`;
 					$(".screen-piece-task ol").append(li);
 				})
 				$(".screen-piece-task").attr("data-sn", dataSn);
@@ -517,6 +557,13 @@
 						//加载按钮的动作
 						taskAdder.actionCdelBtn();
 						taskAdder.actionPreView();
+						//载入拖拽排序事件
+						dragslot(window.jQuery, window, document);
+						$('#dragslot').dragslot({
+							dropCallback: function(el) {
+									//app.notice({error:0, message:"ok"})
+							}
+						});
 					})
 				})
 			},
@@ -625,7 +672,54 @@ onmouseover="this.stop();"
 onmouseout="this.start();"  
 style="width: 100%;">`+content+`</marquee></div>`;
 					$(taskAdder.currentPiece).html(nCode);
-				},
+				}
+			},
+			
+			/**
+			 * 读取任务列表为表单数据
+			 * //数据模型
+				// var piece = {
+				// 	type: '',
+				// 	taskTag: '',
+				// 	style: '',
+				// 	enable: '',
+				// 	list: [{},{}]
+				// }
+				var piecetask = {
+					url: '',
+					duration: 0
+				}
+			 */
+			getTasklist: function(){
+				var len = $(".screen-piece-res").children().length;
+				var list = [];
+				$(".screen-piece-res").children().each(function(i, o){
+					var piece = {},
+					ids,
+					styl = '{' + $(o).attr('style').replace(/;$/,'').replace(/:/g,':"').replace(/;/g,'",') + '"}';
+					eval(('piece.style =' + styl));
+					piece.type = $(o).attr('data-media');
+					piece.taskTag = $(o).attr('data-sn');
+					piece.enable = 1;
+					piece.list = [];
+					ids = $(o).attr('data-tasks-id');
+					if(ids) ids = ids.split('-');
+					if(typeof ids != "object") ids = [ ids ];
+					ids.forEach(function(o, i){
+						piecetask = {};
+						if(o){
+							piecetask.url = taskAdder.getAttVal(o, 'url');
+							piecetask.title = taskAdder.getAttVal(o, 'title');
+							piecetask.duration = taskAdder.getAttVal(o, 'duration');
+							piecetask.content = taskAdder.getAttVal(o, 'content');
+							piece.list.push(piecetask);
+						}
+					});
+					piece.list = piece.list;
+					list.push(piece);
+				});
+				
+				return list;
 			}
 		}
 
@@ -648,6 +742,8 @@ style="width: 100%;">`+content+`</marquee></div>`;
 
 		//选择屏幕分区方式
 		$(".screen-piecees").children('div').unbind('click').on("click", function() {
+			//标识被选中的分区sn 
+			$('input[name="piecesn"]').val($(this).attr('data-sn'));
 			//清除残留数据
 			taskAdder.init();
 			var loadpiece = $(this).find(".screen-piece")[0].outerHTML;
@@ -743,8 +839,61 @@ style="width: 100%;">`+content+`</marquee></div>`;
 					taskAdder.add2Tasks();
 				}
 			});
-
 		});
-
+		
+		//添加设备
+		$(".event-add-device").unbind("click").on("click", function() {
+			//按钮sn
+			var dataSn = $(this).attr('data-sn');
+			//获取data-sn对应的资源属性
+			var dataRes = $("div[data-sn=" + dataSn + "]");
+			var dataMedia = dataRes.attr("data-media");
+			var dataSize = dataRes.attr("data-size");
+			//请求参数表
+			var data = {
+				mdeia: dataMedia,
+				size: dataSize.replace('*', '-')
+			}
+			//获取与属性相关的资源
+			DL({
+				dev: 'on',
+				listId: '#lists-code',
+				uri: "/admin/adv-publish/task-res?oid=" + getItem("OID"),
+				data: data,
+				befor: function(that) {
+					//根据任务标识tag,将任务数据缓存起来,供后续使用
+					var tag = $.md5(JSON.stringify(data));
+					if (!that.results.error && !(taskAdder.history.indexOf(tag) + 1)){
+						var tasks = getItem("TASKS") || [];
+						tasks = tasks.concat(that.results.data);
+						//缓存任务数据
+						setItem("TASKS", tasks);
+						taskAdder.history.push(tag);
+					}
+					//显示模态框
+					effect.modal({
+						title: "请选择需要添加到任务的项",
+						type: "larger"	//加载的模态框类型
+					});
+					$("#modal-body").html(code)
+				},
+				after: function(that) {
+					effect.unionSelect();
+					//应用footable效果
+					$('.footable').footable();
+					//添加添加到任务列表事件
+					taskAdder.add2Tasks();
+				}
+			});
+		});
+		
+		
+		$(".btn[type=submit]").unbind("mouseover").on("mouseover", function(){
+			var list = taskAdder.getTasklist();
+			list = btoa(encodeURI(JSON.stringify(list)));
+			$("#add-infor [name=tasklist]").val(list);
+		})
+			
 	});
+	
 </script>

@@ -23,6 +23,20 @@ function advPublishControler(){
 	}
 	
 	/**
+	 * 保存任务计划
+	 */
+	this.tasksSave = async function(){
+		var params = {};
+		var advPublish = that.model("AdvPublish");
+		var res = await advPublish.taskSave(params);
+		if(res.error) return this.renderJson(res);
+		params.insertId = res.results.insertId;
+		var res = await advPublish.taskDetailSave(params);
+		if(res.error) return this.renderJson(res);
+		return this.renderJson(this.suc("保存任务成功"));
+	}
+	
+	/**
 	 * 任务状态管理
 	 */
 	this.tasksState = function(){
