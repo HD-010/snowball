@@ -10,8 +10,14 @@ function ClassifyModel(){
 
     /**
      * 获取分类列表
+	 * 支持同步（callback为null）和异步调用
+	 * 参数： 
+	 * ctag
+	 * macid
+	 * enable
      */
-    this.get = function(params,callback){
+    this.get = async function(params,callback){
+		var data = {};
         var conditions = {
             table: ['#@arcclass'],
             where: []
@@ -19,18 +25,28 @@ function ClassifyModel(){
         conditions.where.push("comtag='" + params.ctag + "'");
         conditions.where.push("macid='" + params.macid + "'");
         conditions.where.push("enable='" + params.enable + "'");  //按分类是否启用为条件查找
-        this.DB().log().get(conditions,function(error,results){
-            var data = {};
+		if(!callback) {
+			var results = await this.DB().syncGet(conditions);
+			data.error = results.error;
+			data.results = data.classify = (!results.results.length) ? [] :
+			decodeURI(recodeBase64decode(results.results,'classify')[0].classify);
+			data.macid = params.macid;
+			data.ctag = params.ctag;
+			data.id = results[0] ? results[0].id : '';
+			data.enable = results[0] ? results[0].enable : '0';
+			return  data;
+		}
+        this.DB().get(conditions,function(error,results){
             //data.error =  (error || !results.length) ? 1 : 0;
             data.error =  error ? 1 : 0;
-            data.results = (!results.length) ? [] :
+            data.results = data.classify = (!results.length) ? [] :
             decodeURI(recodeBase64decode(results,'classify')[0].classify);
             data.macid = params.macid;
             data.ctag = params.ctag;
             data.id = results[0] ? results[0].id : '';
             data.enable = results[0] ? results[0].enable : '0';
             
-            callback(data);
+            return callback(data);
         })
     }
 

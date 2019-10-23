@@ -11,8 +11,17 @@ function advPublishControler(){
 	/**
 	 * 添加任务计划
 	 */
-	this.tasksAdd = function(){
-		that.render({});
+	this.tasksAdd = async function(){
+		var data,params = {};
+		
+		var process = this.model('DataProcess');
+		var classify = this.model("Classify");
+		//获取设备分类数据
+		params.ctag = "device";
+		params.macid = process.getUserInfo()[0].groupId;
+		params.enable = 1;
+		data = await classify.get(params);
+		that.render(data);
 	}
 	
 	/**

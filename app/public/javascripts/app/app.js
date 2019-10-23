@@ -1664,7 +1664,7 @@ function unique(arr) {
 }
 
 /**
- * 扩展Array方法, 去除数组中空白数据
+ * 扩展Array方法, 去除数组中空数据
  * 调用方法
     var a = [1, 2, undefined, 4, "", 5, null, 7, 0, 8];
     var b = a.notempty();

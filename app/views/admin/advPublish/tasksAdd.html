@@ -1,12 +1,18 @@
-<%- //print_r(addoninfos) %>
-<%- //'addoninfos:' + JSON.stringify(addoninfos,null,2)%>
-<%- //'results:' + JSON.stringify(results,null,2)%>
-<%- //'enumtag:' + JSON.stringify(enumtag,null,2)%>
-<%- //'types:' + JSON.stringify(types,null,2)%>
-<%- //'comname:' + comname %>
+<% 
+	var classify = locals.classify ? JSON.parse(classify) : [];
+	var deviceSize = treeValue(classify,'name','设备像素','children');
+	var deviceSizeVal = array2value(deviceSize, 'val', '!=null', 'val', 'all');
+	var deviceSizeName = array2value(deviceSize, 'val', '!=null', 'name', 'all');
+	if(typeof deviceSizeName != "object") deviceSizeName = [deviceSizeName];
+	
+	var temArr = [];
+	deviceSizeName.forEach(function(o, i){
+		temArr.push(cleanNull(o.match(/\d*/g)).join("*"));
+	});
+	var deviceSizeKey = temArr.join('-');
+%>
 
-<%- //include(path('widgets') + '/admin/footer/footer.html'); %>
-<%- //include(path('admin') + '/arc/addTagTemplate.js', addoninfos); %>
+
 <link rel="stylesheet" href="/bootstrap/css/v3.css" />
 <link rel="stylesheet" type="text/css" href="/stylesheets/dragslot.css">
 <style>
@@ -167,7 +173,7 @@
 							<td style="padding-left:15px;">
 								<div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch screenpiece">
-										<input type="radio" name="screenpiece" data-key="1920*1080-1080*1920" data-val="1920*1080-1080*1920" data-def="1920*1080"
+										<input type="radio" name="screenpiece" data-key="<%= echo(deviceSizeKey) %>" data-val="<%= echo(deviceSizeName.join('-')) %>" data-def="1920*1080"
 										 value="1920*1080" /><!-- <i class="fa fa-check"></i> -->
 										<!--<i class="fa fa-times"></i>-->
 									</label>
