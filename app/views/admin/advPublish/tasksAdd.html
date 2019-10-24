@@ -465,7 +465,7 @@
 		//设备分配工具
 		var device = {
 			currentDevice : null,
-			//初始化任务分配工具
+			//初始设备分配工具
 			init: function(){
 				//清除残留数据
 				setItem("DEVICE_ID", null);
@@ -506,7 +506,7 @@
 			
 			//加载分区域任务清单
 			loadDevices: function() {
-				//清空分区域任务清单
+				//清空设备清单
 				device.cleanDevice();
 				var dataDeviceId = getItem("DEVICE_ID");
 				var dataDeviceTitle = device.getAttVal(dataDeviceId, 'title');
@@ -1049,6 +1049,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		
 		//选择设备尺寸时,清空设备残留数据(增加事件)
 		$('.screenpiece').on("click", function(){
+			//清空设备清单
 			device.cleanDevice();
 			device.init();
 		});
