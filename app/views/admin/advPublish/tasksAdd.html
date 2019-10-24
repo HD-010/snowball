@@ -482,7 +482,8 @@
 					return false;
 				}
 				if(typeof idArr != "object") idArr = [idArr];
-				setItem("DEVICE_ID", unique(taskId.concat(idArr)));
+				// setItem("DEVICE_ID", unique(taskId.concat(idArr)));
+				setItem("DEVICE_ID", taskId.concat(idArr));
 				return true;
 			},
 			
@@ -498,7 +499,7 @@
 				return temArr;
 			},
 			
-			//清空分区域任务清单
+			//清空设备清单
 			cleanDevice: function() {
 				$(".screen-device-list ol").html("");
 			},
@@ -538,9 +539,9 @@
 			//根据索引删除对象对应的数据
 			removeElData: function(index){
 				try{
-					var tasksId = getItem("DEVICE_ID");
-					tasksId.splice(index, 1);
-					setItem("DEVICE_ID", tasksId);
+					var deviceId = getItem("DEVICE_ID");
+					deviceId.splice(index, 1);
+					setItem("DEVICE_ID", deviceId);
 				}catch(e){return false;}
 				
 				return true;
@@ -1048,6 +1049,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		
 		//选择设备尺寸时,清空设备残留数据(增加事件)
 		$('.screenpiece').on("click", function(){
+			device.cleanDevice();
 			device.init();
 		});
 		
