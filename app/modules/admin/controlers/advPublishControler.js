@@ -37,9 +37,15 @@ function advPublishControler(){
 	this.tasksSave = async function(){
 		var params = {};
 		var advPublish = that.model("AdvPublish");
+		//保存任务列表
 		var res = await advPublish.taskSave(params);
 		if(res.error) return this.renderJson(res);
+		//新增任务的id
 		params.insertId = res.results.insertId;
+		//保存执行任务的设备列表
+		var res = await advPublish.deviceSave(params);
+		if(res.error) return this.renderJson(res);
+		//保存任务列表详情
 		var res = await advPublish.taskDetailSave(params);
 		if(res.error) return this.renderJson(res);
 		return this.renderJson(this.suc("保存任务成功"));

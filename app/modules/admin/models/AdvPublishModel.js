@@ -48,7 +48,7 @@ function AdvPublishModel(){
 	}
 	
 	/**
-	 * 保存任务列表
+	 * 保存任务列表详情
 	 */
 	this.taskDetailSave = async function(params){
 		var utility = require("utility");
@@ -72,7 +72,31 @@ function AdvPublishModel(){
 	}
 	
 	/**
-	 * 设备列表 
+	 * 保存执行任务的设备列表
+	 */
+	this.deviceSave = async function(params){
+		var devicelist = this.POST('devicelist');
+		if(!devicelist) return this.err("错误：ex0201");
+		
+		var conditions = {
+			table: ["#@taskaddondevice"],
+			fields: [],
+		}
+		var field = {};
+		devicelist.split('-').forEach(function(o, i){
+			field.tid = params.insertId;
+			field.deviceid = o;
+			conditions.fields.push(field);
+		});
+		
+		var res = await this.DB().syncSet(conditions);
+		if(res.error) return this.err("错误：ex0202");
+		if(!res.results.insertId) return this.err("错误：ex0203");
+		return res;
+	}
+	
+	/**
+	 * 获取设备列表 
 	 */
 	this.deviceList = async function(params){
 		var classify = this.POST('classify');

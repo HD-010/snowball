@@ -102,6 +102,7 @@
 			<form id="add-infor" data-form-async='json' action="/admin/adv-publish/tasks-save" method="post" novalidate="novalidate">
 				<input type="hidden" name='tag' value="add" />
 				<input type="hidden" name='tasklist' value="" />
+				<input type="hidden" name='devicelist' value="" />
 
 				<!-- tab-1的表单是固定的 -->
 				<table class="table" id="tab-1">
@@ -184,7 +185,7 @@
 						<tr>
 							<td>设备：</td>
 							<td style="padding-left:15px;">
-								<dl class="col-xs-6">
+								<dl class="col-xs-11">
 									<dt>设备清单：</dd>
 									<dd class="screen-device-list col-xs-12">
 										<ol class="device-list">
@@ -392,7 +393,7 @@
 	</form>`;
 	
 	var codeDeviceList =
-		`<form id="add-to-tasks" class="ibox float-e-margins">
+		`<form id="add-to-device" class="ibox float-e-margins">
 		<div class="ibox-title">
 			<h5>有以下任务可以加入任务列表</h5>
 	
@@ -438,7 +439,7 @@
 						<tr>
 							<td class="show-opers" colspan="3">
 								<label class="checkbox-inline text-cneter"><input type="checkbox" class="union-top" data-union="union-child" /> 全选</label>
-								<button type="button" id="btn-add-to-task" class="btn btn-info">添加到任务列表</button>
+								<button type="button" id="btn-add-to-device" class="btn btn-info">添加到任务列表</button>
 							</td>
 						</tr>
 						<tr>
@@ -463,8 +464,135 @@
 		
 		//设备分配工具
 		var device = {
+			currentDevice : null,
+			//初始化任务分配工具
+			init: function(){
+				//清除残留数据
+				setItem("DEVICE_ID", null);
+			},
+			//保存选中的设备到本地
+			saveSelectedDevice: function(idArr) {
+				idArr = idArr ? idArr : app.parseQuery(decodeURI($("#add-to-device").serialize())).id;
+				var taskId = getItem("DEVICE_ID") || [];
+				if(!idArr){
+					app.notice({
+						error: 1,
+						message: '请选择需要添加到列表的设备'
+					});
+					return false;
+				}
+				if(typeof idArr != "object") idArr = [idArr];
+				setItem("DEVICE_ID", unique(taskId.concat(idArr)));
+				return true;
+			},
+			
+			//获取对象数据属性的值
+			getAttVal: function(id, key){
+				var temArr = [];
+				if(id.constructor.name != "Array") id = [id];
+				id.forEach(function(o, i){
+					var val = array2value(getItem("DEVICES"), 'id', o, key);
+					temArr.push(val);
+				});
+				
+				return temArr;
+			},
+			
+			//清空分区域任务清单
+			cleanDevice: function() {
+				$(".screen-device-list ol").html("");
+			},
+			
+			//加载分区域任务清单
+			loadDevices: function() {
+				//清空分区域任务清单
+				device.cleanDevice();
+				var dataDeviceId = getItem("DEVICE_ID");
+				var dataDeviceTitle = device.getAttVal(dataDeviceId, 'title');
+				var dataDeviceshorttitle = device.getAttVal(dataDeviceId, 'shorttitle');
+				var li;
+				dataDeviceTitle.forEach(function(o, i) {
+					li = `<li class="col-xs-4">
+<span>
+	<span name="title" data-id="` + dataDeviceId[i] + `" >` + o +`&nbsp;
+		<span>`+dataDeviceTitle[i]+`</span>&nbsp;
+		<span><i>`+dataDeviceshorttitle[i]+`</i></span>&nbsp;
+	</span>
+	<span class="task-icon-del hidden">&nbsp;
+		<i class="fa fa-trash" style="color:#44ABF7"></i>
+	</span>
+</span>
+</li>`;
+					$(".screen-device-list ol").append(li);
+				})
+			},
+			
+			//控制删除按钮是否显示
+			showDelBtn: function() {
+				$(".screen-device-list").find("span[name='title']").unbind('mouseover').on("mouseover", function() {
+					$(".task-icon-del").addClass('hidden');
+					$(this).siblings(".task-icon-del").removeClass('hidden');
+				})
+			},
+			
+			//根据索引删除对象对应的数据
+			removeElData: function(index){
+				try{
+					var tasksId = getItem("DEVICE_ID");
+					tasksId.splice(index, 1);
+					setItem("DEVICE_ID", tasksId);
+				}catch(e){return false;}
+				
+				return true;
+			},
+			
+			//删除按钮的动作
+			actionCdelBtn: function() {
+				$(".task-icon-del").unbind("click").on("click", function() {
+					var that = this;
+					app.alert({
+						title: "您确定要删除当前任吗"
+					}, function(res) {
+						if(!res) return false;
+						//获取被删除对象所在的序号
+						var recoder = $(that).parent().parent()
+						var delIndex = recoder.prevAll().length;
+						recoder.remove();
+						//根据索引删除对象对应的数据
+						if(!device.removeElData(delIndex)) return app.notice({
+							error: 1,
+							message: '页面出错，请刷新页面...'
+						});
+					});
+				})
+			},
+			
 			add2Tasks: function(){
-				alert("sdfksdf");
+				$("#btn-add-to-device").unbind("click").on("click", function() {
+					//保存任务id到本地
+					if(!device.saveSelectedDevice()) return false;
+					//添加成功的提示
+					app.notice({
+						error: 0,
+						message: "成功添加任务到列表!"
+					}, function() {
+						//添加成功后,将被钩选的任务清除勾选状态
+						$("#add-to-device").find("[class^=union-]").prop("checked", false);
+						//载入设备清单
+						device.loadDevices();
+						//显示删除按钮
+						device.showDelBtn();
+						//加载按钮的动作
+						device.actionCdelBtn();
+					})
+				})
+			},
+			
+			/**
+			 * 获取设备列表
+			 */
+			getDevicelist: function(){
+				return getItem("DEVICE_ID");
 			}
 		}
 		
@@ -500,7 +628,7 @@
 					}, function(res) {
 						if(!res) return false;
 						//获取被删除对象所在的序号
-						var delIndex = $(that).parent().prevAll().length;
+						var delIndex = $(that).parent().parent().prevAll().length;
 						//根据索引删除对象对应的数据
 						if(!taskAdder.removeElData(delIndex)) return app.notice({
 							error: 1,
@@ -794,7 +922,11 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				return list;
 			}
 		}
-
+	
+		
+			
+		
+	
 		$(".screenpiece").on("click", function() {
 			$(".load-piece").addClass('hidden');
 			var screenTag = $(this).children('input').val().replace('*', '-');
@@ -914,6 +1046,23 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			});
 		});
 		
+		//选择设备尺寸时,清空设备残留数据
+		$('.screenpiece').unbind("click").on("click", function(){
+			device.init();
+		});
+		
+		//选择执行方式相关事件
+		$('.task-mode').on("click", function(){
+			var val = $(this).find("input").val();
+			$('input[name="starttime"]').prop("disabled", true);
+			$('input[name="endtime"]').prop("disabled", true);
+			if(val == "time") $('input[name="starttime"]').prop("disabled", false);
+			if(val == "fool") {
+				$('input[name="starttime"]').prop("disabled", false);
+				$('input[name="endtime"]').prop("disabled", false);
+			}
+		})
+		
 		//添加设备
 		$(".event-add-device").unbind("click").on("click", function() {
 			var deviceIndex = $(".screenpiece input[name='screenpiece']:checked").attr('data-index');
@@ -954,13 +1103,16 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			});
 		});
 		
-		
+		//提交前的数据补充
 		$(".btn[type=submit]").unbind("mouseover").on("mouseover", function(){
 			var list = taskAdder.getTasklist();
+			var devices = device.getDevicelist().join("-");
 			list = btoa(encodeURI(JSON.stringify(list)));
 			$("#add-infor [name=tasklist]").val(list);
+			$("#add-infor [name=devicelist]").val(devices);
 		})
-			
+		
+		
 	});
 	
 </script>
