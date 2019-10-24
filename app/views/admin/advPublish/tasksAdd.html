@@ -1046,8 +1046,8 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			});
 		});
 		
-		//选择设备尺寸时,清空设备残留数据
-		$('.screenpiece').unbind("click").on("click", function(){
+		//选择设备尺寸时,清空设备残留数据(增加事件)
+		$('.screenpiece').on("click", function(){
 			device.init();
 		});
 		
@@ -1079,7 +1079,6 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				uri: "/admin/adv-publish/device-list?oid=" + getItem("OID"),
 				data: data,
 				befor: function(that) {
-					console.log("999999999999classifyDevice999999999999;::", classifyDevice);
 					//根据任务标识tag,将任务数据缓存起来,供后续使用
 					var tag = $.md5(JSON.stringify(data));
 					var devices = that.results.data;
