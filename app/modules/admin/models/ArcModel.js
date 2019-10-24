@@ -102,7 +102,8 @@ function ArcModel(){
         record.state = this.POST('state') || 0;
         record.litpic = litpic || '';
         record.addtime = this.POST('!addtime') || 'now()';
-        record.mid = that.model("DataProcess").uid();
+        record.mid = params.uid;
+        record.groupid = params.macid;
         record.voteid = that.POST("voteid") || 0;
         conditions.fields.push(record);
         var id = this.POST('id');

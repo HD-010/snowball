@@ -1,10 +1,9 @@
 <% 
-	var classify = locals.classify ? JSON.parse(classify) : [];
-	var deviceSize = treeValue(classify,'name','设备像素','children');
+	var classifyDevice = locals.classifyDevice ? JSON.parse(classifyDevice) : [];
+	var deviceSize = treeValue(classifyDevice,'name','设备像素','children');
 	var deviceSizeVal = array2value(deviceSize, 'val', '!=null', 'val', 'all');
 	var deviceSizeName = array2value(deviceSize, 'val', '!=null', 'name', 'all');
 	if(typeof deviceSizeName != "object") deviceSizeName = [deviceSizeName];
-	
 	var temArr = [];
 	deviceSizeName.forEach(function(o, i){
 		temArr.push(cleanNull(o.match(/\d*/g)).join("*"));
@@ -186,10 +185,10 @@
 							<td>设备：</td>
 							<td style="padding-left:15px;">
 								<dl class="col-xs-6">
-									<dt><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;执行任务的设备清单：</dd>
+									<dt>设备清单：</dd>
 									<dd class="screen-device-list col-xs-12">
 										<ol class="device-list">
-											<!-- <li class="col-xs-4"><span name="title" data-uri="">开始懂了加格达奇</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
+											<!-- <li class="col-xs-4"><span name="title" data-uri="">设备名称</span><span class="icon hidden">&nbsp;<i class="fa fa-trash" style="color:#44ABF7"></i></span></li> -->
 										</ol>
 									</dd>
 									<dt class="col-xs-12" style="margin-top:0.5em;">
@@ -328,6 +327,7 @@
 <script src="/javascripts/app/dragslot.js"></script>
 
 <script>
+	var classifyDevice = <%- classifyDevice? JSON.stringify(classifyDevice): []; %>
 	var deviceSizeVal = <%- deviceSizeVal ? JSON.stringify(deviceSizeVal) : []; %>
 	var codeTaskList =
 		`<form id="add-to-tasks" class="ibox float-e-margins">
@@ -410,14 +410,13 @@
 		</div>
 		<div class="ibox-content">
 			<input type="text" class="form-control input-sm m-b-xs" id="filter"
-				   placeholder="输入标题/商家名称/任务时长/添加时间...">
+				   placeholder="输入设备名称/分类名称/设备地址...">
 	
 			<table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
 				<thead>
 						<tr>
-							<th>标题</th>
-							<th>商家名称</th>
-							<th>播放时长</th>
+							<th>设备名称</th>
+							<th>分类名称</th>
 						</tr>
 					</thead>
 					<tbody id="device-code">
@@ -432,8 +431,7 @@
 									<span style="display:inline-table"><b>{{title}}</b></br>{{shorttitle}}</span>	
 								</label>
 							</td>
-							<td>{{business}}</td>
-							<td class="center">{{duration}}(秒)</td>
+							<td>{{- return treeValue(classifyDevice, "val", classify, "name"); }}</td>
 						</tr>
 					</tbody>
 					<tfoot>
@@ -462,6 +460,13 @@
 		app.addonParams = {oid: getItem('OID')};
 		//初始化效果
 		effect.setRadio(".radio-content-state");
+		
+		//设备分配工具
+		var device = {
+			add2Tasks: function(){
+				alert("sdfksdf");
+			}
+		}
 		
 		//任务分配工具
 		var taskAdder = {
@@ -684,10 +689,8 @@
 			
 			//获取对象数据属性的值
 			getAttVal: function(id, key){
-				if(id.constructor.name != "Array"){
-					return array2value(getItem("TASKS"), 'id', id, key);
-				}
 				var temArr = [];
+				if(id.constructor.name != "Array") id = [id];
 				id.forEach(function(o, i){
 					temArr.push(array2value(getItem("TASKS"), 'id', o, key));
 				});
@@ -706,7 +709,7 @@
 			pre:{
 				video: function(o){
 					var vId = $(o).attr("data-id");
-					var url = taskAdder.getAttVal(vId, 'url');
+					var url = taskAdder.getAttVal(vId, 'url')[0];
 					url = url.substr(0,url.lastIndexOf('.'));
 					var vCode = `<video width="320" height="240" autoplay controls>
   <source src="` + url + `.mp4" type="video/mp4">
@@ -901,6 +904,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 					$("#modal-body").html(codeTaskList)
 				},
 				after: function(that) {
+					//联动选择关联
 					effect.unionSelect();
 					//应用footable效果
 					$('.footable').footable();
@@ -926,15 +930,12 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				uri: "/admin/adv-publish/device-list?oid=" + getItem("OID"),
 				data: data,
 				befor: function(that) {
+					console.log("999999999999classifyDevice999999999999;::", classifyDevice);
 					//根据任务标识tag,将任务数据缓存起来,供后续使用
 					var tag = $.md5(JSON.stringify(data));
-					if (!that.results.error && !(taskAdder.history.indexOf(tag) + 1)){
-						var tasks = getItem("TASKS") || [];
-						tasks = tasks.concat(that.results.data);
-						//缓存任务数据
-						setItem("TASKS", tasks);
-						taskAdder.history.push(tag);
-					}
+					var devices = that.results.data;
+					//缓存任务数据
+					if (!that.results.error) setItem("DEVICES", devices);
 					//显示模态框
 					effect.modal({
 						title: "请选择需要添加到任务的项",
@@ -943,11 +944,12 @@ style="width: 100%;">`+content+`</marquee></div>`;
 					$("#modal-body").html(codeDeviceList)
 				},
 				after: function(that) {
+					//联动选择关联
 					effect.unionSelect();
 					//应用footable效果
 					$('.footable').footable();
 					//添加添加到任务列表事件
-					taskAdder.add2Tasks();
+					device.add2Tasks();
 				}
 			});
 		});

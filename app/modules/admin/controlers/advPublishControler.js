@@ -20,7 +20,7 @@ function advPublishControler(){
 		params.ctag = "device";
 		params.macid = process.getUserInfo()[0].groupId;
 		params.enable = 1;
-		data = await classify.get(params);
+		data = objList(await classify.get(params), ["error", "classifyDevice"]);
 		that.render(data);
 	}
 	
@@ -70,26 +70,25 @@ function advPublishControler(){
 		params.macid = this.model("DataProcess").getUserInfo()[0].groupId;
 		params.enable = 1;
 		params.media = media;
+		var classify = this.model("Classify");
+		var results = await classify.get(params);
+		if(results.error) return that.renderJson(mergeObj([data, results]));
+		//分类信息
+		var classsify = JSON.parse(recodeBase64decode(results.results, 'classify'));
+		//分类标识
+		params.classify = treeValue(classsify, 'name', function(str){
+			var reg = new RegExp(size[0]+"\\D*[\*x]\\D*"+size[1]);
+			return str.match(reg) ? true : false;
+		} , 'val');
+		//如查分类标不存在，终止查询
+		if(!params.classify.length) return that.renderJson(data);
+		//查看符合分类的资源
+		var publishModel = that.model('AdvPublish');
+		results = await publishModel.resList(params);
 		
-		this.model("Classify").get(params, async function(results){
-			if(results.error) return that.renderJson(mergeObj([data, results]));
-			//分类信息
-			var classsify = JSON.parse(recodeBase64decode(results.results, 'classify'));
-			//分类标识
-			params.classify = treeValue(classsify, 'name', function(str){
-				var reg = new RegExp(size[0]+"\\D*[\*x]\\D*"+size[1]);
-				return str.match(reg) ? true : false;
-			} , 'val');
-			//如查分类标不存在，终止查询
-			if(!params.classify.length) return that.renderJson(data);
-			//查看符合分类的资源
-			var publishModel = that.model('AdvPublish');
-			results = await publishModel.resList(params);
-			
-			return that.renderJson({
-				error: results.error || !results.results.length ? 1: 0,
-				data: results.results
-			});
+		return that.renderJson({
+			error: results.error || !results.results.length ? 1: 0,
+			data: results.results
 		});
 	}
 	
@@ -102,7 +101,7 @@ function advPublishControler(){
 		var process = this.model('DataProcess');
 		params.macid = process.getUserInfo()[0].groupId;
 		var device = await publishModel.deviceList(params);
-		delete device.fields;
+		
 		return this.renderJson(device);
 	}
 	

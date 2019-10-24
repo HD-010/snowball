@@ -162,9 +162,12 @@ function arcControler(){
         var data = {error: 1, message: '参数错误'};
         var ps = 1;
         var utility = require('utility');
+		var process = this.model("DataProcess");
+		params.uid = process.uid();							//用户id
+		params.macid = process.getUserInfo()[0].groupId;    //商户id，暂以登录用户id表示
         params.ctag = ctag;
         //保存数据到主表
-        arc.saveHives({},function(res){
+        arc.saveHives(params,function(res){
             if(res.error) {
                 //res.message = "数据写入失败，请稍后重试";
                 return that.renderJson(res);

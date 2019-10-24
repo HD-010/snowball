@@ -90,6 +90,7 @@ function AdvPublishModel(){
 		conditions.joinOn = " left join #@addondevice as a on a.aid = h.id";
 		var res = await this.DB().syncGet(conditions);
 		res.error = (res.erro || !res.results.length) ? 1 : 0;
+		res = objList(res, ['error', 'data'])
 		
 		return res;
 	}
