@@ -48,7 +48,10 @@ function advPublishControler(){
 		//保存任务列表详情
 		var res = await advPublish.taskDetailSave(params);
 		if(res.error) return this.renderJson(res);
-		return this.renderJson(this.suc("保存任务成功"));
+		var data = this.suc("保存任务成功");
+		data.data = {taskId: params.insertId};
+		
+		return this.renderJson(data);
 	}
 	
 	/**

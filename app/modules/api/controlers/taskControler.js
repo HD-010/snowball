@@ -154,6 +154,54 @@ function taskControler() {
 		}
 		this.renderJson(data);
 	}
+	
+	/**
+	 * 服务端主动发送任务列表
+	 */
+	this.sendTask = async function(){
+		var params = {}
+		params.mode = "current";
+		params.unid = this.POST('unid');
+		params.taskId = this.POST('taskId');
+		
+		//查询任务列表
+		var publisher = this.model("AdvPublis");
+		var res = await publisher.taskList(params);
+		
+		//分派到广告屏客户端
+		
+		var data = {
+			error: 0,
+			message: "服务端主动发送任务列表",
+			data: res
+		}
+		console.log("::::::::::::::::::::::::::", data);
+		this.renderJson(data);
+	}
+	
+	/**
+	 * 定时任务
+	 */
+	this.sendTaskTimeout = function(){
+		var data = {
+			error: 0,
+			message: "服务端主动发送任务列表"
+		}
+		
+		this.renderJson(data);
+	}
+	
+	/**
+	 * 定时循环任务
+	 */
+	this.sendTaskInterval = function(){
+		var data = {
+			error: 0,
+			message: "服务端主动发送任务列表"
+		}
+		
+		this.renderJson(data);
+	}
 
 }
 

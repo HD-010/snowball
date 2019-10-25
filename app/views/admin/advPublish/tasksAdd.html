@@ -452,7 +452,72 @@
 		</div>
 	</form>`;
 	
+	/**
+	 * 配置文件
+	 */
+	var conf = {
+		httpHost: "http://192.168.0.114:3005",
+		wsHost: "ws://192.168.0.114:3005",
+	}
 	
+	/**
+	 * webSocket对象 
+	 */
+	var ws = {
+		state: false,
+		host: conf.wsHost,
+		protocol: 'echo-protocol',
+		connection: null,
+		rebuildTime: 60000, //得建ws连接时间
+		//初始化webSocket服务
+		initWs: function(callback) {
+			//创建webSocket连接
+			ws.connection = new WebSocket(ws.host, ws.protocol);
+			ws.connection.onopen = function() {
+				//连接成功提示信息
+				app.notice({
+					error: 0,
+					message: 'ws连接成功'
+				})
+				ws.send = function(obj) {
+					ws.connection.send(JSON.stringify(obj));
+				}
+				//请求播放任务
+				// ws.send({
+				// 	action: '/api/task/list',
+				// 	data: {
+				// 		unid: getItem('unid')
+				// 	}
+				// });
+			};
+			ws.connection.onmessage = ws.onMsg;
+			ws.connection.onclose = ws.onClo;
+			ws.connection.onerror = ws.onErr;
+			if(typeof callback == 'function') callback();
+		},
+		//收到消息的处理方法
+		onMsg: function(msg) {
+			console.log(msg);
+		},
+		//服务关闭的处理方法
+		onClo: function(clo) {
+			//自动重建ws连接
+			ws.rebuildWs();
+		},
+		//服务出错的处理方法
+		onErr: function(err) {
+			console.error(err)
+		},
+		//重建ws服务
+		rebuildWs: function() {
+			ws.connection = null;
+			var rebuildWs = setInterval(function() {
+				if (ws.connection) return clearInterval(rebuildWs)
+				ws.initWs();
+			}, ws.rebuildTime)
+		}
+	};
+	ws.initWs();
 
 	$(document).ready(function() {
 		$('.footable').footable();
@@ -925,6 +990,8 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			}
 		}
 		
+		
+		
 		//初始设备分配工具
 		device.init();
 		
@@ -1113,12 +1180,50 @@ style="width: 100%;">`+content+`</marquee></div>`;
 	});
 	
 	/**
+	 * 任务处理对象
+	 */
+	var process = {
+		//立即执行的任务
+		current: function(res){
+			ws.send({
+				action: '/api/task/send-task',
+				data: {
+					unid: getItem('UID'),
+					taskId: res.data.taskId,
+				}
+			});
+		},
+		//定时任务
+		time: function(res){
+			ws.send({
+				action: '/api/task/send-task-timeout',
+				data: {
+					unid: getItem('UID'),
+					taskId: res.data.taskId,
+				}
+			});
+		},
+		//定时循环任务
+		fool: function(res){
+			ws.send({
+				action: '/api/task/send-task-Interval',
+				data: {
+					unid: getItem('UID'),
+					taskId: res.data.taskId,
+				}
+			});
+		}
+	}
+	/**
 	 * 保存后的回调
 	 * @param {Object} res
 	 */
 	function tasksSave(res){
+		//错误时提示
 		if(res.error) return app.notice(res);
-		console.log(res);
+		var mode = $("[name=mode]:checked").val();
+		//通过ws服务,给相应的客户端发送命令
+		if(mode in process) process[mode](res);
 	}
 	
 </script>
