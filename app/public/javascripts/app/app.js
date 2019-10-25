@@ -535,6 +535,104 @@ var app = {
 			});
 		},
 	},
+	
+	/**
+	 * 表单数据验证
+	 * @param {Object} 
+	 */
+	valid: {
+		form: null,
+		valided: true,
+		required: false,
+		init: function(e, me){
+			var validStr,
+			validFuncs = $(me).attr("data-valid");
+			if(!validFuncs) return;
+			if($(me).prop("disabled")) return;
+			app.valid.form = $(me).parentsUntil('form').parent();
+			validFuncs = validFuncs.split("-");
+ 			validFuncs.forEach(function(o, i){
+				validStr = $(me).val()
+				if(!validStr.length) return;
+				
+				if(o in app.valid.funcs.pattern){
+					if(!app.valid.funcs.match(validStr, o)){
+						app.notice({error: 1, message: "数据格式错误！"});
+						$(me).val('');
+						return app.valid.valided = false;
+					}
+				}else{
+					if(o == "require") return;
+					app.notice({error: 1, message: "缺失" + o + "验证函数"});
+					return true;
+				}
+			})
+		},
+		
+		//验证函数
+		funcs: {
+			/**
+			 * 必填验证
+			 */
+			require: function(me){
+				if(me && !$(me).val().length) {
+					app.valid.required = false;
+					return false;
+				}
+				if(!me){
+					app.valid.required = true;
+					$(app.valid.form).find("[type=submit]").prop("disabled", true);
+					$(app.valid.form).find("[data-valid]").each(function(i, o){
+						//针对属性中有require的项进行过滤
+						if($(o).attr("data-valid").match(/require/)){
+							//当必填项为空，用false表示
+							if(!$(o).val().length) app.valid.required = false;
+						}
+					});
+					//如查没有为空的必填项，让提交按钮可用
+					if(app.valid.required && app.valid.valided){
+						$(app.valid.form).find("[type=submit]").prop("disabled", false);
+					}
+				}
+				return true;
+			},
+			
+			//校验数据
+			match: function(str, pattern) {
+			    pattern = app.valid.funcs.pattern[pattern];
+			    if (str.match(pattern)) return true;
+			    return false;
+			},
+			
+			pattern: {
+				number     : '^[0-9]*$',
+				email      : '^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$',
+				url        : '^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+',
+				acount     : '^[a-zA-Z][a-zA-Z0-9_]{4,15}$',                                                                                                                                                    //字母开头，允许5-16字节，允许字母数字下划线
+				tel        : '^[a-zA-Z][a-zA-Z0-9_]{4,15}$',                                                                                                                                                    //如 0511-4405222 或 021-87888822
+				qq         : '^[1-9][0-9]{4,}$',                                                                                                                                                                //腾讯QQ号从10000开始    
+				postcode   : '[1-9]d{5}(?!d)',                                                                                                                                                                  //中国邮政编码
+				IDnumber   : 'd{15}|d{18}',                                                                                                                                                                     //匹配身份证
+				ip         : '(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)',   //匹配ip地址
+				upinit     : '^[1-9]d*$',                                                                                                                                                                       //匹配正整数
+				downinit   : '^-[1-9]d*$',                                                                                                                                                                      //匹配负整数
+				allinit    : '^-?[1-9]d*$',                                                                                                                                                                     //匹配整数
+				nodowninit : '^[1-9]d*|0$',                                                                                                                                                                     //匹配非负整数（正整数 + 0）
+				noupinit   : '^-[1-9]d*|0$',                                                                                                                                                                    //匹配非正整数（负整数 + 0）
+				upfloat    : '^[1-9]d*.d*|0.d*[1-9]d*$',                                                                                                                                                        //匹配正浮点数
+				nodownfloat: '^-([1-9]d*.d*|0.d*[1-9]d*)$',                                                                                                                                                     //匹配负浮点数
+				allfloat   : '^-?([1-9]d*.d*|0.d*[1-9]d*|0?.0+|0)$',                                                                                                                                            //匹配浮点数
+				nodownfloat: '^[1-9]d*.d*|0.d*[1-9]d*|0?.0+|0$',                                                                                                                                                //匹配非负浮点数（正浮点数 + 0）
+				noupfloat  : '^(-([1-9]d*.d*|0.d*[1-9]d*))|0?.0+|0$',                                                                                                                                           //匹配非正浮点数（负浮点数 + 0）
+				en_char    : '^[A-Za-z]+$',                                                                                                                                                                     //匹配由26个英文字母组成的字符串
+				zh_char    : '^[\\u4e00-\\u9fa5]+$',    
+				datetime   : '^[1-9]\\d{3}\\/(0[1-9]|1[0-2])\\/(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$'
+			},
+			
+			
+			
+		}
+	},
 
 	/**
 	 * 绑定相关事件
@@ -617,6 +715,14 @@ var app = {
 		$(el).find("[data-check]").unbind('change').on("change", function(e) {
 			app.valExistsPorcess(e, this, el);
 		})
+		
+		//绑定数据验证事件
+		$(el).find("[data-valid]").unbind("change").on("change", function(e){
+			app.valid.init(e, this);
+			app.valid.funcs.require();
+		})
+		
+		
 	},
 
 };

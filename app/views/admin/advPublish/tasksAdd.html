@@ -154,7 +154,7 @@
 							<td>
 								<div>
 									<div class="col-md-4">
-										<input type="text" placeholder="开始时间" class="form-control init-date" disabled=true name="starttime">
+										<input type="text" data-valid="datetime-require" placeholder="开始时间" class="form-control init-date" disabled=true name="starttime">
 									</div>
 									<div class="col-md-4">
 										<input type="text" placeholder="结束时间" class="form-control init-date" disabled=true name="endtime">
@@ -308,7 +308,7 @@
 						<tr>
 							<td></td>
 							<td>
-								<button type="submit" class="btn">确定</button>
+								<button type="submit" disabled="true" class="btn">确定</button>
 								<button type="reset" class="btn">重置</button>
 							</td>
 						</tr>
@@ -593,7 +593,8 @@
 			 * 获取设备列表
 			 */
 			getDevicelist: function(){
-				return getItem("DEVICE_ID");
+				var devices = getItem("DEVICE_ID");
+				return devices ? devices.join('-') : '';
 			}
 		}
 		
@@ -1108,7 +1109,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		//提交前的数据补充
 		$(".btn[type=submit]").unbind("mouseover").on("mouseover", function(){
 			var list = taskAdder.getTasklist();
-			var devices = device.getDevicelist().join("-");
+			var devices = device.getDevicelist();
 			list = btoa(encodeURI(JSON.stringify(list)));
 			$("#add-infor [name=tasklist]").val(list);
 			$("#add-infor [name=devicelist]").val(devices);
