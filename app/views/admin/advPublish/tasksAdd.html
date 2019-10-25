@@ -924,11 +924,10 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				return list;
 			}
 		}
-	
 		
-			
+		//初始设备分配工具
+		device.init();
 		
-	
 		$(".screenpiece").on("click", function() {
 			$(".load-piece").addClass('hidden');
 			var screenTag = $(this).children('input').val().replace('*', '-');
@@ -1112,5 +1111,14 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		
 		
 	});
+	
+	/**
+	 * 保存后的回调
+	 * @param {Object} res
+	 */
+	function tasksSave(res){
+		if(res.error) return app.notice(res);
+		console.log(res);
+	}
 	
 </script>

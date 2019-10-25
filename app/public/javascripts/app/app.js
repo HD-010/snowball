@@ -424,7 +424,7 @@ var app = {
 	 * 初始化action名称
 	 */
 	initAction: function(dataUri) {
-		var firstLine, firstQ, router;
+		var firstLine, firstQ, router, action;
 		var lastPoint = dataUri.lastIndexOf('.'); //用于判断有没有.com 类似的字符串
 		dataUri = (lastPoint == -1) ? dataUri : dataUri.substr(lastPoint);
 		firstLine = dataUri.indexOf('/');
@@ -432,7 +432,14 @@ var app = {
 		if (firstQ == -1) firstQ = dataUri.length;
 		dataUri = dataUri.substr(firstLine + 1, firstQ - firstLine - 1);
 		router = dataUri.split('/');
-		this.action = (router.length % 2) ? router[2] : router[1];
+		action = (router.length % 2) ? router[2] : router[1];
+		action = action.split("-");
+		action.forEach(function(o, i){
+			if(i > 0){
+				action[i] = o.substring(0, 1).toUpperCase() + o.substring(1);
+			}
+		});
+		this.action = action.join('');
 	},
 
 	/**
