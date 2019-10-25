@@ -586,7 +586,7 @@ var app = {
 						//针对属性中有require的项进行过滤
 						if($(o).attr("data-valid").match(/require/)){
 							//当必填项为空，用false表示
-							if(!$(o).val().length) app.valid.required = false;
+							if(!$(o).prop("disabled") && !$(o).val().length) app.valid.required = false;
 						}
 					});
 					//如查没有为空的必填项，让提交按钮可用
@@ -628,9 +628,6 @@ var app = {
 				zh_char    : '^[\\u4e00-\\u9fa5]+$',    
 				datetime   : '^[1-9]\\d{3}\\/(0[1-9]|1[0-2])\\/(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$'
 			},
-			
-			
-			
 		}
 	},
 

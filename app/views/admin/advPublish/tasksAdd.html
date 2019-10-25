@@ -117,7 +117,7 @@
 							<td>任务名称：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<input type="text" class="form-control" name="title" value="" />
+									<input type="text" class="form-control" data-valid="require" name="title" value="" />
 								</div>
 								<span style="line-height: 40px;"><i class="iconfont icon-tishi" style="color: #1C66A7;"></i>&nbsp;任务名称，长度限制15字</span>
 							</td>
@@ -139,7 +139,7 @@
 							<td>任务执行时间：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<input type="text" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
+									<input type="text" data-valid="datetime-require" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
 								</div>
 								<span style="line-height: 40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
@@ -157,7 +157,7 @@
 										<input type="text" data-valid="datetime-require" placeholder="开始时间" class="form-control init-date" disabled=true name="starttime">
 									</div>
 									<div class="col-md-4">
-										<input type="text" placeholder="结束时间" class="form-control init-date" disabled=true name="endtime">
+										<input type="text" data-valid="datetime-require" placeholder="结束时间" class="form-control init-date" disabled=true name="endtime">
 									</div>
 								</div>
 								<span style="line-height: 40px;">
@@ -1058,13 +1058,8 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		//选择执行方式相关事件
 		$('.task-mode').on("click", function(){
 			var val = $(this).find("input").val();
-			$('input[name="starttime"]').prop("disabled", true);
-			$('input[name="endtime"]').prop("disabled", true);
-			if(val == "time") $('input[name="starttime"]').prop("disabled", false);
-			if(val == "fool") {
-				$('input[name="starttime"]').prop("disabled", false);
-				$('input[name="endtime"]').prop("disabled", false);
-			}
+			$('.init-date').prop("disabled", true);
+			$("[name^=task-run-" + val + "]").find(".init-date").prop("disabled", false);
 		})
 		
 		//添加设备

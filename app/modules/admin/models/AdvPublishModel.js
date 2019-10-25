@@ -31,9 +31,9 @@ function AdvPublishModel(){
 		if(!fields.title) return this.err("任务名称不能为空！");
 		fields.mode = this.POST('mode');
 		if(!fields.mode) return this.err("任务执行方式不能为空！");
-		fields.starttime = this.POST("starttime");
+		fields.starttime = this.POST("!starttime");
 		if(fields.mode == 'current')  fields.starttime = 'NOW()';
-		fields.endtime = this.POST("endtime");
+		fields.endtime = this.POST("!endtime");
 		if(fields.mode == "fool" && !fields.endtime) return this.err("您制定了一个循环任务，必须其它指定任务结束时间！");
 		fields.endtime = fields.endtime || ((fields.mode == 'current') ? 'NOW()' : fields.starttime);
 		fields.piecesn = this.POST('piecesn');
