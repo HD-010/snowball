@@ -205,7 +205,9 @@ function taskControler() {
 		}
 		
 		// this.renderJson(data);
-		this.sendClients(data)
+		this.sendClients({error: 0, message: '正在向客户端发送任务...'})
+		this.sendClients(data, params.deviceId);
+		this.sendClients({error: 0, message: '向客户端发送任务己完成！'})
 		
 	}
 	
