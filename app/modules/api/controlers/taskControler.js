@@ -163,20 +163,50 @@ function taskControler() {
 		params.mode = "current";
 		params.unid = this.POST('unid');
 		params.taskId = this.POST('taskId');
-		
-		//查询任务列表
-		var publisher = this.model("AdvPublis");
-		var res = await publisher.taskList(params);
+		if(!params.taskId) return this.renderJson(this.err("参数错误：extaskId"));
+		//接收任务的客户端id
+		params.deviceId = this.POST('deviceId');
+		if(!params.deviceId) return this.renderJson(this.err("参数错误：exdeviceId"));
+		params.deviceId = params.deviceId.split("-");
 		
 		//分派到广告屏客户端
-		
 		var data = {
+			//任务请求状态0，成功；1失败
 			error: 0,
-			message: "服务端主动发送任务列表",
-			data: res
+			//任务请求状态描述
+			message: "成功获取任务列表",  
+			//type 请求类型标识， 可有以下值
+			//task_list 要求执行任务列表
+			//oper_play 要求屏幕执行播放
+			//oper_play 要求屏幕停止播放
+			type: "task_list",
+			//任务持久标识persistent 可有以下值
+			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
+			//false 插播任务,任务列表不会被保存到客户端
+			persistent: false,
+			//任务分区表
+			list: []
 		}
-		console.log("::::::::::::::::::::::::::", data);
-		this.renderJson(data);
+		//查询任务列表
+		var publisher = this.model("AdvPublis");
+		var task = await publisher.taskList(params);
+		if(task.error) return this.renderJson(task);
+		var taskDetail = await publisher.taskDetail(params);
+		if(taskDetail.error) return this.renderJson(taskDetail);
+		
+		for(var i = 0; i < taskDetail.results.length; i ++){
+			var list = {};
+			list.type = taskDetail.results[i].type;
+			list.taskTag = taskDetail.results[i].taskTag;
+			list.style = taskDetail.results[i].style;
+			list.enable = (taskDetail.results[i].enable == 1) ? true : false;
+			list.list = JSON.parse(taskDetail.results[i].list.replace(/\s/g, ''));
+			data.list.push(list);
+		}
+		
+		// this.renderJson(data);
+		this.sendClients(data)
+		
 	}
 	
 	/**

@@ -975,10 +975,10 @@ style="width: 100%;">`+content+`</marquee></div>`;
 					ids.forEach(function(o, i){
 						piecetask = {};
 						if(o){
-							piecetask.url = taskAdder.getAttVal(o, 'url');
-							piecetask.title = taskAdder.getAttVal(o, 'title');
-							piecetask.duration = taskAdder.getAttVal(o, 'duration');
-							piecetask.content = taskAdder.getAttVal(o, 'content');
+							piecetask.url = taskAdder.getAttVal(o, 'url').toString();
+							piecetask.title = taskAdder.getAttVal(o, 'title').toString();
+							piecetask.duration = taskAdder.getAttVal(o, 'duration').toString();
+							piecetask.content = taskAdder.getAttVal(o, 'content').toString();
 							piece.list.push(piecetask);
 						}
 					});
@@ -1190,6 +1190,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				data: {
 					unid: getItem('UID'),
 					taskId: res.data.taskId,
+					deviceId: getItem("DEVICE_ID").join('-')
 				}
 			});
 		},
