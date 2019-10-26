@@ -9,13 +9,14 @@ function deviceControler(){
 	/**
 	 * 设备注册
 	 * 1 将设备的以下信息写入表
-	 * device_model	设备型号
-	 * device_vendor 设备厂商
-	 * device_imei  设备IMEI
-	 * device_uuid	设备UUID
-	 * device_sn	设备序列号（以上信息的md5串）
+	 * mode	设备型号
+	 * vendor 设备厂商
+	 * imei  设备IMEI
+	 * uuid	设备UUID
+	 * sn	设备序列号（以上信息的md5串）
+	 * macid 高家id(在sys_acount表中以groupid存在)
 	 */
-	this.reg = function(){
+	this.reg = async function(){
 		var process = `/**
  * 视频播放器控制对象
  */
@@ -194,12 +195,26 @@ function img(){
 		this.num ++;
 	}
 }`;
+		
+		var params = {};
+		//将设备信息写入设备信息表
+		var device = this.model("Device");
+		//注册设备信息(主表)
+		var regRes = await device.registDeviceHives(params);
+		if(regRes.error) return this.sendClients(regRes);
+		params.insertId = regRes.results.insertId;
+		//注册设备信息(付加表)
+		regRes = await device.registDeviceAddon(params);
+		if(regRes.error) return this.sendClients(regRes);
+		//注册设备（用户id）帐号
+		regRes = await device.registDeviceAcount(params);
+		if(regRes.error) return this.sendClients(regRes);
 		var data = {
 			error: 0,			//代号说明：0注册成，1注册失败，2已经注册过
 			message: ["设备注册成功！","设备注册失败，尝试重新启动设备再次注册","访问受权成功"],
 			data:{
-				id: 1598,
-				sn: this.POST('id'),
+				id: regRes.results.insertId,
+				sn: this.POST('sn'),
 				process: process
 			}
 		}
