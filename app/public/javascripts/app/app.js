@@ -1447,19 +1447,19 @@ function xhr5() {
 	this.url = '';
 	this.xhr = null;
 	var that = this;
-	this.ajax = function(params, callback) {
-		if (this.xhr) {
+	this.ajax = function(params) {
+		if (that.xhr) {
 			console.log("xhr请求已创建");
 			return;
 		}
 		if (!params.url) return;
-		this.url = params.url;
-		this.method = params.type || 'GET';
-		this.data = params.data || '';
+		that.url = params.url;
+		that.method = params.type || 'GET';
+		that.data = params.data || {};
 		console.log("创建请求：");
-		this.xhr = new plus.net.XMLHttpRequest();
-		console.log("this is xhr5:::", this.xhr)
-		this.xhr.onreadystatechange = function() {
+		that.xhr = new plus.net.XMLHttpRequest();
+		console.log("this is xhr5:::", that.xhr)
+		that.xhr.onreadystatechange = function() {
 			switch (that.xhr.readyState) {
 				// case 0:
 				// 	console.log("xhr请求已初始化");
@@ -1489,8 +1489,8 @@ function xhr5() {
 		}
 		that.xhr.timeout = params.timeout;
 		that.xhr.open(that.method, that.url);
-		that.xhr.send(that.data);
-
+		that.xhr.setRequestHeader('Content-Type','application/json');
+		that.xhr.send(JSON.stringify(that.data));
 	}
 
 	this.responseHeader = function() {
