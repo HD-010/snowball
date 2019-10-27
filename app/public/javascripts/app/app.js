@@ -315,7 +315,6 @@ var app = {
 			'width': '100%',
 			'z-index': 999999999999,
 		}));
-
 		setTimeout(function() {
 			$("#" + notice).remove();
 			if (typeof callback === 'function') return callback();
@@ -725,8 +724,6 @@ var app = {
 			app.valid.init(e, this);
 			app.valid.funcs.require();
 		})
-		
-		
 	},
 
 };
@@ -1167,7 +1164,6 @@ var effect = {
 				curCode.find("input[type='radio']").attr("data-index", i);
 				curCode.find("input[type='radio']").val(key[i]);
 				curCode.find("input[type='radio']").after(val[i]);
-
 				temCode += curCode[0].outerHTML;
 			}
 			$(item).replaceWith(temCode);
@@ -1414,7 +1410,6 @@ var effect = {
 		}
 
 		if (!$('body #freeMode').length) $("body").append("<div id='freeMode'></div>");
-		
 		$('body #freeMode').html(model[attr.type + '_type']);
 		$("button[data-dismiss]").unbind("click").on("click", function(){
 			var modalId = $(this).attr('data-dismiss');
@@ -1452,14 +1447,14 @@ function xhr5() {
 	this.url = '';
 	this.xhr = null;
 	var that = this;
-	this.req = function(params, callback) {
+	this.ajax = function(params, callback) {
 		if (this.xhr) {
 			console.log("xhr请求已创建");
 			return;
 		}
-		if (!params.uri) return;
-		this.url = params.uri;
-		this.method = params.method || 'GET';
+		if (!params.url) return;
+		this.url = params.url;
+		this.method = params.type || 'GET';
 		this.data = params.data || '';
 		console.log("创建请求：");
 		this.xhr = new plus.net.XMLHttpRequest();
@@ -1480,10 +1475,8 @@ function xhr5() {
 				// 	break;
 				case 4:
 					console.log("xhr请求已完成");
-					callback({
-						status: that.xhr.status,
-						response: that.xhr.responseText
-					});
+					if(that.xhr.status == 200) return params.success(that.xhr.responseText);
+					return params.error(that.xhr.responseText);
 					// if (that.xhr.status == 200) {
 					// 	console.log("xhr请求成功：" + that.xhr.responseText);
 					// } else {

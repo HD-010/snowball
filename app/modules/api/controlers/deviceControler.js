@@ -1,12 +1,5 @@
 function deviceControler(){
 	/**
-	 * 设备错误上报
-	 */
-	this.err = function(){
-		
-	}
-	
-	/**
 	 * 设备注册
 	 * 1 将设备的以下信息写入表
 	 * mode	设备型号
@@ -197,6 +190,7 @@ function img(){
 }`;
 		
 		var params = {};
+		params.component = 52;
 		//将设备信息写入设备信息表
 		var device = this.model("Device");
 		//注册设备信息(主表)
@@ -205,6 +199,7 @@ function img(){
 		params.insertId = regRes.results.insertId;
 		//注册设备信息(付加表)
 		regRes = await device.registDeviceAddon(params);
+		log(regRes);
 		if(regRes.error) return this.sendClients(regRes);
 		//注册设备（用户id）帐号
 		regRes = await device.registDeviceAcount(params);
@@ -219,6 +214,7 @@ function img(){
 			}
 		}
 		
+		console.log("======================)))：", data);
 		this.renderJson(data);
 	}
 	

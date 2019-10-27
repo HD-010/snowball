@@ -143,6 +143,7 @@ function ViewData(params){
     this.async = params.async || true;
     //接口地址
     this.uri = params.uri;
+	this.timeout = params.timeout || 120000;
     //接口数据加载前的操作
     this.befor = params.befor;
     //接口数据加载后的操作
@@ -207,47 +208,31 @@ function ViewData(params){
                 return;
             }
 			
+			var reqData = {
+				url:  that.host + that.uri,
+				data: that.data,
+				type: "POST",
+				success: function(results){
+					console.log("success::::",results)
+					that.setRespons(results);
+					if(!that.results) return;
+					setDLData(that.queryStr(),that.results);
+					that.run();
+				},
+				error: function(results){
+					console.log("error::::",results);
+					that.results = results;
+					if(that.dev === 'on') that.log(that.results);
+					if(typeof that.error === "function") that.error(that.results);
+				}
+			}
 			if(typeof plus == 'undefined'){
-				$.ajax({
-					url:  that.host + that.uri,
-					data: that.data,
-					dataType: "text",
-					type: "POST",
-					async: that.async,
-					success: function(results){
-						console.log("success::::",results)
-						that.setRespons(results);
-						if(!that.results) return;
-						setDLData(that.queryStr(),that.results);
-						that.run();
-					},
-					error: function(results){
-						console.log("error::::",results);
-						that.results = results;
-						if(that.dev === 'on') that.log(that.results);
-						if(typeof that.error === "function") that.error(that.results);
-					}
-				});
+				reqData.dataType = "text";
+				reqData.async = that.async;
+				$.ajax(reqData);
 			}else{
-				
-				(new xhr5()).req({
-					uri: that.host + that.uri,
-					method: "POST"
-				},function(results){
-					if(results.status == 200){
-						results = results.response;
-						that.setRespons(results);
-						if(!that.results) return;
-						setDLData(that.queryStr(),that.results);
-						that.run();
-					}else{
-						results = results.responseText;
-						//console.log("error::::",results);
-						that.results = results;
-						if(that.dev === 'on') that.log(that.results);
-						if(typeof that.error === "function") that.error(that.results);
-					}
-				});
+				reqData.timeout = that.timeout;
+				(new xhr5()).ajax(reqData);
 			}
         }
     }
@@ -293,11 +278,11 @@ function ViewData(params){
         setDLData(this.selector,this.results);
         this.error = this.results.error || this.results.errcode;
         if(this.dev === 'on') this.log();
-        if(typeof this.befor === "function") this.befor(this);
+        if(typeof this.befor === "function") this.befor(that);
         //如果befor函数未尾设置exit,将取消执行后继的步骤
         if(this.dev === 'exit') return;
         this.loadData();
-        if(typeof this.after === "function") this.after(this);
+        if(typeof this.after === "function") this.after(that);
         //设置效果
         this.setEffect();
         app.load();
@@ -475,7 +460,6 @@ function ViewData(params){
 
     return this;
 }
-
 
 /**
  * 暂存接口返回的数据
