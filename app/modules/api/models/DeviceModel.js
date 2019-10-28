@@ -51,6 +51,7 @@ function DeviceModel(){
 			fields: []
 		}
 		var recoder = {};
+		recoder.sn = sn;
 		recoder.imei = imei;
 		recoder.mode = mode; 									//系统版本
 		recoder.vendor = vendor; 								//系统版本

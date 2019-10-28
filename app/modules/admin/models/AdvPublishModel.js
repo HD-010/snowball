@@ -103,7 +103,7 @@ function AdvPublishModel(){
 		if(!classify) return err("错误：ex01 ");
 		var conditions = {
 			table: ["#@archives as h"],
-			fields: [],
+			fields: ['h.*', 'a.*', 'c.id as deviceuid'],
 			where: [],
 			joinOn: ''
 		}
@@ -111,7 +111,7 @@ function AdvPublishModel(){
 		conditions.where.push("a.devicesize = '" + classify + "'");
 		conditions.where.push("h.state = 1");
 		conditions.where.push("h.groupid = " +  params.macid);
-		conditions.joinOn = " left join #@addondevice as a on a.aid = h.id";
+		conditions.joinOn = " left join #@addondevice as a on a.aid = h.id left join #@sys_acount as c ON concat( a.sn, '@device.io' ) = c.acount ";
 		var res = await this.DB().syncGet(conditions);
 		res.error = (res.erro || !res.results.length) ? 1 : 0;
 		res = objList(res, ['error', 'data'])

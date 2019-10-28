@@ -17,6 +17,7 @@
         get: function(index){
             var type = addoninfos[index].inputtype;
             if(type in formCode) return formCode[type](index);
+			allInputtypes.push(type);
             return "formCode中不存在" + type + "组件";
         },
 
@@ -642,6 +643,9 @@
 
 <script src="/bootstrap/js/plugins/nestable/jquery.nestable.js"></script>
 <script>
+	//传输附加参数列表
+	app.addonParams = {oid: getItem('OID')};
+	var allInputtypes = <%- JSON.stringify(allInputtypes) %>;
 	//初始化nestbale
 	var initNestable = function() {
 		var error = <%- error; %>;

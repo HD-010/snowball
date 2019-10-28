@@ -236,24 +236,24 @@
 								<div class="btn-group screen-1920-1080" data-sn="sn-4" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 100px;height: 56px;border:0;position:relative;">
-											<div class="screen-piece screen-piece-1" data-media="video" style="width:44.4271%; height:100%; top:0; left:0;"></div>
-											<div class="screen-piece screen-piece-2" data-media="img" style="width:55.5729%; height:100%; top:0; right:0;"></div>
+											<div class="screen-piece screen-piece-1" data-media="video" style="width:44%; height:100%; top:0; left:0;"></div>
+											<div class="screen-piece screen-piece-2" data-media="img" style="width:56%; height:100%; top:0; right:0;"></div>
 										</div>
 									</label>
 								</div>
 								<div class="btn-group screen-1080-1920 hidden" data-sn="sn-5" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
-											<div class="screen-piece screen-piece-1" data-media="video" style="height:44.4271%; width:100%; top:0; left:0;"></div>
-											<div class="screen-piece screen-piece-2" data-media="img" style="height:55.5729%; width:100%;bottom:0; left:0;"></div>
+											<div class="screen-piece screen-piece-1" data-media="video" style="height:44%; width:100%; top:0; left:0;"></div>
+											<div class="screen-piece screen-piece-2" data-media="img" style="height:56%; width:100%;bottom:0; left:0;"></div>
 										</div>
 									</label>
 								</div>
 								<div class="btn-group screen-1080-1920 hidden" data-sn="sn-6" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
-											<div class="screen-piece screen-piece-1" data-media="img" style="height:55.5729%; width:100%; left:0; top:0;"></div>
-											<div class="screen-piece screen-piece-2" data-media="video" style="height:44.4271%; width:100%; left:0; bottom:0;"></div>
+											<div class="screen-piece screen-piece-1" data-media="img" style="height:56%; width:100%; left:0; top:0;"></div>
+											<div class="screen-piece screen-piece-2" data-media="video" style="height:44%; width:100%; left:0; bottom:0;"></div>
 										</div>
 									</label>
 								</div>
@@ -426,8 +426,8 @@
 								<label class="checkbox-inline">
 									<input type="checkbox" class="union-child" data-union="union-top" 
 										name="id" 
-										id="{{id}}"
-										value="{{id}}" />
+										id="{{deviceuid}}"
+										value="{{deviceuid}}" />
 									<img src="{{litpic}}"/>&nbsp;
 									<span style="display:inline-table"><b>{{title}}</b></br>{{shorttitle}}</span>	
 								</label>
@@ -547,8 +547,8 @@
 					return false;
 				}
 				if(typeof idArr != "object") idArr = [idArr];
-				// setItem("DEVICE_ID", unique(taskId.concat(idArr)));
-				setItem("DEVICE_ID", taskId.concat(idArr));
+				setItem("DEVICE_ID", unique(taskId.concat(idArr)));
+				//setItem("DEVICE_ID", taskId.concat(idArr));
 				return true;
 			},
 			
@@ -557,7 +557,7 @@
 				var temArr = [];
 				if(id.constructor.name != "Array") id = [id];
 				id.forEach(function(o, i){
-					var val = array2value(getItem("DEVICES"), 'id', o, key);
+					var val = array2value(getItem("DEVICES"), 'deviceuid', o, key);
 					temArr.push(val);
 				});
 				
@@ -918,8 +918,8 @@
 				},
 				img: function(o){
 					var vId = $(o).attr("data-id");
-					var url = taskAdder.getAttVal(vId, 'url');
-					var iCode = `<img src="` + url + `" />`;
+					var url = taskAdder.getAttVal(vId, 'url').toString().split('-');
+					var iCode = `<img src="` + url[0] + `" />`;
 					$(taskAdder.currentPiece).html(iCode);
 				},
 				notice: function(o){
@@ -975,11 +975,27 @@ style="width: 100%;">`+content+`</marquee></div>`;
 					ids.forEach(function(o, i){
 						piecetask = {};
 						if(o){
-							piecetask.url = taskAdder.getAttVal(o, 'url').toString();
-							piecetask.title = taskAdder.getAttVal(o, 'title').toString();
-							piecetask.duration = taskAdder.getAttVal(o, 'duration').toString();
-							piecetask.content = taskAdder.getAttVal(o, 'content').toString();
-							piece.list.push(piecetask);
+							var url = taskAdder.getAttVal(o, 'url').toString();
+							if(url.indexOf('-')){
+								//将组（图）封状到列表
+								
+								url.split('-').forEach(function(src, i){
+									piecetask = {};
+									piecetask.url = src;
+									piecetask.title = taskAdder.getAttVal(o, 'title').toString();
+									piecetask.duration = taskAdder.getAttVal(o, 'duration').toString();
+									piecetask.content = taskAdder.getAttVal(o, 'content').toString();
+									piece.list.push(piecetask);
+								})
+							}else{
+								//将单（图）封状到列表
+								piecetask.url =url;
+								piecetask.title = taskAdder.getAttVal(o, 'title').toString();
+								piecetask.duration = taskAdder.getAttVal(o, 'duration').toString();
+								piecetask.content = taskAdder.getAttVal(o, 'content').toString();
+								piece.list.push(piecetask);
+							}
+							
 						}
 					});
 					piece.list = piece.list;

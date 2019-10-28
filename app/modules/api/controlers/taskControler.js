@@ -113,7 +113,7 @@ function taskControler() {
 					enable: true,
 					list: [
 						{
-							url:'/video/04.mp4',
+							url:'/video/01.mp4',
 							duration: 180
 						},
 						{
@@ -152,6 +152,9 @@ function taskControler() {
 				}
 			]
 		}
+		
+			
+	
 		this.renderJson(data);
 	}
 	
@@ -183,7 +186,7 @@ function taskControler() {
 			//任务持久标识persistent 可有以下值
 			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
 			//false 插播任务,任务列表不会被保存到客户端
-			persistent: false,
+			persistent: true,
 			//任务分区表
 			list: []
 		}
@@ -198,7 +201,7 @@ function taskControler() {
 			var list = {};
 			list.type = taskDetail.results[i].type;
 			list.taskTag = taskDetail.results[i].taskTag;
-			list.style = taskDetail.results[i].style;
+			eval(('list.style = '+taskDetail.results[i].style));
 			list.enable = (taskDetail.results[i].enable == 1) ? true : false;
 			list.list = JSON.parse(taskDetail.results[i].list.replace(/\s/g, ''));
 			data.list.push(list);
@@ -208,7 +211,6 @@ function taskControler() {
 		this.sendClients({error: 0, message: '正在向客户端发送任务...'})
 		this.sendClients(data, params.deviceId);
 		this.sendClients({error: 0, message: '向客户端发送任务己完成！'})
-		
 	}
 	
 	/**
