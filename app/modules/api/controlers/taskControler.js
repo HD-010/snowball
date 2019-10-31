@@ -20,10 +20,22 @@ function taskControler() {
 			//oper_play 要求屏幕执行播放
 			//oper_play 要求屏幕停止播放
 			type: "task_list",
+			//任务识别信息
+			unid: 0,
+			taskId: 0,
 			//任务持久标识persistent 可有以下值
-			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
+			//true持久任务（永久或期限内），会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
 			//false 插播任务,任务列表不会被保存到客户端
 			persistent: true,
+			//任务开始时间
+			//0 表示永久不过期
+			//限制时间段表示在这时间段内循环执行任务
+			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，则执行当前列表任务
+			//当同一时刻有多个任务列表有效时，执行最后一次下发的任务
+			startTime: 0,
+			//任务结束时间
+			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，当前列表将被删除
+			endTime: 0,
 			//任务分区表
 			list: [						
 				//一区播放任务
@@ -114,15 +126,15 @@ function taskControler() {
 					list: [
 						{
 							url:'/video/01.mp4',
-							duration: 180
+							duration: 20
 						},
 						{
 							url:'/video/02.mp4',
-							duration: 180
+							duration: 25
 						},
 						{
 							url:'/video/03.mp4',
-							duration: 180
+							duration: 10
 						}
 					]
 				},
@@ -152,8 +164,6 @@ function taskControler() {
 				}
 			]
 		}
-		
-			
 	
 		this.renderJson(data);
 	}
@@ -171,6 +181,8 @@ function taskControler() {
 		params.deviceId = this.POST('deviceId');
 		if(!params.deviceId) return this.renderJson(this.err("参数错误：exdeviceId"));
 		params.deviceId = params.deviceId.split("-");
+		console.log("========发送给devices:", params.deviceId);
+		console.log("========在线devices uniClients:", uniClients);
 		
 		//分派到广告屏客户端
 		var data = {
@@ -178,6 +190,9 @@ function taskControler() {
 			error: 0,
 			//任务请求状态描述
 			message: "成功获取任务列表",  
+			//任务识别信息
+			unid: params.unid,
+			taskId: params.taskId,
 			//type 请求类型标识， 可有以下值
 			//task_list 要求执行任务列表
 			//oper_play 要求屏幕执行播放
@@ -187,6 +202,15 @@ function taskControler() {
 			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
 			//false 插播任务,任务列表不会被保存到客户端
 			persistent: true,
+			//任务开始时间
+			//0 表示永久不过期
+			//限制时间段表示在这时间段内循环执行任务
+			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，则执行当前列表任务
+			//当同一时刻有多个任务列表有效时，执行最后一次下发的任务
+			startTime: 0,
+			//任务结束时间
+			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，当前列表将被删除
+			endTime: 0,
 			//任务分区表
 			list: []
 		}
@@ -194,6 +218,11 @@ function taskControler() {
 		var publisher = this.model("AdvPublis");
 		var task = await publisher.taskList(params);
 		if(task.error) return this.renderJson(task);
+		if(task.results[0].mode == 'time'){
+			data.startTime = task.results[0].starttime;
+			data.endTime = task.results[0].endtime;
+		}
+		if(task.results[0].mode == 'current') data.persistent = false;
 		var taskDetail = await publisher.taskDetail(params);
 		if(taskDetail.error) return this.renderJson(taskDetail);
 		
@@ -207,10 +236,10 @@ function taskControler() {
 			data.list.push(list);
 		}
 		
-		// this.renderJson(data);
-		this.sendClients({error: 0, message: '正在向客户端发送任务...'})
-		this.sendClients(data, params.deviceId);
-		this.sendClients({error: 0, message: '向客户端发送任务己完成！'})
+		console.log("=++++++++data+++++++：",data, "|mode|:", task.results[0].mode);
+		//this.sendClients({error: 0, message: '正在向客户端发送任务...'})
+		return this.sendClients(data, params.deviceId);
+		//this.sendClients({error: 0, message: '向客户端发送任务己完成！'})
 	}
 	
 	/**

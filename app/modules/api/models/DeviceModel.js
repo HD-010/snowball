@@ -95,6 +95,26 @@ function DeviceModel(){
 		if(res.error || !res.results.affectedRows) return this.err("错误：exaccount");
 		return res;
 	}
+	
+	/**
+	 * 根据sn查找设备注册的帐户id
+	 */
+	this.sn2acountid = async function(params){
+		var conditions = {
+			table: ["#@sys_acount"],
+			fields: ['id'],
+			where: [],
+			limit: [1]
+		}
+		//设备序列号
+		var sn = this.POST("sn");
+		if(!sn) return this.err("设备不存在");
+		conditions.where.push("acount = '" +sn+ "@device.io'");
+		var res = await this.DB().syncGet(conditions);
+		if(res.error || !res.results[0]) return this.err("设备不存在");
+		
+		return this.suc("查询成功",res.results[0]);
+	}
 }
 
 module.exports = DeviceModel;

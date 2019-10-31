@@ -252,8 +252,8 @@
 								<div class="btn-group screen-1080-1920 hidden" data-sn="sn-6" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
 										<div class="screen-piece" style="width: 56px;height: 100px;border:0;position:relative;">
-											<div class="screen-piece screen-piece-1" data-media="img" style="height:56%; width:100%; left:0; top:0;"></div>
-											<div class="screen-piece screen-piece-2" data-media="video" style="height:44%; width:100%; left:0; bottom:0;"></div>
+											<div class="screen-piece screen-piece-2" data-media="img" style="height:56%; width:100%; left:0; top:0;"></div>
+											<div class="screen-piece screen-piece-1" data-media="video" style="height:44%; width:100%; left:0; top:56%;"></div>
 										</div>
 									</label>
 								</div>
@@ -470,7 +470,7 @@
 		connection: null,
 		rebuildTime: 60000, //得建ws连接时间
 		//初始化webSocket服务
-		initWs: function(callback) {
+		initWs: function(obj) {
 			//创建webSocket连接
 			ws.connection = new WebSocket(ws.host, ws.protocol);
 			ws.connection.onopen = function() {
@@ -480,6 +480,7 @@
 					message: 'ws连接成功'
 				})
 				ws.send = function(obj) {
+					if(!ws.connection) app.notice({error: "ws连接失败，请刷新后重试"});
 					ws.connection.send(JSON.stringify(obj));
 				}
 				//请求播放任务
@@ -493,7 +494,6 @@
 			ws.connection.onmessage = ws.onMsg;
 			ws.connection.onclose = ws.onClo;
 			ws.connection.onerror = ws.onErr;
-			if(typeof callback == 'function') callback();
 		},
 		//收到消息的处理方法
 		onMsg: function(msg) {
@@ -501,11 +501,13 @@
 		},
 		//服务关闭的处理方法
 		onClo: function(clo) {
+			ws.connection = null;
 			//自动重建ws连接
 			ws.rebuildWs();
 		},
 		//服务出错的处理方法
 		onErr: function(err) {
+			ws.connection = null;
 			console.error(err)
 		},
 		//重建ws服务
@@ -1185,6 +1187,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		
 		//提交前的数据补充
 		$(".btn[type=submit]").unbind("mouseover").on("mouseover", function(){
+			if(!ws.connection) ws.initWs();
 			var list = taskAdder.getTasklist();
 			var devices = device.getDevicelist();
 			list = btoa(encodeURI(JSON.stringify(list)));
@@ -1201,6 +1204,7 @@ style="width: 100%;">`+content+`</marquee></div>`;
 	var process = {
 		//立即执行的任务
 		current: function(res){
+			console.log("正在发送：");
 			ws.send({
 				action: '/api/task/send-task',
 				data: {
@@ -1240,7 +1244,16 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		if(res.error) return app.notice(res);
 		var mode = $("[name=mode]:checked").val();
 		//通过ws服务,给相应的客户端发送命令
-		if(mode in process) process[mode](res);
+		
+		if(!(mode in process)) return app.notice({error: 1, message: "任务处理对象process." + mode + "不存在"});
+		if(ws.connection) return process[mode](res);
+		var waitWs = setInterval(function(){
+			if(ws.connection) {
+				clearInterval(waitWs);
+				return process[mode](res);
+			}
+			app.notice({error: 1, message:"ws接连中..."});
+		}, 1000);
 	}
 	
 </script>

@@ -189,35 +189,57 @@ function img(){
 	}
 }`;
 		
-		var params = {};
+		var params = regRes = {};
 		params.component = 52;
 		//将设备信息写入设备信息表
 		var device = this.model("Device");
-		//注册设备信息(主表)
-		var regRes = await device.registDeviceHives(params);
-		if(regRes.error) return this.sendClients(regRes);
-		params.insertId = regRes.results.insertId;
-		//注册设备信息(付加表)
-		regRes = await device.registDeviceAddon(params);
-		log(regRes);
-		if(regRes.error) return this.sendClients(regRes);
-		//注册设备（用户id）帐号
-		regRes = await device.registDeviceAcount(params);
-		if(regRes.error) return this.sendClients(regRes);
+		//检测设备有没有注册过
+		regRes = await device.sn2acountid(params);
+		if(regRes.error){
+			//注册设备信息(主表)
+			regRes = await device.registDeviceHives(params);
+			if(regRes.error) return this.sendClients(regRes);
+			params.insertId = regRes.results.insertId;
+			//注册设备信息(付加表)
+			regRes = await device.registDeviceAddon(params);
+			log(regRes);
+			if(regRes.error) return this.sendClients(regRes);
+			//注册设备（用户id）帐号
+			regRes = await device.registDeviceAcount(params);
+			if(regRes.error) return this.sendClients(regRes);
+		}
 		var data = {
 			error: 0,			//代号说明：0注册成，1注册失败，2已经注册过
 			message: ["设备注册成功！","设备注册失败，尝试重新启动设备再次注册","访问受权成功"],
 			data:{
-				id: regRes.results.insertId,
+				id: regRes.error ? regRes.results.insertId : regRes.data.id,
 				sn: this.POST('sn'),
 				process: process
 			}
 		}
 		
-		console.log("======================)))：", data);
 		this.renderJson(data);
 	}
 	
+	/**
+	 * 连接关闭时删除用户连接
+	 */
+	this.wsClo = function(){
+		if(!this.POST('err')) return;
+		var unid = this.POST('unid');
+		var clientTag = uniClients[unid];
+		if(!clientTag) return;
+		delete clients.clientTag;
+		uniClients.splice(unid, 1);
+		log("======客户端=======",unid,"=======下线======");
+	}
+	
+	/**
+	 * 连接错误时删除用户连接
+	 */
+	this.wsErr = function(){
+		
+	}
 }
 
 module.exports = deviceControler
