@@ -166,6 +166,25 @@
 								</span>
 							</td>
 						</tr>
+						
+						<!-- 节目播放时间 -->
+						<tr name="task-play-time">
+							<td>节目播放时间：</td>
+							<td>
+								<div>
+									<div class="col-md-4 hidden">
+										<input type="text" data-valid="require-time" placeholder="开始时间" class="form-control init-current" name="playstart" value="" />
+									</div>
+									<div class="col-md-4 hidden">
+										<input type="text" data-valid="require-time" placeholder="结束时间" class="form-control init-current" name="playdone" value="" />
+									</div>
+								</div>
+								<span style="line-height: 40px;">
+									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
+									&nbsp;输入格式如：14:10:00
+								</span>
+							</td>
+						</tr>
 
 						<!-- 选择设备类型 -->
 						<tr>
@@ -456,8 +475,8 @@
 	 * 配置文件
 	 */
 	var conf = {
-		httpHost: "http://192.168.0.114:3005",
-		wsHost: "ws://192.168.0.114:3005",
+		httpHost: "http://192.168.1.114:3005",
+		wsHost: "ws://192.168.1.114:3005",
 	}
 	
 	/**
@@ -521,7 +540,7 @@
 	};
 	ws.initWs();
 
-	$(document).ready(function() {
+	$(document).ready(function(){
 		$('.footable').footable();
 		app.load(".add-infor");
 		//添加附加参数
@@ -1142,8 +1161,15 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		//选择执行方式相关事件
 		$('.task-mode').on("click", function(){
 			var val = $(this).find("input").val();
+			//控制播放周期
 			$('.init-date').prop("disabled", true);
-			$("[name^=task-run-" + val + "]").find(".init-date").prop("disabled", false);
+			$("[name^=task-run-" + val + "]").find("[.init-date]").prop("disabled", false);
+			//控制播放时长
+			$("[name=task-play-time]").find(".init-current").parent().addClass('hidden');
+			if(val == "time") {
+				$("[name=task-play-time]").find(".init-current").val('');
+				$("[name=task-play-time]").find(".init-current").parent().removeClass('hidden');
+			}
 		})
 		
 		//添加设备

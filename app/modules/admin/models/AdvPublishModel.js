@@ -36,6 +36,12 @@ function AdvPublishModel(){
 		fields.endtime = this.POST("!endtime");
 		if(fields.mode == "fool" && !fields.endtime) return this.err("您制定了一个循环任务，必须其它指定任务结束时间！");
 		fields.endtime = fields.endtime || ((fields.mode == 'current') ? 'NOW()' : fields.starttime);
+		fields.playstart = this.POST('!playstart');
+		fields.playdone = this.POST('!playdone');
+		if(fields.mode == "time"){
+			if(!fields.playstart.length) return this.err("请为您的节目列表指定播放开始时间！");
+			if(!fields.playdone.length) return this.err("请为您的节目列表指定播放结束时间！");
+		}
 		fields.piecesn = this.POST('piecesn');
 		if(!fields.piecesn) return this.err("没有选择屏幕分区方式，请选择！");
 		if(!this.POST("tasklist")) return this.err("任务列表不能为空！");

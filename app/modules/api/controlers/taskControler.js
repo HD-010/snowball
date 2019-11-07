@@ -36,6 +36,10 @@ function taskControler() {
 			//任务结束时间
 			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，当前列表将被删除
 			endTime: 0,
+			//播放开始时间
+			playStart: 13:00:00,
+			//播放结束时间
+			playDone: 13:50:00,
 			//任务分区表
 			list: [						
 				//一区播放任务
@@ -211,6 +215,10 @@ function taskControler() {
 			//任务结束时间
 			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，当前列表将被删除
 			endTime: 0,
+			//播放开始时间(只适用于定时任务)
+			playStart: 0,
+			//播放结束时间（只适用于定时任务）
+			playDone: 0,
 			//任务分区表
 			list: []
 		}
@@ -223,6 +231,9 @@ function taskControler() {
 			data.endTime = task.results[0].endtime;
 		}
 		if(task.results[0].mode == 'current') data.persistent = false;
+		data.playStart = task.results[0].playstart;
+		data.playDone = task.results[0].playdone;
+		//查询任务详情
 		var taskDetail = await publisher.taskDetail(params);
 		if(taskDetail.error) return this.renderJson(taskDetail);
 		
