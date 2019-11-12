@@ -139,7 +139,7 @@
 							<td>任务执行时间：</td>
 							<td>
 								<div class="form-group col-xs-4">
-									<input type="text" data-valid="datetime-require" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
+									<input type="text" data-valid="datetime" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
 								</div>
 								<span style="line-height: 40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
@@ -150,33 +150,33 @@
 
 						<!-- 循环任务起止时间 -->
 						<tr class="hidden" name="task-run-fool">
-							<td>任务起止时间：</td>
+							<td>任务起止日期：</td>
 							<td>
 								<div>
 									<div class="col-md-4">
-										<input type="text" data-valid="datetime-require" placeholder="开始时间" class="form-control init-date" disabled=true name="starttime">
+										<input type="date" placeholder="开始日期" class="form-control init-date" disabled=true name="starttime">
 									</div>
 									<div class="col-md-4">
-										<input type="text" data-valid="datetime-require" placeholder="结束时间" class="form-control init-date" disabled=true name="endtime">
+										<input type="date" placeholder="结束日期" class="form-control init-date" disabled=true name="endtime">
 									</div>
 								</div>
 								<span style="line-height: 40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
-									&nbsp;输入格式如：2019/10/14 14:10:00
+									&nbsp;输入格式如：2019/10/14
 								</span>
 							</td>
 						</tr>
 						
 						<!-- 节目播放时间 -->
-						<tr name="task-play-time">
+						<tr name="task-play-time" class="hidden">
 							<td>节目播放时间：</td>
 							<td>
 								<div>
-									<div class="col-md-4 hidden">
-										<input type="text" data-valid="require-time" placeholder="开始时间" class="form-control init-current" name="playstart" value="" />
+									<div class="col-md-4">
+										<input type="text" data-valid="time" placeholder="开始时间" class="form-control init-current" name="playstart" value="" />
 									</div>
-									<div class="col-md-4 hidden">
-										<input type="text" data-valid="require-time" placeholder="结束时间" class="form-control init-current" name="playdone" value="" />
+									<div class="col-md-4">
+										<input type="text" data-valid="time" placeholder="结束时间" class="form-control init-current" name="playdone" value="" />
 									</div>
 								</div>
 								<span style="line-height: 40px;">
@@ -311,11 +311,11 @@
 						</tr>
 
 						<tr>
-							<td>任务状态：</td>
+							<td>是否发布：</td>
 							<td style="padding-left:15px;">
 								<div class="btn-group radio-content-state" data-toggle="buttons" style="margin-left:10px;">
 									<label class="btn btn-outline btn-success btn-radio dim codeSwitch">
-										<input type="radio" name="state" data-key="1-0" data-val="启用-禁用" data-def="0" value="0" /><!-- <i class="fa fa-check"></i> -->
+										<input type="radio" name="state" data-key="1-0" data-val="是-否" data-def="0" value="0" /><!-- <i class="fa fa-check"></i> -->
 										<!--<i class="fa fa-times"></i>-->
 									</label>
 								</div>
@@ -475,8 +475,8 @@
 	 * 配置文件
 	 */
 	var conf = {
-		httpHost: "http://192.168.1.114:3005",
-		wsHost: "ws://192.168.1.114:3005",
+		httpHost: "http://192.168.1.102:3005",
+		wsHost: "ws://192.168.1.102:3005",
 	}
 	
 	/**
@@ -1163,12 +1163,12 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			var val = $(this).find("input").val();
 			//控制播放周期
 			$('.init-date').prop("disabled", true);
-			$("[name^=task-run-" + val + "]").find("[.init-date]").prop("disabled", false);
+			$("[name^=task-run-" + val + "]").find(".init-date").prop("disabled", false);
 			//控制播放时长
-			$("[name=task-play-time]").find(".init-current").parent().addClass('hidden');
-			if(val == "time") {
-				$("[name=task-play-time]").find(".init-current").val('');
-				$("[name=task-play-time]").find(".init-current").parent().removeClass('hidden');
+			$("[name=task-play-time]").addClass('hidden');
+			$("[name=task-play-time]").find(".init-current").val('');
+			if(val == "fool") {
+				$("[name=task-play-time]").removeClass('hidden');
 			}
 		})
 		
@@ -1272,6 +1272,9 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		//通过ws服务,给相应的客户端发送命令
 		
 		if(!(mode in process)) return app.notice({error: 1, message: "任务处理对象process." + mode + "不存在"});
+		//是否现在发布
+		var state = $('[name="state"]:checked').val();
+		if(state == '0') return false;
 		if(ws.connection) return process[mode](res);
 		var waitWs = setInterval(function(){
 			if(ws.connection) {
