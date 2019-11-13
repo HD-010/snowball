@@ -40,7 +40,7 @@ function taskControler() {
 			//播放开始时间
 			playStart: '13:00:00',
 			//播放结束时间
-			playDone: '13:50:00',
+			playDone: '15:23:00',
 			//任务分区表
 			list: [						
 				//一区播放任务
