@@ -134,52 +134,38 @@
 							</td>
 						</tr>
 
-						<!-- 定时任务时间 -->
-						<tr class="hidden" name="task-run-time">
-							<td>任务执行时间：</td>
-							<td>
-								<div class="form-group col-xs-4">
-									<input type="text" data-valid="datetime" class="form-control init-date" disabled=true name="starttime" placeholder="输入执行时间" value="" />
-								</div>
-								<span style="line-height: 40px;">
-									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
-									&nbsp;输入格式如：2019/10/14 14:10:00
-								</span>
-							</td>
-						</tr>
-
 						<!-- 循环任务起止时间 -->
-						<tr class="hidden" name="task-run-fool">
+						<tr class="hidden" name="task-run-date">
 							<td>任务起止日期：</td>
 							<td>
 								<div>
 									<div class="col-md-4">
-										<input type="date" placeholder="开始日期" class="form-control init-date" disabled=true name="starttime">
+										<input type="date" data-valid="" placeholder="开始日期" class="form-control init-date"  name="starttime" value=0 />
 									</div>
 									<div class="col-md-4">
-										<input type="date" placeholder="结束日期" class="form-control init-date" disabled=true name="endtime">
+										<input type="date" data-valid="" placeholder="结束日期" class="form-control init-date" name="endtime" value=0 />
 									</div>
 								</div>
 								<span style="line-height: 40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
-									&nbsp;输入格式如：2019/10/14
+									&nbsp;输入格式如：2019/01/01
 								</span>
 							</td>
 						</tr>
 						
 						<!-- 节目播放时间 -->
-						<tr name="task-play-time" class="hidden">
+						<tr class="hidden" name="task-play-time" >
 							<td>节目播放时间：</td>
 							<td>
 								<div>
 									<div class="col-md-4">
-										<input type="text" data-valid="time" placeholder="开始时间" class="form-control init-current" name="playstart" value="" />
+										<input type="text" data-valid="time" placeholder="开始时间" class="form-control init-time" name="playstart" value=0 />
 									</div>
 									<div class="col-md-4">
-										<input type="text" data-valid="time" placeholder="结束时间" class="form-control init-current" name="playdone" value="" />
+										<input type="text" data-valid="time" placeholder="结束时间" class="form-control init-time" name="playdone" value=0 />
 									</div>
 								</div>
-								<span style="line-height: 40px;">
+								<span style="line-height:40px;">
 									<i class="iconfont icon-tishi" style="color: #1C66A7;"></i>
 									&nbsp;输入格式如：14:10:00
 								</span>
@@ -327,7 +313,7 @@
 						<tr>
 							<td></td>
 							<td>
-								<button type="submit" disabled="true" class="btn">确定</button>
+								<button type="submit" class="btn">确定</button>
 								<button type="reset" class="btn">重置</button>
 							</td>
 						</tr>
@@ -1094,14 +1080,32 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			//清除任务添加按钮
 			taskAdder.cleanAddTaskBtn();
 		})
-		
-		
 
 		//任务执行方式的效果
 		$('.task-mode').on('click', function() {
 			var val = $(this).children("input").val();
-			$("[name^=task-run-]").addClass('hidden');
-			$("[name=task-run-" + val + "]").removeClass("hidden");
+			switch(val){
+				case 'time':
+					$('[name="task-run-date"]').find('input').addClass('hidden');
+					$('[name="task-play-time"]').find('input').addClass('hidden');
+					$('[name="task-run-date"]').find('input').eq(0).removeClass('hidden');
+					$('[name="task-play-time"]').find('input').eq(0).removeClass('hidden');
+					$('[name="task-run-date"]').eq(0).removeClass('hidden');
+					$('[name="task-play-time"]').eq(0).removeClass('hidden');
+					break;
+				case 'fool':
+					$('[name="task-run-date"]').find('input').removeClass('hidden');
+					$('[name="task-play-time"]').find('input').removeClass('hidden');
+					$('[name="task-run-date"]').removeClass('hidden');
+					$('[name="task-play-time"]').removeClass('hidden');
+					break;
+				default :
+					$('[name="task-run-date"]').addClass('hidden');
+					$('[name="task-play-time"]').addClass('hidden');
+					break;
+			}
+			$(".init-date").attr('type', 'date').val("");
+			$(".init-time").attr('type', 'text').val("");
 		})
 
 		//添加任务
@@ -1157,20 +1161,6 @@ style="width: 100%;">`+content+`</marquee></div>`;
 			device.cleanDevice();
 			device.init();
 		});
-		
-		//选择执行方式相关事件
-		$('.task-mode').on("click", function(){
-			var val = $(this).find("input").val();
-			//控制播放周期
-			$('.init-date').prop("disabled", true);
-			$("[name^=task-run-" + val + "]").find(".init-date").prop("disabled", false);
-			//控制播放时长
-			$("[name=task-play-time]").addClass('hidden');
-			$("[name=task-play-time]").find(".init-current").val('');
-			if(val == "fool") {
-				$("[name=task-play-time]").removeClass('hidden');
-			}
-		})
 		
 		//添加设备
 		$(".event-add-device").unbind("click").on("click", function() {
@@ -1247,19 +1237,14 @@ style="width: 100%;">`+content+`</marquee></div>`;
 				data: {
 					unid: getItem('UID'),
 					taskId: res.data.taskId,
+					deviceId: getItem("DEVICE_ID").join('-')
 				}
 			});
 		},
-		//定时循环任务
+		//插播广告， 轮播广告任务，定时轮播广告任务，限期定时轮播广告任务
 		fool: function(res){
-			ws.send({
-				action: '/api/task/send-task-Interval',
-				data: {
-					unid: getItem('UID'),
-					taskId: res.data.taskId,
-				}
-			});
-		}
+			this.current(res);
+		},
 	}
 	/**
 	 * 保存后的回调
@@ -1270,7 +1255,6 @@ style="width: 100%;">`+content+`</marquee></div>`;
 		if(res.error) return app.notice(res);
 		var mode = $("[name=mode]:checked").val();
 		//通过ws服务,给相应的客户端发送命令
-		
 		if(!(mode in process)) return app.notice({error: 1, message: "任务处理对象process." + mode + "不存在"});
 		//是否现在发布
 		var state = $('[name="state"]:checked').val();

@@ -5,8 +5,10 @@
  */
 function taskControler() {
 	var that = this;
+	
 	/**
 	 * 默认播放列表
+	 * 用于生成 初始播放列表
 	 * 客户端请求分发（适应但不限于设备连接成功后，首次请求的任务列表）
 	 */
 	this.list = function() {
@@ -175,6 +177,7 @@ function taskControler() {
 	
 	/**
 	 * 服务端主动发送任务列表
+	 * 用于发送： 插播广告， 轮播广告任务，定时轮播广告任务，限期定时轮播广告任务
 	 */
 	this.sendTask = async function(){
 		var params = {}
@@ -227,13 +230,14 @@ function taskControler() {
 		var publisher = this.model("AdvPublis");
 		var task = await publisher.taskList(params);
 		if(task.error) return this.renderJson(task);
-		if(task.results[0].mode == 'time'){
-			data.startTime = task.results[0].starttime;
-			data.endTime = task.results[0].endtime;
-		}
+		data.startTime = task.results[0].starttime;
+		data.endTime = task.results[0].endtime;
 		if(task.results[0].mode == 'current') data.persistent = false;
-		data.playStart = task.results[0].playstart;
-		data.playDone = task.results[0].playdone;
+		if(task.results[0].mode == 'fool') data.persistent = true;
+		data.startTime = this.checkDate(task.results[0].starttime, '1970');
+		data.endTime = this.checkDate(task.results[0].endtime, '1970');
+		data.playStart = this.checkTime(task.results[0].playstart, '00:00:00');
+		data.playDone = this.checkTime(task.results[0].playdone, '00:00:00');
 		//查询任务详情
 		var taskDetail = await publisher.taskDetail(params);
 		if(taskDetail.error) return this.renderJson(taskDetail);
@@ -256,6 +260,7 @@ function taskControler() {
 	
 	/**
 	 * 定时任务
+	 * 用于发送： 定时播放任务
 	 */
 	this.sendTaskTimeout = async function(){
 		var params = {}
@@ -287,7 +292,7 @@ function taskControler() {
 			//任务持久标识persistent 可有以下值
 			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
 			//false 插播任务,任务列表不会被保存到客户端
-			persistent: true,
+			persistent: false,
 			//任务开始时间
 			//0 表示永久不过期
 			//限制时间段表示在这时间段内循环执行任务
@@ -308,13 +313,10 @@ function taskControler() {
 		var publisher = this.model("AdvPublis");
 		var task = await publisher.taskList(params);
 		if(task.error) return this.renderJson(task);
-		if(task.results[0].mode == 'time'){
-			data.startTime = task.results[0].starttime;
-			data.endTime = task.results[0].endtime;
-		}
-		if(task.results[0].mode == 'current') data.persistent = false;
-		data.playStart = task.results[0].playstart;
-		data.playDone = task.results[0].playdone;
+		data.startTime = this.checkDate(task.results[0].starttime, '1970');
+		data.endtime = this.checkDate(task.results[0].endtime, '1970');
+		data.playStart = this.checkTime(task.results[0].playstart, '00:00:00');
+		data.playDone = this.checkTime(task.results[0].playdone, '00:00:00');
 		//查询任务详情
 		var taskDetail = await publisher.taskDetail(params);
 		if(taskDetail.error) return this.renderJson(taskDetail);
@@ -335,86 +337,17 @@ function taskControler() {
 	}
 	
 	/**
-	 * 定时循环任务
+	 * 验证字符串str是否包含sstr， 如果是则返回0，否则返回str
+	 * @param {Object} str
+	 * @param {Object} sstr
 	 */
-	this.sendTaskInterval = async function(){
-		var params = {}
-		params.mode = "current";
-		params.unid = this.POST('unid');
-		params.taskId = this.POST('taskId');
-		if(!params.taskId) return this.renderJson(this.err("参数错误：extaskId"));
-		//接收任务的客户端id
-		params.deviceId = this.POST('deviceId');
-		if(!params.deviceId) return this.renderJson(this.err("参数错误：exdeviceId"));
-		params.deviceId = params.deviceId.split("-");
-		console.log("========发送给devices:", params.deviceId);
-		console.log("========在线devices uniClients:", uniClients);
-		
-		//分派到广告屏客户端
-		var data = {
-			//任务请求状态0，成功；1失败
-			error: 0,
-			//任务请求状态描述
-			message: "成功获取任务列表",  
-			//任务识别信息
-			unid: params.unid,
-			taskId: params.taskId,
-			//type 请求类型标识， 可有以下值
-			//task_list 要求执行任务列表
-			//oper_play 要求屏幕执行播放
-			//oper_play 要求屏幕停止播放
-			type: "task_list",
-			//任务持久标识persistent 可有以下值
-			//true持久任务，会被保存到客户端（应用场景：如执行完插播任务后，接着执行当前任务); 
-			//false 插播任务,任务列表不会被保存到客户端
-			persistent: true,
-			//任务开始时间
-			//0 表示永久不过期
-			//限制时间段表示在这时间段内循环执行任务
-			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，则执行当前列表任务
-			//当同一时刻有多个任务列表有效时，执行最后一次下发的任务
-			startTime: 0,
-			//任务结束时间
-			//可取具体时间|0, 如果开始时间大于0，但小于当前时间时，当前列表将被删除
-			endTime: 0,
-			//播放开始时间(只适用于定时任务)
-			playStart: 0,
-			//播放结束时间（只适用于定时任务）
-			playDone: 0,
-			//任务分区表
-			list: []
-		}
-		//查询任务列表
-		var publisher = this.model("AdvPublis");
-		var task = await publisher.taskList(params);
-		if(task.error) return this.renderJson(task);
-		if(task.results[0].mode == 'time'){
-			data.startTime = task.results[0].starttime;
-			data.endTime = task.results[0].endtime;
-		}
-		if(task.results[0].mode == 'current') data.persistent = false;
-		data.playStart = task.results[0].playstart;
-		data.playDone = task.results[0].playdone;
-		//查询任务详情
-		var taskDetail = await publisher.taskDetail(params);
-		if(taskDetail.error) return this.renderJson(taskDetail);
-		
-		for(var i = 0; i < taskDetail.results.length; i ++){
-			var list = {};
-			list.type = taskDetail.results[i].type;
-			list.taskTag = taskDetail.results[i].taskTag;
-			eval(('list.style = '+taskDetail.results[i].style));
-			list.enable = (taskDetail.results[i].enable == 1) ? true : false;
-			list.list = JSON.parse(taskDetail.results[i].list.replace(/\s/g, ''));
-			data.list.push(list);
-		}
-		
-		console.log("=++++++++发布的循环任务数据+++++++：",data, "|mode|:", task.results[0].mode);
-		//this.sendClients({error: 0, message: '正在向客户端发送任务...'})
-		return this.sendClients(data, params.deviceId);
-		
+	this.checkDate = this.checkTime = function(str, sstr){
+		console.log(str);
+		if(str.toString().indexOf(sstr) > -1) return 0;
+		return str;
 	}
-
+	
+	
 }
 
 module.exports = taskControler
